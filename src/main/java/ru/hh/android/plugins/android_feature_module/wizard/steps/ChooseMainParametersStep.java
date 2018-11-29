@@ -6,8 +6,8 @@ import com.intellij.ui.wizard.WizardNavigationState;
 import com.intellij.ui.wizard.WizardStep;
 import kotlin.text.StringsKt;
 import org.jetbrains.annotations.NotNull;
-import ru.hh.android.plugins.android_feature_module.models.AndroidFeatureModuleType;
 import ru.hh.android.plugins.android_feature_module.models.MainNewModuleParameters;
+import ru.hh.android.plugins.android_feature_module.models.enums.AndroidFeatureModuleType;
 import ru.hh.android.plugins.android_feature_module.wizard.AndroidFeatureModuleWizardModel;
 
 import javax.swing.*;

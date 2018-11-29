@@ -1,4 +1,4 @@
-package ru.hh.android.plugins.android_feature_module.models
+package ru.hh.android.plugins.android_feature_module.models.enums
 
 
 enum class AndroidFeatureModuleType(
@@ -13,7 +13,7 @@ enum class AndroidFeatureModuleType(
 
     FEATURE_MODULE(
             comboBoxText = "Feature module",
-            typeRootFolder = "/features"
+            typeRootFolder = "/feature"
     ),
 
     CORE_MODULE(

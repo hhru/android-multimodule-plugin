@@ -6,8 +6,8 @@ import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import ru.hh.android.plugins.android_feature_module.ProjectInfo
 import ru.hh.android.plugins.android_feature_module.WriteActionsFactory
-import ru.hh.android.plugins.android_feature_module.models.AndroidFeatureModuleType
 import ru.hh.android.plugins.android_feature_module.models.BuildTasksConfig
+import ru.hh.android.plugins.android_feature_module.models.enums.AndroidFeatureModuleType
 
 
 class ChangeSettingsGradleTask

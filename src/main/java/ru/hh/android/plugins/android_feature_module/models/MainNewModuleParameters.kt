@@ -1,5 +1,7 @@
 package ru.hh.android.plugins.android_feature_module.models
 
+import ru.hh.android.plugins.android_feature_module.models.enums.AndroidFeatureModuleType
+
 
 data class MainNewModuleParameters @JvmOverloads constructor(
         var libraryName: String = "",

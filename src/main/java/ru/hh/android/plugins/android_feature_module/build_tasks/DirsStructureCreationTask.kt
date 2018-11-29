@@ -6,7 +6,7 @@ import ru.hh.android.plugins.android_feature_module.models.BuildTasksConfig
 import java.io.File
 
 
-class DirsStructureCreationTask
+class  DirsStructureCreationTask
     : BuildTask("Module directories structure creation") {
 
     override fun internalPerformAction(config: BuildTasksConfig) {
