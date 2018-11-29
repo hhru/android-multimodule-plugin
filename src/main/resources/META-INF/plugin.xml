@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>ru.hh.android.plugins.android_feature_module</id>
+    <name>Android feature module creation plugin</name>
+    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">HeadHunter</vendor>
+
+    <description><![CDATA[
+    Enable new option - create feature module in Android application
+    ]]></description>
+
+    <depends>com.intellij.modules.lang</depends>
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>org.intellij.groovy</depends>
+
+    <idea-version since-build="163"/>
+
+    <actions>
+        <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
+            <separator/>
+            <action
+                    class="ru.hh.android.plugins.android_feature_module.actions.CreateAndroidFeatureModuleAction"
+                    description="Creates new Android feature module"
+                    id="CreateAndroidFeatureModule"
+                    text="New Android feature module...">
+                <add-to-group anchor="last" group-id="NewGroup"/>
+            </action>
+        </group>
+    </actions>
+
+</idea-plugin>
