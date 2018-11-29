@@ -45,7 +45,8 @@ class CreateAndroidFeatureModuleAction
                     AndroidModuleBaseFileCreationTask(),
                     FeatureModuleFilesCreationTask(),
                     ChangeSettingsGradleTask(),
-                    AddModuleIntoToothpickAnnotationsConfigTask()
+                    AddModuleIntoToothpickAnnotationsConfigTask(),
+                    AddModuleIntoDependenciesBlockTask()
             ).apply {
                 if (config.enableMoxy) {
                     this += ChangeMoxyReflectorStubTask()
