@@ -1,3 +1,5 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_modules
 
-class ChooseModulesController
+import com.intellij.openapi.components.ProjectComponent
+
+class ChooseModulesController : ProjectComponent

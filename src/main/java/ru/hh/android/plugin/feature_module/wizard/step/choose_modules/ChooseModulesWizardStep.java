@@ -1,4 +1,25 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_modules;
 
-public class ChooseModulesWizardStep {
+import com.intellij.ui.wizard.WizardNavigationState;
+import com.intellij.ui.wizard.WizardStep;
+import org.jetbrains.annotations.NotNull;
+import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel;
+
+import javax.swing.*;
+
+
+public class ChooseModulesWizardStep extends WizardStep<PluginWizardModel> {
+
+    @NotNull
+    private final ChooseModulesController controller;
+
+    public ChooseModulesWizardStep(@NotNull ChooseModulesController controller) {
+        this.controller = controller;
+    }
+
+    @Override
+    public JComponent prepare(WizardNavigationState state) {
+        return null;
+    }
+
 }

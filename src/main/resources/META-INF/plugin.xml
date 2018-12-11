@@ -16,14 +16,48 @@
     <actions>
         <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
             <separator/>
-            <action
-                    class="ru.hh.android.plugins.android_feature_module.actions.CreateAndroidFeatureModuleAction"
-                    description="Creates new Android feature module"
-                    id="CreateAndroidFeatureModule"
-                    text="New Android feature module...">
-                <add-to-group anchor="last" group-id="NewGroup"/>
+            <!--<action-->
+            <!--class="ru.hh.android.plugins.android_feature_module.actions.CreateAndroidFeatureModuleAction"-->
+            <!--description="Creates new Android feature module"-->
+            <!--id="CreateAndroidFeatureModule"-->
+            <!--text="New Android feature module...">-->
+            <!--<add-to-group anchor="last" group-id="NewGroup"/>-->
+            <!--</action>-->
+
+            <action id="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
+                    class="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
+                    text="New feature module..." description="Open feature module creation wizard">
+                <add-to-group group-id="NewGroup" anchor="last"/>
             </action>
         </group>
     </actions>
 
+    <project-components>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.component.build_module.BuildModuleComponent
+            </implementation-class>
+        </component>
+
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.component.templates_factory.TemplatesFactory
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsController
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters.ChooseMainParametersController
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesController
+            </implementation-class>
+        </component>
+    </project-components>
 </idea-plugin>
