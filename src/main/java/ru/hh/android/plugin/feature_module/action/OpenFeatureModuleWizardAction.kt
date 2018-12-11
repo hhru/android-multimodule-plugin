@@ -9,7 +9,7 @@ class OpenFeatureModuleWizardAction : AnAction(), PluginWizardDialog.GoalAchieve
 
     override fun actionPerformed(e: AnActionEvent) {
         e.project?.let { project ->
-            PluginWizardDialog(PluginWizardModel(project), project, this).show()
+            PluginWizardDialog(PluginWizardModel(project), this).show()
         }
     }
 
