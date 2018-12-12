@@ -4,16 +4,15 @@ import com.intellij.ui.wizard.WizardNavigationState;
 import com.intellij.ui.wizard.WizardStep;
 import org.jetbrains.annotations.NotNull;
 import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel;
-import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesController;
 
 import javax.swing.*;
 
 public class ChooseApplicationsWizardStep extends WizardStep<PluginWizardModel> {
 
     @NotNull
-    private final ChooseApplicationsController controller;
+    private final ChooseApplicationsPresenter controller;
 
-    public ChooseApplicationsWizardStep(@NotNull ChooseApplicationsController controller) {
+    public ChooseApplicationsWizardStep(@NotNull ChooseApplicationsPresenter controller) {
         this.controller = controller;
     }
 

@@ -90,7 +90,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="My Library"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -124,7 +124,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="mylibrary"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -158,7 +158,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="ru.hh.android.mylibrary"/>
+              <text value=""/>
               <visible value="false"/>
             </properties>
           </component>
@@ -176,7 +176,7 @@
             </constraints>
             <properties>
               <enabled value="false"/>
-              <text value="ru.hh.android.mylibrary"/>
+              <text value=""/>
               <visible value="true"/>
             </properties>
           </component>

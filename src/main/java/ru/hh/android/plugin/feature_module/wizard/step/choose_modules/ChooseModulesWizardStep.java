@@ -11,9 +11,9 @@ import javax.swing.*;
 public class ChooseModulesWizardStep extends WizardStep<PluginWizardModel> {
 
     @NotNull
-    private final ChooseModulesController controller;
+    private final ChooseModulesPresenter controller;
 
-    public ChooseModulesWizardStep(@NotNull ChooseModulesController controller) {
+    public ChooseModulesWizardStep(@NotNull ChooseModulesPresenter controller) {
         this.controller = controller;
     }
 

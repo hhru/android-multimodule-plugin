@@ -16,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import java.util.Objects;
 
 
+@Deprecated
 public class ChooseMainParametersStep extends WizardStep<AndroidFeatureModuleWizardModel> {
 
 

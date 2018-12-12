@@ -16,13 +16,6 @@
     <actions>
         <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
             <separator/>
-            <!--<action-->
-            <!--class="ru.hh.android.plugins.android_feature_module.actions.CreateAndroidFeatureModuleAction"-->
-            <!--description="Creates new Android feature module"-->
-            <!--id="CreateAndroidFeatureModule"-->
-            <!--text="New Android feature module...">-->
-            <!--<add-to-group anchor="last" group-id="NewGroup"/>-->
-            <!--</action>-->
 
             <action id="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
                     class="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
@@ -46,17 +39,17 @@
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsController
+                ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsPresenter
             </implementation-class>
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters.ChooseMainParametersController
+                ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters.ChooseMainParametersPresenter
             </implementation-class>
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesController
+                ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesPresenter
             </implementation-class>
         </component>
     </project-components>
