@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
+@Deprecated
 public class ChooseAddingModulesStep extends WizardStep<AndroidFeatureModuleWizardModel> {
 
     @NotNull

@@ -66,5 +66,9 @@
             <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
             </implementation-class>
         </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleRepository
+            </implementation-class>
+        </component>
     </project-components>
 </idea-plugin>

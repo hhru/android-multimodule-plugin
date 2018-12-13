@@ -2,26 +2,22 @@ package ru.hh.android.plugin.feature_module.component.module
 
 import com.intellij.openapi.components.ProjectComponent
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.project.Project
-import ru.hh.android.plugin.feature_module.extensions.getExistingModules
+import ru.hh.android.plugin.feature_module.extensions.isLibraryModule
+
 
 class ModuleInteractor(
-        private val project: Project
+        private val moduleRepository: ModuleRepository
 ) : ProjectComponent {
 
-    fun getLibrariesModules() {
-        val existingModules = project.getExistingModules()
+    fun getLibrariesModules(): List<Module> {
+        return moduleRepository.getExistingModules().filter { it.isLibraryModule() }
     }
 
-    fun getApplicationModules() {
+    fun getApplicationModules(): List<Module> {
+        val existingModules = moduleRepository.getExistingModules()
+        val librariesModules = existingModules.filter { it.isLibraryModule() }
 
-    }
-
-
-    private fun filterLibrariesModules(modules: List<Module>): List<Module> {
-
-
-        return modules
+        return existingModules.minus(librariesModules)
     }
 
 }
