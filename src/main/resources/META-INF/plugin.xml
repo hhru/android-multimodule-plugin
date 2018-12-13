@@ -62,5 +62,13 @@
                 ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
             </implementation-class>
         </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
+            </implementation-class>
+        </component>
     </project-components>
 </idea-plugin>
