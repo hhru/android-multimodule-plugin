@@ -2,16 +2,12 @@ package ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters
 
 import com.intellij.openapi.components.ProjectComponent
 import ru.hh.android.core.BasePresenter
+import ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
 
 
 class ChooseMainParametersPresenter(
-        private var wantTriggerModuleNameChanging: Boolean = false,
-        private var moduleNameChangedByUser: Boolean = false,
-        private var wantTriggerPackageNameChanging: Boolean = false,
-        private var packageNameChangedByUser: Boolean = false,
-        private var isInEditPackageMode: Boolean = false,
-        private var currentPackageName: String = ""
+        private val mainParametersInteractor: MainParametersInteractor
 ) : BasePresenter<ChooseMainParametersView>(), ProjectComponent {
 
     companion object {
@@ -27,6 +23,14 @@ class ChooseMainParametersPresenter(
 
         private val REGEX_PACKAGE_NAME = Regex("^([A-Za-z]{1}[A-Za-z\\d_]*\\.)*[A-Za-z][A-Za-z\\d_]*\$")
     }
+
+
+    private var currentPackageName: String = ""
+    private var isInEditPackageMode: Boolean = false
+    private var moduleNameChangedByUser: Boolean = false
+    private var packageNameChangedByUser: Boolean = false
+    private var wantTriggerModuleNameChanging: Boolean = false
+    private var wantTriggerPackageNameChanging: Boolean = false
 
 
     override fun onCreate() {
@@ -48,8 +52,8 @@ class ChooseMainParametersPresenter(
     }
 
 
-    fun onNextButtonClicked(mainParametersHolder: MainParametersHolder) {
-        // todo - handle main parameters.
+    fun onNextButtonClicked(parameters: MainParametersHolder) {
+        mainParametersInteractor.saveMainParameters(parameters)
     }
 
     fun onLibraryNameTextChanged(libraryName: String) {

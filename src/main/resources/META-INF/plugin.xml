@@ -52,5 +52,15 @@
                 ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesPresenter
             </implementation-class>
         </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersRepository
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
+            </implementation-class>
+        </component>
     </project-components>
 </idea-plugin>
