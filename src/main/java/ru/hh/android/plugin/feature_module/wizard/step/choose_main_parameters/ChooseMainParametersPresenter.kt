@@ -1,8 +1,8 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters
 
 import com.intellij.openapi.components.ProjectComponent
-import ru.hh.android.core.BasePresenter
 import ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
+import ru.hh.android.plugin.feature_module.core.BasePresenter
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
 
 

@@ -29,18 +29,18 @@ class PluginWizardModel(
     }
 
     private fun createChooseMainParametersStep(): WizardStep<PluginWizardModel> {
-        val controller = project.getComponent(ChooseMainParametersPresenter::class.java)
-        return ChooseMainParametersWizardStep(controller)
+        val presenter = project.getComponent(ChooseMainParametersPresenter::class.java)
+        return ChooseMainParametersWizardStep(presenter)
     }
 
     private fun createChooseModuleStep(): WizardStep<PluginWizardModel> {
-        val controller = project.getComponent(ChooseModulesPresenter::class.java)
-        return ChooseModulesWizardStep(controller)
+        val presenter = project.getComponent(ChooseModulesPresenter::class.java)
+        return ChooseModulesWizardStep(presenter)
     }
 
     private fun createChooseApplicationsStep(): WizardStep<PluginWizardModel> {
-        val controller = project.getComponent(ChooseApplicationsPresenter::class.java)
-        return ChooseApplicationsWizardStep(controller)
+        val presenter = project.getComponent(ChooseApplicationsPresenter::class.java)
+        return ChooseApplicationsWizardStep(presenter)
     }
 
 }

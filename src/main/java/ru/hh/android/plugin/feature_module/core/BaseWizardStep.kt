@@ -1,4 +1,4 @@
-package ru.hh.android.core
+package ru.hh.android.plugin.feature_module.core
 
 import com.intellij.ui.wizard.WizardModel
 import com.intellij.ui.wizard.WizardNavigationState
