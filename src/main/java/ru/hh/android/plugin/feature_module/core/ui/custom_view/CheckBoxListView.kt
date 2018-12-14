@@ -16,7 +16,7 @@ import javax.swing.JList
  * List view with checkboxes and force enabled items support.
  */
 class CheckBoxListView<T>(
-        private val onItemSelectedListener: ((T?) -> Unit)? = null,
+        private val onItemSelectedListener: ((T) -> Unit)? = null,
         private val onItemToggleChangedListener: ((T) -> Unit)? = null
 ) : JList<T>() where T : CheckBoxListViewItem {
 
@@ -40,7 +40,7 @@ class CheckBoxListView<T>(
 
 
     private fun setupOnSelectedListener() {
-        addListSelectionListener { onItemSelectedListener?.invoke(getSelectedItem()) }
+        addListSelectionListener { getSelectedItem()?.let { item -> onItemSelectedListener?.invoke(item) } }
     }
 
     private fun setupClickListenerOnCheckBoxes() {
