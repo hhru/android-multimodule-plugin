@@ -1,19 +1,17 @@
-package ru.hh.android.plugins.android_feature_module.wizard.uikit
+package ru.hh.android.plugin.feature_module.core.ui.custom_view
 
 import com.intellij.util.ui.UIUtil
-import ru.hh.android.plugins.android_feature_module.models.ui.CheckBoxItem
+import ru.hh.android.plugin.feature_module.core.ui.model.CheckBoxListViewItem
 import java.awt.Component
 import javax.swing.JCheckBox
 import javax.swing.JList
 import javax.swing.ListCellRenderer
 
 
-@Deprecated("Use CheckBoxListViewItemRenderer")
-class CheckboxCellRenderer<T : CheckBoxItem>(
-        private val forceEnabledItems: List<String>
-) : ListCellRenderer<T> {
+class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxListViewItem {
 
     private val itemCheckBox = JCheckBox()
+
 
     override fun getListCellRendererComponent(
             list: JList<out T>?,
@@ -30,9 +28,9 @@ class CheckboxCellRenderer<T : CheckBoxItem>(
             itemCheckBox.foreground = UIUtil.getListForeground()
         }
 
-        itemCheckBox.isEnabled = !forceEnabledItems.contains(value.text)
+        itemCheckBox.isEnabled = !value.isForceEnabled
         itemCheckBox.text = value.text
-        itemCheckBox.isSelected = forceEnabledItems.contains(value.text) || value.isEnabled
+        itemCheckBox.isSelected = value.isForceEnabled || value.isChecked
 
         return itemCheckBox
     }

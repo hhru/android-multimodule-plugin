@@ -1,31 +1,50 @@
-package ru.hh.android.plugins.android_feature_module.wizard.uikit
+package ru.hh.android.plugin.feature_module.core.ui.custom_view
 
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.ui.ClickListener
 import com.intellij.ui.CollectionListModel
-import ru.hh.android.plugins.android_feature_module.models.ui.CheckBoxItem
+import ru.hh.android.plugin.feature_module.core.ui.model.CheckBoxListViewItem
+import ru.hh.android.plugin.feature_module.extensions.EMPTY
+import ru.hh.android.plugin.feature_module.extensions.SPACE
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
-import java.util.*
 import javax.swing.JCheckBox
 import javax.swing.JList
 
 
-@Deprecated("Use CheckBoxListView")
-class CheckboxesListView<T : CheckBoxItem>(
+/**
+ * List view with checkboxes and force enabled items support.
+ */
+class CheckBoxListView<T>(
         private val onItemSelectedListener: ((T?) -> Unit)? = null,
         private val onItemToggleChangedListener: ((T) -> Unit)? = null
-) : JList<T>() {
+) : JList<T>() where T : CheckBoxListViewItem {
 
-    private lateinit var items: List<T>
-    private lateinit var forceEnabledItems: List<String>
+    private var items: List<T> = emptyList()
 
 
     init {
-        addListSelectionListener { onItemSelectedListener?.invoke(getSelectedItem()) }
+        setupOnSelectedListener()
+        setupClickListenerOnCheckBoxes()
+        setupKeyboardListenerForSpaceButton()
+    }
 
-        val clickableArea = JCheckBox("").minimumSize.width
+
+    fun setItems(items: List<T>) {
+        this.items = items
+
+        cellRenderer = CheckBoxListViewItemRenderer<T>()
+        model = CollectionListModel(this.items)
+        selectedIndex = 0
+    }
+
+
+    private fun setupOnSelectedListener() {
+        addListSelectionListener { onItemSelectedListener?.invoke(getSelectedItem()) }
+    }
+
+    private fun setupClickListenerOnCheckBoxes() {
+        val clickableArea = JCheckBox(String.EMPTY).minimumSize.width
         (object : ClickListener() {
             override fun onClick(event: MouseEvent, clickCount: Int): Boolean {
                 if (event.x < clickableArea) {
@@ -35,35 +54,25 @@ class CheckboxesListView<T : CheckBoxItem>(
                 return true
             }
         }).installOn(this)
+    }
 
+    private fun setupKeyboardListenerForSpaceButton() {
         addKeyListener(object : KeyAdapter() {
             override fun keyTyped(e: KeyEvent) {
-                if (e.keyChar == ' ') {
+                if (e.keyChar == Char.SPACE) {
                     toggleSelection()
                 }
             }
         })
     }
 
-    fun setItems(items: List<T>, forceEnabledItems: List<String>) {
-        this.items = items.sortedWith(Comparator { o1, o2 ->
-            StringUtil.compare(o1.text, o2.text, true)
-        })
-        this.forceEnabledItems = forceEnabledItems
-
-        cellRenderer = CheckboxCellRenderer<T>(forceEnabledItems)
-
-        model = CollectionListModel(this.items)
-        selectedIndex = 0
-    }
-
 
     private fun toggleSelection() {
         val currentItem = getSelectedItem() ?: return
-        val isSelectedItemEnabled = currentItem.isEnabled
+        val isSelectedItemChecked = currentItem.isChecked
 
         for (selectedItem in selectedValuesList) {
-            selectedItem.isEnabled = !isSelectedItemEnabled
+            selectedItem.isChecked = !isSelectedItemChecked
             onItemToggleChangedListener?.invoke(selectedItem)
         }
 
