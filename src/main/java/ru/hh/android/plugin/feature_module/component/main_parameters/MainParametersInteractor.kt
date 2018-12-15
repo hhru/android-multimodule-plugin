@@ -4,12 +4,12 @@ import com.intellij.openapi.components.ProjectComponent
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
 
 
-class MainParametersInteractor(
-        private val mainParametersRepository: MainParametersRepository
-) : ProjectComponent {
+class MainParametersInteractor : ProjectComponent {
 
-    fun getForceEnabledModulesNamesForParameters(): Set<String> {
-        return mainParametersRepository.currentMainParametersHolder?.let { parameters ->
+    fun getForceEnabledModulesNamesForParameters(
+            mainParametersHolder: MainParametersHolder?
+    ): Set<String> {
+        return mainParametersHolder?.let { parameters ->
             mutableSetOf<String>().apply {
                 this += "common"
                 this += "logger"
@@ -26,14 +26,6 @@ class MainParametersInteractor(
                 }
             }
         } ?: emptySet()
-    }
-
-    fun saveMainParameters(mainParametersHolder: MainParametersHolder) {
-        mainParametersRepository.currentMainParametersHolder = mainParametersHolder
-    }
-
-    fun clearMainParameters() {
-        mainParametersRepository.currentMainParametersHolder = null
     }
 
 }

@@ -17,7 +17,7 @@ class PluginWizardDialog(
 
     override fun onWizardGoalAchieved() {
         super.onWizardGoalAchieved()
-        goalAchievedListener.onGoalAchieved()
+        goalAchievedListener.onGoalAchieved(myModel)
     }
 
     override fun getPreferredSize(): Dimension {
@@ -27,7 +27,7 @@ class PluginWizardDialog(
 
     interface GoalAchievedListener {
 
-        fun onGoalAchieved()
+        fun onGoalAchieved(model: PluginWizardModel)
 
     }
 

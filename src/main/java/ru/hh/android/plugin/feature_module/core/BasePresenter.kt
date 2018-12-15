@@ -1,7 +1,9 @@
 package ru.hh.android.plugin.feature_module.core
 
+import com.intellij.ui.wizard.WizardModel
 
-abstract class BasePresenter<T : BaseView> {
+
+abstract class BasePresenter<WM : WizardModel, T : BaseView> {
 
     protected lateinit var view: T
 
@@ -11,7 +13,15 @@ abstract class BasePresenter<T : BaseView> {
     }
 
 
-    open fun onCreate() {
+    open fun onNextButtonClicked(model: WM) {
+        // nothing to do by default.
+    }
+
+    open fun onPreviousButtonClicked(model: WM) {
+        // nothing to do by default.
+    }
+
+    open fun onCreate(model: WM) {
         // nothing to do by default.
     }
 

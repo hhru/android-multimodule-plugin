@@ -9,11 +9,11 @@ import ru.hh.android.plugin.feature_module.core.BaseWizardStep
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
 import ru.hh.android.plugin.feature_module.model.enums.FeatureModuleType
 import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel
-import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesWizardStep
 import javax.swing.*
 
 
 class ChooseMainParametersWizardStep(
+        override val model: PluginWizardModel,
         override val presenter: ChooseMainParametersPresenter
 ) : BaseWizardStep<PluginWizardModel, ChooseMainParametersView>(), ChooseMainParametersView {
 
@@ -42,13 +42,8 @@ class ChooseMainParametersWizardStep(
     }
 
     override fun onNext(model: PluginWizardModel): WizardStep<*> {
-        val nextStep = super.onNext(model)
-
-        if (nextStep is ChooseModulesWizardStep) {
-            presenter.onNextButtonClicked(collectMainParameters())
-        }
-
-        return nextStep
+        presenter.updateMainParameters(collectMainParameters())
+        return super.onNext(model)
     }
 
 

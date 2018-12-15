@@ -3,18 +3,20 @@ package ru.hh.android.plugin.feature_module.wizard.step.choose_applications
 import com.intellij.openapi.components.ProjectComponent
 import ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
 import ru.hh.android.plugin.feature_module.core.BasePresenter
+import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel
 import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.model.AppModuleDisplayableItem
 import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.model.converter.AppModuleConverter
 
+
 class ChooseApplicationsPresenter(
         private val moduleInteractor: ModuleInteractor
-) : BasePresenter<ChooseApplicationsView>(), ProjectComponent {
+) : BasePresenter<PluginWizardModel, ChooseApplicationsView>(), ProjectComponent {
 
     private var items: List<AppModuleDisplayableItem> = emptyList()
 
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onCreate(model: PluginWizardModel) {
+        super.onCreate(model)
 
         // TODO - background thread?
         val applicationModules = moduleInteractor.getApplicationModules()
@@ -23,10 +25,11 @@ class ChooseApplicationsPresenter(
         view.showList(items)
     }
 
-
-    fun onNextButtonClicked() {
-        // TODO
+    override fun onNextButtonClicked(model: PluginWizardModel) {
+        super.onNextButtonClicked(model)
+        model.setSelectedApplications(items.filter { it.isChecked })
     }
+
 
     fun onAppModuleItemSelected(item: AppModuleDisplayableItem) {
         // TODO - показать README в секции описания.

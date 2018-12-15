@@ -1,14 +1,12 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters
 
 import com.intellij.openapi.components.ProjectComponent
-import ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
 import ru.hh.android.plugin.feature_module.core.BasePresenter
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
+import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel
 
 
-class ChooseMainParametersPresenter(
-        private val mainParametersInteractor: MainParametersInteractor
-) : BasePresenter<ChooseMainParametersView>(), ProjectComponent {
+class ChooseMainParametersPresenter : BasePresenter<PluginWizardModel, ChooseMainParametersView>(), ProjectComponent {
 
     companion object {
         private const val INITIAL_LIBRARY_NAME = "My Library"
@@ -32,9 +30,11 @@ class ChooseMainParametersPresenter(
     private var wantTriggerModuleNameChanging: Boolean = false
     private var wantTriggerPackageNameChanging: Boolean = false
 
+    private var mainParametersHolder: MainParametersHolder? = null
 
-    override fun onCreate() {
-        super.onCreate()
+
+    override fun onCreate(model: PluginWizardModel) {
+        super.onCreate(model)
         initViewComponents()
     }
 
@@ -49,11 +49,18 @@ class ChooseMainParametersPresenter(
 
         isInEditPackageMode = false
         currentPackageName = ""
+
+        mainParametersHolder = null
+    }
+
+    override fun onNextButtonClicked(model: PluginWizardModel) {
+        super.onNextButtonClicked(model)
+        mainParametersHolder?.let { model.setMainParameters(it) }
     }
 
 
-    fun onNextButtonClicked(parameters: MainParametersHolder) {
-        mainParametersInteractor.saveMainParameters(parameters)
+    fun updateMainParameters(mainParametersHolder: MainParametersHolder) {
+        this.mainParametersHolder = mainParametersHolder
     }
 
     fun onLibraryNameTextChanged(libraryName: String) {

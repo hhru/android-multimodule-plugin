@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_applications
 
-import com.intellij.ui.wizard.WizardStep
 import ru.hh.android.plugin.feature_module.core.BaseWizardStep
 import ru.hh.android.plugin.feature_module.core.ui.custom_view.CheckBoxListView
 import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel
@@ -12,6 +11,7 @@ import javax.swing.JTextPane
 
 
 class ChooseApplicationsWizardStep(
+        override val model: PluginWizardModel,
         override val presenter: ChooseApplicationsPresenter
 ) : BaseWizardStep<PluginWizardModel, ChooseApplicationsView>(), ChooseApplicationsView {
 
@@ -30,12 +30,6 @@ class ChooseApplicationsWizardStep(
         disableAllButton.addActionListener { presenter.onDisableAllButtonClicked() }
     }
 
-    override fun onNext(model: PluginWizardModel?): WizardStep<*> {
-        val nextStep = super.onNext(model)
-        presenter.onNextButtonClicked()
-
-        return nextStep
-    }
 
     override fun showList(items: List<AppModuleDisplayableItem>) {
         (applicationsList as CheckBoxListView<AppModuleDisplayableItem>).setItems(items)
