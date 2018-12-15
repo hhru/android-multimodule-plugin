@@ -1,5 +1,50 @@
 package ru.hh.android.plugin.feature_module.wizard.step.choose_applications
 
 import com.intellij.openapi.components.ProjectComponent
+import ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
+import ru.hh.android.plugin.feature_module.core.BasePresenter
+import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.model.AppModuleDisplayableItem
+import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.model.converter.AppModuleConverter
 
-class ChooseApplicationsPresenter : ProjectComponent
+class ChooseApplicationsPresenter(
+        private val moduleInteractor: ModuleInteractor
+) : BasePresenter<ChooseApplicationsView>(), ProjectComponent {
+
+    private var items: List<AppModuleDisplayableItem> = emptyList()
+
+
+    override fun onCreate() {
+        super.onCreate()
+
+        // TODO - background thread?
+        val applicationModules = moduleInteractor.getApplicationModules()
+        items = AppModuleConverter().convert(applicationModules)
+
+        view.showList(items)
+    }
+
+
+    fun onNextButtonClicked() {
+        // TODO
+    }
+
+    fun onAppModuleItemSelected(item: AppModuleDisplayableItem) {
+        // TODO - показать README в секции описания.
+    }
+
+    fun onAppModuleItemToggleChanged(item: AppModuleDisplayableItem) {
+        item.isChecked = !item.isChecked
+        view.repaintList()
+    }
+
+    fun onEnableAllButtonClicked() {
+        items.forEach { it.isChecked = true }
+        view.repaintList()
+    }
+
+    fun onDisableAllButtonClicked() {
+        items.forEach { it.isChecked = false }
+        view.repaintList()
+    }
+
+}

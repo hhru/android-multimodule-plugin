@@ -14,6 +14,7 @@ class ChooseModulesPresenter(
 
     private var items: List<LibraryModuleDisplayableItem> = emptyList()
 
+
     override fun onCreate() {
         super.onCreate()
 
@@ -25,6 +26,10 @@ class ChooseModulesPresenter(
         view.showList(items)
     }
 
+
+    fun onNextButtonClicked() {
+        // TODO
+    }
 
     fun onLibraryItemSelected(item: LibraryModuleDisplayableItem) {
         // TODO - показать README в секции описания.

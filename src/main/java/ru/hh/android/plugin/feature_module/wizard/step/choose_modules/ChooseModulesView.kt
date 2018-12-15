@@ -5,7 +5,7 @@ import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.model.Libr
 
 interface ChooseModulesView : BaseView {
 
-    fun showList(displayableItems: List<LibraryModuleDisplayableItem>)
+    fun showList(items: List<LibraryModuleDisplayableItem>)
 
     fun repaintList()
 
