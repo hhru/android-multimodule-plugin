@@ -68,11 +68,7 @@ class CheckBoxListView<T>(
 
 
     private fun toggleSelection() {
-        val currentItem = getSelectedItem() ?: return
-        val isSelectedItemChecked = currentItem.isChecked
-
         for (selectedItem in selectedValuesList) {
-            selectedItem.isChecked = !isSelectedItemChecked
             onItemToggleChangedListener?.invoke(selectedItem)
         }
 

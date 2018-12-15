@@ -12,6 +12,8 @@ class ChooseModulesPresenter(
         private val mainParametersInteractor: MainParametersInteractor
 ) : BasePresenter<ChooseModulesView>(), ProjectComponent {
 
+    private var items: List<LibraryModuleDisplayableItem> = emptyList()
+
     override fun onCreate() {
         super.onCreate()
 
@@ -19,7 +21,8 @@ class ChooseModulesPresenter(
         val libraries = moduleInteractor.getLibrariesModules()
         val forceEnabledModulesNames = mainParametersInteractor.getForceEnabledModulesNamesForParameters()
 
-        view.showList(LibraryModuleConverter().convert(libraries, forceEnabledModulesNames))
+        items = LibraryModuleConverter().convert(libraries, forceEnabledModulesNames)
+        view.showList(items)
     }
 
 
@@ -28,7 +31,21 @@ class ChooseModulesPresenter(
     }
 
     fun onLibraryItemToggleChanged(item: LibraryModuleDisplayableItem) {
-        // TODO
+        if (item.isForceEnabled) {
+            return
+        }
+        item.isChecked = !item.isChecked
+        view.repaintList()
+    }
+
+    fun onEnableAllButtonClicked() {
+        items.forEach { it.isChecked = true }
+        view.repaintList()
+    }
+
+    fun onDisableAllButtonClicked() {
+        items.filter { !it.isForceEnabled }.forEach { it.isChecked = false }
+        view.repaintList()
     }
 
 }

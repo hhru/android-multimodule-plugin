@@ -7,4 +7,6 @@ interface ChooseModulesView : BaseView {
 
     fun showList(displayableItems: List<LibraryModuleDisplayableItem>)
 
+    fun repaintList()
+
 }

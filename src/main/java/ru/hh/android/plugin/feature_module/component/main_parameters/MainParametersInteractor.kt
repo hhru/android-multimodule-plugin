@@ -8,9 +8,9 @@ class MainParametersInteractor(
         private val mainParametersRepository: MainParametersRepository
 ) : ProjectComponent {
 
-    fun getForceEnabledModulesNamesForParameters(): List<String> {
+    fun getForceEnabledModulesNamesForParameters(): Set<String> {
         return mainParametersRepository.currentMainParametersHolder?.let { parameters ->
-            mutableListOf<String>().apply {
+            mutableSetOf<String>().apply {
                 this += "common"
                 this += "logger"
                 this += "analytics"
@@ -25,7 +25,7 @@ class MainParametersInteractor(
                     this += "network-auth-source"
                 }
             }
-        } ?: emptyList()
+        } ?: emptySet()
     }
 
     fun saveMainParameters(mainParametersHolder: MainParametersHolder) {
