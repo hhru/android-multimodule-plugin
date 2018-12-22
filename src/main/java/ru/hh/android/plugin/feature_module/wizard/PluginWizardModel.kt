@@ -3,7 +3,7 @@ package ru.hh.android.plugin.feature_module.wizard
 import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardModel
 import com.intellij.ui.wizard.WizardStep
-import ru.hh.android.plugin.feature_module.model.CreateModuleTaskConfig
+import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import ru.hh.android.plugin.feature_module.model.MainParametersHolder
 import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsPresenter
 import ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsWizardStep
@@ -17,7 +17,7 @@ import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.model.Libr
 
 class PluginWizardModel(
         private val project: Project,
-        private val createModuleTaskConfig: CreateModuleTaskConfig
+        private val createModuleConfig: CreateModuleConfig
 ) : WizardModel("Model for feature module creation wizard.") {
 
     init {
@@ -25,24 +25,24 @@ class PluginWizardModel(
     }
 
 
-    fun getTaskConfig(): CreateModuleTaskConfig {
-        return createModuleTaskConfig
+    fun getTaskConfig(): CreateModuleConfig {
+        return createModuleConfig
     }
 
     fun setMainParameters(mainParametersHolder: MainParametersHolder) {
-        createModuleTaskConfig.mainParametersHolder = mainParametersHolder
+        createModuleConfig.mainParametersHolder = mainParametersHolder
     }
 
     fun getMainParameters(): MainParametersHolder? {
-        return createModuleTaskConfig.mainParametersHolder
+        return createModuleConfig.mainParametersHolder
     }
 
     fun setSelectedLibraries(libraries: List<LibraryModuleDisplayableItem>) {
-        createModuleTaskConfig.libraries = libraries
+        createModuleConfig.libraries = libraries
     }
 
     fun setSelectedApplications(applications: List<AppModuleDisplayableItem>) {
-        createModuleTaskConfig.applications = applications
+        createModuleConfig.applications = applications
     }
 
 

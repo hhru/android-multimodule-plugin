@@ -65,5 +65,18 @@
             <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleRepository
             </implementation-class>
         </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.component.logger.PluginLogger
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigConverter
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugin.feature_module.component.build_module.factory.BuildModuleTaskFactory
+            </implementation-class>
+        </component>
     </project-components>
 </idea-plugin>

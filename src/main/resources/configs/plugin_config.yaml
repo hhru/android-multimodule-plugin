@@ -1,0 +1,18 @@
+dirs:
+  - adapter:
+      - delegate
+      - item
+  - data_source
+  - di
+  - extensions
+  - interactor
+  - model:
+      - network
+      - domain
+      - database
+      - presentation
+  - presenter
+  - repository
+  - view
+  - screen
+  - custom_view
