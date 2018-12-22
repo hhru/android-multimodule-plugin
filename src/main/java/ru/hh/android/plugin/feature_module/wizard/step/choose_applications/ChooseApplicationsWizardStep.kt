@@ -30,6 +30,10 @@ class ChooseApplicationsWizardStep(
         disableAllButton.addActionListener { presenter.onDisableAllButtonClicked() }
     }
 
+    override fun onFinish(): Boolean {
+        presenter.onNextButtonClicked(model)
+        return super.onFinish()
+    }
 
     override fun showList(items: List<AppModuleDisplayableItem>) {
         (applicationsList as CheckBoxListView<AppModuleDisplayableItem>).setItems(items)
