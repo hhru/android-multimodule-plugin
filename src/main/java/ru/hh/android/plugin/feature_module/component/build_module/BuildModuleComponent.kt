@@ -3,6 +3,7 @@ package ru.hh.android.plugin.feature_module.component.build_module
 import com.intellij.openapi.components.ProjectComponent
 import ru.hh.android.plugin.feature_module.component.build_module.factory.BuildModuleTaskFactory
 import ru.hh.android.plugin.feature_module.component.build_module.task.BuildModuleTask
+import ru.hh.android.plugin.feature_module.core.ui.NotificationsFactory
 import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import ru.hh.android.plugin.feature_module.model.enums.CreateModuleBuildTaskType.*
 
@@ -11,8 +12,13 @@ class BuildModuleComponent(
         private val buildModuleTaskFactory: BuildModuleTaskFactory
 ) : ProjectComponent {
 
+    companion object {
+        private const val COMPLETE_MESSAGE = "Feature module creation complete!"
+    }
+
     fun buildNewFeatureModule(config: CreateModuleConfig) {
         getTasks(config).forEach { it.performBuildAction(config) }
+        NotificationsFactory.info(COMPLETE_MESSAGE)
     }
 
 

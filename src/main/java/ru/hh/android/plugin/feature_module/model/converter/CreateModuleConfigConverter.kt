@@ -42,7 +42,7 @@ class CreateModuleConfigConverter
                     val basePath = "/${moduleType.typeRootFolder}/$moduleName"
                     val basePackageName = "src/main/java/$slashedPackageName"
 
-                    kotlin.collections.mutableListOf<TemplateFileData>().apply {
+                    mutableListOf<TemplateFileData>().apply {
                         this += TemplateFileData(
                                 targetFilePath = "$basePath/build.gradle",
                                 templateFileName = TEMPLATE_NAME_BUILD_GRADLE
