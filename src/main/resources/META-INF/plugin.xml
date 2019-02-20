@@ -60,7 +60,8 @@
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.generator.FeatureModuleGenerator</implementation-class>
+            <implementation-class>ru.hh.android.plugin.feature_module.generator.FeatureModuleGenerator
+            </implementation-class>
         </component>
         <component>
             <implementation-class>ru.hh.android.plugin.feature_module.generator.templates.ModuleFilesFactory

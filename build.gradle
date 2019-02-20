@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'ru.hh.android.plugins'
-version '1.1'
+version '2.0'
 
 sourceCompatibility = 1.8
 
@@ -42,6 +42,14 @@ intellij {
 
 patchPluginXml {
     changeNotes """
+    2.0. Absolutly new version of plugin.
+    - Now generated files will be added into Git, if you want (you should see VCS dialog)
+    - Add normal notification about finishing of process
+    - Add several new templates (for presentation layer)
+    - Remove useless 'Library name' field from the first page
+    - Fix Moxy annotation changing !!!
+    - Fix several formatting issues 
+
     1.1. Fixing several bugs and refactoring. 
 
     1.0. Initial release<br>
