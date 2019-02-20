@@ -19,7 +19,6 @@ class ChooseMainParametersWizardStep(
 
     override lateinit var contentPanel: JPanel
 
-    private lateinit var libraryNameTextField: JTextField
     private lateinit var moduleNameTextField: JTextField
     private lateinit var packageNameTextField: JTextField
     private lateinit var editPackageNameButton: JButton
@@ -30,12 +29,12 @@ class ChooseMainParametersWizardStep(
     private lateinit var createAPIInterfaceCheckBox: JCheckBox
     private lateinit var createRepositoryWithInteractorCheckBox: JCheckBox
     private lateinit var createInterfaceForRepositoryCheckBox: JCheckBox
+    private lateinit var createPresentationLayer: JCheckBox
 
 
     override fun onCreate() {
         super.onCreate()
 
-        libraryNameTextField.onTextChange { presenter.onLibraryNameTextChanged(libraryNameTextField.text) }
         moduleNameTextField.onTextChange { presenter.onModuleNameTextChanged(moduleNameTextField.text) }
         packageNameTextField.onTextChange { presenter.onPackageNameChanged(packageNameTextField.text) }
         editPackageNameButton.addActionListener { presenter.onEditPackageNameButtonClicked() }
@@ -46,10 +45,6 @@ class ChooseMainParametersWizardStep(
         return super.onNext(model)
     }
 
-
-    override fun changeLibraryName(libraryName: String) {
-        libraryNameTextField.text = libraryName
-    }
 
     override fun changeModuleName(newModuleName: String) {
         moduleNameTextField.text = newModuleName
@@ -86,7 +81,6 @@ class ChooseMainParametersWizardStep(
 
     private fun collectMainParameters(): MainParametersHolder {
         return MainParametersHolder(
-                libraryName = libraryNameTextField.text,
                 moduleName = moduleNameTextField.text,
                 packageName = packageNameTextField.text,
                 moduleType = moduleTypeComboBox.selectedItem as FeatureModuleType,
@@ -94,7 +88,8 @@ class ChooseMainParametersWizardStep(
                 addUIModulesDependencies = addUIModulesDependenciesCheckBox.isSelected,
                 needCreateAPIInterface = createAPIInterfaceCheckBox.isSelected,
                 needCreateRepositoryWithInteractor = createRepositoryWithInteractorCheckBox.isSelected,
-                needCreateInterfaceForRepository = createInterfaceForRepositoryCheckBox.isSelected
+                needCreateInterfaceForRepository = createInterfaceForRepositoryCheckBox.isSelected,
+                needCreatePresentationLayer = createPresentationLayer.isSelected
         )
     }
 
@@ -102,7 +97,6 @@ class ChooseMainParametersWizardStep(
     private fun createUIComponents() {
         initModuleTypeComboBox()
 
-        libraryNameTextField = JTextField()
         moduleNameTextField = JTextField()
         packageNameLabel = JLabel()
         packageNameTextField = JTextField()

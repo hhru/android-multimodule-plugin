@@ -9,7 +9,6 @@ import ru.hh.android.plugin.feature_module.wizard.PluginWizardModel
 class ChooseMainParametersPresenter : BasePresenter<PluginWizardModel, ChooseMainParametersView>(), ProjectComponent {
 
     companion object {
-        private const val INITIAL_LIBRARY_NAME = "My Library"
         private const val INITIAL_MODULE_NAME = "mylibrary"
         private const val DEFAULT_PACKAGE_NAME_PREFIX = "ru.hh.android"
         private const val INITIAL_PACKAGE_NAME = "$DEFAULT_PACKAGE_NAME_PREFIX.mylibrary"
@@ -61,17 +60,6 @@ class ChooseMainParametersPresenter : BasePresenter<PluginWizardModel, ChooseMai
 
     fun updateMainParameters(mainParametersHolder: MainParametersHolder) {
         this.mainParametersHolder = mainParametersHolder
-    }
-
-    fun onLibraryNameTextChanged(libraryName: String) {
-        if (moduleNameChangedByUser) {
-            return
-        }
-
-        wantTriggerModuleNameChanging = true
-
-        val moduleName = getModuleNameFromLibraryName(libraryName)
-        view.changeModuleName(moduleName)
     }
 
     fun onModuleNameTextChanged(newModuleName: String) {
@@ -133,20 +121,13 @@ class ChooseMainParametersPresenter : BasePresenter<PluginWizardModel, ChooseMai
 
 
     private fun initViewComponents() {
-        view.changeLibraryName(INITIAL_LIBRARY_NAME)
         view.changeModuleName(INITIAL_MODULE_NAME)
         view.changePackageName(INITIAL_PACKAGE_NAME)
     }
 
-    private fun getModuleNameFromLibraryName(libraryName: String): String {
-        val m1 = libraryName.trim().replace(" ", "", true)
-        val m2 = m1.replace('-', '_', true)
-
-        return m2.toLowerCase()
-    }
-
     private fun getPackageNameFromModuleName(moduleName: String): String {
-        return "$DEFAULT_PACKAGE_NAME_PREFIX.$moduleName"
+        val formattedModuleName = moduleName.replace(' ', '_').replace('-', '_')
+        return "$DEFAULT_PACKAGE_NAME_PREFIX.$formattedModuleName"
     }
 
     private fun checkCurrentPackageName(currentPackageName: String): Boolean {

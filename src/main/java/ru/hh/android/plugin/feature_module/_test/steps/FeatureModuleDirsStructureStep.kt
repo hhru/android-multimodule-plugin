@@ -38,6 +38,7 @@ class FeatureModuleDirsStructureStep {
             this["main"] = this["src"]?.createSubdirectory("main")
             this["java"] = this["main"]?.createSubdirectory("java")
             this["res"] = this["main"]?.createSubdirectory("res")
+            this["layout"] = this["res"]?.createSubdirectory("layout")
 
             // Создание папок для package-а
             val packageParts = config.mainParams.packageName.split(".")

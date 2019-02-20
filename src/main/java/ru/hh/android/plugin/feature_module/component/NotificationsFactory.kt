@@ -1,20 +1,25 @@
-package ru.hh.android.plugin.feature_module.core.ui
+package ru.hh.android.plugin.feature_module.component
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.feature_module.extensions.replaceLineBreaks
 import javax.swing.event.HyperlinkEvent
 
-object NotificationsFactory : NotificationListener {
+class NotificationsFactory(
+        private val project: Project
+) : ProjectComponent, NotificationListener {
 
-    private const val NOTIFICATIONS_TITLE = "HH Feature Module"
-    private const val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
-    private const val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
+    companion object {
+        private const val NOTIFICATIONS_TITLE = "HH Feature Module"
+        private const val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
+        private const val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
+    }
 
-
-    private val loggingNotificationGroup = NotificationGroup.logOnlyGroup(LOGGING_NOTIFICATION_GROUP_ID)
+    private val loggingNotificationGroup = NotificationGroup.balloonGroup(LOGGING_NOTIFICATION_GROUP_ID)
     private val errorsNotificationGroup = NotificationGroup.balloonGroup(ERROR_NOTIFICATION_GROUP_ID)
 
 
@@ -43,7 +48,7 @@ object NotificationsFactory : NotificationListener {
                 notificationType,
                 this
         )
-                .notify(null)
+                .notify(project)
     }
 
 }

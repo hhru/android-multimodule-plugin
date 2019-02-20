@@ -2,10 +2,9 @@ package ru.hh.android.plugin.feature_module._test
 
 import com.intellij.openapi.components.ProjectComponent
 import com.intellij.openapi.project.Project
-import ru.hh.android.plugin.feature_module._test.steps.ChangeSettingsGradleStep
-import ru.hh.android.plugin.feature_module._test.steps.FeatureModuleDirsStructureStep
-import ru.hh.android.plugin.feature_module._test.steps.GenerateFeatureModuleFilesStep
+import ru.hh.android.plugin.feature_module._test.steps.*
 import ru.hh.android.plugin.feature_module._test.templates.NewTemplateFactory
+import ru.hh.android.plugin.feature_module.component.NotificationsFactory
 import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigConverter
 
@@ -13,6 +12,7 @@ import ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigCon
 class TestComponent(
         private val project: Project,
         private val newTemplateFactory: NewTemplateFactory,
+        private val notificationsFactory: NotificationsFactory,
         private val createModuleConfigConverter: CreateModuleConfigConverter
 ) : ProjectComponent {
 
@@ -26,7 +26,13 @@ class TestComponent(
         val changeSettingsGradleStep = ChangeSettingsGradleStep()
         changeSettingsGradleStep.change(project, config)
 
+        val addToothpickAnnotationProcessorOptionStep = AddToothpickAnnotationProcessorOptionStep()
+        addToothpickAnnotationProcessorOptionStep.execute(config)
 
+        val addFeatureModuleIntoDependenciesStep = AddFeatureModuleIntoDependenciesStep()
+        addFeatureModuleIntoDependenciesStep.execute(config)
+
+        notificationsFactory.info("Success")
     }
 
 }

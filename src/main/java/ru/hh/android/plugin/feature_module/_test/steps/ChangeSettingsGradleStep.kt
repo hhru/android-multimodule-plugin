@@ -15,8 +15,7 @@ class ChangeSettingsGradleStep {
     fun change(project: Project, config: CreateModuleConfig) {
         val settingsGradlePsiFile = project.baseDir.toPsiDirectory(project)?.findFile("settings.gradle") ?: return
 
-        val projectPath = project.basePath
-        val modulePath = "$projectPath${config.mainParams.moduleType.typeRootFolder}/${config.mainParams.moduleName}".replaceMultipleSplashes()
+        val modulePath = "./${config.mainParams.moduleType.typeRootFolder}/${config.mainParams.moduleName}".replaceMultipleSplashes()
 
         val factory = GroovyPsiElementFactory.getInstance(settingsGradlePsiFile.project)
 

@@ -29,17 +29,6 @@
     <project-components>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.component.build_module.BuildModuleComponent
-            </implementation-class>
-        </component>
-
-        <component>
-            <implementation-class>
-                ru.hh.android.plugin.feature_module.component.templates_factory.TemplatesFactory
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>
                 ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsPresenter
             </implementation-class>
         </component>
@@ -67,23 +56,19 @@
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.component.logger.PluginLogger
-            </implementation-class>
-        </component>
-        <component>
             <implementation-class>ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigConverter
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>
-                ru.hh.android.plugin.feature_module.component.build_module.factory.BuildModuleTaskFactory
             </implementation-class>
         </component>
         <component>
             <implementation-class>ru.hh.android.plugin.feature_module._test.TestComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module._test.templates.NewTemplateFactory</implementation-class>
+            <implementation-class>ru.hh.android.plugin.feature_module._test.templates.NewTemplateFactory
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module.component.NotificationsFactory
+            </implementation-class>
         </component>
     </project-components>
 </idea-plugin>
