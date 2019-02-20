@@ -1,3 +1,3 @@
-package ${package_name}.repository
+package ${package_name}.domain.repository
 
 interface ${formatted_library_name}Repository

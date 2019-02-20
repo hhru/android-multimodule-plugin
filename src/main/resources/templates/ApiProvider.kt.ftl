@@ -1,6 +1,6 @@
-package ${package_name}.di
+package ${package_name}.di.provider
 
-import ${package_name}.${formatted_library_name}Api
+import ${package_name}.data.remote.api.${formatted_library_name}Api
 import ru.hh.network_auth_source.AuthZoneApiFactory
 import ru.hh.network_source.ServerUrl
 import javax.inject.Inject

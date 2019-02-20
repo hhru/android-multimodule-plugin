@@ -1,4 +1,4 @@
-package ${package_name}.di
+package ${package_name}.di.module
 
 <#if need_create_api_interface>
 import ${package_name}.${formatted_library_name}Api

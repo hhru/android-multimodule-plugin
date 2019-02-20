@@ -1,4 +1,4 @@
-package ${package_name}.interactor
+package ${package_name}.domain.interactor
 
 import javax.inject.Inject
 
