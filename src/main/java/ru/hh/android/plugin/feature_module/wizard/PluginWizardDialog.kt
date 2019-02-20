@@ -6,7 +6,7 @@ import java.awt.Dimension
 
 class PluginWizardDialog(
         model: PluginWizardModel,
-        private val goalAchievedListener: PluginWizardDialog.GoalAchievedListener
+        private val goalAchievedListener: (PluginWizardModel) -> Unit
 ) : WizardDialog<PluginWizardModel>(true, true, model) {
 
     companion object {
@@ -17,18 +17,11 @@ class PluginWizardDialog(
 
     override fun onWizardGoalAchieved() {
         super.onWizardGoalAchieved()
-        goalAchievedListener.onGoalAchieved(myModel)
+        goalAchievedListener.invoke(myModel)
     }
 
     override fun getPreferredSize(): Dimension {
         return JBUI.size(PREFERRED_DIALOG_WIDTH, PREFERRED_DIALOG_HEIGHT)
-    }
-
-
-    interface GoalAchievedListener {
-
-        fun onGoalAchieved(model: PluginWizardModel)
-
     }
 
 }
