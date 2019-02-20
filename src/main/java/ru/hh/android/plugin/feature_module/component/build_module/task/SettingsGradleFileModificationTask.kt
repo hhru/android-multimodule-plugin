@@ -28,7 +28,7 @@ class SettingsGradleFileModificationTask(
         }
 
         val factory = GroovyPsiElementFactory.getInstance(settingsGradlePsiFile.project)
-        val mainParamsHolder = config.mainParametersHolder
+        val mainParamsHolder = config.mainParams
 
         val baseModuleDirPath = mainParamsHolder.moduleType.typeRootFolder
         val folderPath = ".$baseModuleDirPath/${mainParamsHolder.moduleName}".replaceMultipleSplashes()

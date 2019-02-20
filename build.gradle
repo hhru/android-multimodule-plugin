@@ -35,7 +35,7 @@ intellij {
     version '2018.2.4'
     updateSinceUntilBuild false
     pluginName = 'AndroidFeatureModule'
-    plugins = ['Groovy', 'kotlin']
+    plugins = ['android', 'Groovy', 'kotlin']
 
     intellij.alternativeIdePath = '/Applications/Android Studio.app'
 }

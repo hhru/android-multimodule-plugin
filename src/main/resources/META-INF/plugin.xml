@@ -10,6 +10,7 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>org.intellij.groovy</depends>
+    <depends>org.jetbrains.android</depends>
 
     <idea-version since-build="163"/>
 
@@ -77,6 +78,12 @@
             <implementation-class>
                 ru.hh.android.plugin.feature_module.component.build_module.factory.BuildModuleTaskFactory
             </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module._test.TestComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugin.feature_module._test.NewTemplateFactory</implementation-class>
         </component>
     </project-components>
 </idea-plugin>

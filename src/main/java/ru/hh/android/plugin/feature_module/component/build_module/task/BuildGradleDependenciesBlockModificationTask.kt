@@ -49,7 +49,7 @@ class BuildGradleDependenciesBlockModificationTask(
 
         with(dependenciesClosableBlock) {
             val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
-            val moduleName = config.mainParametersHolder.moduleName
+            val moduleName = config.mainParams.moduleName
 
             addBefore(factory.createModuleDependencyExpression(moduleName), lastChild)
             addBefore(factory.createBreakLineElement(), lastChild)

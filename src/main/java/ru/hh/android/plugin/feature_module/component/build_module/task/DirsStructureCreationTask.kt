@@ -13,7 +13,7 @@ class DirsStructureCreationTask(
 ) : BuildModuleTask("Create dirs structure", project, logger) {
 
     override fun execute(config: CreateModuleConfig) {
-        val mainParamsHolder = config.mainParametersHolder
+        val mainParamsHolder = config.mainParams
         val rootModuleDirPath = project.getRootModulePath()
 
         val baseModulePath = mainParamsHolder.moduleType.typeRootFolder

@@ -54,7 +54,7 @@ class ToothpickAnnotationProcessingConfigModificationTask(
         }
 
         val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
-        val packageName = config.mainParametersHolder.packageName
+        val packageName = config.mainParams.packageName
 
         val newArgumentItem = factory.createStringLiteralForReference(packageName)
         toothpickRegistryChildrenPackageNamesListPsiElement.forEach { it.add(newArgumentItem) }

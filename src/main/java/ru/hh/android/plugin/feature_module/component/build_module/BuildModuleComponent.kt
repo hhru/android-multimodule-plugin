@@ -31,7 +31,7 @@ class BuildModuleComponent(
                 this += createTask(BUILD_GRADLE_DEPENDENCIES_BLOCK_MODIFICATION)
                 this += createTask(TOOTHPICK_ANNOTATION_PROCESSING_CONFIG_MODIFICATION)
 
-                if (config.mainParametersHolder.enableMoxy) {
+                if (config.mainParams.enableMoxy) {
                     this += createTask(MOXY_REFLECTOR_STUB_MODIFICATION)
                 }
             }

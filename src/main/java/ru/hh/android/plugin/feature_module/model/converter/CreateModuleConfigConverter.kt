@@ -38,7 +38,7 @@ class CreateModuleConfigConverter
         return object : TemplatesFactoryModel {
 
             override fun getTemplatesFilesList(): List<TemplateFileData> {
-                return with(item.mainParametersHolder) {
+                return with(item.mainParams) {
                     val basePath = "/${moduleType.typeRootFolder}/$moduleName"
                     val basePackageName = "src/main/java/$slashedPackageName"
 
@@ -107,7 +107,7 @@ class CreateModuleConfigConverter
             }
 
             override fun toFreeMarkerDataModel(): Map<String, Any> {
-                return with(item.mainParametersHolder) {
+                return with(item.mainParams) {
                     mapOf(
                             TOKEN_PACKAGE_NAME to packageName,
                             TOKEN_FORMATTED_LIBRARY_NAME to formattedLibraryName,

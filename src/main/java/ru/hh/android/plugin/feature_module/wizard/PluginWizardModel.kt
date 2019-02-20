@@ -30,11 +30,11 @@ class PluginWizardModel(
     }
 
     fun setMainParameters(mainParametersHolder: MainParametersHolder) {
-        createModuleConfig.mainParametersHolder = mainParametersHolder
+        createModuleConfig.mainParams = mainParametersHolder
     }
 
     fun getMainParameters(): MainParametersHolder? {
-        return createModuleConfig.mainParametersHolder
+        return createModuleConfig.mainParams
     }
 
     fun setSelectedLibraries(libraries: List<LibraryModuleDisplayableItem>) {

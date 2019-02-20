@@ -5,7 +5,7 @@ import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.model.Libr
 
 
 data class CreateModuleConfig(
-        var mainParametersHolder: MainParametersHolder,
+        var mainParams: MainParametersHolder,
         var libraries: List<LibraryModuleDisplayableItem>,
         var applications: List<AppModuleDisplayableItem>
 )

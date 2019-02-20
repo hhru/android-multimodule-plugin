@@ -45,7 +45,7 @@ class MoxyReflectorStubModificationTask(
                 ?.mapTo(mutableListOf()) { it.text }
 
         annotationValues?.let { notNullValues ->
-            val packageName = config.mainParametersHolder.packageName
+            val packageName = config.mainParams.packageName
 
             notNullValues += "\"$packageName\""
 
