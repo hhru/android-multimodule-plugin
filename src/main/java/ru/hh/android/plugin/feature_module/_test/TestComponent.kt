@@ -17,6 +17,12 @@ class TestComponent(
 ) : ProjectComponent {
 
     fun create(config: CreateModuleConfig) {
+        // This step should be first, because of indexing.
+        if (config.mainParams.enableMoxy) {
+            val addFeatureModuleIntoMoxyReflectorStubStep = AddFeatureModuleIntoMoxyReflectorStubStep()
+            addFeatureModuleIntoMoxyReflectorStubStep.execute(config)
+        }
+
         val featureModuleDirsStructureStep = FeatureModuleDirsStructureStep()
         val dirsMap = featureModuleDirsStructureStep.createDirsStructure(project, config)
 
