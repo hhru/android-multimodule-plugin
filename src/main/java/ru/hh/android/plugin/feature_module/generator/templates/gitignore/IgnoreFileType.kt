@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.templates.gitignore
+package ru.hh.android.plugin.feature_module.generator.templates.gitignore
 
 
 import com.intellij.lang.Language
@@ -10,19 +10,23 @@ class IgnoreFileType(language: Language) : LanguageFileType(language) {
 
     companion object {
         val INSTANCE = IgnoreFileType(IgnoreLanguage.INSTANCE)
+
+        private const val FILE_TYPE_NAME = "gitignore file"
+        private const val FILE_TYPE_DESCRIPTION = "gitignore files"
+        private const val FILE_TYPE_DEFAULT_EXTENSION = "gitignore"
     }
 
 
     override fun getName(): String {
-        return "ignore file"
+        return FILE_TYPE_NAME
     }
 
     override fun getDescription(): String {
-        return "gitignore files"
+        return FILE_TYPE_DESCRIPTION
     }
 
     override fun getDefaultExtension(): String {
-        return "gitignore"
+        return FILE_TYPE_DEFAULT_EXTENSION
     }
 
     override fun getIcon(): Icon? {

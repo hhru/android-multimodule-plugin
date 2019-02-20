@@ -1,25 +1,25 @@
-package ru.hh.android.plugin.feature_module._test.steps
+package ru.hh.android.plugin.feature_module.generator.steps
 
 import com.intellij.openapi.module.Module
-import com.intellij.psi.PsiLiteralExpression
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.kotlin.asJava.elements.KtLightAnnotationForSourceEntry
-import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
-import org.jetbrains.plugins.groovy.lang.psi.util.childrenOfType
 import ru.hh.android.plugin.feature_module.extensions.findClassesAnnotatedWith
 import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 
 
-class AddFeatureModuleIntoMoxyReflectorStubStep {
+class MoxyReflectorStubStep(
+        private val project: Project
+) {
 
     companion object {
         private const val SHORT_MOXY_ANNOTATION_NAME = "RegisterMoxyReflectorPackages"
         private const val FULL_QUALIFIED_MOXY_ANNOTATION_NAME = "com.arellomobile.mvp.RegisterMoxyReflectorPackages"
-        private const val ATTRIBUTE_VALUE_NAME = "value"
     }
 
 
@@ -27,25 +27,40 @@ class AddFeatureModuleIntoMoxyReflectorStubStep {
         config.applications.forEach { appModuleItem ->
             modifyMoxyReflectorStub(appModuleItem.gradleModule, config)
         }
+        return
     }
 
 
     private fun modifyMoxyReflectorStub(module: Module, config: CreateModuleConfig) {
         val annotatedPsiClass = module.findClassesAnnotatedWith(FULL_QUALIFIED_MOXY_ANNOTATION_NAME)?.first() ?: return
 
-        val factory = KtPsiFactory(module.project)
-
         val annotationPsiElement = (annotatedPsiClass.annotations.first() as KtLightAnnotationForSourceEntry).kotlinOrigin
-        val values = annotationPsiElement
+        val updatedValues = getUpdatedPackagesListFromValueAttribute(annotationPsiElement, config)
+
+        val annotationWithUpdatedAttributesPsiElement = createAnnotationWithUpdatedValues(updatedValues)
+        val replacedElement = annotationPsiElement.replace(annotationWithUpdatedAttributesPsiElement)
+
+        CodeStyleManager.getInstance(module.project).reformat(replacedElement)
+    }
+
+    private fun getUpdatedPackagesListFromValueAttribute(
+            annotationPsiElement: PsiElement,
+            config: CreateModuleConfig
+    ): List<String> {
+        return annotationPsiElement
                 .collectDescendantsOfType<KtValueArgumentList>().first()
                 .collectDescendantsOfType<KtValueArgument>()
                 .mapTo(mutableListOf()) { it.text }
-
-        values += "\"${config.mainParams.packageName}\""
-
-        val newAnnotation = factory.createAnnotationEntry("@$SHORT_MOXY_ANNOTATION_NAME(\n${values.joinToString(separator = ",\n")}\n)")
-        val replacedElement = annotationPsiElement.replace(newAnnotation)
-        CodeStyleManager.getInstance(module.project).reformat(replacedElement)
+                .apply { this += "\"${config.mainParams.packageName}\"" }
     }
+
+    private fun createAnnotationWithUpdatedValues(values: List<String>): PsiElement {
+        val psiElementsFactory = KtPsiFactory(project)
+
+        return psiElementsFactory.createAnnotationEntry(
+                "@$SHORT_MOXY_ANNOTATION_NAME(\n${values.joinToString(separator = ",\n")}\n)"
+        )
+    }
+
 
 }

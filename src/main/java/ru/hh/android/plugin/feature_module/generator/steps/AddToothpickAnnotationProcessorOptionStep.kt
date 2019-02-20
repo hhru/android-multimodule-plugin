@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.steps
+package ru.hh.android.plugin.feature_module.generator.steps
 
 import com.intellij.openapi.module.Module
 import com.intellij.psi.codeStyle.CodeStyleManager

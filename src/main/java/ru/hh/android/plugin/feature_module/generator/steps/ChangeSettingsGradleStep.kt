@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.steps
+package ru.hh.android.plugin.feature_module.generator.steps
 
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
@@ -12,10 +12,17 @@ import ru.hh.android.plugin.feature_module.model.enums.FeatureModuleType
 
 class ChangeSettingsGradleStep {
 
-    fun change(project: Project, config: CreateModuleConfig) {
-        val settingsGradlePsiFile = project.baseDir.toPsiDirectory(project)?.findFile("settings.gradle") ?: return
+    companion object {
+        private const val SETTINGS_GRADLE_FILE_NAME = "settings.gradle"
+    }
 
-        val modulePath = "./${config.mainParams.moduleType.typeRootFolder}/${config.mainParams.moduleName}".replaceMultipleSplashes()
+
+    fun execute(project: Project, config: CreateModuleConfig) {
+        val settingsGradlePsiFile = project.baseDir.toPsiDirectory(project)?.findFile(SETTINGS_GRADLE_FILE_NAME)
+                ?: return
+
+        val modulePath = "./${config.mainParams.moduleType.typeRootFolder}/${config.mainParams.moduleName}"
+                .replaceMultipleSplashes()
 
         val factory = GroovyPsiElementFactory.getInstance(settingsGradlePsiFile.project)
 

@@ -60,10 +60,10 @@
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module._test.TestComponent</implementation-class>
+            <implementation-class>ru.hh.android.plugin.feature_module.generator.FeatureModuleGenerator</implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module._test.templates.NewTemplateFactory
+            <implementation-class>ru.hh.android.plugin.feature_module.generator.templates.ModuleFilesFactory
             </implementation-class>
         </component>
         <component>

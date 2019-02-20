@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.templates
+package ru.hh.android.plugin.feature_module.generator.templates
 
 import com.intellij.openapi.components.ProjectComponent
 import com.intellij.openapi.project.Project
@@ -9,18 +9,16 @@ import freemarker.template.TemplateExceptionHandler
 import java.io.StringWriter
 
 
-class NewTemplateFactory(
-        private val project: Project
-) : ProjectComponent {
+class ModuleFilesFactory(private val project: Project) : ProjectComponent {
 
     companion object {
         private const val TEMPLATES_DIR_PATH = "/templates"
     }
 
 
-    private val config by lazy {
+    private val freeMarkerConfig by lazy {
         Configuration(Configuration.VERSION_2_3_28).apply {
-            setClassForTemplateLoading(NewTemplateFactory::class.java, TEMPLATES_DIR_PATH)
+            setClassForTemplateLoading(ModuleFilesFactory::class.java, TEMPLATES_DIR_PATH)
 
             defaultEncoding = Charsets.UTF_8.name()
             templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
@@ -30,16 +28,16 @@ class NewTemplateFactory(
     }
 
 
-    fun createFromTemplate(templateData: NewTemplateData, data: Map<String, Any>): PsiFile {
-        val template = config.getTemplate(templateData.templateName)
+    fun createFromTemplate(templateData: FileTemplateData, templateProperties: Map<String, Any>): PsiFile {
+        val template = freeMarkerConfig.getTemplate(templateData.templateFileName)
 
         val text = StringWriter().use { writer ->
-            template.process(data, writer)
-
+            template.process(templateProperties, writer)
             writer.buffer.toString()
         }
 
-        return PsiFileFactory.getInstance(project).createFileFromText(templateData.targetFileName, templateData.fileType, text)
+        return PsiFileFactory.getInstance(project)
+                .createFileFromText(templateData.outputFileName, templateData.outputFileType, text)
     }
 
 }

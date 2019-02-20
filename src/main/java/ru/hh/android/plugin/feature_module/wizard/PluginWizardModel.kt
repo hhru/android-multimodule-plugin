@@ -17,7 +17,11 @@ import ru.hh.android.plugin.feature_module.wizard.step.choose_modules.model.Libr
 
 class PluginWizardModel(
         private val project: Project,
-        private val createModuleConfig: CreateModuleConfig
+        private val createModuleConfig: CreateModuleConfig = CreateModuleConfig(
+                mainParams = MainParametersHolder(),
+                libraries = emptyList(),
+                applications = emptyList()
+        )
 ) : WizardModel("Model for feature module creation wizard.") {
 
     init {

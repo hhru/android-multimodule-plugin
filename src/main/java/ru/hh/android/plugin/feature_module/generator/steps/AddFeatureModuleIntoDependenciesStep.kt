@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.steps
+package ru.hh.android.plugin.feature_module.generator.steps
 
 import com.intellij.openapi.module.Module
 import com.intellij.psi.codeStyle.CodeStyleManager
@@ -8,6 +8,7 @@ import ru.hh.android.plugin.feature_module.extensions.createModuleDependencyExpr
 import ru.hh.android.plugin.feature_module.extensions.findPsiFileByName
 import ru.hh.android.plugin.feature_module.extensions.firstChildWithStartText
 import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
+
 
 class AddFeatureModuleIntoDependenciesStep {
 
