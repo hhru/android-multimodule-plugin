@@ -6,6 +6,7 @@ import ru.hh.android.plugin.feature_module.component.templates_factory.Templates
 import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigConverter
 
+@Deprecated("")
 class ModuleFilesCreationTask(
         project: Project,
         logger: PluginLogger,

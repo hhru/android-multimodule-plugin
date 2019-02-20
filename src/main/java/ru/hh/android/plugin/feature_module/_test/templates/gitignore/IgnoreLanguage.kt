@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.feature_module._test.gitignore
+package ru.hh.android.plugin.feature_module._test.templates.gitignore
 
 import com.intellij.lang.InjectableLanguage
 import com.intellij.lang.Language

@@ -12,7 +12,7 @@ enum class FeatureModuleType(
 
     FEATURE_MODULE(
             comboBoxText = "Feature module",
-            typeRootFolder = "/feature"
+            typeRootFolder = "/features"
     ),
 
     CORE_MODULE(

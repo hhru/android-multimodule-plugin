@@ -7,6 +7,7 @@ import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import java.io.File
 
 
+@Deprecated("")
 class DirsStructureCreationTask(
         project: Project,
         logger: PluginLogger

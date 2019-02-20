@@ -8,6 +8,7 @@ import ru.hh.android.plugin.feature_module.model.CreateModuleConfig
 import ru.hh.android.plugin.feature_module.model.enums.FeatureModuleType
 
 
+@Deprecated("")
 class SettingsGradleFileModificationTask(
         project: Project,
         logger: PluginLogger

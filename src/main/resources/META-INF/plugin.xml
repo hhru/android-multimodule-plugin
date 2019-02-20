@@ -83,7 +83,7 @@
             <implementation-class>ru.hh.android.plugin.feature_module._test.TestComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module._test.NewTemplateFactory</implementation-class>
+            <implementation-class>ru.hh.android.plugin.feature_module._test.templates.NewTemplateFactory</implementation-class>
         </component>
     </project-components>
 </idea-plugin>
