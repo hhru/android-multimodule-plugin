@@ -1,7 +1,7 @@
 package ${package_name}.di.module
 
 <#if need_create_api_interface>
-import ${package_name}.data.remote.api${formatted_library_name}Api
+import ${package_name}.data.remote.api.${formatted_library_name}Api
 import ${package_name}.di.provider.${formatted_library_name}ApiProvider
 </#if>
 <#if need_create_repository_with_interactor>
@@ -10,6 +10,9 @@ import ${package_name}.domain.repository.${formatted_library_name}Repository
 <#if need_create_interface_for_repository>
 import ${package_name}.domain.repository.${formatted_library_name}RepositoryImpl
 </#if>
+</#if>
+<#if need_create_presentation_layer>
+import ${package_name}.presentation.presenter.${formatted_library_name}Presenter
 </#if>
 import toothpick.config.Module
 

@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import ru.hh.android.base.ui.navigation.BaseBottomNavigationFragment
-import ru.hh.delegationadapter.DelegationAdapter
-import ru.hh.delegationadapter.DisplayableItem
-import ru.hh.feature_profile.R
+import ru.hh.${package_name}.R
 import ${package_name}.presentation.presenter.${formatted_library_name}Presenter
+import toothpick.Scope
 
 
 class ${formatted_library_name}Fragment : BaseBottomNavigationFragment(), ${formatted_library_name}View {
