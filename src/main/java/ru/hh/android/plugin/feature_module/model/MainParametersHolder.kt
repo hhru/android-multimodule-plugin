@@ -30,7 +30,11 @@ data class MainParametersHolder(
 
     val layoutName: String
         get() {
-            return formattedLibraryName.toLowerCase()
+            return moduleName
+                    .replaceWordsBreakers()
+                    .split(' ')
+                    .map { it.toLowerCase() }
+                    .joinToString(separator = "_")
         }
 
 }
