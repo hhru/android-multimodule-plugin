@@ -48,7 +48,8 @@ class MoxyReflectorStubStep(
             config: CreateModuleConfig
     ): List<String> {
         return annotationPsiElement
-                .collectDescendantsOfType<KtValueArgumentList>().first()
+                .collectDescendantsOfType<KtValueArgumentList>()
+                .first()
                 .collectDescendantsOfType<KtValueArgument>()
                 .mapTo(mutableListOf()) { it.text }
                 .apply { this += "\"${config.mainParams.packageName}\"" }
