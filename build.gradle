@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
 }
 
-group 'ru.hh.android.plugins'
-version '2.2'
+group 'ru.hh.android.plugin'
+version '2.3'
 
 sourceCompatibility = 1.8
 
@@ -33,7 +33,7 @@ compileTestKotlin {
 
 intellij {
     updateSinceUntilBuild false
-    pluginName = 'AndroidFeatureModule'
+    pluginName = 'HeadHunter Android plugin'
     plugins = ['android', 'Groovy', 'kotlin']
 
     intellij.alternativeIdePath = '/Applications/Android Studio.app'
@@ -41,22 +41,25 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-    2.2. Fix bug with repeating language ID.
+    2.3. Move files templates out of plugin 
+    + add settings page for choosing plugin configuration folder. </br>
 
-    2.1. Fixing several bugs.
+    2.2. Fix bug with repeating language ID. <br/>
 
-    2.0. Absolutly new version of plugin.
-    - Now generated files will be added into Git, if you want (you should see VCS dialog)
-    - Add normal notification about finishing of process
-    - Add several new templates (for presentation layer)
-    - Remove useless 'Library name' field from the first page
-    - Fix Moxy annotation changing !!!
-    - Fix several formatting issues
+    2.1. Fixing several bugs. <br/>
 
-    1.1. Fixing several bugs and refactoring. 
+    2.0. Absolutly new version of plugin.<br/>
+    - Now generated files will be added into Git, if you want (you should see VCS dialog)<br/>
+    - Add normal notification about finishing of process<br/>
+    - Add several new templates (for presentation layer)<br/>
+    - Remove useless 'Library name' field from the first page<br/>
+    - Fix Moxy annotation changing !!!<br/>
+    - Fix several formatting issues<br/>
 
-    1.0. Initial release<br>
-    First release of our plugin. 
+    1.1. Fixing several bugs and refactoring. <br/>
+
+    1.0. Initial release <br/>
+    First release of our plugin.<br/> 
     Plugin add new cool feature into Android development -> creating of new feature module.
     """
 }

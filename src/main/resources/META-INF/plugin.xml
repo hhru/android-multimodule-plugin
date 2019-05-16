@@ -1,7 +1,11 @@
 <idea-plugin>
-    <id>ru.hh.android.plugins.android_feature_module</id>
-    <name>Android feature module creation plugin</name>
-    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">HeadHunter</vendor>
+    <id>ru.hh.android.plugin</id>
+    <name>HeadHunter Android</name>
+    <vendor
+            email="p.strelchenko@hh.ru"
+            url="https://github.com/hhru/android-multimodule-plugin">
+        HeadHunter
+    </vendor>
 
     <description><![CDATA[
     Enable new option - create feature module in Android application
