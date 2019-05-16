@@ -18,8 +18,8 @@
         <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
             <separator/>
 
-            <action id="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
-                    class="ru.hh.android.plugin.feature_module.action.OpenFeatureModuleWizardAction"
+            <action id="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
+                    class="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
                     text="New feature module..." description="Open feature module creation wizard">
                 <add-to-group group-id="NewGroup" anchor="last"/>
             </action>
@@ -29,46 +29,46 @@
     <project-components>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_applications.ChooseApplicationsPresenter
+                ru.hh.android.plugin.wizard.step.choose_applications.ChooseApplicationsPresenter
             </implementation-class>
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_main_parameters.ChooseMainParametersPresenter
+                ru.hh.android.plugin.wizard.step.choose_main_parameters.ChooseMainParametersPresenter
             </implementation-class>
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.wizard.step.choose_modules.ChooseModulesPresenter
+                ru.hh.android.plugin.wizard.step.choose_modules.ChooseModulesPresenter
             </implementation-class>
         </component>
         <component>
             <implementation-class>
-                ru.hh.android.plugin.feature_module.component.main_parameters.MainParametersInteractor
+                ru.hh.android.plugin.component.main_parameters.MainParametersInteractor
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleInteractor
+            <implementation-class>ru.hh.android.plugin.component.module.ModuleInteractor
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.component.module.ModuleRepository
+            <implementation-class>ru.hh.android.plugin.component.module.ModuleRepository
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.model.converter.CreateModuleConfigConverter
+            <implementation-class>ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.generator.FeatureModuleGenerator
+            <implementation-class>ru.hh.android.plugin.generator.FeatureModuleGenerator
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.generator.templates.ModuleFilesFactory
+            <implementation-class>ru.hh.android.plugin.generator.templates.ModuleFilesFactory
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.feature_module.component.NotificationsFactory
+            <implementation-class>ru.hh.android.plugin.component.NotificationsFactory
             </implementation-class>
         </component>
     </project-components>
@@ -79,10 +79,10 @@
                 id="ru.hh.android.plugin.config.PluginConfigConfigurable"
                 groupId="appearance"
                 displayName="HeadHunter plugin"
-                instance="ru.hh.android.plugin.feature_module.config.PluginConfigConfigurable"/>
+                instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
         <projectService
-                serviceInterface="ru.hh.android.plugin.feature_module.config.PluginConfig"
-                serviceImplementation="ru.hh.android.plugin.feature_module.config.PluginConfig"/>
+                serviceInterface="ru.hh.android.plugin.config.PluginConfig"
+                serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
     </extensions>
 
 
