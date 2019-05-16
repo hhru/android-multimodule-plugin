@@ -11,7 +11,6 @@ import ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
 
 class FeatureModuleGenerator(
         private val project: Project,
-        private val moduleFilesFactory: ModuleFilesFactory,
         private val notificationsFactory: NotificationsFactory,
         private val createModuleConfigConverter: CreateModuleConfigConverter
 ) : ProjectComponent {
@@ -31,6 +30,7 @@ class FeatureModuleGenerator(
         val featureModuleDirsStructureStep = FeatureModuleDirsStructureStep(project)
         val dirsMap = featureModuleDirsStructureStep.execute(config)
 
+        val moduleFilesFactory = ModuleFilesFactory(project)
         val generateFeatureModuleFilesStep = GenerateFeatureModuleFilesStep(createModuleConfigConverter, moduleFilesFactory)
         generateFeatureModuleFilesStep.execute(config, dirsMap)
 

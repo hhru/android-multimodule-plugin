@@ -1,24 +1,33 @@
 package ru.hh.android.plugin.generator.templates
 
-import com.intellij.openapi.components.ProjectComponent
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
+import ru.hh.android.plugin.config.PluginConfig
+import java.io.File
 import java.io.StringWriter
 
 
-class ModuleFilesFactory(private val project: Project) : ProjectComponent {
+class ModuleFilesFactory(private val project: Project) {
 
     companion object {
         private const val TEMPLATES_DIR_PATH = "/templates"
     }
 
+    private val pluginConfig by lazy {
+        PluginConfig.getInstance(project)
+    }
+
+    private val psiFileFactory by lazy {
+        PsiFileFactory.getInstance(project)
+    }
 
     private val freeMarkerConfig by lazy {
         Configuration(Configuration.VERSION_2_3_28).apply {
-            setClassForTemplateLoading(ModuleFilesFactory::class.java, TEMPLATES_DIR_PATH)
+            val templatesDir = File("${pluginConfig.pathToPluginFolder}/$TEMPLATES_DIR_PATH")
+            setDirectoryForTemplateLoading(templatesDir)
 
             defaultEncoding = Charsets.UTF_8.name()
             templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
@@ -36,8 +45,7 @@ class ModuleFilesFactory(private val project: Project) : ProjectComponent {
             writer.buffer.toString()
         }
 
-        return PsiFileFactory.getInstance(project)
-                .createFileFromText(templateData.outputFileName, templateData.outputFileType, text)
+        return psiFileFactory.createFileFromText(templateData.outputFileName, templateData.outputFileType, text)
     }
 
 }

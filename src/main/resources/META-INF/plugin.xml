@@ -64,10 +64,6 @@
             </implementation-class>
         </component>
         <component>
-            <implementation-class>ru.hh.android.plugin.generator.templates.ModuleFilesFactory
-            </implementation-class>
-        </component>
-        <component>
             <implementation-class>ru.hh.android.plugin.component.NotificationsFactory
             </implementation-class>
         </component>
