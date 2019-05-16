@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
+import ru.hh.android.plugin.extensions.findAnnotationWithName
 import ru.hh.android.plugin.extensions.findClassesAnnotatedWith
 import ru.hh.android.plugin.model.CreateModuleConfig
 
@@ -33,12 +34,13 @@ class MoxyReflectorStubStep(
 
     private fun modifyMoxyReflectorStub(module: Module, config: CreateModuleConfig) {
         val annotatedPsiClass = module.findClassesAnnotatedWith(FULL_QUALIFIED_MOXY_ANNOTATION_NAME)?.first() ?: return
+        val moxyAnnotation = annotatedPsiClass.findAnnotationWithName(SHORT_MOXY_ANNOTATION_NAME) ?: return
 
-        val annotationPsiElement = (annotatedPsiClass.annotations.first() as KtLightAnnotationForSourceEntry).kotlinOrigin
-        val updatedValues = getUpdatedPackagesListFromValueAttribute(annotationPsiElement, config)
+        val kotlinAnnotationPsiElement = (moxyAnnotation as KtLightAnnotationForSourceEntry).kotlinOrigin
+        val updatedValues = getUpdatedPackagesListFromValueAttribute(kotlinAnnotationPsiElement, config)
 
         val annotationWithUpdatedAttributesPsiElement = createAnnotationWithUpdatedValues(updatedValues)
-        val replacedElement = annotationPsiElement.replace(annotationWithUpdatedAttributesPsiElement)
+        val replacedElement = kotlinAnnotationPsiElement.replace(annotationWithUpdatedAttributesPsiElement)
 
         CodeStyleManager.getInstance(module.project).reformat(replacedElement)
     }
