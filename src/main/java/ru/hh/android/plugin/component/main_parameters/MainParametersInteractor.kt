@@ -11,7 +11,6 @@ class MainParametersInteractor : ProjectComponent {
     ): Set<String> {
         return mainParametersHolder?.let { parameters ->
             mutableSetOf<String>().apply {
-                this += "common"
                 this += "logger"
                 this += "analytics"
                 this += "core-utils"
