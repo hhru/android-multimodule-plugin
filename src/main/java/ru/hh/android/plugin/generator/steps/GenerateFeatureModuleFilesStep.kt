@@ -95,33 +95,33 @@ class GenerateFeatureModuleFilesStep(
                             outputFilePsiDirectory = params[KEY_DOMAIN_REPOSITORY_FOLDER]
                     )
                 }
+            }
 
-                if (config.mainParams.needCreatePresentationLayer) {
-                    this += FileTemplateData(
-                            templateFileName = "ModuleFragment.kt.ftl",
-                            outputFileName = "${config.mainParams.formattedLibraryName}Fragment.kt",
-                            outputFileType = KotlinFileType.INSTANCE,
-                            outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
-                    )
-                    this += FileTemplateData(
-                            templateFileName = "ModuleView.kt.ftl",
-                            outputFileName = "${config.mainParams.formattedLibraryName}View.kt",
-                            outputFileType = KotlinFileType.INSTANCE,
-                            outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
-                    )
-                    this += FileTemplateData(
-                            templateFileName = "ModulePresenter.kt.ftl",
-                            outputFileName = "${config.mainParams.formattedLibraryName}Presenter.kt",
-                            outputFileType = KotlinFileType.INSTANCE,
-                            outputFilePsiDirectory = params[KEY_PRESENTATION_PRESENTER_FOLDER]
-                    )
-                    this += FileTemplateData(
-                            templateFileName = "fragment_module.xml.ftl",
-                            outputFileName = "fragment_${config.mainParams.layoutName}.xml",
-                            outputFileType = XmlFileType.INSTANCE,
-                            outputFilePsiDirectory = params[KEY_RESOURCES_LAYOUT_FOLDER]
-                    )
-                }
+            if (config.mainParams.needCreatePresentationLayer) {
+                this += FileTemplateData(
+                        templateFileName = "ModuleFragment.kt.ftl",
+                        outputFileName = "${config.mainParams.formattedLibraryName}Fragment.kt",
+                        outputFileType = KotlinFileType.INSTANCE,
+                        outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
+                )
+                this += FileTemplateData(
+                        templateFileName = "ModuleView.kt.ftl",
+                        outputFileName = "${config.mainParams.formattedLibraryName}View.kt",
+                        outputFileType = KotlinFileType.INSTANCE,
+                        outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
+                )
+                this += FileTemplateData(
+                        templateFileName = "ModulePresenter.kt.ftl",
+                        outputFileName = "${config.mainParams.formattedLibraryName}Presenter.kt",
+                        outputFileType = KotlinFileType.INSTANCE,
+                        outputFilePsiDirectory = params[KEY_PRESENTATION_PRESENTER_FOLDER]
+                )
+                this += FileTemplateData(
+                        templateFileName = "fragment_module.xml.ftl",
+                        outputFileName = "fragment_${config.mainParams.layoutName}.xml",
+                        outputFileType = XmlFileType.INSTANCE,
+                        outputFilePsiDirectory = params[KEY_RESOURCES_LAYOUT_FOLDER]
+                )
             }
         }
 
