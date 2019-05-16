@@ -32,7 +32,6 @@ compileTestKotlin {
 }
 
 intellij {
-    version '2018.2.4'
     updateSinceUntilBuild false
     pluginName = 'AndroidFeatureModule'
     plugins = ['android', 'Groovy', 'kotlin']

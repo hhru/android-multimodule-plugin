@@ -72,4 +72,18 @@
             </implementation-class>
         </component>
     </project-components>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable
+                id="ru.hh.android.plugin.config.PluginConfigConfigurable"
+                groupId="appearance"
+                displayName="HeadHunter plugin"
+                instance="ru.hh.android.plugin.feature_module.config.PluginConfigConfigurable"/>
+        <projectService
+                serviceInterface="ru.hh.android.plugin.feature_module.config.PluginConfig"
+                serviceImplementation="ru.hh.android.plugin.feature_module.config.PluginConfig"/>
+    </extensions>
+
+
 </idea-plugin>
