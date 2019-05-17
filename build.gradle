@@ -41,8 +41,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-    2.3. Move files templates out of plugin 
-    + add settings page for choosing plugin configuration folder. </br>
+    2.3. New features: </br>
+    - Add settings page for choosing plugin configuration folder. </br>
+         Fixes: </br>
+    - Remove 'common' module from required modules
+    - Fix code style problem with adding new package into toothpick_registry_children_package_names
+    - fix RegisterMoxyReflectorPackages annotation modification 
 
     2.2. Fix bug with repeating language ID. <br/>
 
