@@ -1,6 +1,7 @@
 package ru.hh.android.plugin.generator.steps
 
 import com.intellij.openapi.module.Module
+import com.intellij.psi.PsiElement
 import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
@@ -32,22 +33,30 @@ class AddToothpickAnnotationProcessorOptionStep {
     private fun modifyAnnotationProcessorOptions(module: Module, config: CreateModuleConfig) {
         val buildGradlePsiFile = module.findPsiFileByName(BUILD_GRADLE_FILE_NAME) ?: return
 
-        val toothpickRegistryChildrenPackageNamesListPsiElement = buildGradlePsiFile.originalFile
+        val toothpickRegistryPsiElement = buildGradlePsiFile.originalFile
                 .collectDescendantsOfType<GrAssignmentExpression>()
                 .firstOrNull { it.text.startsWith(ARGUMENTS_ASSIGNMENT_NAME) }
                 ?.lastChild
                 ?.firstChildWithStartText(TOOTHPICK_REGISTRY_CHILDREN_PACKAGE_NAMES_OPTION_ITEM_NAME)
                 ?.collectDescendantsOfType<GrListOrMap>()
+                ?.first()
                 ?: return
 
+        val modifiedText = createModifiedPsiElementText(toothpickRegistryPsiElement, config.mainParams.packageName)
         val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
-        val packageName = config.mainParams.packageName
+        val modifiedToothpickPsiElement = factory.createStatementFromText(modifiedText)
+        val replacedElement = toothpickRegistryPsiElement.replace(modifiedToothpickPsiElement)
+        CodeStyleManager.getInstance(module.project).reformat(replacedElement)
+    }
 
-        val newArgumentItem = factory.createStringLiteralForReference(packageName)
-        toothpickRegistryChildrenPackageNamesListPsiElement.forEach { psiElement ->
-            psiElement.add(newArgumentItem)
-            CodeStyleManager.getInstance(module.project).reformat(psiElement)
-        }
+    private fun createModifiedPsiElementText(toothpickRegistryPsiElement: PsiElement, packageName: String): String {
+        val items = toothpickRegistryPsiElement.children
+        val originalText = toothpickRegistryPsiElement.text
+        val lastChildText = items.last().text
+        val lastChildTextEndIndex = originalText.indexOf(lastChildText) + lastChildText.length
+
+        return originalText.substring(0, lastChildTextEndIndex) +
+                ",\n'$packageName'\n]"
     }
 
 }
