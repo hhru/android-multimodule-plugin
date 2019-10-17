@@ -19,3 +19,10 @@ object Libs {
     const val moxy = "com.arello-mobile:moxy:${Versions.moxyVersion}"
 
 }
+
+object Plugins {
+
+    const val intellij = "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:${Versions.intellijPluginVersion}"
+    const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlinVersion}"
+
+}
