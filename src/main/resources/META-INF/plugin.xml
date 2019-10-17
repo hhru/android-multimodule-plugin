@@ -12,6 +12,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    3.0. Bug fixing: </br>
+    - Fix crash on start action </br>
+    - Remove old MoxyReflectorStub support </br>
+    - Add flag for supporting Toothpick 3.0 </br>
+    </br>
+
     2.3. New features: </br>
     - Add settings page for choosing plugin configuration folder. </br>
          Fixes: </br>
