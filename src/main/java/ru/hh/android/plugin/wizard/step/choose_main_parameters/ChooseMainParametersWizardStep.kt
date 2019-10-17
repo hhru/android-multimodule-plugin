@@ -4,8 +4,8 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.DialogBuilder
 import com.intellij.ui.EnumComboBoxModel
 import com.intellij.ui.wizard.WizardStep
-import org.jetbrains.kotlin.idea.util.onTextChange
 import ru.hh.android.plugin.core.BaseWizardStep
+import ru.hh.android.plugin.extensions.onTextChange
 import ru.hh.android.plugin.model.MainParametersHolder
 import ru.hh.android.plugin.model.enums.FeatureModuleType
 import ru.hh.android.plugin.wizard.PluginWizardModel

@@ -1,41 +1,57 @@
-plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.3.11'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+        gradlePluginPortal()
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+
+    dependencies {
+        classpath Plugins.kotlin
+        classpath Plugins.intellij
+    }
 }
+
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+    }
+
+    if (plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'org.jetbrains.kotlin.jvm'
 
 group 'ru.hh.android.plugin'
 version '2.3'
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-    jcenter()
-}
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41"
-    compile 'org.freemarker:freemarker:2.3.28'
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.arello-mobile:moxy:1.5.5'
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile Libs.kotlinStdlib
+    compile Libs.freeMarker
+    compile Libs.commonsIO
+    compile Libs.moxy
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
 
 intellij {
-    version '191.7479.19'
+    version 'IC-2019.1.4'
     updateSinceUntilBuild false
-    pluginName = 'HeadHunter Android plugin'
-    plugins = ['android', 'Groovy', 'kotlin']
+    plugins = [
+            "org.jetbrains.kotlin:1.3.50-release-Studio3.5-1",
+            "android",
+            "Groovy",
+            "kotlin"
+    ]
 
     intellij.alternativeIdePath = '/Applications/Android Studio.app'
 }

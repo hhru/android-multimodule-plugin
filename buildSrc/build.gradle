@@ -1,0 +1,23 @@
+buildscript {
+    ext.kotlinVersion = gradle.rootProject.properties["kotlin.version"] as String
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id "java-gradle-plugin"
+    id "org.jetbrains.kotlin.jvm"
+}
+
+repositories {
+    google()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+}
