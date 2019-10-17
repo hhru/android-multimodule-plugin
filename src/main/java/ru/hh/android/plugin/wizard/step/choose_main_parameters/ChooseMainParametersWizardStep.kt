@@ -30,6 +30,7 @@ class ChooseMainParametersWizardStep(
     private lateinit var createRepositoryWithInteractorCheckBox: JCheckBox
     private lateinit var createInterfaceForRepositoryCheckBox: JCheckBox
     private lateinit var createPresentationLayer: JCheckBox
+    private lateinit var useToothpick3SupportCheckBox: JCheckBox
 
 
     override fun onCreate() {
@@ -89,7 +90,8 @@ class ChooseMainParametersWizardStep(
                 needCreateAPIInterface = createAPIInterfaceCheckBox.isSelected,
                 needCreateRepositoryWithInteractor = createRepositoryWithInteractorCheckBox.isSelected,
                 needCreateInterfaceForRepository = createInterfaceForRepositoryCheckBox.isSelected,
-                needCreatePresentationLayer = createPresentationLayer.isSelected
+                needCreatePresentationLayer = createPresentationLayer.isSelected,
+                useToothpick3Support = useToothpick3SupportCheckBox.isSelected
         )
     }
 
