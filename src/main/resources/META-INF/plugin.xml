@@ -51,7 +51,7 @@
 
             <action id="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
                     class="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
-                    text="New feature module..." description="Open feature module creation wizard">
+                    text="New Feature Module..." description="Open feature module creation wizard">
                 <add-to-group group-id="NewGroup" anchor="last"/>
             </action>
         </group>
