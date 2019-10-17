@@ -13,7 +13,8 @@ data class MainParametersHolder(
         val needCreateAPIInterface: Boolean = false,
         val needCreateRepositoryWithInteractor: Boolean = false,
         val needCreateInterfaceForRepository: Boolean = false,
-        val needCreatePresentationLayer: Boolean = false
+        val needCreatePresentationLayer: Boolean = false,
+        val useToothpick3Support: Boolean = false
 ) {
 
     val formattedLibraryName: String
@@ -33,8 +34,7 @@ data class MainParametersHolder(
             return moduleName
                     .replaceWordsBreakers()
                     .split(' ')
-                    .map { it.toLowerCase() }
-                    .joinToString(separator = "_")
+                    .joinToString(separator = "_") { it.toLowerCase() }
         }
 
 }

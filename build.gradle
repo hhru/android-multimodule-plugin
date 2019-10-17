@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -26,13 +28,19 @@ allprojects {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    tasks.withType(KotlinCompile) {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
 }
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
 group 'ru.hh.android.plugin'
-version '2.3'
+version '3.0'
 
 
 dependencies {
@@ -53,33 +61,4 @@ intellij {
     ]
 
     intellij.alternativeIdePath = '/Applications/Android Studio.app'
-}
-
-patchPluginXml {
-    changeNotes """
-    2.3. New features: </br>
-    - Add settings page for choosing plugin configuration folder. </br>
-         Fixes: </br>
-    - Remove 'common' module from required modules
-    - Fix code style problem with adding new package into toothpick_registry_children_package_names
-    - fix RegisterMoxyReflectorPackages annotation modification 
-
-    2.2. Fix bug with repeating language ID. <br/>
-
-    2.1. Fixing several bugs. <br/>
-
-    2.0. Absolutly new version of plugin.<br/>
-    - Now generated files will be added into Git, if you want (you should see VCS dialog)<br/>
-    - Add normal notification about finishing of process<br/>
-    - Add several new templates (for presentation layer)<br/>
-    - Remove useless 'Library name' field from the first page<br/>
-    - Fix Moxy annotation changing !!!<br/>
-    - Fix several formatting issues<br/>
-
-    1.1. Fixing several bugs and refactoring. <br/>
-
-    1.0. Initial release <br/>
-    First release of our plugin.<br/> 
-    Plugin add new cool feature into Android development -> creating of new feature module.
-    """
 }

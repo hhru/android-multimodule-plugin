@@ -31,8 +31,10 @@ class FeatureModuleGenerator(
         val changeSettingsGradleStep = ChangeSettingsGradleStep()
         changeSettingsGradleStep.execute(project, config)
 
-        val addToothpickAnnotationProcessorOptionStep = AddToothpickAnnotationProcessorOptionStep()
-        addToothpickAnnotationProcessorOptionStep.execute(config)
+        if (config.mainParams.useToothpick3Support.not()) {
+            val addToothpickAnnotationProcessorOptionStep = AddToothpickAnnotationProcessorOptionStep()
+            addToothpickAnnotationProcessorOptionStep.execute(config)
+        }
 
         val addFeatureModuleIntoDependenciesStep = AddFeatureModuleIntoDependenciesStep()
         addFeatureModuleIntoDependenciesStep.execute(config)

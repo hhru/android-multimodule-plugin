@@ -22,6 +22,7 @@ class CreateModuleConfigConverter
         private const val TOKEN_LIBRARIES_MODULES = "libraries_modules"
         private const val TOKEN_NEED_CREATE_PRESENTATION_LAYER = "need_create_presentation_layer"
         private const val TOKEN_LAYOUT_NAME = "layout_name"
+        private const val TOKEN_USE_TOOTHPICK_3_SUPPORT = "use_toothpick_3_support"
     }
 
 
@@ -44,7 +45,8 @@ class CreateModuleConfigConverter
                             TOKEN_NEED_CREATE_INTERFACE_FOR_REPOSITORY to needCreateInterfaceForRepository,
                             TOKEN_LIBRARIES_MODULES to item.libraries.map { it.text },
                             TOKEN_NEED_CREATE_PRESENTATION_LAYER to needCreatePresentationLayer,
-                            TOKEN_LAYOUT_NAME to layoutName
+                            TOKEN_LAYOUT_NAME to layoutName,
+                            TOKEN_USE_TOOTHPICK_3_SUPPORT to useToothpick3Support
                     )
                 }
             }
