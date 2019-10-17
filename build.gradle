@@ -39,7 +39,6 @@ dependencies {
     compile Libs.kotlinStdlib
     compile Libs.freeMarker
     compile Libs.commonsIO
-    compile Libs.moxy
 }
 
 

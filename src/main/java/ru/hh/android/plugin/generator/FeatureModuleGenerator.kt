@@ -21,12 +21,6 @@ class FeatureModuleGenerator(
 
 
     fun create(config: CreateModuleConfig) {
-        // This step should be first, because of indexing.
-        if (config.mainParams.enableMoxy) {
-            val addFeatureModuleIntoMoxyReflectorStubStep = MoxyReflectorStubStep(project)
-            addFeatureModuleIntoMoxyReflectorStubStep.execute(config)
-        }
-
         val featureModuleDirsStructureStep = FeatureModuleDirsStructureStep(project)
         val dirsMap = featureModuleDirsStructureStep.execute(config)
 
