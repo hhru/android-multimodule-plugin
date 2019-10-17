@@ -35,7 +35,12 @@ class ModuleFilesFactory(private val project: Project) {
 
 
     fun createFromTemplate(templateData: FileTemplateData, templateProperties: Map<String, Any>): PsiFile {
-        val template = freeMarkerConfig.getTemplate(templateData.templateFileName)
+        val template = try {
+            freeMarkerConfig.getTemplate(templateData.templateFileName)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            throw UnsupportedOperationException()
+        }
 
         val text = StringWriter().use { writer ->
             template.process(templateProperties, writer)
