@@ -11,6 +11,33 @@
     Enable new option - create feature module in Android application
     ]]></description>
 
+    <change-notes><![CDATA[
+    2.3. New features: </br>
+    - Add settings page for choosing plugin configuration folder. </br>
+         Fixes: </br>
+    - Remove 'common' module from required modules
+    - Fix code style problem with adding new package into toothpick_registry_children_package_names
+    - fix RegisterMoxyReflectorPackages annotation modification
+
+    2.2. Fix bug with repeating language ID. <br/>
+
+    2.1. Fixing several bugs. <br/>
+
+    2.0. Absolutly new version of plugin.<br/>
+    - Now generated files will be added into Git, if you want (you should see VCS dialog)<br/>
+    - Add normal notification about finishing of process<br/>
+    - Add several new templates (for presentation layer)<br/>
+    - Remove useless 'Library name' field from the first page<br/>
+    - Fix Moxy annotation changing !!!<br/>
+    - Fix several formatting issues<br/>
+
+    1.1. Fixing several bugs and refactoring. <br/>
+
+    1.0. Initial release <br/>
+    First release of our plugin.<br/>
+    Plugin add new cool feature into Android development -> creating of new feature module.
+    ]]></change-notes>
+
     <depends>com.intellij.modules.lang</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>org.intellij.groovy</depends>
