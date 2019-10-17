@@ -18,7 +18,7 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     companion object {
         fun getInstance(project: Project): PluginConfig {
             return ServiceManager.getService(project, PluginConfig::class.java).apply {
-                if (pathToPluginFolder.isBlank()) {
+                if (project.isDefault.not() && pathToPluginFolder.isBlank()) {
                     val projectPath = project.guessProjectDir()!!.toIoFile().absolutePath
                     pathToPluginFolder = "$projectPath/${PluginConstants.DEFAULT_PLUGIN_CONFIG_FOLDER_NAME}"
                 }
