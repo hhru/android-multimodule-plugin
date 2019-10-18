@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder
 class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxListViewItem {
 
     companion object {
-        private const val PADDING_VALUE = 10
+        const val PADDING_VALUE = 10
     }
 
     private val itemCheckBox = JCheckBox().apply {
