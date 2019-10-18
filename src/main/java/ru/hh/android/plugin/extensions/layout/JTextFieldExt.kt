@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.extensions
+package ru.hh.android.plugin.extensions.layout
 
 import com.intellij.ui.DocumentAdapter
 import javax.swing.JTextField

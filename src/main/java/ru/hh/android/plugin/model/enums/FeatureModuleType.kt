@@ -3,7 +3,7 @@ package ru.hh.android.plugin.model.enums
 
 enum class FeatureModuleType(
         val typeRootFolder: String,
-        private val comboBoxText: String
+        val comboBoxText: String
 ) {
 
     STANDALONE(

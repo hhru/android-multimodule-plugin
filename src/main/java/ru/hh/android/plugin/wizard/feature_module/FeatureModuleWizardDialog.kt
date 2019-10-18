@@ -1,14 +1,14 @@
-package ru.hh.android.plugin.wizard
+package ru.hh.android.plugin.wizard.feature_module
 
+import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardDialog
 import com.intellij.util.ui.JBUI
 import java.awt.Dimension
 
-
-class PluginWizardDialog(
-        model: PluginWizardModel,
-        private val goalAchievedListener: (PluginWizardModel) -> Unit
-) : WizardDialog<PluginWizardModel>(true, true, model) {
+class FeatureModuleWizardDialog(
+        project: Project,
+        private val onGoalAchieved: (FeatureModuleWizardModel) -> Unit
+) : WizardDialog<FeatureModuleWizardModel>(project, true, FeatureModuleWizardModel(project)) {
 
     companion object {
         private const val PREFERRED_DIALOG_WIDTH = 800
@@ -18,7 +18,7 @@ class PluginWizardDialog(
 
     override fun onWizardGoalAchieved() {
         super.onWizardGoalAchieved()
-        goalAchievedListener.invoke(myModel)
+        onGoalAchieved.invoke(myModel)
     }
 
     override fun getPreferredSize(): Dimension {
