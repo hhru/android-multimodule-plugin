@@ -6,11 +6,18 @@ import java.awt.Component
 import javax.swing.JCheckBox
 import javax.swing.JList
 import javax.swing.ListCellRenderer
+import javax.swing.border.EmptyBorder
 
 
 class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxListViewItem {
 
-    private val itemCheckBox = JCheckBox()
+    companion object {
+        private const val PADDING_VALUE = 10
+    }
+
+    private val itemCheckBox = JCheckBox().apply {
+        border = EmptyBorder(PADDING_VALUE, PADDING_VALUE, PADDING_VALUE, PADDING_VALUE)
+    }
 
 
     override fun getListCellRendererComponent(
