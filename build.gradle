@@ -49,6 +49,8 @@ dependencies {
     compile Libs.commonsIO
 }
 
+//def isBambooBuild = System.getenv("bamboo_planRepository_revision") != null
+//println("IS BAMBOO BUILD: $isBambooBuild")
 
 intellij {
     version 'IC-2019.1.4'
@@ -59,6 +61,7 @@ intellij {
             "Groovy",
             "kotlin"
     ]
+    downloadSources false
 
     intellij.alternativeIdePath = '/Applications/Android Studio.app'
 }
