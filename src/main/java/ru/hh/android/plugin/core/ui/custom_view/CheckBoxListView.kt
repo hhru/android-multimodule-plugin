@@ -69,6 +69,10 @@ class CheckBoxListView<T>(
 
     private fun toggleSelection() {
         for (selectedItem in selectedValuesList) {
+            if (selectedItem.isForceEnabled) {
+                continue
+            }
+            selectedItem.isChecked = !selectedItem.isChecked
             onItemToggleChangedListener?.invoke(selectedItem)
         }
 
