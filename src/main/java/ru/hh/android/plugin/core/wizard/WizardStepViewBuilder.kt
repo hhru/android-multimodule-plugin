@@ -9,4 +9,6 @@ interface WizardStepViewBuilder {
 
     fun build(): JComponent
 
+    fun collectFormState(): WizardStepFormState
+
 }

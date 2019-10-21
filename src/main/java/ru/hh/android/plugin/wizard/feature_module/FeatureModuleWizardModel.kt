@@ -20,7 +20,7 @@ class FeatureModuleWizardModel(
     init {
         val moduleInteractor = project.getComponent(ModuleRepository::class.java)
 
-        add(FeatureModuleParamsWizardStep())
+        add(FeatureModuleParamsWizardStep(project, this))
         add(ChooseModulesWizardStep(this, moduleInteractor))
         add(ChooseAppModulesWizardStep(this, moduleInteractor))
     }

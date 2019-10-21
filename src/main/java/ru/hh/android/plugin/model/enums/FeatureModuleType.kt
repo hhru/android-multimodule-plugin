@@ -1,29 +1,31 @@
 package ru.hh.android.plugin.model.enums
 
+import ru.hh.android.plugin.extensions.EMPTY
+
 
 enum class FeatureModuleType(
-        val typeRootFolder: String,
-        val comboBoxText: String
+        val radioButtonText: String,
+        val folderPrefix: String
 ) {
 
     STANDALONE(
-            comboBoxText = "Standalone",
-            typeRootFolder = "/"
+            radioButtonText = "Standalone",
+            folderPrefix = ""
     ),
 
     FEATURE_MODULE(
-            comboBoxText = "Feature module",
-            typeRootFolder = "/feature"
+            radioButtonText = "Feature module",
+            folderPrefix = "feature"
     ),
 
     CORE_MODULE(
-            comboBoxText = "Core module",
-            typeRootFolder = "/core"
-    );
+            radioButtonText = "Core module",
+            folderPrefix = "core"
+    ),
 
-
-    override fun toString(): String {
-        return comboBoxText
-    }
+    CUSTOM_PATH(
+            radioButtonText = "Custom path",
+            folderPrefix = String.EMPTY
+    )
 
 }

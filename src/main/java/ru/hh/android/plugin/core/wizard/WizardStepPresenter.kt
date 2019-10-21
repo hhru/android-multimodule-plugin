@@ -3,9 +3,14 @@ package ru.hh.android.plugin.core.wizard
 import com.intellij.ui.wizard.WizardModel
 
 
-abstract class WizardStepPresenter<WM, WV> where WM : WizardModel, WV : WizardStepView {
+abstract class WizardStepPresenter<WM : WizardModel, WV : WizardStepView, FS : WizardStepFormState> {
 
     protected lateinit var view: WV
+
+
+    abstract fun validateForm(formState: FS): Boolean
+
+    abstract fun updateModel(model: WM, formState: FS)
 
 
     fun bindView(view: WV) {
