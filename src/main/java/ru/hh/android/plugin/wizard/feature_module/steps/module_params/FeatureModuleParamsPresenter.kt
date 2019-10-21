@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.wizard.feature_module.steps.module_params
 
-import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.wizard.WizardStepPresenter
 import ru.hh.android.plugin.extensions.HYPHEN
@@ -11,9 +10,8 @@ import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
 
 
 // TODO - Вынести сообщения в bundle
-class FeatureModuleParamsPresenter(
-        private val project: Project
-) : WizardStepPresenter<FeatureModuleWizardModel, FeatureModuleParamsStepView, FeatureModuleParamsFormState>() {
+class FeatureModuleParamsPresenter
+    : WizardStepPresenter<FeatureModuleWizardModel, FeatureModuleParamsStepView, FeatureModuleParamsFormState>() {
 
     companion object {
         private val REGEX_PACKAGE_NAME = Regex("^([A-Za-z]{1}[A-Za-z\\d_]*\\.)*[A-Za-z][A-Za-z\\d_]*\$")

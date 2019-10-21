@@ -36,7 +36,7 @@ class FeatureModuleParamsWizardStep(
     }
 
     override fun getPresenter(project: Project): FeatureModuleParamsPresenter {
-        return FeatureModuleParamsPresenter(project)
+        return FeatureModuleParamsPresenter()
     }
 
 
