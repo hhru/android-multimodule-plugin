@@ -4,7 +4,7 @@ import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
 import ru.hh.android.plugin.component.module.ModuleRepository
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
-import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepView
+import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_apps.model.AppModuleDisplayableItem
 import javax.swing.JComponent
@@ -16,7 +16,7 @@ class ChooseAppModulesWizardStep(
 ) : WizardStep<FeatureModuleWizardModel>() {
 
     private val allModulesItems: List<AppModuleDisplayableItem>
-    private val uiBuilder: ChooseItemsStepView<AppModuleDisplayableItem>
+    private val uiBuilder: ChooseItemsStepViewBuilder<AppModuleDisplayableItem>
 
     private val selectedItems = mutableListOf<AppModuleDisplayableItem>()
 
@@ -25,7 +25,7 @@ class ChooseAppModulesWizardStep(
         allModulesItems = getModulesDisplayableItems()
         selectedItems += allModulesItems.filter { it.isChecked }
 
-        uiBuilder = ChooseItemsStepView(
+        uiBuilder = ChooseItemsStepViewBuilder(
                 textBundle = ChooseItemsStepViewTextBundle(
                         descriptionMessage = "Choose applications which should include new feature module",
                         filterTextFieldMessage = "You can filter applications by names",

@@ -33,7 +33,7 @@ class FeatureModuleGenerator(
         val changeSettingsGradleStep = ChangeSettingsGradleStep()
         changeSettingsGradleStep.execute(project, config)
 
-        if (config.mainParams.checkFeature(PredefinedFeature.USE_TOOTHPICK_3_SUPPORT).not()) {
+        if (config.params.checkFeature(PredefinedFeature.USE_TOOTHPICK_3_SUPPORT).not()) {
             val addToothpickAnnotationProcessorOptionStep = AddToothpickAnnotationProcessorOptionStep()
             addToothpickAnnotationProcessorOptionStep.execute(config)
         }

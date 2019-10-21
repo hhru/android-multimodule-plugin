@@ -3,9 +3,11 @@ package ru.hh.android.plugin.generator.steps
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiDirectory
-import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
+import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
+import ru.hh.android.plugin.extensions.SLASH
 import ru.hh.android.plugin.model.CreateModuleConfig
-import ru.hh.android.plugin.model.enums.FeatureModuleType.*
+import ru.hh.android.plugin.model.enums.FeatureModuleType.CUSTOM_PATH
+import ru.hh.android.plugin.model.enums.FeatureModuleType.STANDALONE
 
 
 /**
@@ -88,26 +90,14 @@ class FeatureModuleDirsStructureStep(
 
     fun execute(config: CreateModuleConfig): Map<String, PsiDirectory?> {
         val projectPsiDirectory = project.guessProjectDir()?.toPsiDirectory(project) ?: return mapOf()
-
-        val moduleRootPsiFolder = when (config.mainParams.moduleType) {
+        val typeRootPsiDirectory = when (config.params.moduleType) {
             STANDALONE -> projectPsiDirectory
-            FEATURE_MODULE -> projectPsiDirectory.findSubdirectory("feature")
-            CORE_MODULE -> projectPsiDirectory.findSubdirectory("core")
+            CUSTOM_PATH -> descendantSubdirectorySearch(projectPsiDirectory, config.params.customModuleTypePath)
+            else -> descendantSubdirectorySearch(projectPsiDirectory, config.params.moduleType.folderPrefix)
         }
 
-        val confirmedModuleRootPsiFolder = moduleRootPsiFolder ?: when (config.mainParams.moduleType) {
-            STANDALONE -> {
-                projectPsiDirectory
-            }
-
-            FEATURE_MODULE -> {
-                projectPsiDirectory.createSubdirectory("feature")
-            }
-            CORE_MODULE -> {
-                projectPsiDirectory.createSubdirectory("core")
-            }
-        }
-        val modulePsiFolder = confirmedModuleRootPsiFolder.createSubdirectory(config.mainParams.moduleName)
+        val rootPsiFolder = typeRootPsiDirectory ?: return mapOf()
+        val modulePsiFolder = rootPsiFolder.createSubdirectory(config.params.moduleName)
 
         return mutableMapOf<String, PsiDirectory?>().apply {
             this[KEY_MODULE_ROOT_FOLDER] = modulePsiFolder
@@ -152,8 +142,20 @@ class FeatureModuleDirsStructureStep(
     }
 
 
+    private fun descendantSubdirectorySearch(
+            rootPsiDirectory: PsiDirectory,
+            startPath: String
+    ): PsiDirectory? {
+        var nextPsiDirectory: PsiDirectory? = rootPsiDirectory
+        val splittedFolderNames = startPath.split(Char.SLASH).filter { it.isNotBlank() }
+        for (item in splittedFolderNames) {
+            nextPsiDirectory = nextPsiDirectory?.findSubdirectory(item) ?: nextPsiDirectory?.createSubdirectory(item)
+        }
+        return nextPsiDirectory
+    }
+
     private fun MutableMap<String, PsiDirectory?>.createPackageNameFolder(config: CreateModuleConfig) {
-        val packageParts = config.mainParams.packageName.split(PACKAGE_PARTS_DELIMITER)
+        val packageParts = config.params.packageName.split(PACKAGE_PARTS_DELIMITER)
 
         var prevPsiDirectory = this[KEY_JAVA_FOLDER]
         var lastPsiDirectory: PsiDirectory? = null

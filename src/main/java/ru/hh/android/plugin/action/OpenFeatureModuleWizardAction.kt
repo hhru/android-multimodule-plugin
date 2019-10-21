@@ -16,7 +16,7 @@ class OpenFeatureModuleWizardAction : AnAction() {
             FeatureModuleWizardDialog(project) { model ->
                 project.runWriteAction {
                     val taskConfig = CreateModuleConfig(
-                            mainParams = model.params,
+                            params = model.params,
                             libraries = model.selectedModules.toList(),
                             applications = model.selectedApps.toList()
                     )

@@ -3,11 +3,12 @@ package ru.hh.android.plugin.wizard.feature_module.steps.choose_modules
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
 import ru.hh.android.plugin.component.module.ModuleRepository
+import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
+import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.model.MainParametersHolder
 import ru.hh.android.plugin.model.enums.PredefinedFeature
+import ru.hh.android.plugin.model.extensions.checkFeature
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
-import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepView
-import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_modules.model.ModuleDisplayableItem
 import javax.swing.JComponent
 
@@ -18,7 +19,7 @@ class ChooseModulesWizardStep(
 ) : WizardStep<FeatureModuleWizardModel>() {
 
     private val allModulesItems: List<ModuleDisplayableItem>
-    private val uiBuilder: ChooseItemsStepView<ModuleDisplayableItem>
+    private val uiBuilder: ChooseItemsStepViewBuilder<ModuleDisplayableItem>
 
     private val selectedItems = mutableListOf<ModuleDisplayableItem>()
 
@@ -27,7 +28,7 @@ class ChooseModulesWizardStep(
         allModulesItems = getModulesDisplayableItems()
         selectedItems += allModulesItems.filter { it.isChecked }
 
-        uiBuilder = ChooseItemsStepView(
+        uiBuilder = ChooseItemsStepViewBuilder(
                 textBundle = ChooseItemsStepViewTextBundle(
                         descriptionMessage = "Choose modules as dependencies for new feature module",
                         filterTextFieldMessage = "You can filter modules by names",
@@ -61,11 +62,11 @@ class ChooseModulesWizardStep(
             this += "analytics"
             this += "core-utils"
 
-            if (params.enabledSettings.contains(PredefinedFeature.ADD_UI_MODULES_DEPENDENCIES)) {
+            if (params.checkFeature(PredefinedFeature.ADD_UI_MODULES_DEPENDENCIES)) {
                 this += "base-ui"
             }
 
-            if (params.enabledSettings.contains(PredefinedFeature.NEED_CREATE_API_INTERFACE)) {
+            if (params.checkFeature(PredefinedFeature.NEED_CREATE_API_INTERFACE)) {
                 this += "network-source"
                 this += "network-auth-source"
             }

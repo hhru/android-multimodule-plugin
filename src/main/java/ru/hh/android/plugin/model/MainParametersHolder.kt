@@ -11,8 +11,8 @@ data class MainParametersHolder(
         val packageName: String,
         val moduleType: FeatureModuleType,
         val settingsGradleModulePath: String,
-        val rootModuleDirectory: PsiDirectory?,
-        val enabledSettings: List<PredefinedFeature>
+        val customModuleTypePath: String,
+        val enabledFeatures: List<PredefinedFeature>
 ) {
 
     companion object {
@@ -21,8 +21,8 @@ data class MainParametersHolder(
                 packageName = String.EMPTY,
                 moduleType = FeatureModuleType.STANDALONE,
                 settingsGradleModulePath = String.EMPTY,
-                rootModuleDirectory = null,
-                enabledSettings = emptyList()
+                customModuleTypePath = String.EMPTY,
+                enabledFeatures = emptyList()
         )
     }
 

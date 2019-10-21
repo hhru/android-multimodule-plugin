@@ -36,7 +36,7 @@ class AddFeatureModuleIntoDependenciesStep {
 
         with(dependenciesClosableBlock) {
             val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
-            val moduleName = config.mainParams.moduleName
+            val moduleName = config.params.moduleName
 
             addBefore(factory.createModuleDependencyExpression(moduleName), lastChild)
             addBefore(factory.createBreakLineElement(), lastChild)

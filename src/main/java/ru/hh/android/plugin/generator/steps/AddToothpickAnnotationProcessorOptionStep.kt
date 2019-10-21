@@ -42,7 +42,7 @@ class AddToothpickAnnotationProcessorOptionStep {
                 ?.first()
                 ?: return
 
-        val modifiedText = createModifiedPsiElementText(toothpickRegistryPsiElement, config.mainParams.packageName)
+        val modifiedText = createModifiedPsiElementText(toothpickRegistryPsiElement, config.params.packageName)
         val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
         val modifiedToothpickPsiElement = factory.createStatementFromText(modifiedText)
         val replacedElement = toothpickRegistryPsiElement.replace(modifiedToothpickPsiElement)

@@ -228,9 +228,7 @@ class FeatureModuleParamsStepViewBuilder(
 
             row {
                 cell {
-                    customFolderPathTextField = JTextField().apply {
-                        isEnabled = false
-                    }
+                    customFolderPathTextField = JTextField()
                     customFolderPathTextField(growX)
                     customFolderPathTextField()
                 }
@@ -240,6 +238,7 @@ class FeatureModuleParamsStepViewBuilder(
                             val fileChooser = JFileChooser().apply {
                                 isMultiSelectionEnabled = false
                                 fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                                project.basePath?.let { currentDirectory = File(it) }
                             }
 
                             val result = fileChooser.showDialog(customFolderPathTextField, "Save")
@@ -255,7 +254,7 @@ class FeatureModuleParamsStepViewBuilder(
                 }
             }
             row {
-                customFolderPathCommentLabel = JLabel("Choose folder for feature module").apply {
+                customFolderPathCommentLabel = JLabel("Choose folder for feature module (e.g. 'feature/feature-profile', 'core/some-core', etc)").apply {
                     font = font.deriveFont(font.size2D - 2.0f)
                     isFocusable = false
                     foreground = UIUtil.getContextHelpForeground()

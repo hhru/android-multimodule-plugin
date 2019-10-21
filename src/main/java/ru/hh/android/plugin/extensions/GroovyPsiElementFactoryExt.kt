@@ -20,7 +20,7 @@ fun GroovyPsiElementFactory.createProjectDirPathExpression(
         folderPath: String
 ): GrExpression {
     return createExpressionFromText(
-            "project(':$moduleName').projectDir = new File(settingsDir, '$folderPath')")
+            """project(':$moduleName').projectDir = new File(settingsDir, "$folderPath")""")
 }
 
 fun GroovyPsiElementFactory.createModuleDependencyExpression(moduleName: String): GrExpression {

@@ -17,15 +17,12 @@ abstract class WizardStepPresenter<WM : WizardModel, WV : WizardStepView, FS : W
         this.view = view
     }
 
-    open fun onNextButtonClicked(model: WM) {
-        // do nothing by default.
+
+    open fun onViewAttached() {
+        // do nothing by default
     }
 
     open fun onPreviousButtonClicked(model: WM) {
-        // do nothing by default.
-    }
-
-    open fun onCreate(model: WM) {
         // do nothing by default.
     }
 

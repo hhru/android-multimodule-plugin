@@ -8,7 +8,7 @@ import ru.hh.android.plugin.wizard.feature_module.steps.choose_modules.model.Mod
 
 
 class CreateModuleConfig(
-        val mainParams: MainParametersHolder,
+        val params: MainParametersHolder,
         val libraries: List<ModuleDisplayableItem>,
         val applications: List<AppModuleDisplayableItem>
 ) {
@@ -16,7 +16,7 @@ class CreateModuleConfig(
     val formattedLibraryName: String
         get() {
             return with(StringBuilder()) {
-                mainParams.moduleName
+                params.moduleName
                         .replaceWordsBreakers()
                         .split(' ')
                         .map { it.capitalize() }
@@ -27,7 +27,7 @@ class CreateModuleConfig(
 
     val layoutName: String
         get() {
-            return mainParams.moduleName
+            return params.moduleName
                     .replaceWordsBreakers()
                     .split(' ')
                     .joinToString(separator = "_") { it.toLowerCase() }
@@ -43,6 +43,6 @@ class CreateModuleConfig(
         return map
     }
 
-    fun checkFeature(feature: PredefinedFeature) = mainParams.checkFeature(feature)
+    fun checkFeature(feature: PredefinedFeature) = params.checkFeature(feature)
 
 }

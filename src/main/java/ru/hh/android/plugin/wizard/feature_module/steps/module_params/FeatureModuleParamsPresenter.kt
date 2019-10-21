@@ -31,7 +31,7 @@ class FeatureModuleParamsPresenter(
     }
 
     override fun updateModel(model: FeatureModuleWizardModel, formState: FeatureModuleParamsFormState) {
-        model.params = FeatureModuleParamsFormStateConverter(project).convert(formState)
+        model.params = FeatureModuleParamsFormStateConverter().convert(formState)
     }
 
 

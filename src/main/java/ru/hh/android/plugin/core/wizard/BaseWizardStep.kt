@@ -31,11 +31,11 @@ abstract class BaseWizardStep<
     override fun prepare(state: WizardNavigationState?): JComponent {
         presenter = getPresenter(project)
         presenter.bindView(this as WV)
-        presenter.onCreate(model)
-        onCreate()
 
         uiBuilder = getViewBuilder()
-        return uiBuilder.build()
+        val contentPanel = uiBuilder.build()
+        presenter.onViewAttached()
+        return contentPanel
     }
 
     @Suppress("UNCHECKED_CAST")

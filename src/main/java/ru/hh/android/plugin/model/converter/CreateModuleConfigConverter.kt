@@ -30,7 +30,7 @@ class CreateModuleConfigConverter
                 return with(item) {
                     val map = mutableMapOf<String, Any>()
 
-                    map[TOKEN_PACKAGE_NAME] = mainParams.packageName
+                    map[TOKEN_PACKAGE_NAME] = params.packageName
                     map[TOKEN_FORMATTED_LIBRARY_NAME] = formattedLibraryName
                     map[TOKEN_LAYOUT_NAME] = layoutName
                     map[TOKEN_LIBRARIES_MODULES] = item.libraries.map { it.text }
