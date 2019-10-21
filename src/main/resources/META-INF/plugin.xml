@@ -16,6 +16,7 @@
     - Fix crash on start action </br>
     - Remove old MoxyReflectorStub support </br>
     - Add flag for supporting Toothpick 3.0 </br>
+    - Add ability to choose any folder for module creation </br>
     </br>
 
     2.3. New features: </br>
