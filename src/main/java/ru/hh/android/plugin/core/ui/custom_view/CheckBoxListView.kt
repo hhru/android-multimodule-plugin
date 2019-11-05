@@ -20,6 +20,10 @@ class CheckBoxListView<T>(
         private val onItemToggleChangedListener: ((T) -> Unit)? = null
 ) : JList<T>() where T : CheckBoxListViewItem {
 
+    companion object {
+        private const val CLICKABLE_AREA_WIDTH = 200
+    }
+
     private var items: List<T> = emptyList()
 
 
@@ -44,10 +48,12 @@ class CheckBoxListView<T>(
     }
 
     private fun setupClickListenerOnCheckBoxes() {
-        val clickableArea = JCheckBox(String.EMPTY).minimumSize.width
+        val emptyCheckbox = JCheckBox(String.EMPTY)
+        val clickableArea = emptyCheckbox.minimumSize.width + CLICKABLE_AREA_WIDTH
+        val clickableAreaY = emptyCheckbox.minimumSize.height + CheckBoxListViewItemRenderer.PADDING_VALUE
         (object : ClickListener() {
             override fun onClick(event: MouseEvent, clickCount: Int): Boolean {
-                if (event.x < clickableArea) {
+                if (event.x < clickableArea || event.y < clickableAreaY) {
                     toggleSelection()
                 }
 
@@ -69,6 +75,10 @@ class CheckBoxListView<T>(
 
     private fun toggleSelection() {
         for (selectedItem in selectedValuesList) {
+            if (selectedItem.isForceEnabled) {
+                continue
+            }
+            selectedItem.isChecked = !selectedItem.isChecked
             onItemToggleChangedListener?.invoke(selectedItem)
         }
 

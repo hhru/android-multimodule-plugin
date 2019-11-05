@@ -16,10 +16,11 @@
     - Fix crash on start action </br>
     - Remove old MoxyReflectorStub support </br>
     - Add flag for supporting Toothpick 3.0 </br>
+    - Add ability to choose any folder for module creation </br>
     </br>
 
     2.3. New features: </br>
-    - Add settings page for choosing plugin configuration folder. </br>
+    - Add feature page for choosing plugin configuration folder. </br>
          Fixes: </br>
     - Remove 'common' module from required modules
     - Fix code style problem with adding new package into toothpick_registry_children_package_names
@@ -65,30 +66,6 @@
 
     <project-components>
         <component>
-            <implementation-class>
-                ru.hh.android.plugin.wizard.step.choose_applications.ChooseApplicationsPresenter
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>
-                ru.hh.android.plugin.wizard.step.choose_main_parameters.ChooseMainParametersPresenter
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>
-                ru.hh.android.plugin.wizard.step.choose_modules.ChooseModulesPresenter
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>
-                ru.hh.android.plugin.component.main_parameters.MainParametersInteractor
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>ru.hh.android.plugin.component.module.ModuleInteractor
-            </implementation-class>
-        </component>
-        <component>
             <implementation-class>ru.hh.android.plugin.component.module.ModuleRepository
             </implementation-class>
         </component>
@@ -114,9 +91,9 @@
                 displayName="HeadHunter plugin"
                 instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
         <projectService
-                serviceInterface="ru.hh.android.plugin.config.PluginConfig"
                 serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
     </extensions>
+
 
 
 </idea-plugin>

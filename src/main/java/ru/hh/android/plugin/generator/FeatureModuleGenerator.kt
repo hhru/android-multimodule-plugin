@@ -7,6 +7,8 @@ import ru.hh.android.plugin.generator.steps.*
 import ru.hh.android.plugin.generator.templates.ModuleFilesFactory
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
+import ru.hh.android.plugin.model.enums.PredefinedFeature
+import ru.hh.android.plugin.model.extensions.checkFeature
 
 
 class FeatureModuleGenerator(
@@ -31,7 +33,7 @@ class FeatureModuleGenerator(
         val changeSettingsGradleStep = ChangeSettingsGradleStep()
         changeSettingsGradleStep.execute(project, config)
 
-        if (config.mainParams.useToothpick3Support.not()) {
+        if (config.params.checkFeature(PredefinedFeature.USE_TOOTHPICK_3_SUPPORT).not()) {
             val addToothpickAnnotationProcessorOptionStep = AddToothpickAnnotationProcessorOptionStep()
             addToothpickAnnotationProcessorOptionStep.execute(config)
         }

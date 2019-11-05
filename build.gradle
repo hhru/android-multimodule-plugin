@@ -49,7 +49,6 @@ dependencies {
     compile Libs.commonsIO
 }
 
-
 intellij {
     version 'IC-2019.1.4'
     updateSinceUntilBuild false

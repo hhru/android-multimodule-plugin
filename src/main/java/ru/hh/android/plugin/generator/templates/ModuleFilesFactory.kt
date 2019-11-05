@@ -43,8 +43,13 @@ class ModuleFilesFactory(private val project: Project) {
         }
 
         val text = StringWriter().use { writer ->
-            template.process(templateProperties, writer)
-            writer.buffer.toString()
+            try {
+                template.process(templateProperties, writer)
+                writer.buffer.toString()
+            } catch(ex: Exception) {
+                ex.printStackTrace()
+                throw UnsupportedOperationException()
+            }
         }
 
         return psiFileFactory.createFileFromText(templateData.outputFileName, templateData.outputFileType, text)
