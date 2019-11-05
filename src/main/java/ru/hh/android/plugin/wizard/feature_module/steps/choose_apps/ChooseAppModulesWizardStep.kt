@@ -3,9 +3,9 @@ package ru.hh.android.plugin.wizard.feature_module.steps.choose_apps
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
 import ru.hh.android.plugin.component.module.ModuleRepository
-import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
+import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_apps.model.AppModuleDisplayableItem
 import javax.swing.JComponent
 
@@ -32,9 +32,6 @@ class ChooseAppModulesWizardStep(
                         listDescriptionMessage = "Choose applications"
                 ),
                 onFilterTextChanged = { filterItems(it) },
-                onModuleSelectionChanged = {
-                    // TODO - отобразить README.md
-                },
                 onModuleItemChecked = { onModuleItemChecked(it) },
                 onEnableAllButtonClicked = { enableAllItems() },
                 onDisableAllButtonClicked = { disableAllItems() }
