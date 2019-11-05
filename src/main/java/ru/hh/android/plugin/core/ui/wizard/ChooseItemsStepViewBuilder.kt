@@ -9,20 +9,28 @@ import ru.hh.android.plugin.core.wizard.WizardStepViewBuilder
 import ru.hh.android.plugin.extensions.layout.boldLabel
 import ru.hh.android.plugin.extensions.layout.onTextChange
 import javax.swing.JComponent
+import javax.swing.JEditorPane
 import javax.swing.JTextField
+import javax.swing.border.EmptyBorder
 
 
 class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
         private val textBundle: ChooseItemsStepViewTextBundle,
         private val onFilterTextChanged: (String) -> Unit,
-        private val onModuleSelectionChanged: (T) -> Unit,
+        private val onModuleSelectionChanged: (T) -> Unit = {},
         private val onModuleItemChecked: (T) -> Unit,
         private val onEnableAllButtonClicked: () -> Unit,
-        private val onDisableAllButtonClicked: () -> Unit
+        private val onDisableAllButtonClicked: () -> Unit,
+        private val isReadmeBlockAvailable: Boolean = false
 ) : WizardStepViewBuilder {
+
+    companion object {
+        private const val TEXT_AREA_PADDING = 10
+    }
 
     private lateinit var filterModulesJTextField: JTextField
     private lateinit var modulesJList: CheckBoxListView<T>
+    private lateinit var readmeBlockTextArea: JEditorPane
 
 
     override fun build(): JComponent {
@@ -49,6 +57,18 @@ class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
                 }
             }
 
+            if (isReadmeBlockAvailable) {
+                titledRow("Readme of selected module") {
+                    row {
+                        readmeBlockTextArea = JEditorPane().apply {
+                            contentType = "text/html"
+                            border = EmptyBorder(TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING)
+                        }
+                        scrollPane(readmeBlockTextArea)
+                    }
+                }
+            }
+
             row {
                 cell {
                     button("Enable all") { onEnableAllButtonClicked.invoke() }
@@ -63,6 +83,10 @@ class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
 
     fun showItems(items: List<T>) {
         modulesJList.setItems(items)
+    }
+
+    fun changeReadmeText(text: String) {
+        readmeBlockTextArea.text = text
     }
 
 }

@@ -1,10 +1,18 @@
 package ru.hh.android.plugin.wizard.feature_module.steps.choose_modules
 
+import com.android.tools.idea.util.toIoFile
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
+import com.vladsch.flexmark.ext.tables.TablesExtension
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.util.data.MutableDataSet
 import ru.hh.android.plugin.component.module.ModuleRepository
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
+import ru.hh.android.plugin.extensions.EMPTY
+import ru.hh.android.plugin.extensions.findPsiFileByName
 import ru.hh.android.plugin.model.MainParametersHolder
 import ru.hh.android.plugin.model.enums.PredefinedFeature
 import ru.hh.android.plugin.model.extensions.checkFeature
@@ -18,10 +26,29 @@ class ChooseModulesWizardStep(
         private val moduleRepository: ModuleRepository
 ) : WizardStep<FeatureModuleWizardModel>() {
 
+    companion object {
+        private const val README_FILE_NAME = "README.md"
+    }
+
     private val allModulesItems: List<ModuleDisplayableItem>
     private val uiBuilder: ChooseItemsStepViewBuilder<ModuleDisplayableItem>
 
     private val selectedItems = mutableListOf<ModuleDisplayableItem>()
+
+    private val options: MutableDataSet by lazy {
+        MutableDataSet().apply {
+            set(Parser.EXTENSIONS, listOf(TablesExtension.create(), StrikethroughExtension.create()))
+            set(HtmlRenderer.SOFT_BREAK, "<br />\n")
+        }
+    }
+
+    private val parser: Parser by lazy {
+        Parser.builder(options).build()
+    }
+
+    private val htmlRenderer: HtmlRenderer by lazy {
+        HtmlRenderer.builder(options).build()
+    }
 
 
     init {
@@ -35,12 +62,11 @@ class ChooseModulesWizardStep(
                         listDescriptionMessage = "Choose modules"
                 ),
                 onFilterTextChanged = { filterItems(it) },
-                onModuleSelectionChanged = {
-                    // TODO - отобразить README.md
-                },
+                onModuleSelectionChanged = { changeReadmeBlockText(it) },
                 onModuleItemChecked = { onModuleItemChecked(it) },
                 onEnableAllButtonClicked = { enableAllItems() },
-                onDisableAllButtonClicked = { disableAllItems() }
+                onDisableAllButtonClicked = { disableAllItems() },
+                isReadmeBlockAvailable = true
         )
     }
 
@@ -83,6 +109,17 @@ class ChooseModulesWizardStep(
         uiBuilder.showItems(filteredList)
     }
 
+    private fun changeReadmeBlockText(item: ModuleDisplayableItem) {
+        val readmeFile = item.gradleModule.findPsiFileByName(README_FILE_NAME)?.virtualFile?.toIoFile()
+        if (readmeFile == null) {
+            uiBuilder.changeReadmeText(String.EMPTY)
+        } else {
+            val document = parser.parseReader(readmeFile.reader())
+            val html = htmlRenderer.render(document)
+            uiBuilder.changeReadmeText(html)
+        }
+    }
+
     private fun onModuleItemChecked(item: ModuleDisplayableItem) {
         if (item.isChecked) {
             selectedItems += item
@@ -101,7 +138,8 @@ class ChooseModulesWizardStep(
             ModuleDisplayableItem(
                     text = module.name,
                     isForceEnabled = isForceSelected,
-                    isChecked = isForceSelected
+                    isChecked = isForceSelected,
+                    gradleModule = module
             )
         }
     }
