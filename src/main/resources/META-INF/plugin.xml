@@ -50,7 +50,7 @@
     <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.android</depends>
 
-    <idea-version since-build="163"/>
+    <idea-version since-build="191"/>
 
     <actions>
         <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
@@ -93,7 +93,5 @@
         <projectService
                 serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
     </extensions>
-
-
 
 </idea-plugin>
