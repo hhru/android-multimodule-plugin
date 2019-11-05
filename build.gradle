@@ -50,14 +50,18 @@ dependencies {
 }
 
 intellij {
-    version 'IC-2019.1.4'
-    updateSinceUntilBuild false
+    version '191.8026.42'
+    type 'IC'
+
     plugins = [
             "org.jetbrains.kotlin:1.3.50-release-Studio3.5-1",
             "android",
-            "Groovy",
-            "kotlin"
+            "Groovy"
     ]
+}
 
-    intellij.alternativeIdePath = '/Applications/Android Studio.app'
+runIde {
+    // Absolute path to installed target v3.5 Android Studio to use as IDE Development Instance
+    // The "Contents" directory is macOS specific.
+    ideaDirectory '/Applications/Android Studio.app/Contents'
 }
