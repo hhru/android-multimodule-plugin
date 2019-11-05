@@ -28,8 +28,8 @@ class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxLi
             cellHasFocus: Boolean
     ): Component {
         if (isSelected) {
-            itemCheckBox.background = UIUtil.getListSelectionBackground()
-            itemCheckBox.foreground = UIUtil.getListSelectionForeground()
+            itemCheckBox.background = UIUtil.getListSelectionBackground(true)
+            itemCheckBox.foreground = UIUtil.getListSelectionForeground(true)
         } else {
             itemCheckBox.background = UIUtil.getListBackground()
             itemCheckBox.foreground = UIUtil.getListForeground()
