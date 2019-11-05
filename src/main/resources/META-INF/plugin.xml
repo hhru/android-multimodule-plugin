@@ -12,11 +12,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    3.0. Bug fixing: </br>
+    3.0. Bug fixing and new features: </br>
     - Fix crash on start action </br>
     - Remove old MoxyReflectorStub support </br>
     - Add flag for supporting Toothpick 3.0 </br>
     - Add ability to choose any folder for module creation </br>
+    - Add README viewer when choose modules </br>
+    - Add filter for modules names </br>
     </br>
 
     2.3. New features: </br>
