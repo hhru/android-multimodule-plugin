@@ -66,3 +66,5 @@ runIde {
     // The "Contents" directory is macOS specific.
     ideaDirectory '/Applications/Android Studio.app/Contents'
 }
+
+// empty comment
