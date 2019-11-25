@@ -94,10 +94,12 @@ class FeatureModuleDirsStructureStep(
             STANDALONE -> projectPsiDirectory
             CUSTOM_PATH -> descendantSubdirectorySearch(projectPsiDirectory, config.params.customModuleTypePath)
             else -> descendantSubdirectorySearch(projectPsiDirectory, config.params.moduleType.folderPrefix)
-        }
+        } ?: return mapOf()
 
-        val rootPsiFolder = typeRootPsiDirectory ?: return mapOf()
-        val modulePsiFolder = rootPsiFolder.createSubdirectory(config.params.moduleName)
+        val modulePsiFolder = when (config.params.moduleType) {
+            CUSTOM_PATH -> typeRootPsiDirectory
+            else -> typeRootPsiDirectory.createSubdirectory(config.params.moduleName)
+        }
 
         return mutableMapOf<String, PsiDirectory?>().apply {
             this[KEY_MODULE_ROOT_FOLDER] = modulePsiFolder
