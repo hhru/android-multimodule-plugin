@@ -39,7 +39,7 @@ class ModuleFilesFactory(private val project: Project) {
             freeMarkerConfig.getTemplate(templateData.templateFileName)
         } catch (ex: Exception) {
             ex.printStackTrace()
-            throw UnsupportedOperationException()
+            throw IllegalArgumentException("Can't find template [templateData: $templateData]")
         }
 
         val text = StringWriter().use { writer ->

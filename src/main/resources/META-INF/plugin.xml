@@ -12,6 +12,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    3.1. Small fixes: </br>
+    - Fix module path generation
+    - Change default templates folder path
+    - Add more readable exception if there are no templates in project
+
     3.0. Bug fixing and new features: </br>
     - Fix crash on start action </br>
     - Remove old MoxyReflectorStub support </br>

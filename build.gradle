@@ -40,7 +40,7 @@ apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
 group 'ru.hh.android.plugin'
-version '3.0'
+version '3.1'
 
 
 dependencies {

@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.model
 
-import com.intellij.psi.PsiDirectory
 import ru.hh.android.plugin.extensions.EMPTY
 import ru.hh.android.plugin.model.enums.FeatureModuleType
 import ru.hh.android.plugin.model.enums.PredefinedFeature

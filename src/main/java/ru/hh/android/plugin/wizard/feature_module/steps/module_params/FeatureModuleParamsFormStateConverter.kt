@@ -24,12 +24,10 @@ class FeatureModuleParamsFormStateConverter : ModelConverter<FeatureModuleParams
 
 
     private fun getModulePathForSettingsGradle(formState: FeatureModuleParamsFormState): String {
-        val typeRootFolder = when (formState.moduleType) {
-            FeatureModuleType.CUSTOM_PATH -> formState.customModuleTypePath
-            else -> formState.moduleType.folderPrefix
+        return when (formState.moduleType) {
+            FeatureModuleType.CUSTOM_PATH -> "./${formState.customModuleTypePath}".replaceMultipleSplashes()
+            else -> "./${formState.moduleType.folderPrefix}/${formState.moduleName}".replaceMultipleSplashes()
         }
-
-        return "\$rootDir/${typeRootFolder}/${formState.moduleName}".replaceMultipleSplashes()
     }
 
 }
