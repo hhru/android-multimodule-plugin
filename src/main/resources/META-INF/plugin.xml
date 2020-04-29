@@ -96,6 +96,7 @@
         </component>
     </project-components>
 
+    <resource-bundle>messages.PluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable

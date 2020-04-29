@@ -23,15 +23,15 @@ dependencies {
 
 ext {
     supportedVersions = [
-            'android_studio__3_6_2': [
+            'android_studio__3_6_3': [
                     'ideVersion': "192.7142.36",
                     'plugins'   : ["android", "Kotlin", "java", "Groovy"]
             ]
     ]
 }
 
-// Setup for Android Studio 3.6.2
-def currentVersion = supportedVersions['android_studio__3_6_2']
+// Setup for Android Studio 3.6.3
+def currentVersion = supportedVersions['android_studio__3_6_3']
 
 intellij.type = 'IC'
 intellij.version = currentVersion.ideVersion
