@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.action
+package ru.hh.android.plugin.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent

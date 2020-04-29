@@ -64,8 +64,8 @@
         <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
             <separator/>
 
-            <action id="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
-                    class="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
+            <action id="ru.hh.android.plugin.actions.OpenFeatureModuleWizardAction"
+                    class="ru.hh.android.plugin.actions.OpenFeatureModuleWizardAction"
                     text="New Feature Module..." description="Open feature module creation wizard">
                 <add-to-group group-id="NewGroup" anchor="last"/>
             </action>
