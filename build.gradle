@@ -16,17 +16,14 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "commons-io:commons-io:2.4"
     implementation "com.vladsch.flexmark:flexmark-all:0.50.42"
 }
 
 ext {
     supportedVersions = [
-            'android_studio__3_5_3': [
-                    'ideVersion': "191.8026.42",
-                    'plugins'   : ["android", "Kotlin"]
-            ],
-            'android_studio__3_6_1': [
+            'android_studio__3_6_2': [
                     'ideVersion': "192.7142.36",
                     'plugins'   : ["android", "Kotlin", "java", "Groovy"]
             ]
@@ -34,7 +31,7 @@ ext {
 }
 
 // Setup for Android Studio 3.6.2
-def currentVersion = supportedVersions['android_studio__3_6_1']
+def currentVersion = supportedVersions['android_studio__3_6_2']
 
 intellij.type = 'IC'
 intellij.version = currentVersion.ideVersion

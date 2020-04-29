@@ -58,7 +58,7 @@
     <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.android</depends>
 
-    <idea-version since-build="191"/>
+    <idea-version since-build="192.7142.36"/>
 
     <actions>
         <group description="Actions for modules" text="Modules Actions..." id="ru.hh.android.plugins.modules"

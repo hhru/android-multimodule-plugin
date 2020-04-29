@@ -2,6 +2,7 @@ package ru.hh.android.plugin.actions.modules.copy_module
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import ru.hh.android.plugin.actions.AndroidModuleAction
+import ru.hh.android.plugin.actions.modules.copy_module.view.CopyAndroidModuleActionDialog
 
 
 /**
@@ -10,7 +11,8 @@ import ru.hh.android.plugin.actions.AndroidModuleAction
 class CopyAndroidModuleAction : AndroidModuleAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        // TODO
+
+        CopyAndroidModuleActionDialog(e.project!!, "ololo").show()
     }
 
 }
