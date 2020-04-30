@@ -1,19 +1,19 @@
 package ru.hh.android.plugin.generator
 
 import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import ru.hh.android.plugin.component.NotificationsFactory
 import ru.hh.android.plugin.generator.steps.*
 import ru.hh.android.plugin.generator.templates.ModuleFilesFactory
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
 import ru.hh.android.plugin.model.enums.PredefinedFeature
 import ru.hh.android.plugin.model.extensions.checkFeature
+import ru.hh.android.plugin.services.NotificationsFactory
 
 
 class FeatureModuleGenerator(
         private val project: Project,
-        private val notificationsFactory: NotificationsFactory,
         private val createModuleConfigConverter: CreateModuleConfigConverter
 ) : ProjectComponent {
 
@@ -41,7 +41,7 @@ class FeatureModuleGenerator(
         val addFeatureModuleIntoDependenciesStep = AddFeatureModuleIntoDependenciesStep()
         addFeatureModuleIntoDependenciesStep.execute(config)
 
-        notificationsFactory.info(SUCCESS_MESSAGE)
+        project.service<NotificationsFactory>().info(SUCCESS_MESSAGE)
     }
 
 }

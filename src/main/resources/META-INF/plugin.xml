@@ -90,15 +90,12 @@
             <implementation-class>ru.hh.android.plugin.generator.FeatureModuleGenerator
             </implementation-class>
         </component>
-        <component>
-            <implementation-class>ru.hh.android.plugin.component.NotificationsFactory
-            </implementation-class>
-        </component>
     </project-components>
 
     <resource-bundle>messages.PluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- region Plugin config -->
         <projectConfigurable
                 id="ru.hh.android.plugin.config.PluginConfigConfigurable"
                 groupId="appearance"
@@ -106,6 +103,11 @@
                 instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
+        <!-- endregion -->
+
+        <!-- region Plugin services -->
+        <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
+        <!-- endregion -->
     </extensions>
 
 </idea-plugin>

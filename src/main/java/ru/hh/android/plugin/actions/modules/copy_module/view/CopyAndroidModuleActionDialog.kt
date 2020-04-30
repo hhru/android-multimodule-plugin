@@ -16,6 +16,8 @@ class CopyAndroidModuleActionDialog(
 ) : DialogWrapper(project, true) {
 
     private val moduleNamePanel = ModuleNamePanel(
+            moduleNameSectionLabel = message("geminio.common.forms.new_module_name"),
+            packageNameSectionLabel = message("geminio.common.forms.new_module_package_name"),
             onErrorAction = { hasError ->
                 this.isOKActionEnabled = hasError.not()
             }
