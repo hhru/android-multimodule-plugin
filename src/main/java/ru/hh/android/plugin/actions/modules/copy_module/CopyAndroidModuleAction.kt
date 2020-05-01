@@ -68,6 +68,7 @@ class CopyAndroidModuleAction : AnAction() {
         val newModuleParams = NewModuleParams(
             newModuleName = dialog.getModuleName(),
             newPackageName = dialog.getPackageName(),
+            appModule = dialog.getSelectedModule(),
             moduleToCopyFacet = actionData.androidFacet
         )
 
@@ -81,7 +82,17 @@ class CopyAndroidModuleAction : AnAction() {
                             moduleName = newModuleParams.newModuleName,
                             moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
                         )
-                    // TODO add module into app-module
+                    project.service<BuildGradleModificationService>()
+                        .addGradleDependenciesIntoModule(
+                            module = newModuleParams.appModule,
+                            gradleDependencies = listOf(
+                                GradleDependency(
+                                    text = newModuleParams.newModuleName,
+                                    type = GradleDependencyType.MODULE,
+                                    mode = GradleDependencyMode.IMPLEMENTATION
+                                )
+                            )
+                        )
                     // TODO Sync project
                 }
             }
