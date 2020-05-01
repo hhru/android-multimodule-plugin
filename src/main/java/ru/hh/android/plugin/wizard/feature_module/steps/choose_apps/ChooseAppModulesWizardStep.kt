@@ -2,7 +2,7 @@ package ru.hh.android.plugin.wizard.feature_module.steps.choose_apps
 
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
-import ru.hh.android.plugin.component.module.ModuleRepository
+import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
@@ -68,7 +68,7 @@ class ChooseAppModulesWizardStep(
     }
 
     private fun getModulesDisplayableItems(): List<AppModuleDisplayableItem> {
-        val modules = moduleRepository.getApplicationModules()
+        val modules = moduleRepository.fetchAppModules()
 
         return modules.map { module ->
             AppModuleDisplayableItem(

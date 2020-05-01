@@ -8,7 +8,7 @@ import com.vladsch.flexmark.ext.tables.TablesExtension
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.MutableDataSet
-import ru.hh.android.plugin.component.module.ModuleRepository
+import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.extensions.EMPTY
@@ -130,7 +130,7 @@ class ChooseModulesWizardStep(
 
     private fun getModulesDisplayableItems(): List<ModuleDisplayableItem> {
         val forceSelectedNames = getForceSelectedModulesNames(model.params)
-        val modules = moduleRepository.getLibrariesModules()
+        val modules = moduleRepository.fetchLibrariesModules()
 
         return modules.map { module ->
             val isForceSelected = forceSelectedNames.contains(module.name)
