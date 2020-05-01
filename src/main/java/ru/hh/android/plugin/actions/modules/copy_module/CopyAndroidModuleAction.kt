@@ -1,5 +1,6 @@
 package ru.hh.android.plugin.actions.modules.copy_module
 
+import com.android.tools.idea.gradle.actions.SyncProjectAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
@@ -31,6 +32,7 @@ import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.logInfo
 import ru.hh.android.plugin.utils.notifyError
+import ru.hh.android.plugin.utils.notifyInfo
 import kotlin.system.measureTimeMillis
 
 
@@ -50,7 +52,7 @@ class CopyAndroidModuleAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         e.androidFacet?.let { androidFacet ->
-            handleAction(CopyModuleActionData(androidFacet))
+            handleAction(CopyModuleActionData(e, androidFacet))
         }
     }
 
@@ -93,7 +95,10 @@ class CopyAndroidModuleAction : AnAction() {
                                 )
                             )
                         )
-                    // TODO Sync project
+
+                    SyncProjectAction().actionPerformed(actionData.actionEvent)
+
+                    project.notifyInfo(message("geminio.notifications.copy_module.success.0", newModuleParams.moduleToCopy.name))
                 }
             }
         }
