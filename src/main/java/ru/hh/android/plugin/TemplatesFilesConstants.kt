@@ -13,7 +13,7 @@ object TemplatesFilesConstants {
     const val PROGUARD_OUTPUT = "proguard-rules.pro"
 
     const val BUILD_GRADLE_TEMPLATE = "build.gradle.ftl"
-    const val BUILD_GRADLE_OUTPUT = "build.gradle"
+    const val BUILD_GRADLE_OUTPUT = CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
 
     const val DI_MODULE_TEMPLATE = "DIModule.kt.ftl"
     const val DI_MODULE_OUTPUT_SUFFIX = "Module.kt"

@@ -1,15 +1,16 @@
 package ru.hh.android.plugin.extensions
 
 import com.intellij.openapi.module.Module
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiMember
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
+import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
+import ru.hh.android.plugin.CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
 
-
-const val BUILD_GRADLE_FILE_NAME = "build.gradle"
 
 const val GRADLE_KEYWORD_APPLY = "apply"
 const val GRADLE_KEYWORD_PLUGIN = "plugin"
@@ -46,3 +47,23 @@ fun Module.findClassesAnnotatedWith(annotationFullQualifiedName: String): Mutabl
         AnnotatedMembersSearch.search(psiClass, moduleContentScope).findAll()
     }
 }
+
+/**
+ * Imagine module structure like this:
+ *
+ * /parentFolder                !!! <-- parent for parent for moduleFile !!!
+ *      /my-module-name         <-- root for moduleFile
+ *          my-module-name.iml  <-- moduleFile
+ */
+val Module.moduleParentPsiDirectory: PsiDirectory?
+    get() = moduleFile?.parent?.parent?.toPsiDirectory(project)
+
+/**
+ * Imagine module structure like this:
+ *
+ * /parentFolder                <-- parent for parent for moduleFile
+ *      /my-module-name         !!! <-- root for moduleFile !!!
+ *          my-module-name.iml  <-- moduleFile
+ */
+val Module.rootPsiDirectory: PsiDirectory?
+    get() = moduleFile?.parent?.toPsiDirectory(project)
