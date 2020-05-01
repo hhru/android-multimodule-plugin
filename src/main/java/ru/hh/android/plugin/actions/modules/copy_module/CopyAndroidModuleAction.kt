@@ -3,11 +3,11 @@ package ru.hh.android.plugin.actions.modules.copy_module
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
+import com.intellij.openapi.components.service
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiPlainTextFile
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import ru.hh.android.plugin.CodeGeneratorConstants.ANDROID_MANIFEST_XML_FILE_NAME
-import ru.hh.android.plugin.CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
 import ru.hh.android.plugin.CodeGeneratorConstants.JAVA_SOURCE_FOLDER_NAME
 import ru.hh.android.plugin.CodeGeneratorConstants.KOTLIN_SOURCE_FOLDER_NAME
 import ru.hh.android.plugin.CodeGeneratorConstants.MAIN_SOURCE_SET_FOLDER_NAME
@@ -21,7 +21,11 @@ import ru.hh.android.plugin.actions.modules.copy_module.model.NewModuleDirectori
 import ru.hh.android.plugin.actions.modules.copy_module.model.NewModulePackagesInfo
 import ru.hh.android.plugin.actions.modules.copy_module.model.NewModuleParams
 import ru.hh.android.plugin.actions.modules.copy_module.view.CopyAndroidModuleActionDialog
+import ru.hh.android.plugin.core.model.psi.GradleDependency
+import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
+import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.extensions.*
+import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
 import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.logInfo
@@ -96,6 +100,7 @@ class CopyAndroidModuleAction : AnAction() {
 
     private fun copyFilesFromRootDirectory(params: NewModuleParams, newModulePsiDirectory: PsiDirectory) {
         val project = params.project
+
         project.logDebug("Start copying files from module from root directory")
         val parentFilesCopyTime = measureTimeMillis {
             params.moduleToCopy
@@ -105,8 +110,19 @@ class CopyAndroidModuleAction : AnAction() {
                 ?.map { psiFile ->
                     project.logDebug("\tFind ${psiFile.name}, start copying...")
                     psiFile.copyFile().apply {
-                        if (psiFile.name == BUILD_GRADLE_FILE_NAME) {
-                            // TODO add dependency into build.gradle file
+                        if (psiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
+                            project.logDebug("\tFind build.gradle file, need modification of dependencies block")
+                            project.service<BuildGradleModificationService>()
+                                .addGradleDependenciesIntoBuildGradleFile(
+                                    psiFile = psiFile,
+                                    gradleDependencies = listOf(
+                                        GradleDependency(
+                                            text = params.moduleToCopy.name,
+                                            type = GradleDependencyType.MODULE,
+                                            mode = GradleDependencyMode.IMPLEMENTATION
+                                        )
+                                    )
+                                )
                         }
                     }
                 }
