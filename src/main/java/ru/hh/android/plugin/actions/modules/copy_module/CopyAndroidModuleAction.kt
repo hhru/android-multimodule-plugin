@@ -131,12 +131,12 @@ class CopyAndroidModuleAction : AnAction() {
                 ?.filter { it !is PsiPlainTextFile }
                 ?.map { psiFile ->
                     project.logDebug("\tFind ${psiFile.name}, start copying...")
-                    psiFile.copyFile().apply {
-                        if (psiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
+                    psiFile.copyFile().also { newPsiFile ->
+                        if (newPsiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
                             project.logDebug("\tFind build.gradle file, need modification of dependencies block")
                             project.service<BuildGradleModificationService>()
                                 .addGradleDependenciesIntoBuildGradleFile(
-                                    psiFile = psiFile,
+                                    psiFile = newPsiFile,
                                     gradleDependencies = listOf(
                                         GradleDependency(
                                             text = params.moduleToCopy.name,
