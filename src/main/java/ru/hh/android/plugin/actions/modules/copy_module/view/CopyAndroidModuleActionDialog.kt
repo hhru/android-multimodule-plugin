@@ -23,6 +23,8 @@ class CopyAndroidModuleActionDialog(
     private val moduleName: String
 ) : DialogWrapper(project, true) {
 
+    private val appModuleComboBoxModel = project.service<ModuleRepository>().fetchAppModules().run { CollectionComboBoxModel(this) }
+
     private val moduleNamePanel = ModuleNamePanel(
         moduleNameSectionLabel = message("geminio.common.forms.new_module_name"),
         packageNameSectionLabel = message("geminio.common.forms.new_module_package_name"),
@@ -32,7 +34,6 @@ class CopyAndroidModuleActionDialog(
     )
 
     private var appModuleComboBox: JComboBox<Module>? = null
-    private var selectedAppModule: Module? = null
 
 
     init {
@@ -58,12 +59,10 @@ class CopyAndroidModuleActionDialog(
             titledRow(message("geminio.forms.copy_module.application_module")) {
                 row {
                     cell {
-                        val appModules = project.service<ModuleRepository>().fetchAppModules()
-                        selectedAppModule = appModules.firstOrNull()
                         val cellBuilder = comboBox(
-                            model = CollectionComboBoxModel(appModules),
-                            getter = { selectedAppModule },
-                            setter = { selectedAppModule = it },
+                            model = appModuleComboBoxModel,
+                            getter = { appModuleComboBoxModel.selected },
+                            setter = { /* do nothing */ },
                             growPolicy = GrowPolicy.SHORT_TEXT,
                             renderer = null
                         ).also { appModuleComboBox = it.component }
@@ -75,7 +74,7 @@ class CopyAndroidModuleActionDialog(
     }
 
     override fun doOKAction() {
-        if (selectedAppModule != null) {
+        if (appModuleComboBoxModel.selected != null) {
             super.doOKAction()
         } else {
             appModuleComboBox?.let { comboBox ->
@@ -89,6 +88,6 @@ class CopyAndroidModuleActionDialog(
 
     fun getPackageName(): String = moduleNamePanel.getPackageName()
 
-    fun getSelectedModule(): Module = selectedAppModule!!
+    fun getSelectedModule(): Module = appModuleComboBoxModel.selected!!
 
 }
