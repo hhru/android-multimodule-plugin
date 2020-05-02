@@ -61,7 +61,9 @@ class BuildGradleModificationService {
     }
 
     private fun modifyDependenciesBlock(buildGradlePsiFile: PsiFile, gradleDependencies: List<GradleDependency>) {
-        buildGradlePsiFile.findDescendantOfType<GrMethodCallExpression> { it.text.startsWith(DEPENDENCIES_BLOCK_NAME) }
+        buildGradlePsiFile.findDescendantOfType<GrMethodCallExpression> { callExpression ->
+            callExpression.text.startsWith(DEPENDENCIES_BLOCK_NAME) && callExpression.parent == buildGradlePsiFile
+        }
             ?.findDescendantOfType<GrClosableBlock>()
             ?.let { dependenciesBlock ->
                 val factory = GroovyPsiElementFactory.getInstance(dependenciesBlock.project)
