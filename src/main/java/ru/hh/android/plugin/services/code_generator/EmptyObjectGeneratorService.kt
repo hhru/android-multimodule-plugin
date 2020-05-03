@@ -21,6 +21,7 @@ class EmptyObjectGeneratorService {
 
     companion object {
         private const val EMPTY_STRING_PROPERTY_FQN = "ru.hh.android.utils.EMPTY"
+        private const val STRING_PARAMETER_TYPE_NAME = "String"
     }
 
 
@@ -36,6 +37,9 @@ class EmptyObjectGeneratorService {
         """
         val ktPsiFactory = KtPsiFactory(project)
         val propertyDeclaration = ktPsiFactory.createProperty(newEmptyObjectDeclaration)
+        val hasStringParameter = ktClass.primaryConstructorParameters.any { parameter ->
+            parameter.type()?.nameIfStandardType?.identifier == STRING_PARAMETER_TYPE_NAME
+        }
 
         executeCommand {
             runWriteAction {
@@ -46,7 +50,9 @@ class EmptyObjectGeneratorService {
 
                 val companionObjectBody = companionObject.getOrCreateBody()
                 companionObjectBody.addBefore(propertyDeclaration, companionObjectBody.rBrace)
-                ktClass.containingKtFile.addImportPackages(EMPTY_STRING_PROPERTY_FQN)
+                if (hasStringParameter) {
+                    ktClass.containingKtFile.addImportPackages(EMPTY_STRING_PROPERTY_FQN)
+                }
 
                 ktClass.reformatWithCodeStyle()
             }
@@ -72,8 +78,8 @@ class EmptyObjectGeneratorService {
             else -> {
                 val identifier = parameterType.nameIfStandardType?.identifier
                 when {
-                    identifier.isNullOrBlank() -> "null"
-                    identifier == "String" -> "String.EMPTY"
+                    identifier.isNullOrBlank() -> "$parameterType.$EMPTY_OBJECT_PROPERTY_NAME"
+                    identifier == STRING_PARAMETER_TYPE_NAME -> "$STRING_PARAMETER_TYPE_NAME.$EMPTY_OBJECT_PROPERTY_NAME"
                     identifier == "Byte" -> "0"
                     identifier == "Int" -> "0"
                     identifier == "Short" -> "0"
