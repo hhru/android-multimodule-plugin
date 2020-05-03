@@ -80,6 +80,12 @@
 
         <!-- region Boilerplate routine actions -->
         <group description="Boilerplate actions" text="Boilerplate" id="ru.hh.android.plugins.antiroutine.boilerplate">
+            <action class="ru.hh.android.plugin.actions.boilerplate.serialized_name.AddSerializedNameAnnotationsAction"
+                    id="ru.hh.android.plugin.actions.boilerplate.serialized_name.AddSerializedNameAnnotationsAction"
+                    text="Add @SerializedName Annotations..."
+                    description="Generates @SeriaizedName annotations for each constructor parameter of Kotlin data class">
+                <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="KotlinGenerateGroup"/>
+            </action>
             <action class="ru.hh.android.plugin.actions.boilerplate.empty_object.EmptyObjectGeneratorAction"
                     id="ru.hh.android.plugin.actions.boilerplate.empty_object.EmptyObjectGeneratorAction"
                     text="Generate EMPTY Object..." description="Generates EMPTY object declaration in Kotlin data class">
