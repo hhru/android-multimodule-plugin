@@ -116,6 +116,7 @@
                 displayName="HeadHunter Plugin"
                 instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
         <projectService serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.config.JiraSettingsConfig"/>
         <!-- endregion -->
 
         <!-- region Plugin services -->
