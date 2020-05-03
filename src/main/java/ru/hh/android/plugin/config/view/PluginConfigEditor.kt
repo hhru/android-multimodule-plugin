@@ -8,7 +8,7 @@ import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
 import ru.hh.android.plugin.core.model.jira.JiraSettings
-import ru.hh.android.plugin.utils.PluginBundle
+import ru.hh.android.plugin.utils.PluginBundle.message
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JPasswordField
@@ -51,32 +51,32 @@ class PluginConfigEditor(
     @Suppress("UnstableApiUsage")
     fun createComponent(): JComponent? {
         return panel {
-            titledRow(PluginBundle.message("geminio.config_editor.plugin_folder")) {
+            titledRow(message("antiroutine.config_editor.plugin_folder")) {
                 row {
                     pluginFolderDirPathTextField = JTextField(initialPluginFolderDirPath)
                     pluginFolderDirPathTextField(CCFlags.growX)
                 }
             }
 
-            titledRow(PluginBundle.message("geminio.config_editor.debug_mode")) {
+            titledRow(message("antiroutine.config_editor.debug_mode")) {
                 row {
                     enableDebugModeCheckBox = checkBox(
-                        text = PluginBundle.message("geminio.config_editor.enable_debug_mode"),
+                        text = message("antiroutine.config_editor.enable_debug_mode"),
                         isSelected = initialEnableDebugMode
                     )
                 }
             }
 
-            titledRow("Enter your JIRA credentials: ") {
-                row("Host name:") {
+            titledRow(message("antiroutine.config_editor.jira_title")) {
+                row(message("antiroutine.config_editor.jira_host")) {
                     jiraHostNameTextField = JTextField(initialJiraHostName)
                     jiraHostNameTextField()
                 }
-                row("Username:") {
+                row(message("antiroutine.config_editor.jira_username")) {
                     jiraUsernameTextField = JTextField(initialJiraUsername)
                     jiraUsernameTextField()
                 }
-                row("Password") {
+                row(message("antiroutine.config_editor.jira_password")) {
                     jiraPasswordTextField = JPasswordField(initialJiraPassword.toString())
                     jiraPasswordTextField()
                 }
