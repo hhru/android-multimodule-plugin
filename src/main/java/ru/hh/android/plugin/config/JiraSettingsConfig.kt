@@ -6,9 +6,9 @@ import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
-import com.intellij.openapi.components.service
-import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.PluginConstants
+import ru.hh.android.plugin.core.model.jira.JiraSettings
+import ru.hh.android.plugin.extensions.EMPTY
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -19,8 +19,6 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
 
     companion object {
         private const val KEY_FILE_NAME = "jiraHostName.txt"
-
-        fun getInstance(project: Project): JiraSettingsConfig = project.service()
     }
 
 
@@ -67,6 +65,15 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
         PasswordSafe.instance.set(credentialAttributes, credentials)
     }
 
+    fun getJiraSettings(): JiraSettings {
+        val configData = state
+
+        return JiraSettings(
+            hostName = key ?: String.EMPTY,
+            username = configData?.userName ?: String.EMPTY,
+            password = configData?.password ?: String.EMPTY
+        )
+    }
 
     private fun createCredentialAttributes(): CredentialAttributes {
         return CredentialAttributes(generateServiceName(PluginConstants.SUBSYSTEM_NAME, key!!))

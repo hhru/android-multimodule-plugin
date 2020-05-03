@@ -5,7 +5,6 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.view.PluginConfigEditor
 import ru.hh.android.plugin.core.model.jira.JiraSettings
-import ru.hh.android.plugin.extensions.EMPTY
 import javax.swing.JComponent
 
 
@@ -58,13 +57,7 @@ class PluginConfigConfigurable(
 
     private fun getJiraSettings(project: Project): JiraSettings {
         val config = project.service<JiraSettingsConfig>()
-        val configData = config.state
-
-        return JiraSettings(
-            hostName = config.key ?: String.EMPTY,
-            username = configData?.userName ?: String.EMPTY,
-            password = configData?.password ?: String.EMPTY
-        )
+        return config.getJiraSettings()
     }
 
 }
