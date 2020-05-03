@@ -12,3 +12,7 @@ fun Project.logDebug(message: String) {
 fun Project.logInfo(message: String) {
     service<Logger>().info(message)
 }
+
+fun Project.logError(message: String) {
+    service<Logger>().error(message)
+}

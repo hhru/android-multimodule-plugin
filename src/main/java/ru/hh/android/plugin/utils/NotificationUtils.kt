@@ -12,6 +12,6 @@ fun Project.notifyError(message: String) {
 }
 
 fun Project.notifyInfo(message: String) {
-    service<NotificationsFactory>().info(message)
+//    service<NotificationsFactory>().info(message)
     service<Logger>().info(message)
 }

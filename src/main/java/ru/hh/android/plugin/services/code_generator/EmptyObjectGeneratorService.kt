@@ -12,11 +12,17 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.getOrCreateBody
 import org.jetbrains.kotlin.psi.psiUtil.findPropertyByName
 import ru.hh.android.plugin.CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME
+import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
 import ru.hh.android.plugin.utils.reformatWithCodeStyle
 
 
 @Service
 class EmptyObjectGeneratorService {
+
+    companion object {
+        private const val EMPTY_STRING_PROPERTY_FQN = "ru.hh.android.utils.EMPTY"
+    }
+
 
     fun addEmptyObjectIntoKtClass(ktClass: KtClass) {
         val project = ktClass.project
@@ -40,6 +46,7 @@ class EmptyObjectGeneratorService {
 
                 val companionObjectBody = companionObject.getOrCreateBody()
                 companionObjectBody.addBefore(propertyDeclaration, companionObjectBody.rBrace)
+                ktClass.containingKtFile.addImportPackages(EMPTY_STRING_PROPERTY_FQN)
 
                 ktClass.reformatWithCodeStyle()
             }
@@ -66,7 +73,7 @@ class EmptyObjectGeneratorService {
                 val identifier = parameterType.nameIfStandardType?.identifier
                 when {
                     identifier.isNullOrBlank() -> "null"
-                    identifier == "String" -> "\"\""
+                    identifier == "String" -> "String.EMPTY"
                     identifier == "Byte" -> "0"
                     identifier == "Int" -> "0"
                     identifier == "Short" -> "0"
@@ -78,7 +85,7 @@ class EmptyObjectGeneratorService {
                     identifier.startsWith("Array") -> "emptyArray()"
                     identifier.startsWith("Set") -> "emptySet()"
                     identifier.startsWith("Map") -> "emptyMap()"
-                    else -> "null"
+                    else -> "$parameterType.$EMPTY_OBJECT_PROPERTY_NAME"
                 }
             }
         }
