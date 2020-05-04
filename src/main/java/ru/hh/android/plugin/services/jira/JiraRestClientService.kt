@@ -37,12 +37,13 @@ class JiraRestClientService(
 
     @Suppress("UnstableApiUsage")
     fun createMergeDevelopToPortfolioIssue(portfolioKey: String): String {
+        val pluginConfig = PluginConfig.getInstance(project)
         val issueClient = jiraRestClient.issueClient
         val issueKey = issueClient.createIssue(
             jiraIssueFactory.mergeDevelopToPortfolioIssue(
                 portfolioKey = portfolioKey,
                 creatorName = jiraSettings.username,
-                developmentTeam = JiraDevelopmentTeam.MOBILE_CORE
+                developmentTeam = pluginConfig.jiraDevelopmentTeam
             )
         ).claim().key
 

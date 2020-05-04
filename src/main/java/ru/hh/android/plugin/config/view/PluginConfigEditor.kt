@@ -2,10 +2,13 @@ package ru.hh.android.plugin.config.view
 
 import com.intellij.credentialStore.Credentials
 import com.intellij.openapi.project.Project
+import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.layout.CCFlags
+import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
+import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.android.plugin.core.model.jira.JiraSettings
 import ru.hh.android.plugin.utils.PluginBundle.message
 import javax.swing.JCheckBox
@@ -22,7 +25,8 @@ class PluginConfigEditor(
     private val initialEnableDebugMode: Boolean,
     private val initialJiraHostName: String,
     private val initialJiraUsername: String,
-    private val initialJiraPassword: CharSequence
+    private val initialJiraPassword: CharSequence,
+    private val initialJiraDevelopmentTeam: JiraDevelopmentTeam
 ) {
 
     companion object {
@@ -33,7 +37,8 @@ class PluginConfigEditor(
                 initialEnableDebugMode = pluginConfig.enableDebugMode,
                 initialJiraHostName = jiraSettings.hostName,
                 initialJiraUsername = jiraSettings.username,
-                initialJiraPassword = jiraSettings.password
+                initialJiraPassword = jiraSettings.password,
+                initialJiraDevelopmentTeam = pluginConfig.jiraDevelopmentTeam
             )
         }
 
@@ -45,6 +50,7 @@ class PluginConfigEditor(
     private lateinit var jiraHostNameTextField: JTextField
     private lateinit var jiraUsernameTextField: JTextField
     private lateinit var jiraPasswordTextField: JPasswordField
+    private lateinit var jiraDevelopmentTeamComboBoxModel: CollectionComboBoxModel<String>
 
 
     @Suppress("UnstableApiUsage")
@@ -80,6 +86,22 @@ class PluginConfigEditor(
                     jiraPasswordTextField()
                 }
             }
+
+            titledRow(message("antiroutine.config_editor.jira_development_team")) {
+                row {
+                    jiraDevelopmentTeamComboBoxModel = CollectionComboBoxModel(JiraDevelopmentTeam.values().map { it.comboBoxLabel })
+                    jiraDevelopmentTeamComboBoxModel.selectedItem = initialJiraDevelopmentTeam.comboBoxLabel
+                    cell {
+                        comboBox(
+                            model = jiraDevelopmentTeamComboBoxModel,
+                            getter = { jiraDevelopmentTeamComboBoxModel.selected },
+                            setter = { /* do nothing */ },
+                            growPolicy = GrowPolicy.SHORT_TEXT,
+                            renderer = null
+                        ).also { it.component(CCFlags.growX) }
+                    }
+                }
+            }
         }
     }
 
@@ -89,11 +111,13 @@ class PluginConfigEditor(
             || initialJiraHostName != jiraHostNameTextField.text
             || initialJiraUsername != jiraUsernameTextField.text
             || initialJiraPassword != jiraPasswordTextField.text
+            || initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
         pluginConfig.enableDebugMode = enableDebugModeCheckBox.isSelected
+        pluginConfig.jiraDevelopmentTeam = JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
 
         with(JiraSettingsConfig.getInstance(project)) {
             writeHostname(jiraHostNameTextField.text)
