@@ -94,6 +94,20 @@
             </action>
         </group>
         <!-- endregion -->
+
+        <!-- region Jira actions -->
+        <group id="ru.hh.android.plugins.antiroutine.JiraToolsGroup"
+               text="Antiroutine JIRA"
+               description="Antiroutine's actions for simplifying life with JIRA"
+               popup="true">
+            <action id="ru.hh.android.plugin.actions.jira.merge_develop_to_portfolio.JiraMergeDevelopToPortfolioAction"
+                    class="ru.hh.android.plugin.actions.jira.merge_develop_to_portfolio.JiraMergeDevelopToPortfolioAction"
+                    text="Create Merge-Develop-To-Portfolio Issue..."
+                    description="Creates JIRA issue for merge develop branch into PORTFOLIO-branch"/>
+            <separator/>
+            <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="KotlinToolsGroup"/>
+        </group>
+        <!-- endregion -->
     </actions>
 
     <project-components>
@@ -131,6 +145,7 @@
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraIssueFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraLinkFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraRestClientService"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.services.git.GitService"/>
         <!-- endregion -->
     </extensions>
 
