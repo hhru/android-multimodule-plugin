@@ -2,7 +2,7 @@ package ru.hh.android.plugin.generator.steps
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
-import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
+import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
 import ru.hh.android.plugin.extensions.psi.groovy.createProjectDirPathExpression
 import ru.hh.android.plugin.extensions.psi.groovy.generateIncludeExpression

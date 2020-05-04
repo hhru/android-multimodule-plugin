@@ -32,16 +32,16 @@ ext {
     supportedVersions = [
             'android_studio__3_5_3': [
                     'ideVersion': "191.8026.42",
-                    'plugins'   : ["android", "Kotlin", "Groovy"]
+                    'plugins'   : ["android", "Kotlin", "Groovy", "git4idea"]
             ],
             // Has bug with android project synchronization =(
             'android_studio__3_6_3': [
                     'ideVersion': "192.7142.36",
-                    'plugins'   : ["android", "Kotlin", "java", "Groovy"]
+                    'plugins'   : ["android", "Kotlin", "java", "Groovy", "git4idea"]
             ],
             'android_studio__4_0_beta': [
                     'ideVersion': "193.6911.18",
-                    'plugins'   : ["android", "Kotlin", "java", "Groovy"]
+                    'plugins'   : ["android", "Kotlin", "java", "Groovy", "git4idea"]
             ]
     ]
 }
@@ -50,7 +50,9 @@ ext {
 def currentVersion = supportedVersions['android_studio__3_6_3']
 
 intellij.type = 'IC'
-intellij.version = currentVersion.ideVersion
+intellij.localPath = "/Applications/Android Studio.app"
+// Use this only for documentation
+//intellij.version = currentVersion.ideVersion
 intellij.plugins = currentVersion.plugins
 
 // endregion
