@@ -1,7 +1,6 @@
 package ru.hh.android.plugin.config.view
 
 import com.intellij.credentialStore.Credentials
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
@@ -96,7 +95,7 @@ class PluginConfigEditor(
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
         pluginConfig.enableDebugMode = enableDebugModeCheckBox.isSelected
 
-        with(project.service<JiraSettingsConfig>()) {
+        with(JiraSettingsConfig.newInstance(project)) {
             writeHostname(jiraHostNameTextField.text)
             loadState(Credentials(jiraUsernameTextField.text, jiraPasswordTextField.text))
         }

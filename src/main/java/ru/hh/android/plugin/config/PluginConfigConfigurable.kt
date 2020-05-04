@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.config
 
-import com.intellij.openapi.components.service
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.view.PluginConfigEditor
@@ -56,7 +55,7 @@ class PluginConfigConfigurable(
 
 
     private fun getJiraSettings(project: Project): JiraSettings {
-        val config = project.service<JiraSettingsConfig>()
+        val config = JiraSettingsConfig.newInstance(project)
         return config.getJiraSettings()
     }
 

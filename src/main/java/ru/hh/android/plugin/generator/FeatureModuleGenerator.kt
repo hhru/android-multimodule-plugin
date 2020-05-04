@@ -1,7 +1,6 @@
 package ru.hh.android.plugin.generator
 
 import com.intellij.openapi.components.ProjectComponent
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.generator.steps.*
 import ru.hh.android.plugin.generator.templates.ModuleFilesFactory
@@ -13,8 +12,8 @@ import ru.hh.android.plugin.services.NotificationsFactory
 
 
 class FeatureModuleGenerator(
-        private val project: Project,
-        private val createModuleConfigConverter: CreateModuleConfigConverter
+    private val project: Project,
+    private val createModuleConfigConverter: CreateModuleConfigConverter
 ) : ProjectComponent {
 
     companion object {
@@ -41,7 +40,7 @@ class FeatureModuleGenerator(
         val addFeatureModuleIntoDependenciesStep = AddFeatureModuleIntoDependenciesStep()
         addFeatureModuleIntoDependenciesStep.execute(config)
 
-        project.service<NotificationsFactory>().info(SUCCESS_MESSAGE)
+        NotificationsFactory.newInstance(project).info(SUCCESS_MESSAGE)
     }
 
 }

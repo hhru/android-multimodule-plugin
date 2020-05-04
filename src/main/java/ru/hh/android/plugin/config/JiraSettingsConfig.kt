@@ -6,6 +6,8 @@ import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.model.jira.JiraSettings
 import ru.hh.android.plugin.extensions.EMPTY
@@ -19,6 +21,8 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
 
     companion object {
         private const val KEY_FILE_NAME = "jiraHostName.txt"
+
+        fun newInstance(project: Project): JiraSettingsConfig = project.service()
     }
 
 

@@ -4,6 +4,8 @@ import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldVal
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.core.model.jira.*
 import ru.hh.android.plugin.utils.PluginBundle.message
 
@@ -13,6 +15,8 @@ class JiraIssueFactory {
 
     companion object {
         private const val CUSTOM_FIELD_ID_KEY = "id"
+
+        fun newInstance(project: Project): JiraIssueFactory = project.service()
     }
 
 

@@ -15,10 +15,14 @@ class JiraRestClientService(
     private val project: Project
 ) {
 
-    private val jiraSettings get() = project.service<JiraSettingsConfig>().getJiraSettings()
+    companion object {
+        fun newInstance(project: Project): JiraRestClientService = project.service()
+    }
 
-    private val jiraIssueFactory by lazy { project.service<JiraIssueFactory>() }
-    private val jiraLinkFactory by lazy { project.service<JiraLinkFactory>() }
+
+    private val jiraSettings get() = JiraSettingsConfig.newInstance(project).getJiraSettings()
+    private val jiraIssueFactory by lazy { JiraIssueFactory.newInstance(project) }
+    private val jiraLinkFactory by lazy { JiraLinkFactory.newInstance(project) }
 
     private val jiraRestClient: JiraRestClient
         get() {

@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.actions.modules.copy_module.view
 
-import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -23,7 +22,8 @@ class CopyAndroidModuleActionDialog(
     private val moduleName: String
 ) : DialogWrapper(project, true) {
 
-    private val appModuleComboBoxModel = project.service<ModuleRepository>().fetchAppModules().run { CollectionComboBoxModel(this) }
+    private val appModuleComboBoxModel = ModuleRepository.newInstance(project).fetchAppModules()
+        .run { CollectionComboBoxModel(this) }
 
     private val moduleNamePanel = ModuleNamePanel(
         moduleNameSectionLabel = message("geminio.common.forms.new_module_name"),

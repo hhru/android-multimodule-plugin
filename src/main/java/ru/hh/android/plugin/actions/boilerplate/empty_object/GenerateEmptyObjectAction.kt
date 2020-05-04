@@ -2,7 +2,6 @@ package ru.hh.android.plugin.actions.boilerplate.empty_object
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.components.service
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.psiUtil.findPropertyByName
 import ru.hh.android.plugin.CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME
@@ -35,7 +34,7 @@ class GenerateEmptyObjectAction : AnAction() {
 
     private fun handleAction(ktClass: KtClass) {
         with(ktClass.project) {
-            service<EmptyObjectGeneratorService>().addEmptyObjectIntoKtClass(ktClass)
+            EmptyObjectGeneratorService.newInstance(this).addEmptyObjectIntoKtClass(ktClass)
             notifyInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
         }
     }

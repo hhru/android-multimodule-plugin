@@ -4,7 +4,6 @@ import com.android.tools.idea.gradle.actions.SyncProjectAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
-import com.intellij.openapi.components.service
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiPlainTextFile
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
@@ -77,13 +76,13 @@ class CopyAndroidModuleAction : AnAction() {
             executeCommand {
                 runWriteAction {
                     copyModule(newModuleParams)
-                    project.service<SettingsGradleModificationService>()
+                    SettingsGradleModificationService.newInstance(project)
                         .addGradleModuleDescription(
                             project = project,
                             moduleName = newModuleParams.newModuleName,
                             moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
                         )
-                    project.service<BuildGradleModificationService>()
+                    BuildGradleModificationService.newInstance(project)
                         .addGradleDependenciesIntoModule(
                             module = newModuleParams.appModule,
                             gradleDependencies = listOf(
@@ -131,7 +130,7 @@ class CopyAndroidModuleAction : AnAction() {
                     psiFile.copyFile().also { newPsiFile ->
                         if (newPsiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
                             project.logDebug("\tFind build.gradle file, need modification of dependencies block")
-                            project.service<BuildGradleModificationService>()
+                            BuildGradleModificationService.newInstance(project)
                                 .addGradleDependenciesIntoBuildGradleFile(
                                     psiFile = newPsiFile,
                                     gradleDependencies = listOf(

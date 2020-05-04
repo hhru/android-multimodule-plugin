@@ -1,7 +1,6 @@
 package ru.hh.android.plugin.actions.boilerplate.serialized_name
 
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.components.service
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.android.plugin.actions.KotlinDataClassAction
 import ru.hh.android.plugin.extensions.getKotlinDataClass
@@ -20,7 +19,7 @@ class GenerateSerializedNameAnnotationsAction : KotlinDataClassAction() {
 
     private fun handleAction(ktClass: KtClass) {
         with(ktClass.project) {
-            service<SerializedNameAnnotationsGeneratorService>().addSerializedNameAnnotationsIntoClass(ktClass)
+            SerializedNameAnnotationsGeneratorService.newInstance(this).addSerializedNameAnnotationsIntoClass(ktClass)
             notifyInfo(PluginBundle.message("antiroutine.generate_serialized_name.success"))
         }
     }
