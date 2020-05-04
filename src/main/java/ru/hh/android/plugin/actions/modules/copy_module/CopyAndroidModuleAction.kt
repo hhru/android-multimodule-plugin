@@ -30,8 +30,8 @@ import ru.hh.android.plugin.services.code_generator.BuildGradleModificationServi
 import ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService
 import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
-import ru.hh.android.plugin.utils.logError
-import ru.hh.android.plugin.utils.logInfo
+import ru.hh.android.plugin.utils.notifyError
+import ru.hh.android.plugin.utils.notifyInfo
 import kotlin.system.measureTimeMillis
 
 
@@ -62,7 +62,7 @@ class CopyAndroidModuleAction : AnAction() {
         dialog.show()
 
         if (dialog.isOK.not()) {
-            project.logError(message("geminio.notifications.copy_module.cancel"))
+            project.notifyError(message("geminio.notifications.copy_module.cancel"))
             return
         }
 
@@ -97,7 +97,7 @@ class CopyAndroidModuleAction : AnAction() {
 
                     SyncProjectAction().actionPerformed(actionData.actionEvent)
 
-                    project.logInfo(message("geminio.notifications.copy_module.success.0", newModuleParams.moduleToCopy.name))
+                    project.notifyInfo(message("geminio.notifications.copy_module.success.0", newModuleParams.moduleToCopy.name))
                 }
             }
         }
@@ -115,8 +115,6 @@ class CopyAndroidModuleAction : AnAction() {
         val mainPackagesInfo = getMainPackagesInfo(dirsStructure, params)
         copyAndroidManifestFile(mainPackagesInfo, params.moduleToCopy.name)
         copyFilesFromMainPackage(mainPackagesInfo)
-
-        project.logInfo(message("geminio.notifications.copy_module.success.0", params.moduleToCopy.name))
     }
 
     private fun copyFilesFromRootDirectory(params: NewModuleParams, newModulePsiDirectory: PsiDirectory) {
@@ -237,12 +235,12 @@ class CopyAndroidModuleAction : AnAction() {
         val parentFolder = moduleToCopy.moduleParentPsiDirectory
         when {
             parentFolder == null -> {
-                project.logError(message("geminio.notifications.copy_module.no_parent_folder.0", moduleToCopy.name))
+                project.notifyError(message("geminio.notifications.copy_module.no_parent_folder.0", moduleToCopy.name))
                 return false
             }
 
             parentFolder.canCreateSubdirectory(newModuleName).not() -> {
-                project.logError(message("geminio.notifications.copy_module.cant_create_module_folder.0", newModuleName))
+                project.notifyError(message("geminio.notifications.copy_module.cant_create_module_folder.0", newModuleName))
                 return false
             }
         }
