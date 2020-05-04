@@ -17,7 +17,7 @@ class Logger(
     companion object {
         private const val EVENT_TITLE = "Geminio"
 
-        fun newInstance(project: Project): Logger = project.service()
+        fun getInstance(project: Project): Logger = project.service()
 
     }
 

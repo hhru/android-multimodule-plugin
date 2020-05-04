@@ -34,7 +34,7 @@ class GenerateEmptyObjectAction : AnAction() {
 
     private fun handleAction(ktClass: KtClass) {
         with(ktClass.project) {
-            EmptyObjectGeneratorService.newInstance(this).addEmptyObjectIntoKtClass(ktClass)
+            EmptyObjectGeneratorService.getInstance(this).addEmptyObjectIntoKtClass(ktClass)
             notifyInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
         }
     }

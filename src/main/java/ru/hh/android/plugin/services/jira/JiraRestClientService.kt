@@ -6,7 +6,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.JiraSettingsConfig
-import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
+import ru.hh.android.plugin.config.PluginConfig
 import java.net.URI
 
 
@@ -16,13 +16,13 @@ class JiraRestClientService(
 ) {
 
     companion object {
-        fun newInstance(project: Project): JiraRestClientService = project.service()
+        fun getInstance(project: Project): JiraRestClientService = project.service()
     }
 
 
-    private val jiraSettings get() = JiraSettingsConfig.newInstance(project).getJiraSettings()
-    private val jiraIssueFactory by lazy { JiraIssueFactory.newInstance(project) }
-    private val jiraLinkFactory by lazy { JiraLinkFactory.newInstance(project) }
+    private val jiraSettings get() = JiraSettingsConfig.getInstance(project).getJiraSettings()
+    private val jiraIssueFactory by lazy { JiraIssueFactory.getInstance(project) }
+    private val jiraLinkFactory by lazy { JiraLinkFactory.getInstance(project) }
 
     private val jiraRestClient: JiraRestClient
         get() {

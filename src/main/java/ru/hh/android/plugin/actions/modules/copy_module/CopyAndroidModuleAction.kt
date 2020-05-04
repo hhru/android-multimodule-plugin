@@ -76,13 +76,13 @@ class CopyAndroidModuleAction : AnAction() {
             executeCommand {
                 runWriteAction {
                     copyModule(newModuleParams)
-                    SettingsGradleModificationService.newInstance(project)
+                    SettingsGradleModificationService.getInstance(project)
                         .addGradleModuleDescription(
                             project = project,
                             moduleName = newModuleParams.newModuleName,
                             moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
                         )
-                    BuildGradleModificationService.newInstance(project)
+                    BuildGradleModificationService.getInstance(project)
                         .addGradleDependenciesIntoModule(
                             module = newModuleParams.appModule,
                             gradleDependencies = listOf(
@@ -130,7 +130,7 @@ class CopyAndroidModuleAction : AnAction() {
                     psiFile.copyFile().also { newPsiFile ->
                         if (newPsiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
                             project.logDebug("\tFind build.gradle file, need modification of dependencies block")
-                            BuildGradleModificationService.newInstance(project)
+                            BuildGradleModificationService.getInstance(project)
                                 .addGradleDependenciesIntoBuildGradleFile(
                                     psiFile = newPsiFile,
                                     gradleDependencies = listOf(

@@ -19,7 +19,7 @@ class SettingsGradleModificationService {
     companion object {
         private const val SETTINGS_GRADLE_FILENAME = "settings.gradle"
 
-        fun newInstance(project: Project): SettingsGradleModificationService = project.service()
+        fun getInstance(project: Project): SettingsGradleModificationService = project.service()
     }
 
 

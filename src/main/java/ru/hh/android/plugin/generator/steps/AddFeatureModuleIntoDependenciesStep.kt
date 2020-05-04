@@ -18,7 +18,7 @@ class AddFeatureModuleIntoDependenciesStep {
 
 
     private fun modifyDependenciesBlock(module: Module, config: CreateModuleConfig) {
-        BuildGradleModificationService.newInstance(module.project)
+        BuildGradleModificationService.getInstance(module.project)
             .addGradleDependenciesIntoModule(
                 module = module,
                 gradleDependencies = listOf(

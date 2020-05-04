@@ -5,13 +5,13 @@ import ru.hh.android.plugin.services.Logger
 
 
 fun Project.logDebug(message: String) {
-    Logger.newInstance(this).debug(message)
+    Logger.getInstance(this).debug(message)
 }
 
 fun Project.logInfo(message: String) {
-    Logger.newInstance(this).info(message)
+    Logger.getInstance(this).info(message)
 }
 
 fun Project.logError(message: String) {
-    Logger.newInstance(this).error(message)
+    Logger.getInstance(this).error(message)
 }

@@ -55,7 +55,7 @@ class PluginConfigConfigurable(
 
 
     private fun getJiraSettings(project: Project): JiraSettings {
-        val config = JiraSettingsConfig.newInstance(project)
+        val config = JiraSettingsConfig.getInstance(project)
         return config.getJiraSettings()
     }
 

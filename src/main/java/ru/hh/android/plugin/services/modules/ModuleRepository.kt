@@ -15,7 +15,7 @@ class ModuleRepository(
 ) {
 
     companion object {
-        fun newInstance(project: Project): ModuleRepository = project.service()
+        fun getInstance(project: Project): ModuleRepository = project.service()
     }
 
     fun fetchAppModules(): List<Module> {

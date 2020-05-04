@@ -19,7 +19,7 @@ class JiraMergeDevelopToPortfolioAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         e.project?.let { project ->
-            val issueKey = JiraRestClientService.newInstance(project)
+            val issueKey = JiraRestClientService.getInstance(project)
                 .createMergeDevelopToPortfolioIssue(e.getCurrentPortfolioBranchName())
 
             project.notifyInfo(PluginBundle.message("antiroutine.jira.merge_develop_into_portfolio.success.0", issueKey))

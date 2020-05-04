@@ -22,7 +22,7 @@ class CopyAndroidModuleActionDialog(
     private val moduleName: String
 ) : DialogWrapper(project, true) {
 
-    private val appModuleComboBoxModel = ModuleRepository.newInstance(project).fetchAppModules()
+    private val appModuleComboBoxModel = ModuleRepository.getInstance(project).fetchAppModules()
         .run { CollectionComboBoxModel(this) }
 
     private val moduleNamePanel = ModuleNamePanel(

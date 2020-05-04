@@ -24,7 +24,7 @@ class SerializedNameAnnotationsGeneratorService {
         private const val ANNOTATION_NAME = "SerializedName"
         private const val SERIALIZED_NAME_ANNOTATION_FQN = "com.google.gson.annotations.SerializedName"
 
-        fun newInstance(project: Project): SerializedNameAnnotationsGeneratorService = project.service()
+        fun getInstance(project: Project): SerializedNameAnnotationsGeneratorService = project.service()
     }
 
 

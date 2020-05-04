@@ -22,7 +22,7 @@ class NotificationsFactory(
         private val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
         private val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
 
-        fun newInstance(project: Project): NotificationsFactory = project.service()
+        fun getInstance(project: Project): NotificationsFactory = project.service()
     }
 
     private val loggingNotificationGroup = NotificationGroup.balloonGroup(LOGGING_NOTIFICATION_GROUP_ID)

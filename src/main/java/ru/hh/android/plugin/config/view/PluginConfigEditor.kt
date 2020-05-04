@@ -95,7 +95,7 @@ class PluginConfigEditor(
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
         pluginConfig.enableDebugMode = enableDebugModeCheckBox.isSelected
 
-        with(JiraSettingsConfig.newInstance(project)) {
+        with(JiraSettingsConfig.getInstance(project)) {
             writeHostname(jiraHostNameTextField.text)
             loadState(Credentials(jiraUsernameTextField.text, jiraPasswordTextField.text))
         }

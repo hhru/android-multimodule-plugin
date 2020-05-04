@@ -22,7 +22,7 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
     companion object {
         private const val KEY_FILE_NAME = "jiraHostName.txt"
 
-        fun newInstance(project: Project): JiraSettingsConfig = project.service()
+        fun getInstance(project: Project): JiraSettingsConfig = project.service()
     }
 
 

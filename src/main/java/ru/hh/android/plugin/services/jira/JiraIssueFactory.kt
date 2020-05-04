@@ -16,7 +16,7 @@ class JiraIssueFactory {
     companion object {
         private const val CUSTOM_FIELD_ID_KEY = "id"
 
-        fun newInstance(project: Project): JiraIssueFactory = project.service()
+        fun getInstance(project: Project): JiraIssueFactory = project.service()
     }
 
 

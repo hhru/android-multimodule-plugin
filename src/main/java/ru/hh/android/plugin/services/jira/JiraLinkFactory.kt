@@ -10,7 +10,7 @@ import ru.hh.android.plugin.core.model.jira.JiraLinkType
 class JiraLinkFactory {
 
     companion object {
-        fun newInstance(project: Project): JiraLinkFactory = project.service()
+        fun getInstance(project: Project): JiraLinkFactory = project.service()
     }
 
     fun issueConsistsInAnotherIssue(consistingIssueKey: String, includingIssueKey: String): LinkIssuesInput {

@@ -18,7 +18,7 @@ class FeatureModuleWizardModel(
 ) : WizardModel("Feature module wizard") {
 
     init {
-        val moduleRepository = ModuleRepository.newInstance(project)
+        val moduleRepository = ModuleRepository.getInstance(project)
 
         add(FeatureModuleParamsWizardStep(project, this))
         add(ChooseModulesWizardStep(this, moduleRepository))

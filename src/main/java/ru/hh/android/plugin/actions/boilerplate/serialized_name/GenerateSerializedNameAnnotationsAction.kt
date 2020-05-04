@@ -19,7 +19,7 @@ class GenerateSerializedNameAnnotationsAction : KotlinDataClassAction() {
 
     private fun handleAction(ktClass: KtClass) {
         with(ktClass.project) {
-            SerializedNameAnnotationsGeneratorService.newInstance(this).addSerializedNameAnnotationsIntoClass(ktClass)
+            SerializedNameAnnotationsGeneratorService.getInstance(this).addSerializedNameAnnotationsIntoClass(ktClass)
             notifyInfo(PluginBundle.message("antiroutine.generate_serialized_name.success"))
         }
     }

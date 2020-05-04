@@ -25,7 +25,7 @@ class EmptyObjectGeneratorService {
         private const val EMPTY_STRING_PROPERTY_FQN = "ru.hh.android.utils.EMPTY"
         private const val STRING_PARAMETER_TYPE_NAME = "String"
 
-        fun newInstance(project: Project): EmptyObjectGeneratorService = project.service()
+        fun getInstance(project: Project): EmptyObjectGeneratorService = project.service()
     }
 
 

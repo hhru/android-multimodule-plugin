@@ -15,7 +15,7 @@ class GitService(
     companion object {
         private val PORTFOLIO_BRANCH_REGEX = "((^PORTFOLIO-[0-9]+)((_)*[a-zA-Z]+)*)".toRegex()
 
-        fun newInstance(project: Project): GitService = project.service()
+        fun getInstance(project: Project): GitService = project.service()
     }
 
 

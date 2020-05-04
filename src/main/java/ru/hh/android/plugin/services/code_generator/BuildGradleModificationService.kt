@@ -32,7 +32,7 @@ class BuildGradleModificationService {
 
         private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
 
-        fun newInstance(project: Project): BuildGradleModificationService = project.service()
+        fun getInstance(project: Project): BuildGradleModificationService = project.service()
     }
 
 

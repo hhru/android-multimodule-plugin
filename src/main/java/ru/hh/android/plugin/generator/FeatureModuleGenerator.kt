@@ -40,7 +40,7 @@ class FeatureModuleGenerator(
         val addFeatureModuleIntoDependenciesStep = AddFeatureModuleIntoDependenciesStep()
         addFeatureModuleIntoDependenciesStep.execute(config)
 
-        NotificationsFactory.newInstance(project).info(SUCCESS_MESSAGE)
+        NotificationsFactory.getInstance(project).info(SUCCESS_MESSAGE)
     }
 
 }

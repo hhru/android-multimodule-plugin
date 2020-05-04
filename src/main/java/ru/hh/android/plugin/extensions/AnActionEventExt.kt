@@ -59,4 +59,4 @@ private val AnActionEvent.selectedKtClass: KtClass?
     get() = (getSelectedPsiElement() as? KtFile)?.classes?.firstIsInstanceOrNull()
 
 private val AnActionEvent.portfolioBranchName: String
-    get() = project?.let { GitService.newInstance(it) }?.extractPortfolioBranchName() ?: String.EMPTY
+    get() = project?.let { GitService.getInstance(it) }?.extractPortfolioBranchName() ?: String.EMPTY
