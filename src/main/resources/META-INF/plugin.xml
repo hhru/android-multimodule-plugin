@@ -57,6 +57,7 @@
     <depends>org.jetbrains.kotlin</depends>
     <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.android</depends>
+    <depends>Git4Idea</depends>
 
     <idea-version since-build="192.7142.36"/>
 
