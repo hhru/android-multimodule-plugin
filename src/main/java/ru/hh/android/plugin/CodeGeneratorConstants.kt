@@ -10,4 +10,6 @@ object CodeGeneratorConstants {
     const val JAVA_SOURCE_FOLDER_NAME = "java"
     const val KOTLIN_SOURCE_FOLDER_NAME = "kotlin"
 
+    const val EMPTY_OBJECT_PROPERTY_NAME = "EMPTY"
+
 }

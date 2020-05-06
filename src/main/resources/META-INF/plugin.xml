@@ -61,6 +61,7 @@
     <idea-version since-build="192.7142.36"/>
 
     <actions>
+        <!-- region Modules actions -->
         <group description="Actions for modules" text="Modules Actions..." id="ru.hh.android.plugins.modules"
                popup="true">
             <add-to-group group-id="NewGroup" anchor="last"/>
@@ -75,6 +76,17 @@
                     text="New Feature Module..." description="Open feature module creation wizard"/>
 
         </group>
+        <!-- endregion -->
+
+        <!-- region Boilerplate routine actions -->
+        <group description="Boilerplate actions" text="Boilerplate" id="ru.hh.android.plugins.antiroutine.boilerplate">
+            <action class="ru.hh.android.plugin.actions.boilerplate.empty_object.EmptyObjectGeneratorAction"
+                    id="ru.hh.android.plugin.actions.boilerplate.empty_object.EmptyObjectGeneratorAction"
+                    text="Generate EMPTY Object..." description="Generates EMPTY object declaration in Kotlin data class">
+                <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="KotlinGenerateGroup"/>
+            </action>
+        </group>
+        <!-- endregion -->
     </actions>
 
     <project-components>
@@ -105,6 +117,7 @@
         <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.BuildGradleModificationService"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.modules.ModuleRepository"/>
         <!-- endregion -->
     </extensions>
