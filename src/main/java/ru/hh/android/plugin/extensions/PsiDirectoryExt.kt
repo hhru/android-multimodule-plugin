@@ -44,7 +44,7 @@ fun PsiDirectory.copyInto(another: PsiDirectory, textTransformation: (String) ->
     subdirectories.forEach { directory ->
         project.logDebug("\tFind subdirectory ${directory.name}...")
         val newDirectory = another.createSubdirectory(directory.name)
-        directory.copyInto(newDirectory)
+        directory.copyInto(newDirectory, textTransformation)
     }
     project.logDebug("End copying ${this.name} package")
 }

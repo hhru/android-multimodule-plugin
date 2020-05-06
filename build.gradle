@@ -1,13 +1,10 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.4.17'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
+    id 'org.jetbrains.intellij' version '0.4.18'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
 }
 
 group 'ru.hh.android.plugins'
 version '4.0'
-
-apply plugin: 'org.jetbrains.intellij'
-apply plugin: 'org.jetbrains.kotlin.jvm'
 
 repositories {
     mavenCentral()
@@ -23,8 +20,17 @@ dependencies {
 
 ext {
     supportedVersions = [
+            'android_studio__3_5_3': [
+                    'ideVersion': "191.8026.42",
+                    'plugins'   : ["android", "Kotlin", "Groovy"]
+            ],
+            // Has bug with android project synchronization =(
             'android_studio__3_6_3': [
                     'ideVersion': "192.7142.36",
+                    'plugins'   : ["android", "Kotlin", "java", "Groovy"]
+            ],
+            'android_studio__4_0_beta': [
+                    'ideVersion': "193.6911.18",
                     'plugins'   : ["android", "Kotlin", "java", "Groovy"]
             ]
     ]
@@ -40,14 +46,15 @@ intellij.plugins = currentVersion.plugins
 // endregion
 
 runIde {
-    // Absolute path to installed target v3.5 Android Studio to use as IDE Development Instance
+    // Absolute path to installed target v3.6.3 Android Studio to use as IDE Development Instance
     // The "Contents" directory is macOS specific.
-    ideDirectory '/Applications/Android Studio 2.app/Contents'
+    ideDirectory '/Applications/Android Studio.app/Contents'
 }
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }

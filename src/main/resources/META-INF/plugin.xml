@@ -79,10 +79,6 @@
 
     <project-components>
         <component>
-            <implementation-class>ru.hh.android.plugin.component.module.ModuleRepository
-            </implementation-class>
-        </component>
-        <component>
             <implementation-class>ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
             </implementation-class>
         </component>
@@ -109,6 +105,7 @@
         <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.BuildGradleModificationService"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.services.modules.ModuleRepository"/>
         <!-- endregion -->
     </extensions>
 

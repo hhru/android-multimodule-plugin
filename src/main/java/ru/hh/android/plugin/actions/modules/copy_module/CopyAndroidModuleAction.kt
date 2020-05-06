@@ -1,5 +1,6 @@
 package ru.hh.android.plugin.actions.modules.copy_module
 
+import com.android.tools.idea.gradle.actions.SyncProjectAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
@@ -31,6 +32,7 @@ import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.logInfo
 import ru.hh.android.plugin.utils.notifyError
+import ru.hh.android.plugin.utils.notifyInfo
 import kotlin.system.measureTimeMillis
 
 
@@ -50,7 +52,7 @@ class CopyAndroidModuleAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         e.androidFacet?.let { androidFacet ->
-            handleAction(CopyModuleActionData(androidFacet))
+            handleAction(CopyModuleActionData(e, androidFacet))
         }
     }
 
@@ -68,6 +70,7 @@ class CopyAndroidModuleAction : AnAction() {
         val newModuleParams = NewModuleParams(
             newModuleName = dialog.getModuleName(),
             newPackageName = dialog.getPackageName(),
+            appModule = dialog.getSelectedModule(),
             moduleToCopyFacet = actionData.androidFacet
         )
 
@@ -81,8 +84,21 @@ class CopyAndroidModuleAction : AnAction() {
                             moduleName = newModuleParams.newModuleName,
                             moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
                         )
-                    // TODO add module into app-module
-                    // TODO Sync project
+                    project.service<BuildGradleModificationService>()
+                        .addGradleDependenciesIntoModule(
+                            module = newModuleParams.appModule,
+                            gradleDependencies = listOf(
+                                GradleDependency(
+                                    text = newModuleParams.newModuleName,
+                                    type = GradleDependencyType.MODULE,
+                                    mode = GradleDependencyMode.IMPLEMENTATION
+                                )
+                            )
+                        )
+
+                    SyncProjectAction().actionPerformed(actionData.actionEvent)
+
+                    project.notifyInfo(message("geminio.notifications.copy_module.success.0", newModuleParams.moduleToCopy.name))
                 }
             }
         }
@@ -115,12 +131,12 @@ class CopyAndroidModuleAction : AnAction() {
                 ?.filter { it !is PsiPlainTextFile }
                 ?.map { psiFile ->
                     project.logDebug("\tFind ${psiFile.name}, start copying...")
-                    psiFile.copyFile().apply {
-                        if (psiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
+                    psiFile.copyFile().also { newPsiFile ->
+                        if (newPsiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
                             project.logDebug("\tFind build.gradle file, need modification of dependencies block")
                             project.service<BuildGradleModificationService>()
                                 .addGradleDependenciesIntoBuildGradleFile(
-                                    psiFile = psiFile,
+                                    psiFile = newPsiFile,
                                     gradleDependencies = listOf(
                                         GradleDependency(
                                             text = params.moduleToCopy.name,
