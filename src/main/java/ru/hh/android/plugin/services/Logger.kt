@@ -24,28 +24,28 @@ class Logger(
 
     fun debug(message: String) {
         if (PluginConfig.getInstance(project).enableDebugMode) {
-            Notifications.Bus.notify(GarconEventNotification(message))
+            Notifications.Bus.notify(AntiroutineEventNotification(message))
             println(message)
         }
     }
 
     fun info(message: String) {
-        Notifications.Bus.notify(GarconEventNotification(message))
+        Notifications.Bus.notify(AntiroutineEventNotification(message))
     }
 
     fun error(message: String) {
-        Notifications.Bus.notify(GarconErrorEventNotification(message))
+        Notifications.Bus.notify(AntiroutineErrorEventNotification(message))
     }
 
 
-    private class GarconEventNotification(content: String) : Notification(
+    private class AntiroutineEventNotification(content: String) : Notification(
         Notifications.SYSTEM_MESSAGES_GROUP_ID,
         EVENT_TITLE,
         content,
         NotificationType.INFORMATION
     )
 
-    private class GarconErrorEventNotification(content: String) : Notification(
+    private class AntiroutineErrorEventNotification(content: String) : Notification(
         Notifications.SYSTEM_MESSAGES_GROUP_ID,
         EVENT_TITLE,
         content,

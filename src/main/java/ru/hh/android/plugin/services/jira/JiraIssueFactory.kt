@@ -14,7 +14,7 @@ import ru.hh.android.plugin.utils.PluginBundle.message
 class JiraIssueFactory {
 
     companion object {
-        private const val CUSTOM_FIELD_ID_KEY = "id"
+        private const val OPTION_VALUE_ID_KEY = "id"
 
         fun getInstance(project: Project): JiraIssueFactory = project.service()
     }
@@ -67,7 +67,7 @@ class JiraIssueFactory {
                 JiraCustomField.DEVELOPMENT_TEAM.remoteKey,
                 ComplexIssueInputFieldValue(
                     mapOf(
-                        CUSTOM_FIELD_ID_KEY to developmentTeam.value
+                        OPTION_VALUE_ID_KEY to developmentTeam.value
                     )
                 )
             )
