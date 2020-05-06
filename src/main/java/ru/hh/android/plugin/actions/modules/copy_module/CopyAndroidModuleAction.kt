@@ -26,6 +26,7 @@ import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
 import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.extensions.*
 import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
+import ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService
 import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.logInfo
@@ -74,7 +75,12 @@ class CopyAndroidModuleAction : AnAction() {
             executeCommand {
                 runWriteAction {
                     copyModule(newModuleParams)
-                    // TODO add module into settings.gradle
+                    project.service<SettingsGradleModificationService>()
+                        .addGradleModuleDescription(
+                            project = project,
+                            moduleName = newModuleParams.newModuleName,
+                            moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
+                        )
                     // TODO add module into app-module
                     // TODO Sync project
                 }
@@ -133,11 +139,16 @@ class CopyAndroidModuleAction : AnAction() {
 
     private fun createDirectoriesStructure(params: NewModuleParams, newModuleRootPsiDirectory: PsiDirectory): NewModuleDirectoriesStructure {
         val moduleMainSourceSetPsiDirectory = params.moduleMainSourceSetPsiDirectory
-            ?: throw CopyModuleActionException(message("geminio.errors.copy_module.cant_find_main_source_set.0", params.moduleToCopy.name))
+            ?: throw CopyModuleActionException(
+                message("geminio.errors.copy_module.cant_find_main_source_set.0", params.moduleToCopy.name)
+            )
         val (moduleJavaSourcePsiDirectory, isSourceDirJava) =
             moduleMainSourceSetPsiDirectory.findSubdirectory(JAVA_SOURCE_FOLDER_NAME)?.let { Pair(it, true) }
                 ?: moduleMainSourceSetPsiDirectory.findSubdirectory(KOTLIN_SOURCE_FOLDER_NAME)?.let { Pair(it, false) }
-                ?: throw CopyModuleActionException(message("geminio.errors.copy_module.cant_find_java_source.0", params.moduleToCopy.name))
+                ?: throw CopyModuleActionException(
+                    message("geminio.errors.copy_module.cant_find_java_source.0",
+                        params.moduleToCopy.name)
+                )
 
         val newModuleSrcFolder = newModuleRootPsiDirectory.createSubdirectory(SRC_FOLDER_NAME)
         val newModuleMainFolder = newModuleSrcFolder.createSubdirectory(MAIN_SOURCE_SET_FOLDER_NAME)

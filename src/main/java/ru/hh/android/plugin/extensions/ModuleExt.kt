@@ -21,16 +21,16 @@ const val PLUGIN_JAVA_LIBRARY = "java-library"
 
 fun Module.isLibraryModule(): Boolean {
     return FilenameIndex.getFilesByName(
-            project,
-            BUILD_GRADLE_FILE_NAME,
-            moduleContentScope
+        project,
+        BUILD_GRADLE_FILE_NAME,
+        moduleContentScope
     ).firstOrNull()?.let { buildGradlePsiFile ->
         return buildGradlePsiFile.children.any { psiElement ->
             val text = psiElement.text
 
             text.contains(GRADLE_KEYWORD_APPLY)
-                    && text.contains(GRADLE_KEYWORD_PLUGIN)
-                    && (text.contains(PLUGIN_ANDROID_LIBRARY_NAME) || text.contains(PLUGIN_JAVA_LIBRARY))
+                && text.contains(GRADLE_KEYWORD_PLUGIN)
+                && (text.contains(PLUGIN_ANDROID_LIBRARY_NAME) || text.contains(PLUGIN_JAVA_LIBRARY))
         }
 
     } ?: false
@@ -67,3 +67,6 @@ val Module.moduleParentPsiDirectory: PsiDirectory?
  */
 val Module.rootPsiDirectory: PsiDirectory?
     get() = moduleFile?.parent?.toPsiDirectory(project)
+
+val Module.relativePathToParent: String
+    get() = ".${this.moduleFile?.parent?.parent?.path?.removePrefix("${this.project.basePath}")}"

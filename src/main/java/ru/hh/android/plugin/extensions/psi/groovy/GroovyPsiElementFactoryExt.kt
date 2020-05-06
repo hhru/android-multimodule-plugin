@@ -22,10 +22,6 @@ fun GroovyPsiElementFactory.createProjectDirPathExpression(
         """project(':$moduleName').projectDir = new File(settingsDir, "$folderPath")""")
 }
 
-fun GroovyPsiElementFactory.createModuleDependencyExpression(moduleName: String): GrExpression {
-    return createExpressionFromText("implementation project(':$moduleName')")
-}
-
 
 fun GroovyPsiElementFactory.getGradleDependencyExpression(dependency: GradleDependency): GrExpression {
     val startToken = when (dependency.mode) {
@@ -44,4 +40,12 @@ fun GroovyPsiElementFactory.getGradleDependencyExpression(dependency: GradleDepe
 
 fun GroovyPsiElementFactory.getBreakLineElement(): PsiElement {
     return createLineTerminator(GR_TOKEN_LINE_BREAK_SYMBOL)
+}
+
+fun GroovyPsiElementFactory.getIncludeModuleExpressionElement(moduleName: String): PsiElement {
+    return createExpressionFromText("include ':$moduleName'")
+}
+
+fun GroovyPsiElementFactory.getIncludeModuleRelativePathSetupElement(moduleName: String, relativePath: String): PsiElement {
+    return createExpressionFromText("project(':$moduleName').projectDir = new File(settingsDir, \"$relativePath\")")
 }
