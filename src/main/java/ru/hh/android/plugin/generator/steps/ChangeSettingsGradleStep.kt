@@ -4,9 +4,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.android.plugin.extensions.createBreakLineElement
-import ru.hh.android.plugin.extensions.createProjectDirPathExpression
-import ru.hh.android.plugin.extensions.generateIncludeExpression
+import ru.hh.android.plugin.extensions.psi.groovy.createProjectDirPathExpression
+import ru.hh.android.plugin.extensions.psi.groovy.generateIncludeExpression
+import ru.hh.android.plugin.extensions.psi.groovy.getBreakLineElement
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.enums.FeatureModuleType
 
@@ -20,20 +20,20 @@ class ChangeSettingsGradleStep {
 
     fun execute(project: Project, config: CreateModuleConfig) {
         val settingsGradlePsiFile = project.guessProjectDir()
-                ?.toPsiDirectory(project)?.findFile(SETTINGS_GRADLE_FILE_NAME)
-                ?: return
+            ?.toPsiDirectory(project)?.findFile(SETTINGS_GRADLE_FILE_NAME)
+            ?: return
 
         val modulePath = config.params.settingsGradleModulePath
         val factory = GroovyPsiElementFactory.getInstance(settingsGradlePsiFile.project)
 
         with(settingsGradlePsiFile) {
-            add(factory.createBreakLineElement())
+            add(factory.getBreakLineElement())
             add(factory.generateIncludeExpression(config.params.moduleName))
-            add(factory.createBreakLineElement())
+            add(factory.getBreakLineElement())
 
             if (config.params.moduleType != FeatureModuleType.STANDALONE) {
                 add(factory.createProjectDirPathExpression(config.params.moduleName, modulePath))
-                add(factory.createBreakLineElement())
+                add(factory.getBreakLineElement())
             }
         }
     }

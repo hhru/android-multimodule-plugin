@@ -1,22 +1,15 @@
 package ru.hh.android.plugin.generator.steps
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
-import com.intellij.psi.codeStyle.CodeStyleManager
-import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.android.plugin.CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
-import ru.hh.android.plugin.extensions.createBreakLineElement
-import ru.hh.android.plugin.extensions.createModuleDependencyExpression
-import ru.hh.android.plugin.extensions.findPsiFileByName
-import ru.hh.android.plugin.extensions.firstChildWithStartText
+import ru.hh.android.plugin.core.model.psi.GradleDependency
+import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
+import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.model.CreateModuleConfig
+import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
 
 
 class AddFeatureModuleIntoDependenciesStep {
-
-    companion object {
-        private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
-    }
-
 
     fun execute(config: CreateModuleConfig) {
         config.applications.forEach { appModuleItem ->
@@ -26,21 +19,17 @@ class AddFeatureModuleIntoDependenciesStep {
 
 
     private fun modifyDependenciesBlock(module: Module, config: CreateModuleConfig) {
-        val buildGradlePsiFile = module.findPsiFileByName(BUILD_GRADLE_FILE_NAME) ?: return
-
-        val dependenciesClosableBlock = buildGradlePsiFile
-                .firstChildWithStartText(DEPENDENCIES_BLOCK_NAME)
-                ?.lastChild
-                ?: return
-
-        with(dependenciesClosableBlock) {
-            val factory = GroovyPsiElementFactory.getInstance(buildGradlePsiFile.project)
-            val moduleName = config.params.moduleName
-
-            addBefore(factory.createModuleDependencyExpression(moduleName), lastChild)
-            addBefore(factory.createBreakLineElement(), lastChild)
-            CodeStyleManager.getInstance(module.project).reformat(dependenciesClosableBlock)
-        }
+        module.project.service<BuildGradleModificationService>()
+            .addGradleDependenciesIntoModule(
+                module = module,
+                gradleDependencies = listOf(
+                    GradleDependency(
+                        text = config.params.moduleName,
+                        type = GradleDependencyType.MODULE,
+                        mode = GradleDependencyMode.IMPLEMENTATION
+                    )
+                )
+            )
     }
 
 }
