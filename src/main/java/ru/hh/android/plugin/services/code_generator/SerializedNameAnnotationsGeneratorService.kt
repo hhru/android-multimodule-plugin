@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPsiFactory
+import org.jetbrains.kotlin.psi.psiUtil.getValueParameterList
 import ru.hh.android.plugin.extensions.EMPTY
 import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
 import ru.hh.android.plugin.extensions.psi.kotlin.getBreakLineElement
@@ -39,8 +40,8 @@ class SerializedNameAnnotationsGeneratorService {
                     if (parameter.hasSerializedNameAnnotation().not()) {
                         val annotationEntry = ktPsiFactory.createAnnotationEntry(parameter.toSerializedNameAnnotationText())
 
-                        parameter.addBefore(annotationEntry, parameter)
-                        parameter.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
+                        ktClass.getValueParameterList()?.addBefore(annotationEntry, parameter)
+                        ktClass.getValueParameterList()?.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
                     }
                 }
 

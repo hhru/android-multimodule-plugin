@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import ru.hh.android.plugin.services.git.GitService
 
 
-fun AnActionEvent.getSelectedPsiElement(): PsiElement? = dataContext.getData(PlatformDataKeys.PSI_ELEMENT)
+fun AnActionEvent.getSelectedPsiElement(): PsiElement? = getData(PlatformDataKeys.PSI_ELEMENT)
 
 fun AnActionEvent.canReachKotlinDataClass(): Boolean {
     return when {
@@ -56,7 +56,7 @@ private val AnActionEvent.ktClassFromEditor: KtClass?
     }
 
 private val AnActionEvent.selectedKtClass: KtClass?
-    get() = (getSelectedPsiElement() as? KtFile)?.classes?.firstIsInstanceOrNull()
+    get() = (getData(PlatformDataKeys.PSI_ELEMENT) as? KtFile)?.classes?.firstIsInstanceOrNull()
 
 private val AnActionEvent.portfolioBranchName: String
     get() = project?.let { GitService.getInstance(it) }?.extractPortfolioBranchName() ?: String.EMPTY
