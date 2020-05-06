@@ -1,68 +1,56 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-buildscript {
-    repositories {
-        mavenCentral()
-        google()
-        jcenter()
-        gradlePluginPortal()
-        maven {
-            url 'https://jitpack.io'
-        }
-    }
-
-    dependencies {
-        classpath Plugins.kotlin
-        classpath Plugins.intellij
-    }
+plugins {
+    id 'org.jetbrains.intellij' version '0.4.17'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        jcenter()
-    }
-
-    if (plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    tasks.withType(KotlinCompile) {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
-}
+group 'ru.hh.android.plugins'
+version '4.0'
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
-group 'ru.hh.android.plugin'
-version '3.1'
+repositories {
+    mavenCentral()
+}
 
 
 dependencies {
-    compile Libs.kotlinStdlib
-    compile Libs.freeMarker
-    compile Libs.commonsIO
-    compile Libs.flexMark
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "commons-io:commons-io:2.4"
+    implementation "com.vladsch.flexmark:flexmark-all:0.50.42"
 }
 
-intellij {
-    version '191.8026.42'
-    type 'IC'
-
-    plugins = [
-            "org.jetbrains.kotlin:1.3.50-release-Studio3.5-1",
-            "android",
-            "Groovy"
+ext {
+    supportedVersions = [
+            'android_studio__3_5_3': [
+                    'ideVersion': "191.8026.42",
+                    'plugins'   : ["android", "Kotlin"]
+            ],
+            'android_studio__3_6_1': [
+                    'ideVersion': "192.7142.36",
+                    'plugins'   : ["android", "Kotlin", "java", "Groovy"]
+            ]
     ]
 }
+
+// Setup for Android Studio 3.6.2
+def currentVersion = supportedVersions['android_studio__3_6_1']
+
+intellij.type = 'IC'
+intellij.version = currentVersion.ideVersion
+intellij.plugins = currentVersion.plugins
+
+// endregion
 
 runIde {
     // Absolute path to installed target v3.5 Android Studio to use as IDE Development Instance
     // The "Contents" directory is macOS specific.
-    ideaDirectory '/Applications/Android Studio.app/Contents'
+    ideDirectory '/Applications/Android Studio 2.app/Contents'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }

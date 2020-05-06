@@ -22,14 +22,12 @@ class ModuleFilesFactory(private val project: Project) {
     }
 
     private val freeMarkerConfig by lazy {
-        Configuration(Configuration.VERSION_2_3_28).apply {
+        Configuration().apply {
             val templatesDir = File("${pluginConfig.pathToPluginFolder}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}")
             setDirectoryForTemplateLoading(templatesDir)
 
             defaultEncoding = Charsets.UTF_8.name()
             templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
-            logTemplateExceptions = false
-            wrapUncheckedExceptions = true
         }
     }
 
@@ -46,7 +44,7 @@ class ModuleFilesFactory(private val project: Project) {
             try {
                 template.process(templateProperties, writer)
                 writer.buffer.toString()
-            } catch(ex: Exception) {
+            } catch (ex: Exception) {
                 ex.printStackTrace()
                 throw UnsupportedOperationException()
             }
