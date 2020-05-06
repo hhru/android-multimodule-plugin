@@ -9,12 +9,12 @@ import ru.hh.android.plugin.CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME
 import ru.hh.android.plugin.extensions.getKotlinDataClass
 import ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService
 import ru.hh.android.plugin.utils.PluginBundle
-import ru.hh.android.plugin.utils.notifyInfo
+import ru.hh.android.plugin.utils.logInfo
 
 /**
  * Action for generating EMPTY object in kotlin data classes.
  */
-class EmptyObjectGeneratorAction : AnAction() {
+class GenerateEmptyObjectAction : AnAction() {
 
     override fun update(e: AnActionEvent) {
         super.update(e)
@@ -29,13 +29,15 @@ class EmptyObjectGeneratorAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val kotlinDataClass = e.getKotlinDataClass() ?: return
-        handleAction(e, kotlinDataClass)
+        handleAction(kotlinDataClass)
     }
 
 
-    private fun handleAction(e: AnActionEvent, ktClass: KtClass) {
-        e.project?.service<EmptyObjectGeneratorService>()?.addEmptyObjectIntoKtClass(ktClass)
-        e.project?.notifyInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
+    private fun handleAction(ktClass: KtClass) {
+        with(ktClass.project) {
+            service<EmptyObjectGeneratorService>().addEmptyObjectIntoKtClass(ktClass)
+            logInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
+        }
     }
 
 }
