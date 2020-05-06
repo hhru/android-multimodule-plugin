@@ -23,7 +23,7 @@ class ModuleFilesFactory(private val project: Project) {
 
     private val freeMarkerConfig by lazy {
         Configuration().apply {
-            val templatesDir = File("${pluginConfig.pathToPluginFolder}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}")
+            val templatesDir = File("${pluginConfig.pluginFolderDirPath}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}")
             setDirectoryForTemplateLoading(templatesDir)
 
             defaultEncoding = Charsets.UTF_8.name()

@@ -3,6 +3,7 @@ package ru.hh.android.plugin.generator.steps
 import com.intellij.openapi.module.Module
 import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
+import ru.hh.android.plugin.CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
 import ru.hh.android.plugin.extensions.createBreakLineElement
 import ru.hh.android.plugin.extensions.createModuleDependencyExpression
 import ru.hh.android.plugin.extensions.findPsiFileByName
@@ -13,8 +14,6 @@ import ru.hh.android.plugin.model.CreateModuleConfig
 class AddFeatureModuleIntoDependenciesStep {
 
     companion object {
-        private const val BUILD_GRADLE_FILE_NAME = "build.gradle"
-
         private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
     }
 

@@ -2,17 +2,20 @@ package ru.hh.android.plugin.config
 
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
-import ru.hh.android.plugin.extensions.EMPTY
+import ru.hh.android.plugin.config.view.PluginConfigEditor
 import javax.swing.JComponent
 
 
+/**
+ * Wrapper for plugin configuration page.
+ */
 class PluginConfigConfigurable(
         private val project: Project
 ) : SearchableConfigurable {
 
     companion object {
         private const val ID = "ru.hh.android.plugin.config.PluginConfigConfigurable"
-        private const val DISPLAY_NAME = "HeadHunter plugin"
+        private const val DISPLAY_NAME = "Geminio plugin"
     }
 
 
@@ -24,7 +27,7 @@ class PluginConfigConfigurable(
 
 
     override fun isModified(): Boolean {
-        return pluginConfig.pathToPluginFolder != pluginConfigPropertiesEditor?.getPathToPluginFolder()
+        return pluginConfigPropertiesEditor?.isModified(pluginConfig) ?: false
     }
 
     override fun getId(): String {
@@ -36,18 +39,17 @@ class PluginConfigConfigurable(
     }
 
     override fun apply() {
-        pluginConfig.pathToPluginFolder = pluginConfigPropertiesEditor?.getPathToPluginFolder() ?: String.EMPTY
+        pluginConfigPropertiesEditor?.applyNewConfiguration(pluginConfig)
     }
 
     override fun createComponent(): JComponent? {
-        return pluginConfigPropertiesEditor?.getRootPanel()
-                ?: with(PluginConfigEditor(pluginConfig.pathToPluginFolder)) {
-                    pluginConfigPropertiesEditor = this
-                    getRootPanel()
-                }
+        pluginConfigPropertiesEditor = PluginConfigEditor.newInstance(pluginConfig)
+        return pluginConfigPropertiesEditor?.createComponent()
     }
+
 
     override fun disposeUIResources() {
         pluginConfigPropertiesEditor = null
     }
+
 }

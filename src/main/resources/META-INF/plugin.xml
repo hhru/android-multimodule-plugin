@@ -107,6 +107,7 @@
 
         <!-- region Plugin services -->
         <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
         <!-- endregion -->
     </extensions>
 
