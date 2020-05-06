@@ -1,4 +1,4 @@
-package ru.hh.android.plugin
+package ru.hh.android.plugin.core.framework_ui
 
 
 object UiConstants {

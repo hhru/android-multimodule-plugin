@@ -1,23 +1,25 @@
-package ru.hh.android.plugin.component
+package ru.hh.android.plugin.services
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.extensions.replaceLineBreaks
+import ru.hh.android.plugin.utils.PluginBundle
 import javax.swing.event.HyperlinkEvent
 
 
+@Service
 class NotificationsFactory(
         private val project: Project
-) : ProjectComponent, NotificationListener {
+) : NotificationListener {
 
     companion object {
-        private const val NOTIFICATIONS_TITLE = "HH Feature Module"
-        private const val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
-        private const val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
+        private val NOTIFICATIONS_TITLE = PluginBundle.message("geminio.notifications.title")
+        private val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
+        private val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
     }
 
     private val loggingNotificationGroup = NotificationGroup.balloonGroup(LOGGING_NOTIFICATION_GROUP_ID)
@@ -48,8 +50,7 @@ class NotificationsFactory(
                 message.replaceLineBreaks(),
                 notificationType,
                 this
-        )
-                .notify(project)
+        ).notify(project)
     }
 
 }

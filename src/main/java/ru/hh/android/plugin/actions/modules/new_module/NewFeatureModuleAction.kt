@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.action
+package ru.hh.android.plugin.actions.modules.new_module
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -8,7 +8,7 @@ import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardDialog
 
 
-class OpenFeatureModuleWizardAction : AnAction() {
+class NewFeatureModuleAction : AnAction() {
 
     override fun actionPerformed(actionEvent: AnActionEvent) {
         actionEvent.project?.let { project ->

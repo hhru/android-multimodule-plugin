@@ -58,17 +58,22 @@
     <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.android</depends>
 
-    <idea-version since-build="191"/>
+    <idea-version since-build="192.7142.36"/>
 
     <actions>
-        <group description="HeadHunter architecture templates" id="HeadHunterActionGroup" text="HeadHunter">
+        <group description="Actions for modules" text="Modules Actions..." id="ru.hh.android.plugins.modules"
+               popup="true">
+            <add-to-group group-id="NewGroup" anchor="last"/>
             <separator/>
 
-            <action id="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
-                    class="ru.hh.android.plugin.action.OpenFeatureModuleWizardAction"
-                    text="New Feature Module..." description="Open feature module creation wizard">
-                <add-to-group group-id="NewGroup" anchor="last"/>
-            </action>
+            <action class="ru.hh.android.plugin.actions.modules.copy_module.CopyAndroidModuleAction"
+                    text="Copy Module..."
+                    id="ru.hh.android.plugin.actions.modules.copy_module.CopyAndroidModuleAction"/>
+
+            <action id="ru.hh.android.plugin.actions.modules.new_module.NewFeatureModuleAction"
+                    class="ru.hh.android.plugin.actions.modules.new_module.NewFeatureModuleAction"
+                    text="New Feature Module..." description="Open feature module creation wizard"/>
+
         </group>
     </actions>
 
@@ -85,21 +90,24 @@
             <implementation-class>ru.hh.android.plugin.generator.FeatureModuleGenerator
             </implementation-class>
         </component>
-        <component>
-            <implementation-class>ru.hh.android.plugin.component.NotificationsFactory
-            </implementation-class>
-        </component>
     </project-components>
 
+    <resource-bundle>messages.PluginBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- region Plugin config -->
         <projectConfigurable
                 id="ru.hh.android.plugin.config.PluginConfigConfigurable"
                 groupId="appearance"
-                displayName="HeadHunter plugin"
+                displayName="HeadHunter Plugin"
                 instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
+        <!-- endregion -->
+
+        <!-- region Plugin services -->
+        <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
+        <!-- endregion -->
     </extensions>
 
 </idea-plugin>
