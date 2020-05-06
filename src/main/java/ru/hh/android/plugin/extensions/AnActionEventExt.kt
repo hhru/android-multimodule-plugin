@@ -11,9 +11,10 @@ import org.jetbrains.kotlin.idea.util.module
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+import ru.hh.android.plugin.services.git.GitService
 
 
-fun AnActionEvent.getSelectedPsiElement(): PsiElement? = dataContext.getData(PlatformDataKeys.PSI_ELEMENT)
+fun AnActionEvent.getSelectedPsiElement(): PsiElement? = getData(PlatformDataKeys.PSI_ELEMENT)
 
 fun AnActionEvent.canReachKotlinDataClass(): Boolean {
     return when {
@@ -21,6 +22,14 @@ fun AnActionEvent.canReachKotlinDataClass(): Boolean {
         selectedKtClass?.isData() == true -> true
         else -> false
     }
+}
+
+fun AnActionEvent.checkInsidePortfolioBranch(): Boolean {
+    return portfolioBranchName.isNotBlank()
+}
+
+fun AnActionEvent.getCurrentPortfolioBranchName(): String {
+    return portfolioBranchName
 }
 
 fun AnActionEvent.getKotlinDataClass(): KtClass? {
@@ -47,4 +56,7 @@ private val AnActionEvent.ktClassFromEditor: KtClass?
     }
 
 private val AnActionEvent.selectedKtClass: KtClass?
-    get() = (getSelectedPsiElement() as? KtFile)?.classes?.firstIsInstanceOrNull()
+    get() = (getData(PlatformDataKeys.PSI_ELEMENT) as? KtFile)?.classes?.firstIsInstanceOrNull()
+
+private val AnActionEvent.portfolioBranchName: String
+    get() = project?.let { GitService.getInstance(it) }?.extractPortfolioBranchName() ?: String.EMPTY

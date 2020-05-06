@@ -3,7 +3,9 @@ package ru.hh.android.plugin.services.code_generator
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.command.executeCommand
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
@@ -29,6 +31,8 @@ class BuildGradleModificationService {
         const val BUILD_GRADLE_FILENAME = "build.gradle"
 
         private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
+
+        fun getInstance(project: Project): BuildGradleModificationService = project.service()
     }
 
 

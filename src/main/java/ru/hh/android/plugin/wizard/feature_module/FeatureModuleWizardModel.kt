@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.wizard.feature_module
 
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardModel
 import ru.hh.android.plugin.model.MainParametersHolder
@@ -19,7 +18,7 @@ class FeatureModuleWizardModel(
 ) : WizardModel("Feature module wizard") {
 
     init {
-        val moduleRepository = project.service<ModuleRepository>()
+        val moduleRepository = ModuleRepository.getInstance(project)
 
         add(FeatureModuleParamsWizardStep(project, this))
         add(ChooseModulesWizardStep(this, moduleRepository))

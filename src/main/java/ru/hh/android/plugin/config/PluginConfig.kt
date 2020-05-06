@@ -9,6 +9,7 @@ import com.intellij.openapi.project.guessProjectDir
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
 import ru.hh.android.plugin.PluginConstants
+import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.android.plugin.extensions.EMPTY
 
 
@@ -32,6 +33,9 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     @Attribute
     var enableDebugMode: Boolean = false
 
+    @Attribute
+    var jiraDevelopmentTeam: JiraDevelopmentTeam = JiraDevelopmentTeam.MOBILE_CORE
+
 
     override fun getState(): PluginConfig? {
         return this
@@ -40,4 +44,5 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     override fun loadState(state: PluginConfig) {
         XmlSerializerUtil.copyBean(state, this)
     }
+
 }

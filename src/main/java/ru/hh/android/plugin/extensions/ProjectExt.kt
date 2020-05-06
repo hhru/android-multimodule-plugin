@@ -2,7 +2,6 @@ package ru.hh.android.plugin.extensions
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
@@ -23,8 +22,8 @@ fun Project.getRootModule(): Module {
 }
 
 inline fun Project.runWriteAction(
-        description: String = String.EMPTY,
-        crossinline action: () -> Unit
+    description: String = String.EMPTY,
+    crossinline action: () -> Unit
 ) {
     ApplicationManager.getApplication().runWriteAction {
         CommandProcessor.getInstance().executeCommand(this, { action.invoke() }, description, null)

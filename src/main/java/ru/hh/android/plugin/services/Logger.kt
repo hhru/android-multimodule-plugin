@@ -11,13 +11,13 @@ import ru.hh.android.plugin.config.PluginConfig
 
 @Service
 class Logger(
-        private val project: Project
+    private val project: Project
 ) {
 
     companion object {
         private const val EVENT_TITLE = "Geminio"
 
-        fun newInstance(project: Project) = project.service<Logger>()
+        fun getInstance(project: Project): Logger = project.service()
 
     }
 
@@ -25,6 +25,7 @@ class Logger(
     fun debug(message: String) {
         if (PluginConfig.getInstance(project).enableDebugMode) {
             Notifications.Bus.notify(GarconEventNotification(message))
+            println(message)
         }
     }
 
@@ -38,17 +39,17 @@ class Logger(
 
 
     private class GarconEventNotification(content: String) : Notification(
-            Notifications.SYSTEM_MESSAGES_GROUP_ID,
-            EVENT_TITLE,
-            content,
-            NotificationType.INFORMATION
+        Notifications.SYSTEM_MESSAGES_GROUP_ID,
+        EVENT_TITLE,
+        content,
+        NotificationType.INFORMATION
     )
 
     private class GarconErrorEventNotification(content: String) : Notification(
-            Notifications.SYSTEM_MESSAGES_GROUP_ID,
-            EVENT_TITLE,
-            content,
-            NotificationType.ERROR
+        Notifications.SYSTEM_MESSAGES_GROUP_ID,
+        EVENT_TITLE,
+        content,
+        NotificationType.ERROR
     )
 
 }

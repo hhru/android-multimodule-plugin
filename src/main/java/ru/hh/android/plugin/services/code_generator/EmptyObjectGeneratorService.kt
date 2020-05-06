@@ -2,6 +2,8 @@ package ru.hh.android.plugin.services.code_generator
 
 import com.intellij.openapi.command.executeCommand
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.idea.core.getOrCreateCompanionObject
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
@@ -22,6 +24,8 @@ class EmptyObjectGeneratorService {
     companion object {
         private const val EMPTY_STRING_PROPERTY_FQN = "ru.hh.android.utils.EMPTY"
         private const val STRING_PARAMETER_TYPE_NAME = "String"
+
+        fun getInstance(project: Project): EmptyObjectGeneratorService = project.service()
     }
 
 

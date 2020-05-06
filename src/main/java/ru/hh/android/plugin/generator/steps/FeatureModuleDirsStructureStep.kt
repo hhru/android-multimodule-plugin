@@ -3,7 +3,7 @@ package ru.hh.android.plugin.generator.steps
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiDirectory
-import org.jetbrains.kotlin.idea.refactoring.toPsiDirectory
+import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import ru.hh.android.plugin.extensions.SLASH
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.enums.FeatureModuleType.CUSTOM_PATH

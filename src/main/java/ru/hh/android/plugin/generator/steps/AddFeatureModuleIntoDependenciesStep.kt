@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.generator.steps
 
-import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
 import ru.hh.android.plugin.core.model.psi.GradleDependency
 import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
@@ -19,7 +18,7 @@ class AddFeatureModuleIntoDependenciesStep {
 
 
     private fun modifyDependenciesBlock(module: Module, config: CreateModuleConfig) {
-        module.project.service<BuildGradleModificationService>()
+        BuildGradleModificationService.getInstance(module.project)
             .addGradleDependenciesIntoModule(
                 module = module,
                 gradleDependencies = listOf(

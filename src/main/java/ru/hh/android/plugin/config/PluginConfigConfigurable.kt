@@ -3,6 +3,7 @@ package ru.hh.android.plugin.config
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.view.PluginConfigEditor
+import ru.hh.android.plugin.core.model.jira.JiraSettings
 import javax.swing.JComponent
 
 
@@ -10,7 +11,7 @@ import javax.swing.JComponent
  * Wrapper for plugin configuration page.
  */
 class PluginConfigConfigurable(
-        private val project: Project
+    private val project: Project
 ) : SearchableConfigurable {
 
     companion object {
@@ -27,7 +28,7 @@ class PluginConfigConfigurable(
 
 
     override fun isModified(): Boolean {
-        return pluginConfigPropertiesEditor?.isModified(pluginConfig) ?: false
+        return pluginConfigPropertiesEditor?.isModified() ?: false
     }
 
     override fun getId(): String {
@@ -39,17 +40,23 @@ class PluginConfigConfigurable(
     }
 
     override fun apply() {
-        pluginConfigPropertiesEditor?.applyNewConfiguration(pluginConfig)
+        pluginConfigPropertiesEditor?.applyNewConfiguration(project, pluginConfig)
     }
 
     override fun createComponent(): JComponent? {
-        pluginConfigPropertiesEditor = PluginConfigEditor.newInstance(pluginConfig)
+        pluginConfigPropertiesEditor = PluginConfigEditor.newInstance(pluginConfig, getJiraSettings(project))
         return pluginConfigPropertiesEditor?.createComponent()
     }
 
 
     override fun disposeUIResources() {
         pluginConfigPropertiesEditor = null
+    }
+
+
+    private fun getJiraSettings(project: Project): JiraSettings {
+        val config = JiraSettingsConfig.getInstance(project)
+        return config.getJiraSettings()
     }
 
 }
