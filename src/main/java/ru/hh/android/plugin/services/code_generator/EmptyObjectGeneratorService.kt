@@ -41,8 +41,9 @@ class EmptyObjectGeneratorService {
         """
         val ktPsiFactory = KtPsiFactory(project)
         val propertyDeclaration = ktPsiFactory.createProperty(newEmptyObjectDeclaration)
-        val hasStringParameter = ktClass.primaryConstructorParameters.any { parameter ->
-            parameter.type()?.nameIfStandardType?.identifier == STRING_PARAMETER_TYPE_NAME
+        val hasStringNotNullParameter = ktClass.primaryConstructorParameters.any { parameter ->
+            val type = parameter.type()
+            type?.isMarkedNullable?.not() == true && type.nameIfStandardType?.identifier == STRING_PARAMETER_TYPE_NAME
         }
 
         executeCommand {
@@ -54,7 +55,7 @@ class EmptyObjectGeneratorService {
 
                 val companionObjectBody = companionObject.getOrCreateBody()
                 companionObjectBody.addBefore(propertyDeclaration, companionObjectBody.rBrace)
-                if (hasStringParameter) {
+                if (hasStringNotNullParameter) {
                     ktClass.containingKtFile.addImportPackages(EMPTY_STRING_PROPERTY_FQN)
                 }
 
