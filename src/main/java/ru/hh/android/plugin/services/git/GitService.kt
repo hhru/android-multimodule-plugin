@@ -21,10 +21,14 @@ class GitService(
 
     fun extractPortfolioBranchName(): String {
         val repositories = GitRepositoryManager.getInstance(project).repositories
-        val currentRepository = if (repositories.isNotEmpty()) repositories[0] else null
-        val currentBranchName = currentRepository?.currentBranch?.name ?: String.EMPTY
+        val currentBranchesNames = repositories.mapNotNull { it.currentBranch?.name }
+        val hasPortfolioBranch = currentBranchesNames.any { PORTFOLIO_BRANCH_REGEX.matches(it) }
 
-        return PORTFOLIO_BRANCH_REGEX.find(currentBranchName)?.groups?.get(2)?.value ?: String.EMPTY
+        return if (hasPortfolioBranch) {
+            PORTFOLIO_BRANCH_REGEX.find(currentBranchesNames.firstOrNull().orEmpty())?.groups?.get(2)?.value.orEmpty()
+        } else {
+            String.EMPTY
+        }
     }
 
 }
