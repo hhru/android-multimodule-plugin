@@ -7,7 +7,9 @@ import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
+import ru.hh.android.plugin.PluginConstants.DEFAULT_GH_MODULE_PREFIX
 import ru.hh.android.plugin.core.framework_ui.view.ModuleNamePanel
+import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
 import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.showErrorMessage
@@ -28,6 +30,8 @@ class CopyAndroidModuleActionDialog(
     private val moduleNamePanel = ModuleNamePanel(
         moduleNameSectionLabel = message("geminio.common.forms.new_module_name"),
         packageNameSectionLabel = message("geminio.common.forms.new_module_package_name"),
+        defaultModuleName = "$DEFAULT_GH_MODULE_PREFIX$moduleName",
+        defaultPackageName = "$DEFAULT_GH_MODULE_PREFIX$moduleName".toPackageNameFromModuleName(),
         onErrorAction = { hasError ->
             this.isOKActionEnabled = hasError.not()
         }
