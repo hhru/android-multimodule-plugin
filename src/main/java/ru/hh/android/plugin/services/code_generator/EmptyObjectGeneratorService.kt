@@ -4,6 +4,7 @@ import com.intellij.openapi.command.executeCommand
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.idea.core.getOrCreateCompanionObject
 import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
@@ -76,29 +77,21 @@ class EmptyObjectGeneratorService {
         val parameterType = type()
 
         return when {
-            parameterType == null || parameterType.isMarkedNullable -> {
-                "null"
-            }
-
-            else -> {
-                val identifier = parameterType.nameIfStandardType?.identifier
-                when {
-                    identifier.isNullOrBlank() -> "$parameterType.$EMPTY_OBJECT_PROPERTY_NAME"
-                    identifier == STRING_PARAMETER_TYPE_NAME -> "$STRING_PARAMETER_TYPE_NAME.$EMPTY_OBJECT_PROPERTY_NAME"
-                    identifier == "Byte" -> "0"
-                    identifier == "Int" -> "0"
-                    identifier == "Short" -> "0"
-                    identifier == "Long" -> "0L"
-                    identifier == "Float" -> "0f"
-                    identifier == "Double" -> "0.0"
-                    identifier == "Boolean" -> "false"
-                    identifier.startsWith("List") -> "emptyList()"
-                    identifier.startsWith("Array") -> "emptyArray()"
-                    identifier.startsWith("Set") -> "emptySet()"
-                    identifier.startsWith("Map") -> "emptyMap()"
-                    else -> "$parameterType.$EMPTY_OBJECT_PROPERTY_NAME"
-                }
-            }
+            parameterType == null || parameterType.isMarkedNullable -> "null"
+            KotlinBuiltIns.isBoolean(parameterType) -> "false"
+            KotlinBuiltIns.isChar(parameterType) -> "''"
+            KotlinBuiltIns.isDouble(parameterType) -> "0.0"
+            KotlinBuiltIns.isFloat(parameterType) -> "0f"
+            KotlinBuiltIns.isInt(parameterType) || KotlinBuiltIns.isShort(parameterType) || KotlinBuiltIns.isByte(parameterType) -> "0"
+            KotlinBuiltIns.isLong(parameterType) -> "0L"
+            KotlinBuiltIns.isNullableAny(parameterType) -> "null"
+            KotlinBuiltIns.isString(parameterType) -> "$STRING_PARAMETER_TYPE_NAME.$EMPTY_OBJECT_PROPERTY_NAME"
+            KotlinBuiltIns.isListOrNullableList(parameterType) -> "emptyList()"
+            KotlinBuiltIns.isSetOrNullableSet(parameterType) -> "emptySet()"
+            KotlinBuiltIns.isMapOrNullableMap(parameterType) -> "emptyMap()"
+            KotlinBuiltIns.isArrayOrPrimitiveArray(parameterType) -> "emptyArray()"
+            KotlinBuiltIns.isCollectionOrNullableCollection(parameterType) -> "emptyList()"
+            else -> "$parameterType.$EMPTY_OBJECT_PROPERTY_NAME"
         }
     }
 
