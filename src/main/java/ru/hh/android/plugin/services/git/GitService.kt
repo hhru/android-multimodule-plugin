@@ -7,6 +7,7 @@ import git4idea.branch.GitBrancher
 import git4idea.repo.GitRepositoryManager
 import ru.hh.android.plugin.PluginConstants.MAIN_REPOSITORY_NAME
 import ru.hh.android.plugin.extensions.EMPTY
+import ru.hh.android.plugin.utils.logDebug
 
 
 @Service
@@ -25,20 +26,27 @@ class GitService(
 
 
     fun checkoutMobForMergeDevelopToPortfolio(mobIssueKey: String, portfolioKey: String) {
+        project.logDebug("checkoutMobForMergeDevelopToPortfolio | mob issue: $mobIssueKey, portfolio: $portfolioKey")
         val newBranchName = "${mobIssueKey}__merge_develop_to_${portfolioKey}"
+        project.logDebug("\tnewBranchName = $newBranchName")
         val repository = repositoryManager.repositories.find { it.presentableUrl.endsWith(MAIN_REPOSITORY_NAME) }
             ?: throw IllegalStateException("Can't find ${MAIN_REPOSITORY_NAME} repository in Git")
 
+        project.logDebug("\trepository = ${repository.presentableUrl}")
         GitBrancher.getInstance(project).checkoutNewBranch(newBranchName, listOf(repository))
     }
 
     fun extractPortfolioBranchName(): String {
+        project.logDebug("Try to extractPortfolioBranchName")
         val repositories = repositoryManager.repositories
-        val currentBranchesNames = repositories.mapNotNull { it.currentBranch?.name }
-        val hasPortfolioBranch = currentBranchesNames.any { PORTFOLIO_BRANCH_REGEX.matches(it) }
+        project.logDebug("\tis repositories empty: ${repositories.isEmpty()}")
+        val currentBranchName = repositories.firstOrNull { PORTFOLIO_BRANCH_REGEX.matches(it.currentBranch?.name.orEmpty()) }?.currentBranchName
+        val hasPortfolioBranch = currentBranchName != null
+        project.logDebug("\thasPortfolioBranch: $hasPortfolioBranch")
 
         return if (hasPortfolioBranch) {
-            PORTFOLIO_BRANCH_REGEX.find(currentBranchesNames.firstOrNull().orEmpty())?.groups?.get(2)?.value.orEmpty()
+            PORTFOLIO_BRANCH_REGEX.find(currentBranchName.orEmpty())?.groups?.get(2)?.value.orEmpty()
+                .also { project.logDebug("Extracted branch name: $it") }
         } else {
             String.EMPTY
         }
