@@ -1,42 +1,36 @@
 package ru.hh.android.plugin.actions.boilerplate.empty_object
 
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.idea.actions.generate.KotlinGenerateActionBase
 import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.findPropertyByName
-import ru.hh.android.plugin.CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME
-import ru.hh.android.plugin.extensions.getKotlinDataClass
+import ru.hh.android.plugin.CodeGeneratorConstants
 import ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService
 import ru.hh.android.plugin.utils.PluginBundle
 import ru.hh.android.plugin.utils.notifyInfo
 
+
 /**
  * Action for generating EMPTY object in kotlin data classes.
  */
-class GenerateEmptyObjectAction : AnAction() {
+class GenerateEmptyObjectAction : KotlinGenerateActionBase() {
 
-    override fun update(e: AnActionEvent) {
-        super.update(e)
-
-        val ktClass = e.getKotlinDataClass()
-        if (ktClass != null) {
-            e.presentation.isEnabled = ktClass.companionObjects.firstOrNull()?.findPropertyByName(EMPTY_OBJECT_PROPERTY_NAME) == null
-        } else {
-            e.presentation.isEnabled = false
+    override fun invoke(project: Project, editor: Editor, file: PsiFile) {
+        val targetClass = getTargetClass(editor, file) as? KtClass
+        targetClass?.let { ktClass ->
+            EmptyObjectGeneratorService.getInstance(project).addEmptyObjectIntoKtClass(ktClass)
+            project.notifyInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
         }
+
     }
 
-    override fun actionPerformed(e: AnActionEvent) {
-        val kotlinDataClass = e.getKotlinDataClass() ?: return
-        handleAction(kotlinDataClass)
-    }
-
-
-    private fun handleAction(ktClass: KtClass) {
-        with(ktClass.project) {
-            EmptyObjectGeneratorService.getInstance(this).addEmptyObjectIntoKtClass(ktClass)
-            notifyInfo(PluginBundle.message("antiroutine.generate_empty_object.success"))
-        }
+    override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
+        return targetClass is KtClass
+            && targetClass.isData()
+            && (targetClass.companionObjects.firstOrNull()?.findPropertyByName(CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME) == null)
     }
 
 }

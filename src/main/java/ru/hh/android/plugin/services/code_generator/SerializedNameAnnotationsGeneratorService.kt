@@ -1,11 +1,10 @@
 package ru.hh.android.plugin.services.code_generator
 
 import com.android.tools.idea.templates.TemplateUtils
-import com.intellij.openapi.command.executeCommand
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import org.jetbrains.kotlin.idea.util.application.runWriteAction
+import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.idea.util.findAnnotation
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
@@ -19,9 +18,13 @@ import ru.hh.android.plugin.utils.reformatWithCodeStyle
 
 
 @Service
-class SerializedNameAnnotationsGeneratorService {
+class SerializedNameAnnotationsGeneratorService(
+    private val project: Project
+) {
 
     companion object {
+        private const val COMMAND_NAME = "SerializedNameAnnotationsGenerator"
+
         private const val ANNOTATION_NAME = "SerializedName"
         private const val SERIALIZED_NAME_ANNOTATION_FQN = "com.google.gson.annotations.SerializedName"
 
@@ -32,19 +35,22 @@ class SerializedNameAnnotationsGeneratorService {
     fun addSerializedNameAnnotationsIntoClass(ktClass: KtClass) {
         require(ktClass.isData())
 
-        val ktPsiFactory = KtPsiFactory(ktClass.project)
+        val ktPsiFactory = KtPsiFactory(project)
 
-        executeCommand {
-            runWriteAction {
-                ktClass.primaryConstructorParameters.forEach { parameter ->
-                    if (parameter.hasSerializedNameAnnotation().not()) {
-                        val annotationEntry = ktPsiFactory.createAnnotationEntry(parameter.toSerializedNameAnnotationText())
+        project.executeWriteCommand(COMMAND_NAME) {
+            var addAtLeastOneAnnotation = false
+            ktClass.primaryConstructorParameters.forEach { parameter ->
+                if (parameter.hasSerializedNameAnnotation().not()) {
+                    val annotationEntry = ktPsiFactory.createAnnotationEntry(parameter.toSerializedNameAnnotationText())
 
-                        ktClass.getValueParameterList()?.addBefore(annotationEntry, parameter)
-                        ktClass.getValueParameterList()?.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
-                    }
+                    ktClass.getValueParameterList()?.addBefore(annotationEntry, parameter)
+                    ktClass.getValueParameterList()?.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
+
+                    addAtLeastOneAnnotation = true
                 }
+            }
 
+            if (addAtLeastOneAnnotation) {
                 ktClass.containingKtFile.addImportPackages(SERIALIZED_NAME_ANNOTATION_FQN)
                 ktClass.containingKtFile.reformatWithCodeStyle()
             }

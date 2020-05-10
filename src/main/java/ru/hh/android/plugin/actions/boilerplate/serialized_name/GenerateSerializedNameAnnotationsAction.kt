@@ -1,27 +1,27 @@
 package ru.hh.android.plugin.actions.boilerplate.serialized_name
 
-import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.idea.actions.generate.KotlinGenerateActionBase
 import org.jetbrains.kotlin.psi.KtClass
-import ru.hh.android.plugin.actions.KotlinDataClassAction
-import ru.hh.android.plugin.extensions.getKotlinDataClass
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService
 import ru.hh.android.plugin.utils.PluginBundle
 import ru.hh.android.plugin.utils.notifyInfo
 
 
-class GenerateSerializedNameAnnotationsAction : KotlinDataClassAction() {
+class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
 
-    override fun actionPerformed(e: AnActionEvent) {
-        val kotlinDataClass = e.getKotlinDataClass() ?: return
-        handleAction(kotlinDataClass)
+    override fun invoke(project: Project, editor: Editor, file: PsiFile) {
+        (getTargetClass(editor, file) as? KtClass)?.let { targetClass ->
+            SerializedNameAnnotationsGeneratorService.getInstance(project).addSerializedNameAnnotationsIntoClass(targetClass)
+            project.notifyInfo(PluginBundle.message("antiroutine.generate_serialized_name.success"))
+        }
     }
 
-
-    private fun handleAction(ktClass: KtClass) {
-        with(ktClass.project) {
-            SerializedNameAnnotationsGeneratorService.getInstance(this).addSerializedNameAnnotationsIntoClass(ktClass)
-            notifyInfo(PluginBundle.message("antiroutine.generate_serialized_name.success"))
-        }
+    override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
+        return targetClass is KtClass && targetClass.isData()
     }
 
 }
