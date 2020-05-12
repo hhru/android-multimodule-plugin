@@ -65,7 +65,9 @@ class EmptyObjectGeneratorService(
         }
 
         return """
-        val $EMPTY_OBJECT_PROPERTY_NAME = ${name}(\n$emptyProperties\n) 
+        val $EMPTY_OBJECT_PROPERTY_NAME = ${name}(
+            $emptyProperties
+        ) 
         """
     }
 
