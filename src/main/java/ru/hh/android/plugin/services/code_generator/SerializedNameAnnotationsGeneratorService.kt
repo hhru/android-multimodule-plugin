@@ -43,15 +43,17 @@ class SerializedNameAnnotationsGeneratorService(
                 if (parameter.hasSerializedNameAnnotation().not()) {
                     val annotationEntry = ktPsiFactory.createAnnotationEntry(parameter.toSerializedNameAnnotationText())
 
-                    ktClass.getValueParameterList()?.addBefore(annotationEntry, parameter)
-                    ktClass.getValueParameterList()?.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
+                    ktClass.getValueParameterList()?.let { valueParameterList ->
+                        valueParameterList.addBefore(annotationEntry, parameter)
+                        valueParameterList.addBefore(ktPsiFactory.getBreakLineElement(), parameter)
+                    }
 
                     addAtLeastOneAnnotation = true
                 }
             }
 
             if (addAtLeastOneAnnotation) {
-                ktClass.containingFile.commitAndUnblockDocument()
+                ktClass.containingKtFile.commitAndUnblockDocument()
                 ShortenReferences.DEFAULT.process(ktClass)
                 ktClass.containingKtFile.reformatWithCodeStyle()
             }
