@@ -147,6 +147,18 @@
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraRestClientService"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.git.GitService"/>
         <!-- endregion -->
+
+        <!-- region Inspections -->
+        <globalInspection
+                groupName="Inspections hh.ru "
+                shortName="AndroidLintWrongViewIdCodeStyleFormatting"
+                hasStaticDescription="true"
+                displayName="Ololo display"
+                bundle="messages.PluginBundle"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="ru.hh.android.plugin.inspections.wrong_view_id.WrongViewIdCodeStyleFormattingInspection"/>
+        <!-- endregion -->
     </extensions>
 
 </idea-plugin>
