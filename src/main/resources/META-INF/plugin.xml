@@ -166,6 +166,14 @@
                 language="XML"
                 implementationClass="ru.hh.android.plugin.annotators.DeprecatedAndroidResourceAnnotator"/>
         <!-- endregion -->
+
+        <!-- region Code completion contributors -->
+        <completion.contributor
+                id="deprecatedAttribute"
+                language="XML"
+                order="first"
+                implementationClass="ru.hh.android.plugin.completions.XmlDeprecatedCompletionContributor"/>
+        <!-- endregion -->
     </extensions>
 
 </idea-plugin>

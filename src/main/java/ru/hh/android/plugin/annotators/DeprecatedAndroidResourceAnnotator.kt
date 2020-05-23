@@ -30,7 +30,8 @@ class DeprecatedAndroidResourceAnnotator : Annotator {
             SdkConstants.COLOR_RESOURCE_PREFIX,
             SdkConstants.STRING_PREFIX,
             SdkConstants.STYLE_RESOURCE_PREFIX,
-            SdkConstants.DIMEN_PREFIX
+            SdkConstants.DIMEN_PREFIX,
+            "@plurals/"
         )
     }
 
