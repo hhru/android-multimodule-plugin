@@ -154,11 +154,21 @@
                 groupName="Inspections hh.ru "
                 shortName="AndroidLintWrongViewIdCodeStyleFormatting"
                 hasStaticDescription="true"
-                displayName="Ololo display"
+                displayName="Wrong View's id"
                 bundle="messages.PluginBundle"
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="ru.hh.android.plugin.inspections.wrong_view_id.WrongViewIdCodeStyleFormattingInspection"/>
+
+        <globalInspection
+                groupName="Inspections hh.ru "
+                shortName="AndroidLintHardcodedDimensUsing"
+                hasStaticDescription="true"
+                displayName="Hardcoded dimens using"
+                bundle="messages.PluginBundle"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="ru.hh.android.plugin.inspections.hardcoded_dimen.HardcodedDimensUsingInspection"/>
         <!-- endregion -->
 
         <!-- region Annotators -->
