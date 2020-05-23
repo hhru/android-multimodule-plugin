@@ -38,7 +38,7 @@
 
     2.1. Fixing several bugs. <br/>
 
-    2.0. Absolutly new version of plugin.<br/>
+    2.0. Absolutely new version of plugin.<br/>
     - Now generated files will be added into Git, if you want (you should see VCS dialog)<br/>
     - Add normal notification about finishing of process<br/>
     - Add several new templates (for presentation layer)<br/>
@@ -81,6 +81,7 @@
 
         <!-- region Boilerplate routine actions -->
         <group description="Boilerplate actions" text="Boilerplate" id="ru.hh.android.plugins.antiroutine.boilerplate">
+            <!-- Kotlin actions -->
             <action class="ru.hh.android.plugin.actions.boilerplate.serialized_name.GenerateSerializedNameAnnotationsAction"
                     id="ru.hh.android.plugin.actions.boilerplate.serialized_name.GenerateSerializedNameAnnotationsAction"
                     text="Generate @SerializedName Annotations..."
@@ -158,6 +159,12 @@
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="ru.hh.android.plugin.inspections.wrong_view_id.WrongViewIdCodeStyleFormattingInspection"/>
+        <!-- endregion -->
+
+        <!-- region Annotators -->
+        <annotator
+                language="XML"
+                implementationClass="ru.hh.android.plugin.annotators.DeprecatedAndroidResourceAnnotator"/>
         <!-- endregion -->
     </extensions>
 

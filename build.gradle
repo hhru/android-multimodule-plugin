@@ -29,19 +29,35 @@ dependencies {
 }
 
 ext {
+    pluginsList = [
+            "android",
+            "android-layoutlib",
+            "Kotlin",
+            "java",
+            "Groovy",
+            "git4idea"
+    ]
+    pluginsListForAS353 = [
+            "android",
+            "android-layoutlib",
+            "Kotlin",
+            "Groovy",
+            "git4idea"
+    ]
+
     supportedVersions = [
             'android_studio__3_5_3': [
                     'ideVersion': "191.8026.42",
-                    'plugins'   : ["android", "Kotlin", "Groovy", "git4idea"]
+                    'plugins'   : pluginsListForAS353
             ],
             // Has bug with android project synchronization =(
             'android_studio__3_6_3': [
                     'ideVersion': "192.7142.36",
-                    'plugins'   : ["android", "Kotlin", "java", "Groovy", "git4idea"]
+                    'plugins'   : pluginsList
             ],
             'android_studio__4_0_beta': [
                     'ideVersion': "193.6911.18",
-                    'plugins'   : ["android", "Kotlin", "java", "Groovy", "git4idea"]
+                    'plugins'   : pluginsList
             ]
     ]
 }
