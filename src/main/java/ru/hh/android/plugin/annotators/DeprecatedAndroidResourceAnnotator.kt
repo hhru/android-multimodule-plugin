@@ -14,6 +14,10 @@ import org.jetbrains.android.dom.wrappers.LazyValueResourceElementWrapper
 import kotlin.system.measureTimeMillis
 
 
+/**
+ * Annotator which can mark using of Android resource with deprecate highlighting,
+ * if it has attribute `deprecated="true"` in its declaration.
+ */
 class DeprecatedAndroidResourceAnnotator : Annotator {
 
     companion object {
