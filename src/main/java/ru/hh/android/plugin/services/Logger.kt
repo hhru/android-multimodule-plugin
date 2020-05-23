@@ -23,7 +23,7 @@ class Logger(
 
 
     fun debug(message: String) {
-        if (PluginConfig.getInstance(project).enableDebugMode) {
+        if (PluginConfig.getInstance(project).isDebugModeEnabled) {
             Notifications.Bus.notify(AntiroutineEventNotification(message))
             println(message)
         }

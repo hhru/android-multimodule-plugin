@@ -34,7 +34,7 @@ class PluginConfigEditor(
         fun newInstance(pluginConfig: PluginConfig, jiraSettings: JiraSettings): PluginConfigEditor {
             return PluginConfigEditor(
                 initialPluginFolderDirPath = pluginConfig.pluginFolderDirPath,
-                initialEnableDebugMode = pluginConfig.enableDebugMode,
+                initialEnableDebugMode = pluginConfig.isDebugModeEnabled,
                 initialJiraHostName = jiraSettings.hostName,
                 initialJiraUsername = jiraSettings.username,
                 initialJiraPassword = jiraSettings.password,
@@ -116,7 +116,7 @@ class PluginConfigEditor(
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
-        pluginConfig.enableDebugMode = enableDebugModeCheckBox.isSelected
+        pluginConfig.isDebugModeEnabled = enableDebugModeCheckBox.isSelected
         pluginConfig.jiraDevelopmentTeam = JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
 
         with(JiraSettingsConfig.getInstance(project)) {
