@@ -1,0 +1,53 @@
+ext {
+    productVersions = [
+            // Use this only for documentation
+            'android_studio__3_5_3'   : [
+                    'isLocal'   : false,
+                    'ideVersion': "191.8026.42",
+                    'plugins'   : [
+                            "android",
+                            "Kotlin",
+                            "Groovy",
+                            "git4idea"
+                    ]
+            ],
+            // Has bug with android project synchronization.
+            // Use this only for documentation
+            'android_studio__3_6_3'   : [
+                    'isLocal'   : false,
+                    'ideVersion': "192.7142.36",
+                    'plugins'   : [
+                            "android",
+                            "Kotlin",
+                            "java",
+                            "Groovy",
+                            "git4idea"
+                    ]
+            ],
+            // Also has bug with android project synchronization.
+            // Use this only for documentation
+            'android_studio__4_0_beta': [
+                    'isLocal'   : false,
+                    'ideVersion': "193.6911.18",
+                    'plugins'   : [
+                            "android",
+                            "Kotlin",
+                            "java",
+                            "Groovy",
+                            "git4idea"
+                    ]
+            ],
+            'local_path'              : [
+                    'isLocal'   : true,
+                    'ideVersion': '/Applications/Android Studio.app',
+                    'plugins'   : [
+                            "android",
+                            "android-layoutlib",
+                            "Kotlin",
+                            "java",
+                            "Groovy",
+                            "git4idea"
+                    ]
+            ]
+    ]
+}

@@ -13,6 +13,7 @@ repositories {
     }
 }
 
+apply from: 'product_matrix.gradle'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -28,49 +29,16 @@ dependencies {
     }
 }
 
-ext {
-    pluginsList = [
-            "android",
-            "android-layoutlib",
-            "Kotlin",
-            "java",
-            "Groovy",
-            "git4idea"
-    ]
-    pluginsListForAS353 = [
-            "android",
-            "android-layoutlib",
-            "Kotlin",
-            "Groovy",
-            "git4idea"
-    ]
-
-    supportedVersions = [
-            'android_studio__3_5_3': [
-                    'ideVersion': "191.8026.42",
-                    'plugins'   : pluginsListForAS353
-            ],
-            // Has bug with android project synchronization =(
-            'android_studio__3_6_3': [
-                    'ideVersion': "192.7142.36",
-                    'plugins'   : pluginsList
-            ],
-            'android_studio__4_0_beta': [
-                    'ideVersion': "193.6911.18",
-                    'plugins'   : pluginsList
-            ]
-    ]
-}
-
-// Setup for Android Studio 3.6.3
-def currentVersion = supportedVersions['android_studio__3_6_3']
+// region Plugin compatibility setup
+def currentVersion = productVersions['local_path']
 
 intellij.type = 'IC'
-intellij.localPath = "/Applications/Android Studio.app"
-// Use this only for documentation
-//intellij.version = currentVersion.ideVersion
+if (currentVersion.isLocal) {
+    intellij.localPath = currentVersion.ideVersion
+} else {
+    intellij.version = currentVersion.ideVersion
+}
 intellij.plugins = currentVersion.plugins
-
 // endregion
 
 runIde {
