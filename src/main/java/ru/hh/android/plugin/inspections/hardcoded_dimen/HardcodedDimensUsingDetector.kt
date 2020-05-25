@@ -70,7 +70,7 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
 
 
     override fun visitAttribute(context: XmlContext, attribute: Attr) {
-        if (attribute.value.startsWith(SdkConstants.DIMEN_PREFIX).not()) {
+        if (attribute.isAcceptable().not()) {
             context.report(
                 issue = ISSUE,
                 scope = attribute,
@@ -78,6 +78,13 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
                 message = "Don't use hardcoded dimens!"
             )
         }
+    }
+
+    private fun Attr.isAcceptable(): Boolean {
+        return value.startsWith(SdkConstants.DIMEN_PREFIX)
+            || value == SdkConstants.VALUE_WRAP_CONTENT
+            || value == SdkConstants.VALUE_MATCH_PARENT
+            || value == "0dp"
     }
 
 }
