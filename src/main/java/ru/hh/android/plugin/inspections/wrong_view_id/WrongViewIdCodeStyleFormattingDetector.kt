@@ -68,8 +68,9 @@ class WrongViewIdCodeStyleFormattingDetector : LayoutDetector() {
                 scope = attribute,
                 location = context.getLocation(attribute),
                 message = "Wrong id declaration! Should have prefix `$expectedIdPrefix`",
-                quickfixData = LintFix.create()
+                quickfixData = fix()
                     .replace()
+                    .name("Replace current id with `$expectedIdPrefix` prefix")
                     .text(attribute.value)
                     .with("${attribute.getIdPrefix()}${expectedIdPrefix}")
                     .build()
