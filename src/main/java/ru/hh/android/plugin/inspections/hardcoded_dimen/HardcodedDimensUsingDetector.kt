@@ -82,6 +82,7 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
 
     private fun Attr.isAcceptable(): Boolean {
         return value.startsWith(SdkConstants.DIMEN_PREFIX)
+            || value.startsWith(SdkConstants.ATTR_REF_PREFIX)
             || value == SdkConstants.VALUE_WRAP_CONTENT
             || value == SdkConstants.VALUE_MATCH_PARENT
             || value == "0dp"
