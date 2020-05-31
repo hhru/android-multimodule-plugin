@@ -170,6 +170,16 @@
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="ru.hh.android.plugin.inspections.hardcoded_dimen.HardcodedDimensUsingInspection"/>
+
+        <globalInspection
+                groupName="Inspections hh.ru "
+                shortName="AndroidLintPutSerializableIssue"
+                hasStaticDescription="true"
+                displayName="Wrong putSerializable using"
+                bundle="messages.PluginBundle"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="ru.hh.android.plugin.inspections.PutSerializableInspection"/>
         <!-- endregion -->
 
         <!-- region Annotators -->
