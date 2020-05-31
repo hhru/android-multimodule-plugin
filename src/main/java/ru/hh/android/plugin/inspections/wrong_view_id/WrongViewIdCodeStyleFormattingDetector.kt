@@ -30,10 +30,20 @@ class WrongViewIdCodeStyleFormattingDetector : LayoutDetector() {
                     explanation = """
                     Lint rule for checking View's identifier that should be created in accordance with hh.ru code style.
                     
-                    ViewGroup -> _container
-                    ImageView -> _image
+                    CollapsingToolbarLayout -> _collapsing_toolbar
+                    AppBarLayout -> _app_bar
+                    Toolbar -> _toolbar
+                    RecyclerView -> _recycler
+                    SwipeRefreshLayout -> _swipe_refresh
+                    Switch -> _switch
+                    SeekBar -> _seek_bar
+                    ProgressBar -> _progress
+                    CheckBox -> _checkbox
+                    Button -> _button
                     TextView -> text_view
+                    ImageView -> _image
                     EditText -> edit_text
+                    ViewGroup -> _container
                     View -> _view
                     """,
                     category = Category.LINT,

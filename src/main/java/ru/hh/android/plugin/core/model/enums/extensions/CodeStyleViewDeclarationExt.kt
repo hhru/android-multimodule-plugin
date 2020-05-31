@@ -18,12 +18,10 @@ fun PsiClass.findClosestViewClassDeclaration(): CodeStyleViewDeclaration {
     }
 
     val firstCheckDeclaration = CodeStyleViewDeclaration.values()
-        .filter { it != CodeStyleViewDeclaration.VIEW && it != CodeStyleViewDeclaration.TEXT_VIEW }
         .firstOrNull { this.isInheritor(it) }
 
     return when {
         firstCheckDeclaration != null -> firstCheckDeclaration
-        this.isInheritor(CodeStyleViewDeclaration.TEXT_VIEW) -> CodeStyleViewDeclaration.TEXT_VIEW
         else -> CodeStyleViewDeclaration.VIEW
     }.also { codeStyleClassesMap[this.qualifiedName] = it }
 }

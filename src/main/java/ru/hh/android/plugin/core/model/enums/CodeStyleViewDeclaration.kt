@@ -8,47 +8,32 @@ private const val ANDROIDX_APPCOMPAT_WIDGET_PKG = "${SdkConstants.ANDROIDX_APPCO
 
 /**
  * Enum for holding hh.ru code style for XML views identifiers.
+ *
+ * ALARM: Enum values definition order is important because of inheritance.
  */
 enum class CodeStyleViewDeclaration(
     val idPrefix: String,
     val androidWidgetsClasses: List<String>
 ) {
 
-    CONTAINER(
-        idPrefix = "container",
+    COLLAPSING_TOOLBAR_LAYOUT(
+        idPrefix = "collapsing_toolbar",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_FRAME_LAYOUT,
-            SdkConstants.FQCN_LINEAR_LAYOUT,
-            SdkConstants.FQCN_RELATIVE_LAYOUT,
-            SdkConstants.FQCN_SCROLL_VIEW,
-            "${ANDROID_WIDGET_PKG}.${SdkConstants.HORIZONTAL_SCROLL_VIEW}",
-            SdkConstants.CLASS_CONSTRAINT_LAYOUT.newName(),
-            SdkConstants.CLASS_COORDINATOR_LAYOUT.newName(),
-            SdkConstants.CLASS_NESTED_SCROLL_VIEW.newName()
+            SdkConstants.COLLAPSING_TOOLBAR_LAYOUT.newName()
         )
     ),
 
-    BUTTON(
-        idPrefix = "button",
+    APP_BAR_LAYOUT(
+        idPrefix = "app_bar",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_BUTTON,
-            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatButton"
+            SdkConstants.APP_BAR_LAYOUT.newName()
         )
     ),
 
-    CHECKBOX(
-        idPrefix = "checkbox",
+    TOOLBAR(
+        idPrefix = "toolbar",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_CHECK_BOX,
-            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatCheckBox"
-        )
-    ),
-
-    TEXT_VIEW(
-        idPrefix = "text_view",
-        androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_TEXT_VIEW,
-            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatTextView"
+            SdkConstants.TOOLBAR_V7.newName()
         )
     ),
 
@@ -56,6 +41,29 @@ enum class CodeStyleViewDeclaration(
         idPrefix = "recycler",
         androidWidgetsClasses = listOf(
             SdkConstants.RECYCLER_VIEW.newName()
+        )
+    ),
+
+    SWIPE_REFRESH_LAYOUT(
+        idPrefix = "swipe_refresh",
+        androidWidgetsClasses = listOf(
+            "androidx.swiperefreshlayout.widget.SwipeRefreshLayout"
+        )
+    ),
+
+    SWITCH(
+        idPrefix = "switch",
+        androidWidgetsClasses = listOf(
+            "android.widget.Switch",
+            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.SwitchCompat"
+        )
+    ),
+
+    SEEK_BAR(
+        idPrefix = "seek_bar",
+        androidWidgetsClasses = listOf(
+            "android.widget.SeekBar",
+            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatSeekBar"
         )
     ),
 
@@ -74,6 +82,22 @@ enum class CodeStyleViewDeclaration(
         )
     ),
 
+    CHECKBOX(
+        idPrefix = "checkbox",
+        androidWidgetsClasses = listOf(
+            SdkConstants.FQCN_CHECK_BOX,
+            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatCheckBox"
+        )
+    ),
+
+    BUTTON(
+        idPrefix = "button",
+        androidWidgetsClasses = listOf(
+            SdkConstants.FQCN_BUTTON,
+            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatButton"
+        )
+    ),
+
     EDIT_TEXT(
         idPrefix = "edit_text",
         androidWidgetsClasses = listOf(
@@ -82,10 +106,18 @@ enum class CodeStyleViewDeclaration(
         )
     ),
 
-    SWIPE_REFRESH_LAYOUT(
-        idPrefix = "swipe_refresh",
+    TEXT_VIEW(
+        idPrefix = "text_view",
         androidWidgetsClasses = listOf(
-            "androidx.swiperefreshlayout.widget.SwipeRefreshLayout"
+            SdkConstants.FQCN_TEXT_VIEW,
+            "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatTextView"
+        )
+    ),
+
+    VIEW_GROUP(
+        idPrefix = "container",
+        androidWidgetsClasses = listOf(
+            "android.view.ViewGroup"
         )
     ),
 
