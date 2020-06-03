@@ -10,6 +10,7 @@ import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.util.ClassUtil
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.asJava.classes.KtUltraLightClass
+import org.jetbrains.plugins.groovy.lang.resolve.processors.inference.type
 import org.jetbrains.uast.UCallExpression
 import kotlin.system.measureTimeMillis
 
@@ -96,7 +97,12 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
         var result: String? = null
         val checkTime = measureTimeMillis {
             result = ktUltraLightClass.allFields
-                .filter { it.type is PsiClassReferenceType }
+                .filter {
+                    it.type is PsiClassReferenceType
+                        && it.type.canonicalText.isNotBlank()
+                        && it.type.canonicalText.endsWith("Companion").not()
+                        && it.type.canonicalText.equals(ktUltraLightClass.type().canonicalText).not()
+                }
                 .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedPsiClass, "${ktUltraLightClass.name}") }
                 .firstOrNull()
         }
@@ -131,7 +137,12 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
 
         logger.debug("\t\t\t this ref is Serializable --> check every ref field")
         return ktLightClassForSourceDeclaration.allFields
-            .filter { it.type is PsiClassReferenceType }
+            .filter {
+                it.type is PsiClassReferenceType
+                    && it.type.canonicalText.isNotBlank()
+                    && it.type.canonicalText.endsWith("Companion").not()
+                    && it.type.canonicalText.equals(ktLightClassForSourceDeclaration.type().canonicalText).not()
+            }
             .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedClass, "$objectPath.${ktLightClassForSourceDeclaration.name}") }
             .firstOrNull()
     }
