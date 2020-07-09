@@ -1,13 +1,13 @@
 package ru.hh.android.plugin.services.freemarker.utils
 
-import com.android.tools.idea.projectsystem.AndroidModuleTemplate
+import com.android.tools.idea.projectsystem.AndroidModulePaths
 import java.io.File
 
 
 class AndroidModulePathsData(
     moduleRootDirFile: File,
     modulePackageName: String
-) : AndroidModuleTemplate {
+) : AndroidModulePaths {
 
     companion object {
         private const val SD_SRC = "src"
@@ -17,6 +17,7 @@ class AndroidModulePathsData(
         private const val SD_RES = "res"
         private const val SD_AIDL = "aidl"
         private const val SD_ANDROID_TEST = "androidTest"
+        private const val SD_TEST = "test"
     }
 
     private val baseSrcDir = File(moduleRootDirFile, SD_SRC)
@@ -37,6 +38,11 @@ class AndroidModulePathsData(
     override fun getTestDirectory(packageName: String?): File? {
         return File(baseFlavorDir, "$SD_ANDROID_TEST/$SD_SRC_JAVA").takeIf { it.exists() }
             ?: File(baseFlavorDir, "$SD_ANDROID_TEST/$SD_SRC_KOTLIN")
+    }
+
+    override fun getUnitTestDirectory(packageName: String?): File? {
+        return File(baseFlavorDir, "$SD_TEST/$SD_SRC_JAVA").takeIf { it.exists() }
+            ?: File(baseFlavorDir, "$SD_TEST/$SD_SRC_KOTLIN")
     }
 
 }

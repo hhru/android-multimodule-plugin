@@ -1,8 +1,8 @@
 package ru.hh.android.plugin.inspections
 
-import com.android.tools.idea.lint.LintIdeIssueRegistry
+import com.android.tools.idea.lint.common.AndroidLintInspectionBase
+import com.android.tools.idea.lint.common.LintIdeIssueRegistry
 import com.android.tools.lint.detector.api.Issue
-import org.jetbrains.android.inspections.lint.AndroidLintInspectionBase
 
 
 @Suppress("UnstableApiUsage")

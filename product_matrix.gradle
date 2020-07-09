@@ -24,9 +24,7 @@ ext {
                             "git4idea"
                     ]
             ],
-            // Also has bug with android project synchronization.
-            // Use this only for documentation
-            'android_studio__4_0_beta': [
+            'android_studio_4_0': [
                     'isLocal'   : false,
                     'ideVersion': "193.6911.18",
                     'plugins'   : [
@@ -39,7 +37,7 @@ ext {
             ],
             'local_path'              : [
                     'isLocal'   : true,
-                    'ideVersion': '/Applications/Android Studio.app',
+                    'ideVersion': '/Applications/Android Studio 4.0.app',
                     'plugins'   : [
                             "android",
                             "android-layoutlib",
