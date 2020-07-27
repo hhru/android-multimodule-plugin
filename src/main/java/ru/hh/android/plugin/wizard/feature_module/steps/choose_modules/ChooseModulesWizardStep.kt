@@ -85,7 +85,7 @@ class ChooseModulesWizardStep(
     private fun getForceSelectedModulesNames(params: MainParametersHolder): Set<String> {
         return mutableSetOf<String>().apply {
             this += "logger"
-            this += "analytics"
+            this += "analytics-api"
             this += "core-utils"
 
             if (params.checkFeature(PredefinedFeature.ADD_UI_MODULES_DEPENDENCIES)) {
