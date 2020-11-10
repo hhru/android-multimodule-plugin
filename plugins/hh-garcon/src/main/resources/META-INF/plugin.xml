@@ -1,0 +1,97 @@
+<idea-plugin>
+    <id>ru.hh.android.plugins.Garcon</id>
+    <name>Garcon</name>
+    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
+
+    <description><![CDATA[
+    Plugin for generating Kakao's Page objects from Android's layout.xml files.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.android</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Live templates -->
+        <defaultLiveTemplatesProvider
+                implementation="ru.hh.android.plugins.garcon.live_templates.GarconTemplateProvider"/>
+        <liveTemplateContext implementation="ru.hh.android.plugins.garcon.live_templates.LiveTemplateStepContext"/>
+        <liveTemplateContext implementation="ru.hh.android.plugins.garcon.live_templates.LiveTemplateItemContext"/>
+
+        <!-- Plugin config -->
+        <projectService serviceImplementation="ru.hh.android.plugins.garcon.config.PluginConfig"/>
+        <projectConfigurable
+                groupId="appearance"
+                instance="ru.hh.android.plugins.garcon.config.PluginConfigConfigurable"/>
+    </extensions>
+
+    <resource-bundle>messages.GarconBundle</resource-bundle>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action class="ru.hh.android.plugins.garcon.actions.collect_kakao_views.CollectKakaoViewsIntoPageObjectAction"
+                id="ru.hh.android.plugins.garcon.actions.collect_kakao_views.CollectKakaoViewsIntoPageObjectAction"
+                text="Collect Kakao Views Into..."
+                description="Collects Kakao widgets from XML layout into Screen class">
+            <add-to-group group-id="GenerateGroup" relative-to-action="GenerateXmlTag" anchor="after"/>
+            <add-to-group group-id="NewGroup" relative-to-action="Android.CreateResourcesActionGroup" anchor="after"/>
+        </action>
+
+        <action class="ru.hh.android.plugins.garcon.actions.rv_item_page_object.GenerateRVItemPageObjectAction"
+                id="ru.hh.android.plugins.garcon.actions.rv_item_page_object.GenerateRVItemPageObjectAction"
+                text="Generate RecyclerItem Page Object"
+                description="Creates new recyclerItem page object from layout">
+            <add-to-group group-id="GenerateGroup" relative-to-action="GenerateXmlTag" anchor="after"/>
+            <add-to-group group-id="NewGroup" relative-to-action="Android.CreateResourcesActionGroup" anchor="after"/>
+        </action>
+
+        <action class="ru.hh.android.plugins.garcon.actions.screen_page_object.GeneratePageObjectAction"
+                id="ru.hh.android.plugins.garcon.actions.screen_page_object.GeneratePageObjectAction"
+                text="Generate Page Object"
+                description="Creates new page object from current layout">
+            <add-to-group group-id="GenerateGroup" relative-to-action="GenerateXmlTag" anchor="after"/>
+            <add-to-group group-id="NewGroup" relative-to-action="Android.CreateResourcesActionGroup" anchor="after"/>
+        </action>
+    </actions>
+
+    <project-components>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugins.garcon.model.mapping.AndroidViewTagInfoConverter
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.model.mapping.XmlFileConverter</implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.model.mapping.PropertyNameFetcher</implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.model.mapping.PageObjectPropertyConverter
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.generator.PageObjectFactory</implementation-class>
+        </component>
+        <component>
+            <implementation-class>
+                ru.hh.android.plugins.garcon.generator.RecyclerViewItemPageObjectInitDataConverter
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.generator.ScreenPageObjectInitDataConverter
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.generator.freemarker.FreeMarkerWrapper
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.notifications.NotificationsFactory</implementation-class>
+        </component>
+        <component>
+            <implementation-class>ru.hh.android.plugins.garcon.GarconEventLogger</implementation-class>
+        </component>
+    </project-components>
+</idea-plugin>
