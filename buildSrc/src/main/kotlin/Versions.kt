@@ -11,11 +11,6 @@ object BuildPlugins {
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
 
-object Libs {
-    const val junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitVersion}"
-    const val junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitVersion}"
-    const val junitJupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junitVersion}"
-}
 
 enum class Product(
     val isLocal: Boolean = false,

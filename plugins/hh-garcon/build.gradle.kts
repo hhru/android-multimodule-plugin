@@ -10,10 +10,7 @@ repositories {
 dependencies {
     implementation(project(":hh-plugins-core"))
     implementation(kotlin("stdlib-jdk8"))
-
-    testImplementation(Libs.junitJupiterApi)
-    testImplementation(Libs.junitJupiterParams)
-    testRuntimeOnly(Libs.junitJupiterEngine)
+    implementation(kotlin("reflect"))
 }
 
 // region Setup gradle-intellij-plugin
@@ -26,13 +23,6 @@ intellij {
     } else {
         version = currentVersion.ideVersion
     }
-    setPlugins(*currentVersion.pluginsNames.toTypedArray())
+    setPlugins("java", "Kotlin", "android")
 }
 // endregion
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
