@@ -1,12 +1,12 @@
 <templateSet group="Garcon">
     <template name="step"
-              value="fun TestContext&lt;TestCase&gt;.$FUNC_NAME$() {&#10;    step(&quot;$STEP_DESCRIPTION$&quot;) {&#10;        // TODO&#10;    }&#10;}"
+              value="fun com.kaspersky.kaspresso.testcases.core.testcontext.TestContext&lt;ru.hh.android.dsl.runtime.TestCase&gt;.$FUNC_NAME$() {&#10;    step(&quot;$STEP_DESCRIPTION$&quot;) {&#10;        // TODO&#10;    }&#10;}"
               description="New function with test step" toReformat="false" toShortenFQNames="true">
         <variable name="FUNC_NAME" expression="" defaultValue="&quot;function_name&quot;" alwaysStopAt="true"/>
         <variable name="STEP_DESCRIPTION" expression="" defaultValue="&quot;step_description&quot;"
                   alwaysStopAt="true"/>
         <context>
-            <option name="ru.hh.android.plugins.garcon.live_templates.step" value="true"/>
+            <option name="ru.hh.plugins.garcon.live_templates.step" value="true"/>
         </context>
     </template>
     <template name="item" value="itemType($CLASS_NAME$::$RECYCLER_ITEM_CLASS_NAME$)"
@@ -15,7 +15,7 @@
         <variable name="RECYCLER_ITEM_CLASS_NAME" expression="completeSmart()" defaultValue="recycler_item_class_name"
                   alwaysStopAt="true"/>
         <context>
-            <option name="ru.hh.android.plugins.garcon.live_templates.item" value="true"/>
+            <option name="ru.hh.plugins.garcon.live_templates.item" value="true"/>
         </context>
     </template>
 </templateSet>
