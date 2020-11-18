@@ -5,13 +5,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.layout.CCFlags
-import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.PluginConstants.DEFAULT_GH_MODULE_PREFIX
 import ru.hh.android.plugin.core.framework_ui.view.ModuleNamePanel
 import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
 import ru.hh.android.plugin.services.modules.ModuleRepository
-import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.showErrorMessage
 import java.awt.BorderLayout
 import javax.swing.JComboBox
@@ -28,8 +26,8 @@ class CopyAndroidModuleActionDialog(
         .run { CollectionComboBoxModel(this) }
 
     private val moduleNamePanel = ModuleNamePanel(
-        moduleNameSectionLabel = message("geminio.common.forms.new_module_name"),
-        packageNameSectionLabel = message("geminio.common.forms.new_module_package_name"),
+        moduleNameSectionLabel = "New module name",
+        packageNameSectionLabel = "New module package name",
         defaultModuleName = "$DEFAULT_GH_MODULE_PREFIX$moduleName",
         defaultPackageName = "$DEFAULT_GH_MODULE_PREFIX$moduleName".toPackageNameFromModuleName(),
         onErrorAction = { hasError ->
@@ -42,25 +40,24 @@ class CopyAndroidModuleActionDialog(
 
     init {
         init()
-        title = message("geminio.forms.copy_module.title")
+        title = "Copy module"
     }
 
 
     override fun createCenterPanel(): JComponent? = JPanel(BorderLayout())
 
-    @Suppress("UnstableApiUsage")
     override fun createNorthPanel(): JComponent? {
         return panel {
             row {
                 label(
-                    text = message("geminio.forms.copy_module.label.0", moduleName),
+                    text = "Copy selected module \"${moduleName}\" into...",
                     bold = true
                 )
             }
 
             moduleNamePanel.create(this)
 
-            titledRow(message("geminio.forms.copy_module.application_module")) {
+            titledRow("Application module") {
                 row {
                     cell {
                         val cellBuilder = comboBox(
@@ -81,7 +78,7 @@ class CopyAndroidModuleActionDialog(
             super.doOKAction()
         } else {
             appModuleComboBox?.let { comboBox ->
-                showErrorMessage(project, message("geminio.errors.copy_module.app_module_not_selected"), comboBox)
+                showErrorMessage(project, "Application module not selected!", comboBox)
             }
         }
     }

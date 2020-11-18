@@ -9,7 +9,6 @@ import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
 import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.android.plugin.core.model.jira.JiraSettings
-import ru.hh.android.plugin.utils.PluginBundle.message
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JPasswordField
@@ -55,40 +54,41 @@ class PluginConfigEditor(
     @Suppress("UnstableApiUsage")
     fun createComponent(): JComponent? {
         return panel {
-            titledRow(message("antiroutine.config_editor.plugin_folder")) {
+            titledRow("Path to plugin's folder") {
                 row {
                     pluginFolderDirPathTextField = JTextField(initialPluginFolderDirPath)
                     pluginFolderDirPathTextField(CCFlags.growX)
                 }
             }
 
-            titledRow(message("antiroutine.config_editor.debug_mode")) {
+            titledRow("Debug mode settings") {
                 row {
                     enableDebugModeCheckBox = checkBox(
-                        text = message("antiroutine.config_editor.enable_debug_mode"),
+                        text = "Enable debug mode",
                         isSelected = initialEnableDebugMode
                     ).component
                 }
             }
 
-            titledRow(message("antiroutine.config_editor.jira_title")) {
-                row(message("antiroutine.config_editor.jira_host")) {
+            titledRow("Enter your JIRA credentials:") {
+                row("Host name:") {
                     jiraHostNameTextField = JTextField(initialJiraHostName)
                     jiraHostNameTextField()
                 }
-                row(message("antiroutine.config_editor.jira_username")) {
+                row("Username:") {
                     jiraUsernameTextField = JTextField(initialJiraUsername)
                     jiraUsernameTextField()
                 }
-                row(message("antiroutine.config_editor.jira_password")) {
+                row("Password:") {
                     jiraPasswordTextField = JPasswordField(initialJiraPassword.toString())
                     jiraPasswordTextField()
                 }
             }
 
-            titledRow(message("antiroutine.config_editor.jira_development_team")) {
+            titledRow("Choose your JIRA development team:") {
                 row {
-                    jiraDevelopmentTeamComboBoxModel = CollectionComboBoxModel(JiraDevelopmentTeam.values().map { it.comboBoxLabel })
+                    jiraDevelopmentTeamComboBoxModel =
+                        CollectionComboBoxModel(JiraDevelopmentTeam.values().map { it.comboBoxLabel })
                     jiraDevelopmentTeamComboBoxModel.selectedItem = initialJiraDevelopmentTeam.comboBoxLabel
                     cell {
                         comboBox(
@@ -105,17 +105,18 @@ class PluginConfigEditor(
 
     fun isModified(): Boolean {
         return initialPluginFolderDirPath != pluginFolderDirPathTextField.text
-            || initialEnableDebugMode != enableDebugModeCheckBox.isSelected
-            || initialJiraHostName != jiraHostNameTextField.text
-            || initialJiraUsername != jiraUsernameTextField.text
-            || initialJiraPassword != jiraPasswordTextField.text
-            || initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
+                || initialEnableDebugMode != enableDebugModeCheckBox.isSelected
+                || initialJiraHostName != jiraHostNameTextField.text
+                || initialJiraUsername != jiraUsernameTextField.text
+                || initialJiraPassword != jiraPasswordTextField.text
+                || initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
         pluginConfig.isDebugModeEnabled = enableDebugModeCheckBox.isSelected
-        pluginConfig.jiraDevelopmentTeam = JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
+        pluginConfig.jiraDevelopmentTeam =
+            JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
 
         with(JiraSettingsConfig.getInstance(project)) {
             writeHostname(jiraHostNameTextField.text)

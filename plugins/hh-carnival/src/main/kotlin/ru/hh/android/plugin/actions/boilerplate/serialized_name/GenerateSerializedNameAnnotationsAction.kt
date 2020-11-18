@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.idea.actions.generate.KotlinGenerateActionBase
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService
-import ru.hh.android.plugin.utils.PluginBundle
 import ru.hh.android.plugin.utils.notifyInfo
 
 
@@ -15,8 +14,9 @@ class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
 
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
         (getTargetClass(editor, file) as? KtClass)?.let { targetClass ->
-            SerializedNameAnnotationsGeneratorService.getInstance(project).addSerializedNameAnnotationsIntoClass(targetClass)
-            project.notifyInfo(PluginBundle.message("antiroutine.generate_serialized_name.success"))
+            SerializedNameAnnotationsGeneratorService.getInstance(project)
+                .addSerializedNameAnnotationsIntoClass(targetClass)
+            project.notifyInfo("@SerializedName annotations successfully generated!")
         }
     }
 

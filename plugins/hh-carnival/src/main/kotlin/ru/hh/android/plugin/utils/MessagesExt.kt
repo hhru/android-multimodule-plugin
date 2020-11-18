@@ -6,7 +6,7 @@ import javax.swing.JComponent
 
 
 fun showErrorMessage(project: Project, errorMessage: String, componentToFocus: JComponent) {
-    val errorTitle = PluginBundle.message("geminio.errors.common_title")
+    val errorTitle = "Error"
 
     Messages.showMessageDialog(
         project,
