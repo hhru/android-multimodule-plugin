@@ -22,7 +22,7 @@ import javax.swing.border.Border
  */
 class ModuleNamePanel(
     private val moduleNameSectionLabel: String = "Module name",
-    private val packageNameSectionLabel: String = "=Package name",
+    private val packageNameSectionLabel: String = "Package name",
     private val defaultModuleName: String = PluginConstants.DEFAULT_MODULE_NAME,
     private val defaultPackageName: String = PluginConstants.DEFAULT_PACKAGE_NAME,
     private val onErrorAction: (Boolean) -> Unit = {}
