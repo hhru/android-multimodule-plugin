@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation(Libs.freemarker)
 }
 
 // region Setup gradle-intellij-plugin

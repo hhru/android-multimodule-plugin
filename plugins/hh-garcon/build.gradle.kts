@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":hh-plugins-core"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation(Libs.freemarker)
 }
 
 // region Setup gradle-intellij-plugin

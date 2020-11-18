@@ -1,14 +1,16 @@
 object Versions {
     const val kotlin = "1.4.10"
-    const val intellijPlugin = "0.6.2"
-
-    const val junitVersion = "5.6.0"
+    const val intellijPlugin = "0.6.3"
 
     val chosenProduct = Product.LOCAL
 }
 
 object BuildPlugins {
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+}
+
+object Libs {
+    const val freemarker = "org.freemarker:freemarker:2.3.30"
 }
 
 
@@ -19,10 +21,22 @@ enum class Product(
 ) {
     LOCAL(
         isLocal = true,
-        ideVersion = "/Applications/Android Studio 4.0.app",
+        ideVersion = "/Applications/Android Studio.app",
         pluginsNames = listOf(
             "android",
             "android-layoutlib",
+            "Kotlin",
+            "java",
+            "Groovy",
+            "git4idea",
+            "IntelliLang"
+        )
+    ),
+
+    ANDROID_STUDIO_4_1(
+        ideVersion = "201.8743.12",
+        pluginsNames = listOf(
+            "android",
             "Kotlin",
             "java",
             "Groovy",
