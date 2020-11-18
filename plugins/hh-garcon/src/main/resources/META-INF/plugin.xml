@@ -1,0 +1,68 @@
+<idea-plugin>
+    <id>ru.hh.android.plugins.Garcon</id>
+    <name>Garcon</name>
+    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
+
+    <description><![CDATA[
+    Plugin for generating Kakao's Page objects from Android's layout.xml files.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.android</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- region Live templates -->
+        <defaultLiveTemplatesProvider
+                implementation="ru.hh.plugins.garcon.live_templates.GarconTemplateProvider"/>
+        <liveTemplateContext implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateStepContext"/>
+        <liveTemplateContext implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateItemContext"/>
+        <!-- endregion -->
+
+        <!-- region Plugin config -->
+        <projectService serviceImplementation="ru.hh.plugins.garcon.config.editor.GarconPluginSettings"/>
+        <projectConfigurable
+                groupId="appearance"
+                instance="ru.hh.plugins.garcon.config.editor.GarconPluginSettingsSearchableConfigurable"/>
+        <!-- endregion -->
+
+        <!-- region Project services -->
+        <projectService serviceImplementation="ru.hh.plugins.garcon.services.PageObjectPropertyConverter"/>
+        <projectService serviceImplementation="ru.hh.plugins.garcon.services.FreeMarkerWrapper"/>
+        <projectService serviceImplementation="ru.hh.plugins.garcon.services.ClassFiltersFactory"/>
+        <!-- endregion -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action class="ru.hh.plugins.garcon.actions.create_screen_page_object.CreateScreenPageObjectAction"
+                id="ru.hh.plugins.garcon.actions.create_screen_page_object.CreateScreenPageObjectAction"
+                text="New Page Object"
+                description="Creates new page object from current layout">
+            <add-to-group group-id="GenerateGroup" relative-to-action="GenerateXmlTag" anchor="after"/>
+        </action>
+
+        <action class="ru.hh.plugins.garcon.actions.create_recycler_item_page_object.CreateRecyclerItemPageObjectAction"
+                id="ru.hh.plugins.garcon.actions.create_recycler_item_page_object.CreateRecyclerItemPageObjectAction"
+                text="New RecyclerItem Page Object"
+                description="Creates new recyclerItem page object from layout">
+            <add-to-group
+                    group-id="GenerateGroup"
+                    relative-to-action="ru.hh.plugins.garcon.actions.create_screen_page_object.CreateScreenPageObjectAction"
+                    anchor="after"/>
+        </action>
+
+        <action class="ru.hh.plugins.garcon.actions.collect_kakao_views.CollectWidgetsIntoPageObjectAction"
+                id="ru.hh.plugins.garcon.actions.collect_kakao_views.CollectWidgetsIntoPageObjectAction"
+                text="Collect Kakao Views Into..."
+                description="Collects Kakao widgets from XML layout into Screen class">
+            <add-to-group
+                    group-id="GenerateGroup"
+                    relative-to-action="ru.hh.plugins.garcon.actions.create_recycler_item_page_object.CreateRecyclerItemPageObjectAction"
+                    anchor="after"/>
+        </action>
+
+    </actions>
+
+</idea-plugin>
