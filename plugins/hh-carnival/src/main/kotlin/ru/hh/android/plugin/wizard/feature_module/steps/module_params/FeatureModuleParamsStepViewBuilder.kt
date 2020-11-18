@@ -87,7 +87,7 @@ class FeatureModuleParamsStepViewBuilder(
                     val featureCheckBox = checkBox(
                             text = feature.uiText,
                             isSelected = feature.defaultValue
-                    )
+                    ).component
                     predefinedFeaturesCheckboxes[feature] = featureCheckBox
                 }
             }

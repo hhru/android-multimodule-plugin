@@ -1,5 +1,6 @@
 package ru.hh.plugins.extensions
 
+import com.android.tools.idea.wizard.template.camelCaseToUnderlines
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
@@ -36,4 +37,8 @@ fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirecto
     val packageWrapper = PackageWrapper(psiManager, this)
 
     return packageWrapper.directories.lastOrNull { it.virtualFile.path == withPath }
+}
+
+fun String.fromCamelCaseToUnderlines(): String {
+    return camelCaseToUnderlines(this)
 }

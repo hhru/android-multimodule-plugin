@@ -1,6 +1,6 @@
 package ru.hh.android.plugin.generator.steps
 
-import com.android.tools.idea.lang.proguard.ProguardFileType
+import com.android.tools.idea.lang.proguardR8.ProguardR8FileType
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.psi.PsiDirectory
 import org.jetbrains.kotlin.idea.KotlinFileType
@@ -51,104 +51,104 @@ import ru.hh.android.plugin.model.enums.PredefinedFeature
 
 
 class GenerateFeatureModuleFilesStep(
-        private val createModuleConfigConverter: CreateModuleConfigConverter,
-        private val moduleFilesFactory: ModuleFilesFactory
+    private val createModuleConfigConverter: CreateModuleConfigConverter,
+    private val moduleFilesFactory: ModuleFilesFactory
 ) {
 
     fun execute(config: CreateModuleConfig, params: Map<String, PsiDirectory?>) {
         val templates = mutableListOf<FileTemplateData>().apply {
             this += FileTemplateData(
-                    templateFileName = ANDROID_MANIFEST_TEMPLATE,
-                    outputFileName = ANDROID_MANIFEST_OUTPUT,
-                    outputFileType = XmlFileType.INSTANCE,
-                    outputFilePsiDirectory = params[KEY_MAIN_FOLDER]
+                templateFileName = ANDROID_MANIFEST_TEMPLATE,
+                outputFileName = ANDROID_MANIFEST_OUTPUT,
+                outputFileType = XmlFileType.INSTANCE,
+                outputFilePsiDirectory = params[KEY_MAIN_FOLDER]
             )
             this += FileTemplateData(
-                    templateFileName = GITIGNORE_TEMPLATE,
-                    outputFileName = GITIGNORE_OUTPUT,
-                    outputFileType = IgnoreFileType.INSTANCE,
-                    outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
+                templateFileName = GITIGNORE_TEMPLATE,
+                outputFileName = GITIGNORE_OUTPUT,
+                outputFileType = IgnoreFileType.INSTANCE,
+                outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
             )
             this += FileTemplateData(
-                    templateFileName = PROGUARD_TEMPLATE,
-                    outputFileName = PROGUARD_OUTPUT,
-                    outputFileType = ProguardFileType.INSTANCE,
-                    outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
+                templateFileName = PROGUARD_TEMPLATE,
+                outputFileName = PROGUARD_OUTPUT,
+                outputFileType = ProguardR8FileType.INSTANCE,
+                outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
             )
             this += FileTemplateData(
-                    templateFileName = BUILD_GRADLE_TEMPLATE,
-                    outputFileName = BUILD_GRADLE_OUTPUT,
-                    outputFileType = GroovyFileType.GROOVY_FILE_TYPE,
-                    outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
+                templateFileName = BUILD_GRADLE_TEMPLATE,
+                outputFileName = BUILD_GRADLE_OUTPUT,
+                outputFileType = GroovyFileType.GROOVY_FILE_TYPE,
+                outputFilePsiDirectory = params[KEY_MODULE_ROOT_FOLDER]
             )
             this += FileTemplateData(
-                    templateFileName = DI_MODULE_TEMPLATE,
-                    outputFileName = "${config.formattedLibraryName}$DI_MODULE_OUTPUT_SUFFIX",
-                    outputFileType = KotlinFileType.INSTANCE,
-                    outputFilePsiDirectory = params[KEY_DI_MODULE_FOLDER]
+                templateFileName = DI_MODULE_TEMPLATE,
+                outputFileName = "${config.formattedLibraryName}$DI_MODULE_OUTPUT_SUFFIX",
+                outputFileType = KotlinFileType.INSTANCE,
+                outputFilePsiDirectory = params[KEY_DI_MODULE_FOLDER]
             )
 
             if (config.checkFeature(PredefinedFeature.NEED_CREATE_API_INTERFACE)) {
                 this += FileTemplateData(
-                        templateFileName = REMOTE_API_PROVIDER_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$REMOTE_API_PROVIDER_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_DI_PROVIDER_FOLDER]
+                    templateFileName = REMOTE_API_PROVIDER_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$REMOTE_API_PROVIDER_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_DI_PROVIDER_FOLDER]
                 )
                 this += FileTemplateData(
-                        templateFileName = REMOTE_API_INTERFACE_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$REMOTE_API_INTERFACE_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_REMOTE_DATA_API_FOLDER]
+                    templateFileName = REMOTE_API_INTERFACE_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$REMOTE_API_INTERFACE_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_REMOTE_DATA_API_FOLDER]
                 )
             }
             if (config.checkFeature(PredefinedFeature.NEED_CREATE_REPOSITORY_WITH_INTERACTOR)) {
                 this += FileTemplateData(
-                        templateFileName = MODULE_INTERACTOR_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$MODULE_INTERACTOR_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_DOMAIN_INTERACTOR_FOLDER]
+                    templateFileName = MODULE_INTERACTOR_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$MODULE_INTERACTOR_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_DOMAIN_INTERACTOR_FOLDER]
                 )
                 this += FileTemplateData(
-                        templateFileName = MODULE_REPOSITORY_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$MODULE_REPOSITORY_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_DOMAIN_REPOSITORY_FOLDER]
+                    templateFileName = MODULE_REPOSITORY_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$MODULE_REPOSITORY_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_DOMAIN_REPOSITORY_FOLDER]
                 )
                 if (config.checkFeature(PredefinedFeature.NEED_CREATE_INTERFACE_FOR_REPOSITORY)) {
                     this += FileTemplateData(
-                            templateFileName = MODULE_REPOSITORY_IMPL_TEMPLATE,
-                            outputFileName = "${config.formattedLibraryName}$MODULE_REPOSITORY_IMPL_OUTPUT_SUFFIX",
-                            outputFileType = KotlinFileType.INSTANCE,
-                            outputFilePsiDirectory = params[KEY_DOMAIN_REPOSITORY_FOLDER]
+                        templateFileName = MODULE_REPOSITORY_IMPL_TEMPLATE,
+                        outputFileName = "${config.formattedLibraryName}$MODULE_REPOSITORY_IMPL_OUTPUT_SUFFIX",
+                        outputFileType = KotlinFileType.INSTANCE,
+                        outputFilePsiDirectory = params[KEY_DOMAIN_REPOSITORY_FOLDER]
                     )
                 }
             }
 
             if (config.checkFeature(PredefinedFeature.NEED_CREATE_PRESENTATION_LAYER)) {
                 this += FileTemplateData(
-                        templateFileName = MODULE_FRAGMENT_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$MODULE_FRAGMENT_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
+                    templateFileName = MODULE_FRAGMENT_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$MODULE_FRAGMENT_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
                 )
                 this += FileTemplateData(
-                        templateFileName = MODULE_VIEW_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$MODULE_VIEW_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
+                    templateFileName = MODULE_VIEW_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$MODULE_VIEW_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_PRESENTATION_VIEW_FOLDER]
                 )
                 this += FileTemplateData(
-                        templateFileName = MODULE_PRESENTER_TEMPLATE,
-                        outputFileName = "${config.formattedLibraryName}$MODULE_PRESENTER_OUTPUT_SUFFIX",
-                        outputFileType = KotlinFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_PRESENTATION_PRESENTER_FOLDER]
+                    templateFileName = MODULE_PRESENTER_TEMPLATE,
+                    outputFileName = "${config.formattedLibraryName}$MODULE_PRESENTER_OUTPUT_SUFFIX",
+                    outputFileType = KotlinFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_PRESENTATION_PRESENTER_FOLDER]
                 )
                 this += FileTemplateData(
-                        templateFileName = EMPTY_FRAGMENT_LAYOUT_TEMPLATE,
-                        outputFileName = "fragment_${config.layoutName}.xml",
-                        outputFileType = XmlFileType.INSTANCE,
-                        outputFilePsiDirectory = params[KEY_RESOURCES_LAYOUT_FOLDER]
+                    templateFileName = EMPTY_FRAGMENT_LAYOUT_TEMPLATE,
+                    outputFileName = "fragment_${config.layoutName}.xml",
+                    outputFileType = XmlFileType.INSTANCE,
+                    outputFilePsiDirectory = params[KEY_RESOURCES_LAYOUT_FOLDER]
                 )
             }
         }

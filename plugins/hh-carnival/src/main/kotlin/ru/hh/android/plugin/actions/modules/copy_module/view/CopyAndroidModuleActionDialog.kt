@@ -67,7 +67,6 @@ class CopyAndroidModuleActionDialog(
                             model = appModuleComboBoxModel,
                             getter = { appModuleComboBoxModel.selected },
                             setter = { /* do nothing */ },
-                            growPolicy = GrowPolicy.SHORT_TEXT,
                             renderer = null
                         ).also { appModuleComboBox = it.component }
                         cellBuilder.component(CCFlags.growX)

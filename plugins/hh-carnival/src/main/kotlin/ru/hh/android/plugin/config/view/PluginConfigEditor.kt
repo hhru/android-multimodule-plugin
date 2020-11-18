@@ -4,7 +4,6 @@ import com.intellij.credentialStore.Credentials
 import com.intellij.openapi.project.Project
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.layout.CCFlags
-import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
@@ -68,7 +67,7 @@ class PluginConfigEditor(
                     enableDebugModeCheckBox = checkBox(
                         text = message("antiroutine.config_editor.enable_debug_mode"),
                         isSelected = initialEnableDebugMode
-                    )
+                    ).component
                 }
             }
 
@@ -96,7 +95,6 @@ class PluginConfigEditor(
                             model = jiraDevelopmentTeamComboBoxModel,
                             getter = { jiraDevelopmentTeamComboBoxModel.selected },
                             setter = { /* do nothing */ },
-                            growPolicy = GrowPolicy.SHORT_TEXT,
                             renderer = null
                         ).also { it.component(CCFlags.growX) }
                     }

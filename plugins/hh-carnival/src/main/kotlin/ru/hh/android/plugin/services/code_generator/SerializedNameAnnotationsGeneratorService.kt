@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.services.code_generator
 
-import com.android.tools.idea.templates.TemplateUtils
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -16,6 +15,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getValueParameterList
 import ru.hh.android.plugin.extensions.EMPTY
 import ru.hh.android.plugin.extensions.psi.kotlin.getBreakLineElement
 import ru.hh.android.plugin.utils.reformatWithCodeStyle
+import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 
 
 @Service
@@ -66,7 +66,7 @@ class SerializedNameAnnotationsGeneratorService(
     }
 
     private fun KtParameter.toSerializedNameAnnotationText(): String {
-        val parameterNameInSnakeCase = TemplateUtils.camelCaseToUnderlines(name ?: String.EMPTY)
+        val parameterNameInSnakeCase = (name ?: String.EMPTY).fromCamelCaseToUnderlines()
         return "@$SERIALIZED_NAME_ANNOTATION_FQN(\"${parameterNameInSnakeCase}\")"
     }
 
