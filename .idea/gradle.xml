@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/core/hh-plugins-core" />
             <option value="$PROJECT_DIR$/plugins/hh-carnival" />
             <option value="$PROJECT_DIR$/plugins/hh-garcon" />
+            <option value="$PROJECT_DIR$/plugins/hh-geminio" />
           </set>
         </option>
         <option name="useQualifiedModuleNames" value="true" />

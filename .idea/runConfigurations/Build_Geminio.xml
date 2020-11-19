@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Garcon plugin" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="Build Geminio" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/plugins/hh-garcon" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/plugins/hh-geminio" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="runIde" />
+          <option value="buildPlugin" />
         </list>
       </option>
       <option name="vmOptions" value="" />

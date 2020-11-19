@@ -33,6 +33,18 @@ enum class Product(
         )
     ),
 
+    IDEA_2020_2(
+        isLocal = false,
+        ideVersion = "2020.2",
+        pluginsNames = listOf(
+            "android",
+            "Kotlin",
+            "java",
+            "Groovy",
+            "git4idea"
+        )
+    ),
+
     ANDROID_STUDIO_4_1(
         ideVersion = "201.8743.12",
         pluginsNames = listOf(
