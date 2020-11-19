@@ -12,4 +12,14 @@
     <depends>org.jetbrains.android</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="ru.hh.plugins.geminio.services.GeminioStartupActivity"/>
+    </extensions>
+
+    <actions>
+        <group id="ru.hh.plugins.geminio.HHTemplatesGroup" text="HH Templates" popup="true">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </group>
+    </actions>
+
 </idea-plugin>
