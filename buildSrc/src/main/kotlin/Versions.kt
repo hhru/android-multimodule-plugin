@@ -11,6 +11,15 @@ object BuildPlugins {
 
 object Libs {
     const val freemarker = "org.freemarker:freemarker:2.3.30"
+
+    val tests = UnitTests
+
+    object UnitTests {
+        private const val junitVersion = "5.7.0"
+
+        const val junitBomPlatform = "org.junit:junit-bom:$junitVersion"
+        const val junitJupiter = "org.junit.jupiter:junit-jupiter"
+    }
 }
 
 

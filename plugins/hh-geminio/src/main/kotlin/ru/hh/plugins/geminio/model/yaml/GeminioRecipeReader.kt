@@ -13,8 +13,9 @@ import ru.hh.plugins.utils.config.YamlUtils
 
 @Suppress("UNCHECKED_CAST")
 class GeminioRecipeReader(
-    private val recipeYamlFilePath: String
+    private val geminioRecipeExpressionReader: GeminioRecipeExpressionReader = GeminioRecipeExpressionReader()
 ) {
+
     companion object {
         private const val KEY_REQUIRED_PARAMS = "requiredParams"
         private const val KEY_REQUIRED_PARAMS_REVISION = "revision"
@@ -56,7 +57,7 @@ class GeminioRecipeReader(
     }
 
 
-    fun parse(): GeminioRecipe {
+    fun parse(recipeYamlFilePath: String): GeminioRecipe {
         val configMap = YamlUtils.loadFromConfigFile(recipeYamlFilePath) { throwable ->
             throwable.printStackTrace()
         } ?: throw IllegalArgumentException() // todo (signal about error)
@@ -79,7 +80,7 @@ class GeminioRecipeReader(
         return GeminioRecipe.RequiredParams(
             revision = requiredParamsMap[KEY_REQUIRED_PARAMS_REVISION] as Int,
             name = requiredParamsMap[KEY_REQUIRED_PARAMS_NAME] as String,
-            description = requiredParamsMap[KEY_REQUIRED_PARAMS_DESCRIPTION] as String
+            description = requiredParamsMap[KEY_REQUIRED_PARAMS_DESCRIPTION] as String,
         )
     }
 
@@ -105,7 +106,7 @@ class GeminioRecipeReader(
                 GeminioTemplateScreen.fromYamlKey(yamlKey)
             },
             minApi = minApiValue,
-            minBuildApi = minBuildApiValue
+            minBuildApi = minBuildApiValue,
         )
     }
 
@@ -129,27 +130,34 @@ class GeminioRecipeReader(
     private fun Map<String, Any>.toRecipeStringParameter(): GeminioRecipe.RecipeParameter.StringParameter {
         val constraintsKeys = this[KEY_PARAMETER_CONSTRAINTS] as? List<String>
 
+        val visibilityExpressionString = this[KEY_PARAMETER_VISIBILITY] as? String
+        val availabilityExpressionString = this[KEY_PARAMETER_AVAILABILITY] as? String
+        val suggestExpressionString = this[KEY_PARAMETER_SUGGEST] as? String
+
         return GeminioRecipe.RecipeParameter.StringParameter(
             id = this[KEY_PARAMETER_ID] as String,
             name = this[KEY_PARAMETER_NAME] as String,
             help = this[KEY_PARAMETER_HELP] as String,
-            visibilityDeclaration = this[KEY_PARAMETER_VISIBILITY] as? String,
-            availabilityDeclaration = this[KEY_PARAMETER_AVAILABILITY] as? String,
+            visibilityExpression = visibilityExpressionString?.toRecipeExpression(),
+            availabilityExpression = availabilityExpressionString?.toRecipeExpression(),
             default = this[KEY_PARAMETER_DEFAULT] as? String,
-            suggestDeclaration = this[KEY_PARAMETER_SUGGEST] as? String,
+            suggestExpression = suggestExpressionString?.toRecipeExpression(),
             constraints = constraintsKeys?.mapNotNull { yamlKey ->
                 GeminioStringParameterConstraint.fromYamlKey(yamlKey)
-            } ?: emptyList()
+            } ?: emptyList(),
         )
     }
 
     private fun Map<String, Any>.toRecipeBooleanParameter(): GeminioRecipe.RecipeParameter.BooleanParameter {
+        val visibilityExpressionString = this[KEY_PARAMETER_VISIBILITY] as? String
+        val availabilityExpressionString = this[KEY_PARAMETER_AVAILABILITY] as? String
+
         return GeminioRecipe.RecipeParameter.BooleanParameter(
             id = this[KEY_PARAMETER_ID] as String,
             name = this[KEY_PARAMETER_NAME] as String,
             help = this[KEY_PARAMETER_HELP] as String,
-            visibilityDeclaration = this[KEY_PARAMETER_VISIBILITY] as? String,
-            availabilityDeclaration = this[KEY_PARAMETER_AVAILABILITY] as? String,
+            visibilityExpression = visibilityExpressionString?.toRecipeExpression(),
+            availabilityExpression = availabilityExpressionString?.toRecipeExpression(),
             default = this[KEY_PARAMETER_DEFAULT] as? Boolean,
         )
     }
@@ -174,15 +182,20 @@ class GeminioRecipeReader(
     }
 
     private fun Map<String, Any>.toRecipeInstantiateCommand(): GeminioRecipe.RecipeCommand.Instantiate {
+        val fromString = this[KEY_COMMAND_FROM] as String
+        val toString = this[KEY_COMMAND_TO] as String
+
         return GeminioRecipe.RecipeCommand.Instantiate(
-            from = this[KEY_COMMAND_FROM] as String,
-            to = this[KEY_COMMAND_TO] as String
+            from = fromString.toRecipeExpression(),
+            to = toString.toRecipeExpression(),
         )
     }
 
     private fun Map<String, Any>.toRecipeOpenCommand(): GeminioRecipe.RecipeCommand.Open {
+        val fileString = this[KEY_COMMAND_FILE] as String
+
         return GeminioRecipe.RecipeCommand.Open(
-            file = this[KEY_COMMAND_FILE] as String,
+            file = fileString.toRecipeExpression(),
         )
     }
 
@@ -191,8 +204,14 @@ class GeminioRecipeReader(
 
         return GeminioRecipe.RecipeCommand.Predicate(
             validIf = this[KEY_COMMAND_VALID_IF] as String,
-            commands = commands.map { it.toRecipeCommand() }
+            commands = commands.map { it.toRecipeCommand() },
         )
     }
+
+
+    private fun String.toRecipeExpression(): GeminioRecipe.RecipeExpression {
+        return geminioRecipeExpressionReader.parseExpression(this)
+    }
+
 
 }

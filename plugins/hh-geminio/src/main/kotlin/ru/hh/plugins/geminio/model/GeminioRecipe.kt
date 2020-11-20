@@ -29,23 +29,51 @@ data class GeminioRecipe(
     )
 
 
+    data class RecipeExpression(
+        val expressionCommands: List<Command>
+    ) {
+
+        sealed class Command {
+
+            data class Fixed(
+                val value: String
+            ) : Command()
+
+            data class Dynamic(
+                val parameterId: String,
+                val modifiers: List<GeminioRecipeExpressionModifier>
+            ) : Command()
+
+            data class SrcOut(
+                val modifiers: List<GeminioRecipeExpressionModifier>
+            ) : Command()
+
+            data class ResOut(
+                val modifiers: List<GeminioRecipeExpressionModifier>
+            ) : Command()
+
+        }
+
+    }
+
+
     sealed class RecipeParameter {
 
         abstract val id: String
         abstract val name: String
         abstract val help: String
-        abstract val visibilityDeclaration: String?
-        abstract val availabilityDeclaration: String?
+        abstract val visibilityExpression: RecipeExpression?
+        abstract val availabilityExpression: RecipeExpression?
 
 
         data class StringParameter(
             override val id: String,
             override val name: String,
             override val help: String,
-            override val visibilityDeclaration: String?,
-            override val availabilityDeclaration: String?,
+            override val visibilityExpression: RecipeExpression?,
+            override val availabilityExpression: RecipeExpression?,
             val default: String?,
-            val suggestDeclaration: String?,
+            val suggestExpression: RecipeExpression?,
             val constraints: List<GeminioStringParameterConstraint>,
         ) : RecipeParameter()
 
@@ -53,8 +81,8 @@ data class GeminioRecipe(
             override val id: String,
             override val name: String,
             override val help: String,
-            override val visibilityDeclaration: String?,
-            override val availabilityDeclaration: String?,
+            override val visibilityExpression: RecipeExpression?,
+            override val availabilityExpression: RecipeExpression?,
             val default: Boolean?
         ) : RecipeParameter()
 
@@ -62,8 +90,8 @@ data class GeminioRecipe(
             override val id: String,
             override val name: String,
             override val help: String,
-            override val visibilityDeclaration: String?,
-            override val availabilityDeclaration: String?,
+            override val visibilityExpression: RecipeExpression?,
+            override val availabilityExpression: RecipeExpression?,
             val enumClass: KClass<T>,
             val default: T?
         ) : RecipeParameter()
@@ -80,15 +108,15 @@ data class GeminioRecipe(
          * Instantiate file [from] path into [to] destination.
          */
         data class Instantiate(
-            val from: String,
-            val to: String
+            val from: RecipeExpression,
+            val to: RecipeExpression
         ) : RecipeCommand()
 
         /**
          * Try to open file from [file] path.
          */
         data class Open(
-            val file: String
+            val file: RecipeExpression
         ) : RecipeCommand()
 
         /**

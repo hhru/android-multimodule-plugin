@@ -44,7 +44,7 @@ class ExecuteGeminioTemplateAction(
 
         println("Recipe file exists -> need to parse, execute, etc")
 
-        val geminioRecipe = GeminioRecipeReader(geminioRecipePath).parse()
+        val geminioRecipe = GeminioRecipeReader().parse(geminioRecipePath)
 
         println("geminio recipe to String:\n ${geminioRecipe}")
         println("==========")

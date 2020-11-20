@@ -12,6 +12,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation(Libs.freemarker)
+
+    testImplementation("io.kotest:kotest-runner-junit5:4.3.1") // for kotest framework
+//    testImplementation("io.kotest:kotest-assertions-core:<version>") // for kotest core jvm assertions
+//    testImplementation("io.kotest:kotest-property:<version>") // for kotest property test
 }
 
 // region Setup gradle-intellij-plugin
@@ -27,3 +31,10 @@ intellij {
     setPlugins("java", "Kotlin", "android")
 }
 // endregion
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
