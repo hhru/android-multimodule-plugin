@@ -3,10 +3,9 @@ package ru.hh.android.plugin.generator.templates
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
-import freemarker.template.Configuration
-import freemarker.template.TemplateExceptionHandler
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.config.PluginConfig
+import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 import java.io.File
 import java.io.StringWriter
 
@@ -22,12 +21,9 @@ class ModuleFilesFactory(private val project: Project) {
     }
 
     private val freeMarkerConfig by lazy {
-        Configuration().apply {
+        FreemarkerConfiguration().apply {
             val templatesDir = File("${pluginConfig.pluginFolderDirPath}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}")
             setDirectoryForTemplateLoading(templatesDir)
-
-            defaultEncoding = Charsets.UTF_8.name()
-            templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
         }
     }
 

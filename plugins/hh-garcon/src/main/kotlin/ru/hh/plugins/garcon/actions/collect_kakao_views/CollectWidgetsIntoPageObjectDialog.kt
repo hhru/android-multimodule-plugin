@@ -69,7 +69,7 @@ class CollectWidgetsIntoPageObjectDialog(
                     text = "Open in editor",
                     isSelected = PropertiesComponent.getInstance()
                         .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)
-                )
+                ).component
                 openInEditorCheckBox(CCFlags.pushX)
             }
         }

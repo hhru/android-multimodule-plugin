@@ -7,8 +7,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.core.model.jira.*
-import ru.hh.android.plugin.utils.PluginBundle.message
-
 
 @Service
 class JiraIssueFactory {
@@ -28,8 +26,8 @@ class JiraIssueFactory {
         return createJiraIssueInput(
             projectKey = JiraProjectKey.MOB,
             issueType = JiraIssueType.TASK,
-            summary = message("antiroutine.jira.merge_develop_into_portfolio.summary.0", portfolioKey),
-            description = message("antiroutine.jira.merge_develop_into_portfolio.description.0", portfolioKey),
+            summary = "[An] Merge develop to $portfolioKey",
+            description = "Очередной merge develop-ветки в портфельную ветку $portfolioKey",
             assigneeName = creatorName,
             reporterName = creatorName,
             developmentTeam = developmentTeam,

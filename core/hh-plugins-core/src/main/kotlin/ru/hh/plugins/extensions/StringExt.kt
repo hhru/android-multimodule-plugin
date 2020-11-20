@@ -1,6 +1,6 @@
 package ru.hh.plugins.extensions
 
-import com.android.tools.idea.templates.TemplateUtils
+import com.android.tools.idea.wizard.template.camelCaseToUnderlines
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
@@ -10,10 +10,6 @@ import ru.hh.plugins.PluginsConstants
 
 
 val String.Companion.EMPTY: String get() = ""
-
-fun String.toCamelCase(): String = TemplateUtils.underlinesToCamelCase(this)
-
-fun String.toSnakeCase(): String = TemplateUtils.camelCaseToUnderlines(this)
 
 fun String.isQualifiedPackageName(project: Project): Boolean {
     val psiManager = PsiManager.getInstance(project)
@@ -41,4 +37,8 @@ fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirecto
     val packageWrapper = PackageWrapper(psiManager, this)
 
     return packageWrapper.directories.lastOrNull { it.virtualFile.path == withPath }
+}
+
+fun String.fromCamelCaseToUnderlines(): String {
+    return camelCaseToUnderlines(this)
 }

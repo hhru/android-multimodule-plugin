@@ -17,7 +17,6 @@ import ru.hh.android.plugin.exceptions.NoFileFoundException
 import ru.hh.android.plugin.extensions.findPsiFileByName
 import ru.hh.android.plugin.extensions.psi.groovy.getBreakLineElement
 import ru.hh.android.plugin.extensions.psi.groovy.getGradleDependencyExpression
-import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.reformatWithCodeStyle
 
 
@@ -58,7 +57,7 @@ class BuildGradleModificationService {
     private fun internalAddGradleDependencies(module: Module, gradleDependencies: List<GradleDependency>) {
         val buildGradlePsiFile = module.findPsiFileByName(BUILD_GRADLE_FILENAME)
             ?: throw NoFileFoundException(
-                message("geminio.errors.common.no_file_found_in_module.0.1", BUILD_GRADLE_FILENAME, module.name)
+                "Can't find \"${BUILD_GRADLE_FILENAME}\" in \"${module.name}\""
             )
 
         modifyDependenciesBlock(buildGradlePsiFile, gradleDependencies)

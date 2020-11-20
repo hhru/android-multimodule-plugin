@@ -8,7 +8,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.extensions.replaceLineBreaks
-import ru.hh.android.plugin.utils.PluginBundle
 import javax.swing.event.HyperlinkEvent
 
 
@@ -18,7 +17,7 @@ class NotificationsFactory(
 ) : NotificationListener {
 
     companion object {
-        private val NOTIFICATIONS_TITLE = PluginBundle.message("geminio.notifications.title")
+        private val NOTIFICATIONS_TITLE = "Geminio"
         private val LOGGING_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Logging)"
         private val ERROR_NOTIFICATION_GROUP_ID = "$NOTIFICATIONS_TITLE (Errors)"
 

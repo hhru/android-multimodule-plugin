@@ -3,7 +3,6 @@ package ru.hh.android.plugin.extensions
 import com.intellij.psi.PsiDirectory
 import com.intellij.util.IncorrectOperationException
 import ru.hh.android.plugin.actions.modules.copy_module.exceptions.CopyModuleActionException
-import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 
 
@@ -21,7 +20,9 @@ fun PsiDirectory.findSubdirectoryByPackageName(moduleName: String, packageName: 
     var result: PsiDirectory = this
     for (item in directoriesNames) {
         result = result.findSubdirectory(item)
-            ?: throw CopyModuleActionException(message("geminio.errors.copy_module.cant_find_package_directory.0.1", moduleName, packageName))
+            ?: throw CopyModuleActionException(
+                "Can't find main package directory in copying module. Please, check AndroidManifest.xml in \"${moduleName}\" module and make sure that main package name is \"${packageName}\""
+            )
     }
     return result
 }

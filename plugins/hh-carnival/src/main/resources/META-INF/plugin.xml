@@ -90,7 +90,8 @@
             </action>
             <action class="ru.hh.android.plugin.actions.boilerplate.empty_object.GenerateEmptyObjectAction"
                     id="ru.hh.android.plugin.actions.boilerplate.empty_object.GenerateEmptyObjectAction"
-                    text="Generate EMPTY Object..." description="Generates EMPTY object declaration in Kotlin data class">
+                    text="Generate EMPTY Object..."
+                    description="Generates EMPTY object declaration in Kotlin data class">
                 <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="KotlinGenerateGroup"/>
             </action>
         </group>
@@ -122,8 +123,6 @@
         </component>
     </project-components>
 
-    <resource-bundle>messages.PluginBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <!-- region Plugin config -->
         <projectConfigurable
@@ -138,11 +137,14 @@
         <!-- region Plugin services -->
         <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.BuildGradleModificationService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.freemarker.FreeMarkerTemplateResolverService"/>
+        <projectService
+                serviceImplementation="ru.hh.android.plugin.services.code_generator.BuildGradleModificationService"/>
+        <projectService
+                serviceImplementation="ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService"/>
+        <projectService
+                serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
+        <projectService
+                serviceImplementation="ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.modules.ModuleRepository"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraIssueFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraLinkFactory"/>

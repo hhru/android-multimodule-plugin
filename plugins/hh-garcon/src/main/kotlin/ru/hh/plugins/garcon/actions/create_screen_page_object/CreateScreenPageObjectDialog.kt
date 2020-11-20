@@ -82,7 +82,7 @@ class CreateScreenPageObjectDialog(
                         isSelected = RecentsUtils.getBooleanFromProperties(
                             GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG
                         )
-                    )
+                    ).component
                     openInEditorCheckBox(CCFlags.pushX)
                 }
             }

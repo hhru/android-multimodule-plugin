@@ -6,7 +6,6 @@ import ru.hh.android.plugin.core.framework_ui.UiConstants
 import ru.hh.android.plugin.extensions.isCorrectPackageName
 import ru.hh.android.plugin.extensions.layout.onTextChange
 import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
-import ru.hh.android.plugin.utils.PluginBundle.message
 import java.awt.Color
 import javax.swing.BorderFactory
 import javax.swing.JButton
@@ -22,11 +21,11 @@ import javax.swing.border.Border
  * Hide logic with module name and package name changing, showing errors
  */
 class ModuleNamePanel(
-        private val moduleNameSectionLabel: String = message("geminio.common.forms.module_name"),
-        private val packageNameSectionLabel: String = message("geminio.common.forms.package_name"),
-        private val defaultModuleName: String = PluginConstants.DEFAULT_MODULE_NAME,
-        private val defaultPackageName: String = PluginConstants.DEFAULT_PACKAGE_NAME,
-        private val onErrorAction: (Boolean) -> Unit = {}
+    private val moduleNameSectionLabel: String = "Module name",
+    private val packageNameSectionLabel: String = "Package name",
+    private val defaultModuleName: String = PluginConstants.DEFAULT_MODULE_NAME,
+    private val defaultPackageName: String = PluginConstants.DEFAULT_PACKAGE_NAME,
+    private val onErrorAction: (Boolean) -> Unit = {}
 ) {
 
     private val errorColor = Color.decode(UiConstants.DARK_THEME_ERROR_COLOR)
@@ -107,9 +106,9 @@ class ModuleNamePanel(
 
     private fun onEditPackageNameButtonClicked() {
         editPackageNameButton.text = if (isPackageNameInEditMode) {
-            message("geminio.common.forms.edit")
+            "Edit"
         } else {
-            message("geminio.common.forms.done")
+            "Done"
         }
 
         isPackageNameTextFieldEnabled = isPackageNameInEditMode.not()
@@ -149,7 +148,7 @@ class ModuleNamePanel(
                 }
 
                 cell {
-                    editPackageNameButton = JButton(message("geminio.common.forms.edit")).apply {
+                    editPackageNameButton = JButton("Edit").apply {
                         addActionListener { onEditPackageNameButtonClicked() }
                     }
 
@@ -157,7 +156,7 @@ class ModuleNamePanel(
                 }
             }
             row {
-                packageNameErrorLabel = JLabel(message("geminio.errors.invalid_package")).apply {
+                packageNameErrorLabel = JLabel("Invalid target package name specified").apply {
                     foreground = errorColor
                     isVisible = false
                 }

@@ -84,7 +84,8 @@ class GarconPluginSettingsEditor(
                     enableDebugModeCheckBox = checkBox(
                         text = "Enable debug mode",
                         isSelected = initialEnableDebugMode
-                    )
+                    ).component
+                    enableDebugModeCheckBox()
                 }
             }
         }

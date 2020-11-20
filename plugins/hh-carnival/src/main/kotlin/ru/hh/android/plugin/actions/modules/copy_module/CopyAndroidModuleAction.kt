@@ -27,7 +27,6 @@ import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.extensions.*
 import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
 import ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService
-import ru.hh.android.plugin.utils.PluginBundle.message
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
@@ -61,7 +60,7 @@ class CopyAndroidModuleAction : AnAction() {
         dialog.show()
 
         if (dialog.isOK.not()) {
-            project.notifyError(message("geminio.notifications.copy_module.cancel"))
+            project.notifyError("Module copying cancelled")
             return
         }
 
@@ -96,7 +95,7 @@ class CopyAndroidModuleAction : AnAction() {
 
                     SyncProjectAction().actionPerformed(actionData.actionEvent)
 
-                    project.notifyInfo(message("geminio.notifications.copy_module.success.0", newModuleParams.moduleToCopy.name))
+                    project.notifyInfo("Module \"${newModuleParams.moduleToCopy.name}\" successfully copied!")
                 }
             }
         }
@@ -149,17 +148,19 @@ class CopyAndroidModuleAction : AnAction() {
         project.logDebug("Successfully copied root directory files [time: $parentFilesCopyTime ms]")
     }
 
-    private fun createDirectoriesStructure(params: NewModuleParams, newModuleRootPsiDirectory: PsiDirectory): NewModuleDirectoriesStructure {
+    private fun createDirectoriesStructure(
+        params: NewModuleParams,
+        newModuleRootPsiDirectory: PsiDirectory
+    ): NewModuleDirectoriesStructure {
         val moduleMainSourceSetPsiDirectory = params.moduleMainSourceSetPsiDirectory
             ?: throw CopyModuleActionException(
-                message("geminio.errors.copy_module.cant_find_main_source_set.0", params.moduleToCopy.name)
+                "Can't find main source set directory (/main) in copying module \"${params.moduleToCopy.name}\"! Make sure it exists."
             )
         val (moduleJavaSourcePsiDirectory, isSourceDirJava) =
             moduleMainSourceSetPsiDirectory.findSubdirectory(JAVA_SOURCE_FOLDER_NAME)?.let { Pair(it, true) }
                 ?: moduleMainSourceSetPsiDirectory.findSubdirectory(KOTLIN_SOURCE_FOLDER_NAME)?.let { Pair(it, false) }
                 ?: throw CopyModuleActionException(
-                    message("geminio.errors.copy_module.cant_find_java_source.0",
-                        params.moduleToCopy.name)
+                    "Can't find java sources directories (/java or /kotlin) in copying module \"${params.moduleToCopy.name}\"! Make sure it exists."
                 )
 
         val newModuleSrcFolder = newModuleRootPsiDirectory.createSubdirectory(SRC_FOLDER_NAME)
@@ -177,7 +178,10 @@ class CopyAndroidModuleAction : AnAction() {
         )
     }
 
-    private fun getMainPackagesInfo(dirsStructure: NewModuleDirectoriesStructure, params: NewModuleParams): NewModulePackagesInfo {
+    private fun getMainPackagesInfo(
+        dirsStructure: NewModuleDirectoriesStructure,
+        params: NewModuleParams
+    ): NewModulePackagesInfo {
         // Move down to the packages
         return with(dirsStructure) {
             NewModulePackagesInfo(
@@ -200,7 +204,8 @@ class CopyAndroidModuleAction : AnAction() {
         with(mainPackagesInfo) {
             val androidManifestPsiFile = moduleToCopyMainSourceSetPsiDirectory.findFile(ANDROID_MANIFEST_XML_FILE_NAME)
                 ?: throw CopyModuleActionException(
-                    message("geminio.errors.copy_module.cant_find_android_manifest.0", moduleName))
+                    "Can't find AndroidManifest.xml file in copying module \"${moduleName}\"! Make sure it exists."
+                )
 
             val newAndroidManifestPsiFile = androidManifestPsiFile.copyFile(
                 textModification = { text ->
@@ -234,12 +239,12 @@ class CopyAndroidModuleAction : AnAction() {
         val parentFolder = moduleToCopy.moduleParentPsiDirectory
         when {
             parentFolder == null -> {
-                project.notifyError(message("geminio.notifications.copy_module.no_parent_folder.0", moduleToCopy.name))
+                project.notifyError("No parent folder for module \"${moduleToCopy.name}\" found")
                 return false
             }
 
             parentFolder.canCreateSubdirectory(newModuleName).not() -> {
-                project.notifyError(message("geminio.notifications.copy_module.cant_create_module_folder.0", newModuleName))
+                project.notifyError("Can't create new module folder (with name: \"${newModuleName}\")")
                 return false
             }
         }
