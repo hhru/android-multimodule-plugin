@@ -97,7 +97,11 @@ class GeminioRecipeExpressionReader {
             }
         }
         if (fixed.isNotEmpty()) {
-            commands += GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
+            commands += when {
+                fixed == "true" && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnTrue
+                fixed == "false" && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnFalse
+                else -> GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
+            }
         }
 
         return GeminioRecipe.RecipeExpression(commands)

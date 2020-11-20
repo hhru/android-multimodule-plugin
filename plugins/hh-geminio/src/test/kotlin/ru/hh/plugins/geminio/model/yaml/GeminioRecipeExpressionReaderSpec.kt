@@ -136,6 +136,48 @@ class GeminioRecipeExpressionReaderSpec : FreeSpec({
         givenExpressionString.toRecipeExpression() shouldBe expectedExpression
     }
 
+    "Should recognize 'true' string as separate command if it is single word" {
+        val givenExpressionString = "true"
+        val expectedExpression = listOf(
+            ReturnTrue
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+    }
+
+    "Should recognize 'false' string as separate command" {
+        val givenExpressionString = "false"
+        val expectedExpression = listOf(
+            ReturnFalse
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+    }
+
+    "Should read 'true' or 'false' as fixed value if there is some other symbols in expression" {
+        val givenExpressionStringWithTrue = "\${className}true"
+        val expectedExpressionWithTrue = listOf(
+            Dynamic(
+                parameterId = "className",
+                modifiers = emptyList()
+            ),
+            Fixed("true")
+        ).intoExpression()
+
+        val givenExpressionStringWithFalse = "false_\${className}_false"
+        val expectedExpressionWithFalse = listOf(
+            Fixed("false_"),
+            Dynamic(
+                parameterId = "className",
+                modifiers = emptyList()
+            ),
+            Fixed("_false")
+        ).intoExpression()
+
+        givenExpressionStringWithTrue.toRecipeExpression() shouldBe expectedExpressionWithTrue
+        givenExpressionStringWithFalse.toRecipeExpression() shouldBe expectedExpressionWithFalse
+    }
+
 })
 
 

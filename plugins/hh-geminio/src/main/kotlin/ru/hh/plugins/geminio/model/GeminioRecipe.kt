@@ -52,6 +52,10 @@ data class GeminioRecipe(
                 val modifiers: List<GeminioRecipeExpressionModifier>
             ) : Command()
 
+            object ReturnTrue : Command()
+
+            object ReturnFalse : Command()
+
         }
 
     }
