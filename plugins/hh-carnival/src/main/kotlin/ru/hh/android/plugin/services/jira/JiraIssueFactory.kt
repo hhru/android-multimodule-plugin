@@ -26,7 +26,7 @@ class JiraIssueFactory {
         return createJiraIssueInput(
             projectKey = JiraProjectKey.MOB,
             issueType = JiraIssueType.TASK,
-            summary = "Merge develop to $portfolioKey",
+            summary = "[An] Merge develop to $portfolioKey",
             description = "Очередной merge develop-ветки в портфельную ветку $portfolioKey",
             assigneeName = creatorName,
             reporterName = creatorName,
