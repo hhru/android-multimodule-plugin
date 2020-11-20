@@ -69,23 +69,13 @@ class GeminioStartupActivity : StartupActivity {
         return ExecuteGeminioTemplateAction(
             actionText = templateDirName,
             actionDescription = "Action for executing '$templateDirName'",
-            actionHandler = {
-                println("Start executing template [$templateDirName]")
-
-                val pathToGeminioTemplateConfigFile = getGeminioRecipeFilePath(
-                    templatesRootDirPath = templatesRootDirPath,
-                    templateDirName = templateDirName
-                )
-                println("Search for recipe file: $pathToGeminioTemplateConfigFile")
-                val recipeFile = File(pathToGeminioTemplateConfigFile)
-                if (recipeFile.exists().not()) {
-                    println("Recipe file doesn't exists [look into $pathToGeminioTemplateConfigFile]")
-                    return@ExecuteGeminioTemplateAction
-                }
-
-                println("Recipe file exists -> need to parse, execute, etc")
-            }
+            templateDirPath = getGeminioTemplateDirPath(templatesRootDirPath, templateDirName),
+            geminioRecipePath = getGeminioRecipeFilePath(templatesRootDirPath, templateDirName)
         )
+    }
+
+    private fun getGeminioTemplateDirPath(templatesRootDirPath: String, templateDirName: String): String {
+        return "$templatesRootDirPath/$templateDirName"
     }
 
     private fun getGeminioRecipeFilePath(templatesRootDirPath: String, templateDirName: String): String {

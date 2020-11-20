@@ -26,4 +26,17 @@ object YamlUtils {
         }
     }
 
+    fun loadFromConfigFile(filePath: String, onError: (Throwable) -> Unit): LinkedHashMap<String, Any>? {
+        val configFile = File(filePath).takeIf { it.exists() } ?: return null
+
+        return try {
+            val yaml = Yaml()
+
+            return yaml.load(FileReader(configFile))
+        } catch (ex: Exception) {
+            onError.invoke(ex)
+            null
+        }
+    }
+
 }

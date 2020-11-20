@@ -14,7 +14,6 @@ enum class GeminioTemplateConstraint(
 
 
     companion object {
-        fun fromYamlKey(yamlKey: String) = fromYamlKeyForValidation(yamlKey)
-        fun fromYamlKeyForValidation(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }
+        fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }
     }
 }
