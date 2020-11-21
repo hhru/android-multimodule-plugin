@@ -1,4 +1,4 @@
-package ru.hh.plugins.utils.freemarker
+package ru.hh.plugins.utils.freemarker.adapters
 
 import com.android.tools.idea.observable.core.BoolValueProperty
 import com.android.tools.idea.observable.core.IntValueProperty
@@ -7,8 +7,6 @@ import freemarker.template.Configuration
 import freemarker.template.DefaultObjectWrapper
 import freemarker.template.TemplateModel
 import freemarker.template.TemplateModelException
-import ru.hh.plugins.utils.freemarker.BoolPropertyAdapter
-import ru.hh.plugins.utils.freemarker.IntPropertyAdapter
 
 class PropertyObjectWrapper : DefaultObjectWrapper(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS) {
 
