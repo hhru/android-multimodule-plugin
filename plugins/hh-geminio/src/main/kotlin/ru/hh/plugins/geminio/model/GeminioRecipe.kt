@@ -127,7 +127,7 @@ data class GeminioRecipe(
          * Command which will be executed only if [validIf] predicate returns true.
          */
         data class Predicate(
-            val validIf: String,
+            val validIf: RecipeExpression,
             val commands: List<RecipeCommand>
         ) : RecipeCommand()
 
