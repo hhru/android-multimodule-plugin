@@ -12,6 +12,17 @@ class GeminioRecipeExpressionReader {
     companion object {
         private const val SRC_OUT_FOLDER_NAME = "srcOut"
         private const val RES_OUT_FOLDER_NAME = "resOut"
+
+        private const val FIXED_TRUE_VALUE = "true"
+        private const val FIXED_FALSE_VALUE = "false"
+
+        private const val CHAR_DYNAMIC_COMMAND_START = '$'
+        private const val CHAR_DYNAMIC_COMMAND_END = '}'
+        private const val CHAR_DYNAMIC_COMMAND_SKIP = '{'
+
+        private const val CHAR_COMMAND_MODIFIER_START = '.'
+        private const val CHAR_COMMAND_MODIFIER_END = '('
+        private const val CHAR_COMMAND_MODIFIER_SKIP = ')'
     }
 
 
@@ -27,7 +38,7 @@ class GeminioRecipeExpressionReader {
 
         for (char in expressionString) {
             when (char) {
-                '$' -> {
+                CHAR_DYNAMIC_COMMAND_START -> {
                     if (fixed.isNotEmpty()) {
                         commands += GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
                     }
@@ -35,7 +46,7 @@ class GeminioRecipeExpressionReader {
                     startDynamic = true
                 }
 
-                '.' -> {
+                CHAR_COMMAND_MODIFIER_START -> {
                     if (startDynamic) {
                         startModifier = true
                     } else {
@@ -43,13 +54,13 @@ class GeminioRecipeExpressionReader {
                     }
                 }
 
-                '(' -> {
+                CHAR_COMMAND_MODIFIER_END -> {
                     GeminioRecipeExpressionModifier.fromYamlKey(modifierName)?.let { modifiers.add(it) }
                     modifierName = ""
                     startModifier = false
                 }
 
-                '}' -> {
+                CHAR_DYNAMIC_COMMAND_END -> {
                     startDynamic = false
                     commands += when (parameterId) {
                         SRC_OUT_FOLDER_NAME -> {
@@ -75,7 +86,7 @@ class GeminioRecipeExpressionReader {
                     modifiers = mutableListOf()
                 }
 
-                ')', '{' -> {
+                CHAR_COMMAND_MODIFIER_SKIP, CHAR_DYNAMIC_COMMAND_SKIP -> {
                     // do nothing by default
                 }
 
@@ -98,8 +109,8 @@ class GeminioRecipeExpressionReader {
         }
         if (fixed.isNotEmpty()) {
             commands += when {
-                fixed == "true" && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnTrue
-                fixed == "false" && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnFalse
+                fixed == FIXED_TRUE_VALUE && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnTrue
+                fixed == FIXED_FALSE_VALUE && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnFalse
                 else -> GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
             }
         }
