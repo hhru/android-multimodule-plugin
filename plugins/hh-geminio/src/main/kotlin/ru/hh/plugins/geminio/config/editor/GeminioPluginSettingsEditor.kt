@@ -1,32 +1,34 @@
-package ru.hh.plugins.garcon.config.editor
+package ru.hh.plugins.geminio.config.editor
 
 import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.extensions.layout.fileChooserButton
-import ru.hh.plugins.garcon.config.GarconPluginConfig
+import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JTextField
 
 
-class GarconPluginSettingsEditor(
+class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
-    private val initialEnableDebugMode: Boolean,
-    private val initialScreenPageObjectTemplatePath: String,
-    private val initialRvItemPageObjectTemplatePath: String
+    private val initialTemplatesRootDirPath: String,
+    private val initialNameForNewGroup: String,
+    private val initialNameForGenerateGroup: String,
+    private val initialEnableDebugMode: Boolean
 ) {
 
     companion object {
 
-        fun newInstance(settings: GarconPluginSettings): GarconPluginSettingsEditor {
+        fun newInstance(settings: GeminioPluginSettings): GeminioPluginSettingsEditor {
             return with(settings) {
-                GarconPluginSettingsEditor(
+                GeminioPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
-                    initialEnableDebugMode = config.enableDebugMode,
-                    initialScreenPageObjectTemplatePath = config.templatesPaths.screenPageObjectTemplatePath,
-                    initialRvItemPageObjectTemplatePath = config.templatesPaths.rvItemPageObjectTemplatePath
+                    initialTemplatesRootDirPath = config.templatesRootDirPath,
+                    initialNameForNewGroup = config.groupsNames.forNewGroup,
+                    initialNameForGenerateGroup = config.groupsNames.forGenerateGroup,
+                    initialEnableDebugMode = config.enableDebugMode
                 )
             }
         }
@@ -34,12 +36,12 @@ class GarconPluginSettingsEditor(
     }
 
     private lateinit var configFilePathTextField: JTextField
-    private lateinit var screenPageObjectTemplatePathTextField: JTextField
-    private lateinit var rvItemPageObjectTemplatePathTextField: JTextField
+    private lateinit var templatesRootDirPathTextField: JTextField
+    private lateinit var nameForNewGroupTextField: JTextField
+    private lateinit var nameForGenerateGroupTextField: JTextField
     private lateinit var enableDebugModeCheckBox: JCheckBox
 
 
-    // property-references doesn't work >_<
     fun createComponent(project: Project): JComponent? {
         return panel {
             titledRow("Config file path:") {
@@ -61,12 +63,18 @@ class GarconPluginSettingsEditor(
             }
             titledRow("Templates paths:") {
                 row {
-                    screenPageObjectTemplatePathTextField = JTextField(initialScreenPageObjectTemplatePath)
-                    screenPageObjectTemplatePathTextField(CCFlags.growX)
+                    templatesRootDirPathTextField = JTextField(initialTemplatesRootDirPath)
+                    templatesRootDirPathTextField(CCFlags.growX)
+                }
+            }
+            titledRow("Groups names:") {
+                row {
+                    nameForNewGroupTextField = JTextField(initialNameForNewGroup)
+                    nameForNewGroupTextField(CCFlags.growX)
                 }
                 row {
-                    rvItemPageObjectTemplatePathTextField = JTextField(initialRvItemPageObjectTemplatePath)
-                    rvItemPageObjectTemplatePathTextField(CCFlags.growX)
+                    nameForGenerateGroupTextField = JTextField(initialNameForGenerateGroup)
+                    nameForGenerateGroupTextField(CCFlags.growX)
                 }
             }
 
@@ -82,29 +90,32 @@ class GarconPluginSettingsEditor(
         }
     }
 
-    fun isModified(settings: GarconPluginSettings): Boolean {
+    fun isModified(settings: GeminioPluginSettings): Boolean {
         return with(settings) {
             config.configFilePath != configFilePathTextField.text
-                    || config.templatesPaths.screenPageObjectTemplatePath != screenPageObjectTemplatePathTextField.text
-                    || config.templatesPaths.rvItemPageObjectTemplatePath != rvItemPageObjectTemplatePathTextField.text
+                    || config.templatesRootDirPath != templatesRootDirPathTextField.text
+                    || config.groupsNames.forNewGroup != nameForNewGroupTextField.text
+                    || config.groupsNames.forGenerateGroup != nameForGenerateGroupTextField.text
                     || config.enableDebugMode != enableDebugModeCheckBox.isSelected
         }
     }
 
-    fun applyNewConfiguration(settings: GarconPluginSettings) {
+    fun applyNewConfiguration(settings: GeminioPluginSettings) {
         if (settings.config.configFilePath != configFilePathTextField.text) {
             settings.tryLoadFromConfigFile(configFilePathTextField.text)
 
-            screenPageObjectTemplatePathTextField.text = settings.config.templatesPaths.screenPageObjectTemplatePath
-            rvItemPageObjectTemplatePathTextField.text = settings.config.templatesPaths.rvItemPageObjectTemplatePath
+            templatesRootDirPathTextField.text = settings.config.templatesRootDirPath
+            nameForNewGroupTextField.text = settings.config.groupsNames.forNewGroup
+            nameForGenerateGroupTextField.text = settings.config.groupsNames.forGenerateGroup
             enableDebugModeCheckBox.isSelected = settings.config.enableDebugMode
         } else {
             settings.config = settings.config.copy(
+                templatesRootDirPath = templatesRootDirPathTextField.text,
+                groupsNames = GeminioPluginConfig.GroupsNames(
+                    forNewGroup = nameForNewGroupTextField.text,
+                    forGenerateGroup = nameForGenerateGroupTextField.text
+                ),
                 enableDebugMode = enableDebugModeCheckBox.isSelected,
-                templatesPaths = GarconPluginConfig.TemplatesPaths(
-                    screenPageObjectTemplatePath = screenPageObjectTemplatePathTextField.text,
-                    rvItemPageObjectTemplatePath = rvItemPageObjectTemplatePathTextField.text
-                )
             )
         }
     }

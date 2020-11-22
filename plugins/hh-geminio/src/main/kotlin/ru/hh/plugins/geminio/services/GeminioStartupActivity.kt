@@ -9,25 +9,29 @@ import com.intellij.openapi.startup.StartupActivity
 import ru.hh.plugins.extensions.toUnderlines
 import ru.hh.plugins.geminio.GeminioConstants
 import ru.hh.plugins.geminio.actions.ExecuteGeminioTemplateAction
+import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import java.io.File
 
 
 /**
- * Код отрабатывает при старте проекта
+ * This code will be executed on project's startup.
  */
 class GeminioStartupActivity : StartupActivity {
 
     companion object {
-        private const val GEMINIO_CONFIG_DIR_PATH = "/android-style-guide/geminio"
-        private const val GEMINIO_TEMPLATES_DIR_NAME = "/templates"
+        private const val BASE_ID = "ru.hh.plugins.geminio.actions."
+        private const val NEW_GROUP_ID_SUFFIX = "NewGroup."
+        private const val GENERATE_GROUP_ID_SUFFIX = "GenerateGroup."
     }
 
 
     override fun runActivity(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
             println("GeminioStartupActivity::")
-            val pathToConfig = project.basePath + GEMINIO_CONFIG_DIR_PATH
-            val pathToTemplates = pathToConfig + GEMINIO_TEMPLATES_DIR_NAME
+            val pluginConfig = GeminioPluginSettings.getConfig(project)
+
+            val pathToConfig = pluginConfig.configFilePath
+            val pathToTemplates = project.basePath + pluginConfig.templatesRootDirPath
 
             println("\tpathToConfig: $pathToConfig")
             println("\tpathToTemplates: $pathToTemplates")
@@ -43,16 +47,29 @@ class GeminioStartupActivity : StartupActivity {
                 println("============")
 
                 val actionManager = ActionManager.getInstance()
-                val hhTemplatesGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_GROUP_Id)
+                val hhTemplatesNewGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_NEW_GROUP_ID)
                         as DefaultActionGroup
+                hhTemplatesNewGroup.templatePresentation.text = pluginConfig.groupsNames.forNewGroup
+                val hhTemplatesGenerateGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_GENERATE_GROUP_ID)
+                        as DefaultActionGroup
+                hhTemplatesGenerateGroup.templatePresentation.text = pluginConfig.groupsNames.forGenerateGroup
 
                 templatesDirectories.forEach { templateName ->
-                    val newAction = createActionForTemplate(pathToTemplates, templateName)
-                    val newActionId = ExecuteGeminioTemplateAction.BASE_ID + templateName.toUnderlines()
+                    val newActionForNewGroup = createActionForTemplate(
+                        templatesRootDirPath = pathToTemplates,
+                        templateDirName = templateName,
+                        actionManager = actionManager,
+                        actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines()
+                    )
+                    hhTemplatesNewGroup += newActionForNewGroup
 
-                    actionManager.registerAction(newActionId, newAction)
-
-                    hhTemplatesGroup.add(newAction)
+                    val newActionForGenerateGroup = createActionForTemplate(
+                        templatesRootDirPath = pathToTemplates,
+                        templateDirName = templateName,
+                        actionManager = actionManager,
+                        actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines()
+                    )
+                    hhTemplatesGenerateGroup += newActionForGenerateGroup
                 }
             }
 
@@ -64,22 +81,25 @@ class GeminioStartupActivity : StartupActivity {
 
     private fun createActionForTemplate(
         templatesRootDirPath: String,
-        templateDirName: String
+        templateDirName: String,
+        actionManager: ActionManager,
+        actionId: String,
     ): AnAction {
         return ExecuteGeminioTemplateAction(
             actionText = templateDirName,
             actionDescription = "Action for executing '$templateDirName'",
-            templateDirPath = getGeminioTemplateDirPath(templatesRootDirPath, templateDirName),
             geminioRecipePath = getGeminioRecipeFilePath(templatesRootDirPath, templateDirName)
-        )
-    }
-
-    private fun getGeminioTemplateDirPath(templatesRootDirPath: String, templateDirName: String): String {
-        return "$templatesRootDirPath/$templateDirName"
+        ).also { action ->
+            actionManager.registerAction(actionId, action)
+        }
     }
 
     private fun getGeminioRecipeFilePath(templatesRootDirPath: String, templateDirName: String): String {
         return "$templatesRootDirPath/$templateDirName/${GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME}"
+    }
+
+    private operator fun DefaultActionGroup.plusAssign(action: AnAction) {
+        this.add(action)
     }
 
 

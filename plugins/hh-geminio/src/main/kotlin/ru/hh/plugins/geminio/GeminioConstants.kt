@@ -4,9 +4,10 @@ package ru.hh.plugins.geminio
 object GeminioConstants {
 
     /**
-     * Duplicates groupId in plugins.xml
+     * Duplicates groupId in plugin.xml
      */
-    const val HH_TEMPLATES_GROUP_Id = "ru.hh.plugins.geminio.HHTemplatesGroup"
+    const val HH_TEMPLATES_NEW_GROUP_ID = "ru.hh.plugins.geminio.New.HHTemplatesGroup"
+    const val HH_TEMPLATES_GENERATE_GROUP_ID = "ru.hh.plugins.geminio.Generate.HHTemplatesGroup"
 
     const val GEMINIO_TEMPLATE_CONFIG_FILE_NAME = "recipe.yaml"
 

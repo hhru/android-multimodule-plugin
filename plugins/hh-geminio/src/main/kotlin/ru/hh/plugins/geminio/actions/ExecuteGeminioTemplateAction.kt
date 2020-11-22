@@ -11,10 +11,8 @@ import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.DataKey
 import com.intellij.openapi.actionSystem.LangDataKeys
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
@@ -33,13 +31,10 @@ import java.io.FileNotFoundException
 class ExecuteGeminioTemplateAction(
     private val actionText: String,
     private val actionDescription: String,
-    private val templateDirPath: String,
     private val geminioRecipePath: String
 ) : AnAction() {
 
     companion object {
-        const val BASE_ID = "ru.hh.plugins.geminio.actions."
-
         private const val CREATED_FILES_DATA_KEY = "ExecuteGeminioTemplateActionCreatedFiles"
         private const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
     }
