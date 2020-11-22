@@ -23,6 +23,8 @@ import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 
 
+private const val HARDCODED_PARAM_PACKAGE_NAME = "packageName"
+
 /**
  * Build Android Studio [ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate]
  * from [ru.hh.plugins.geminio.model.GeminioRecipe].
@@ -34,14 +36,15 @@ fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = templ
     val existingParametersMap = injectWidgets(geminioRecipe)
 
     recipe = { templateData ->
+        val moduleTemplateData = templateData as ModuleTemplateData
         geminioRecipe(
             geminioRecipe = geminioRecipe,
             executorData = GeminioRecipeExecutorData(
-                moduleTemplateData = templateData as ModuleTemplateData,
+                moduleTemplateData = moduleTemplateData,
                 existingParametersMap = existingParametersMap,
                 resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
                     entry.key to entry.value.value
-                },
+                }.plus(HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName),
                 freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
             )
         )
