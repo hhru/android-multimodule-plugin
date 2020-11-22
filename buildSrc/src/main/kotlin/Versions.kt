@@ -15,10 +15,9 @@ object Libs {
     val tests = UnitTests
 
     object UnitTests {
-        private const val junitVersion = "5.7.0"
+        private const val kotestVersion = "4.3.1"
 
-        const val junitBomPlatform = "org.junit:junit-bom:$junitVersion"
-        const val junitJupiter = "org.junit.jupiter:junit-jupiter"
+        const val kotest = "io.kotest:kotest-runner-junit5:$kotestVersion"
     }
 }
 

@@ -4,7 +4,7 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.model.GeminioRecipe
 import ru.hh.plugins.geminio.model.GeminioRecipe.RecipeExpression.Command.*
-import ru.hh.plugins.geminio.model.GeminioRecipeExpressionModifier.*
+import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier.*
 
 
 class GeminioRecipeExpressionReaderSpec : FreeSpec({
@@ -99,19 +99,13 @@ class GeminioRecipeExpressionReaderSpec : FreeSpec({
     }
 
     "Should recognize {resOut} variable into separate command" {
-        val givenExpressionString = "\${resOut.escapeXmlAttribute()}/layout/\${fragmentName.escapeXmlAttribute()}.xml"
+        val givenExpressionString = "\${resOut}/layout/\${fragmentName}.xml"
         val expectedExpression = listOf(
-            ResOut(
-                modifiers = listOf(
-                    ESCAPE_XML_ATTRIBUTE
-                )
-            ),
+            ResOut(emptyList()),
             Fixed("/layout/"),
             Dynamic(
                 parameterId = "fragmentName",
-                modifiers = listOf(
-                    ESCAPE_XML_ATTRIBUTE
-                )
+                modifiers = emptyList()
             ),
             Fixed(".xml"),
         ).intoExpression()
@@ -122,9 +116,7 @@ class GeminioRecipeExpressionReaderSpec : FreeSpec({
     "Should recognize {srcOut} variable into separate command" {
         val givenExpressionString = "\${srcOut}/di/\${moduleName}.kt"
         val expectedExpression = listOf(
-            SrcOut(
-                modifiers = emptyList()
-            ),
+            SrcOut(emptyList()),
             Fixed("/di/"),
             Dynamic(
                 parameterId = "moduleName",
@@ -176,6 +168,21 @@ class GeminioRecipeExpressionReaderSpec : FreeSpec({
 
         givenExpressionStringWithTrue.toRecipeExpression() shouldBe expectedExpressionWithTrue
         givenExpressionStringWithFalse.toRecipeExpression() shouldBe expectedExpressionWithFalse
+    }
+
+    "Should skip unknown modifiers" {
+        val givenExpressionString = "\${resOut.unknown()}/layout/\${fragmentName}.xml"
+        val expectedExpression = listOf(
+            ResOut(emptyList()),
+            Fixed("/layout/"),
+            Dynamic(
+                parameterId = "fragmentName",
+                modifiers = emptyList()
+            ),
+            Fixed(".xml"),
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
     }
 
 })

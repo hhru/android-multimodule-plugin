@@ -3,12 +3,13 @@ package ru.hh.plugins.geminio.model.yaml
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.GeminioConstants
 import ru.hh.plugins.geminio.model.GeminioRecipe
-import ru.hh.plugins.geminio.model.GeminioStringParameterConstraint
-import ru.hh.plugins.geminio.model.GeminioTemplateCategory
-import ru.hh.plugins.geminio.model.GeminioTemplateConstraint
-import ru.hh.plugins.geminio.model.GeminioTemplateFormFactor
-import ru.hh.plugins.geminio.model.GeminioTemplateScreen
+import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateCategory
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateConstraint
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateFormFactor
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateScreen
 import ru.hh.plugins.utils.config.YamlUtils
+import java.io.File
 
 
 @Suppress("UNCHECKED_CAST")
@@ -65,6 +66,7 @@ class GeminioRecipeReader(
 
         return with(configMap) {
             GeminioRecipe(
+                freemarkerTemplatesRootDirPath = File(recipeYamlFilePath).parent,
                 requiredParams = extractRequiredParams(),
                 optionalParams = extractOptionalParams(),
                 recipeParameters = extractRecipeParameters(),

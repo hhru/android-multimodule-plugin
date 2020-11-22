@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.model.yaml
 
 import ru.hh.plugins.geminio.model.GeminioRecipe
-import ru.hh.plugins.geminio.model.GeminioRecipeExpressionModifier
+import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier
 
 
 /**
