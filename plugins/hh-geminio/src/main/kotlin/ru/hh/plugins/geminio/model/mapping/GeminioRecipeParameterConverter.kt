@@ -44,7 +44,7 @@ private fun GeminioRecipe.RecipeParameter.StringParameter.toAndroidStudioTemplat
         constraints = geminioParameter.constraints.map { it.toAndroidStudioStringParameterConstraint() }
         visible = geminioParameter.visibilityExpression?.toBooleanLambda(existingParametersMap) ?: { true }
         enabled = geminioParameter.availabilityExpression?.toBooleanLambda(existingParametersMap) ?: { true }
-        suggest = geminioParameter.availabilityExpression?.toStringLambda(existingParametersMap) ?: { null }
+        suggest = geminioParameter.suggestExpression?.toStringLambda(existingParametersMap) ?: { null }
     }
 }
 
