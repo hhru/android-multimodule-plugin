@@ -1,5 +1,11 @@
 package ru.hh.plugins.geminio.model
 
+import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier
+import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateCategory
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateConstraint
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateFormFactor
+import ru.hh.plugins.geminio.model.enums.GeminioTemplateScreen
 import kotlin.reflect.KClass
 
 
@@ -7,6 +13,7 @@ import kotlin.reflect.KClass
  * Recipe data for building template's  UI and creating files.
  */
 data class GeminioRecipe(
+    val freemarkerTemplatesRootDirPath: String,
     val requiredParams: RequiredParams,
     val optionalParams: OptionalParams?,
     val recipeParameters: List<RecipeParameter>,
