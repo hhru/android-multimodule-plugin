@@ -13,9 +13,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(Libs.freemarker)
 
-    testImplementation("io.kotest:kotest-runner-junit5:4.3.1") // for kotest framework
-//    testImplementation("io.kotest:kotest-assertions-core:<version>") // for kotest core jvm assertions
-//    testImplementation("io.kotest:kotest-property:<version>") // for kotest property test
+    testImplementation(Libs.tests.kotest) // for kotest framework
 }
 
 // region Setup gradle-intellij-plugin
