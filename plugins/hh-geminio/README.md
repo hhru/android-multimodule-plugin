@@ -1,5 +1,7 @@
 # Geminio
 
+![Geminio](img/Geminio.png)
+
 Плагин для генерации кода из freemarker-ных шаблонов
 
 ## Зачем
