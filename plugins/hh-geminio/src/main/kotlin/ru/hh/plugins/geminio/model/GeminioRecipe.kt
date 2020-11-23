@@ -131,6 +131,16 @@ data class GeminioRecipe(
         ) : RecipeCommand()
 
         /**
+         * Combination of [Instantiate] and [Open] command.
+         *
+         * Instantiate file [from] path into [to] destination + try to open created file.
+         */
+        data class InstantiateAndOpen(
+            val from: RecipeExpression,
+            val to: RecipeExpression
+        ) : RecipeCommand()
+
+        /**
          * Command which will be executed only if [validIf] predicate returns true.
          */
         data class Predicate(

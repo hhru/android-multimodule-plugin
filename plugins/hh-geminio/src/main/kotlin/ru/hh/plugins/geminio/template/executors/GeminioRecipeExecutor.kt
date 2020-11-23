@@ -25,6 +25,7 @@ private fun GeminioRecipe.RecipeCommand.execute(
 ) {
     when (this) {
         is GeminioRecipe.RecipeCommand.Instantiate -> recipeExecutor.execute(this, executorData)
+        is GeminioRecipe.RecipeCommand.InstantiateAndOpen -> recipeExecutor.execute(this, executorData)
         is GeminioRecipe.RecipeCommand.Open -> recipeExecutor.execute(this, executorData)
         is GeminioRecipe.RecipeCommand.Predicate -> recipeExecutor.execute(this, executorData)
     }.exhaustive

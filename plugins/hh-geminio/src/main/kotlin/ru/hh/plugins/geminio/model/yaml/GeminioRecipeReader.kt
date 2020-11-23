@@ -48,6 +48,7 @@ class GeminioRecipeReader(
         private const val KEY_RECIPE = "recipe"
         private const val KEY_RECIPE_INSTANTIATE = "instantiate"
         private const val KEY_RECIPE_OPEN = "open"
+        private const val KEY_RECIPE_INSTANTIATE_AND_OPEN = "instantiateAndOpen"
         private const val KEY_RECIPE_PREDICATE = "predicate"
 
         private const val KEY_COMMAND_FROM = "from"
@@ -175,11 +176,13 @@ class GeminioRecipeReader(
     private fun Map<String, Map<String, Any>>.toRecipeCommand(): GeminioRecipe.RecipeCommand {
         val instantiateCommand = this[KEY_RECIPE_INSTANTIATE]
         val openCommand = this[KEY_RECIPE_OPEN]
+        val instantiateAndOpenCommand = this[KEY_RECIPE_INSTANTIATE_AND_OPEN]
         val predicateCommand = this[KEY_RECIPE_PREDICATE]
 
         return when {
             instantiateCommand != null -> instantiateCommand.toRecipeInstantiateCommand()
             openCommand != null -> openCommand.toRecipeOpenCommand()
+            instantiateAndOpenCommand != null -> instantiateAndOpenCommand.toRecipeInstantiateAndOpenCommand()
             predicateCommand != null -> predicateCommand.toRecipePredicateCommand()
             else -> throw IllegalArgumentException("Unknown parameter type")
         }
@@ -200,6 +203,16 @@ class GeminioRecipeReader(
 
         return GeminioRecipe.RecipeCommand.Open(
             file = fileString.toRecipeExpression(),
+        )
+    }
+
+    private fun Map<String, Any>.toRecipeInstantiateAndOpenCommand(): GeminioRecipe.RecipeCommand.InstantiateAndOpen {
+        val fromString = this[KEY_COMMAND_FROM] as String
+        val toString = this[KEY_COMMAND_TO] as String
+
+        return GeminioRecipe.RecipeCommand.InstantiateAndOpen(
+            from = fromString.toRecipeExpression(),
+            to = toString.toRecipeExpression(),
         )
     }
 
