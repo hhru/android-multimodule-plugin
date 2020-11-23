@@ -19,11 +19,11 @@ class GeminioRecipeReader(
 
     companion object {
         private const val KEY_REQUIRED_PARAMS = "requiredParams"
-        private const val KEY_REQUIRED_PARAMS_REVISION = "revision"
         private const val KEY_REQUIRED_PARAMS_NAME = "name"
         private const val KEY_REQUIRED_PARAMS_DESCRIPTION = "description"
 
         private const val KEY_OPTIONAL_PARAMS = "optionalParams"
+        private const val KEY_OPTIONAL_PARAMS_REVISION = "revision"
         private const val KEY_OPTIONAL_PARAMS_CATEGORY = "category"
         private const val KEY_OPTIONAL_PARAMS_FORM_FACTOR = "formFactor"
         private const val KEY_OPTIONAL_PARAMS_CONSTRAINTS = "constraints"
@@ -80,7 +80,6 @@ class GeminioRecipeReader(
         val requiredParamsMap = this[KEY_REQUIRED_PARAMS] as LinkedHashMap<String, Any>
 
         return GeminioRecipe.RequiredParams(
-            revision = requiredParamsMap[KEY_REQUIRED_PARAMS_REVISION] as Int,
             name = requiredParamsMap[KEY_REQUIRED_PARAMS_NAME] as String,
             description = requiredParamsMap[KEY_REQUIRED_PARAMS_DESCRIPTION] as String,
         )
@@ -89,6 +88,8 @@ class GeminioRecipeReader(
     private fun Map<String, Any>.extractOptionalParams(): GeminioRecipe.OptionalParams? {
         val optionalParamsMap = this[KEY_OPTIONAL_PARAMS] as? LinkedHashMap<String, Any> ?: return null
 
+        val revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int
+            ?: GeminioConstants.DEFAULT_REVISION_VALUE
         val categoryYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_CATEGORY] as? String ?: String.EMPTY
         val formFactorYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_FORM_FACTOR] as? String ?: String.EMPTY
         val constraintsYamlKeys = optionalParamsMap[KEY_OPTIONAL_PARAMS_CONSTRAINTS] as? List<String> ?: emptyList()
@@ -99,6 +100,7 @@ class GeminioRecipeReader(
             ?: GeminioConstants.DEFAULT_MIN_BUILD_API_VALUE
 
         return GeminioRecipe.OptionalParams(
+            revision = revision,
             category = GeminioTemplateCategory.fromYamlKey(categoryYamlKey),
             formFactor = GeminioTemplateFormFactor.fromYamlKey(formFactorYamlKey),
             constraints = constraintsYamlKeys.mapNotNull { yamlKey ->

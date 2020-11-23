@@ -11,7 +11,6 @@ import ru.hh.plugins.geminio.model.enums.GeminioTemplateScreen
 fun GeminioTemplateScreen.toAndroidStudioTemplateWizardUiContext(): WizardUiContext {
     return when (this) {
         GeminioTemplateScreen.NEW_PROJECT -> WizardUiContext.NewProject
-        GeminioTemplateScreen.NEW_PROJECT_EXTRA_DETAIL -> throw IllegalArgumentException("Available since Android Studio 4.2")
         GeminioTemplateScreen.NEW_MODULE -> WizardUiContext.NewModule
         GeminioTemplateScreen.MENU_ENTRY -> WizardUiContext.MenuEntry
         GeminioTemplateScreen.ACTIVITY_GALLERY -> WizardUiContext.ActivityGallery

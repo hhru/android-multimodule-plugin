@@ -13,6 +13,7 @@ object GeminioConstants {
 
     const val GEMINIO_TEMPLATE_CONFIG_FILE_NAME = "recipe.yaml"
 
+    const val DEFAULT_REVISION_VALUE = 1
     const val DEFAULT_MIN_API_VALUE = 1
     const val DEFAULT_MIN_BUILD_API_VALUE = 1
 

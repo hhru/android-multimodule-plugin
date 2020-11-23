@@ -21,12 +21,12 @@ data class GeminioRecipe(
 ) {
 
     data class RequiredParams(
-        val revision: Int,
         val name: String,
         val description: String,
     )
 
     data class OptionalParams(
+        val revision: Int,
         val category: GeminioTemplateCategory,
         val formFactor: GeminioTemplateFormFactor,
         val constraints: List<GeminioTemplateConstraint>,

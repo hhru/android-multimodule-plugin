@@ -19,6 +19,7 @@ import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateCategory
 import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateConstraint
 import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateFormFactor
 import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateIdParameterPair
+import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateWizardUiContext
 import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 
@@ -54,7 +55,6 @@ fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = templ
 
 private fun TemplateBuilder.injectRequiredParams(geminioRecipe: GeminioRecipe) {
     with(geminioRecipe) {
-        revision = requiredParams.revision
         name = requiredParams.name
         description = requiredParams.description
     }
@@ -63,15 +63,19 @@ private fun TemplateBuilder.injectRequiredParams(geminioRecipe: GeminioRecipe) {
 private fun TemplateBuilder.injectOptionalParams(geminioRecipe: GeminioRecipe) {
     with(geminioRecipe) {
         if (optionalParams == null) {
+            revision = GeminioConstants.DEFAULT_REVISION_VALUE
             category = Category.Other
             formFactor = FormFactor.Mobile
             constraints = emptyList()
+            screens = emptyList()
             minApi = GeminioConstants.DEFAULT_MIN_API_VALUE
             minBuildApi = GeminioConstants.DEFAULT_MIN_BUILD_API_VALUE
         } else {
+            revision = optionalParams.revision
             category = optionalParams.category.toAndroidStudioTemplateCategory()
             formFactor = optionalParams.formFactor.toAndroidStudioTemplateFormFactor()
             constraints = optionalParams.constraints.map { it.toAndroidStudioTemplateConstraint() }
+            screens = optionalParams.screens.map { it.toAndroidStudioTemplateWizardUiContext() }
             minApi = optionalParams.minApi
             minBuildApi = optionalParams.minBuildApi
         }
