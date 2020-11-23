@@ -135,8 +135,8 @@ class GeminioRecipeReader(
     private fun Map<String, Any>.toRecipeStringParameter(): GeminioRecipe.RecipeParameter.StringParameter {
         val constraintsKeys = this[KEY_PARAMETER_CONSTRAINTS] as? List<String>
 
-        val visibilityExpressionString = this[KEY_PARAMETER_VISIBILITY] as? String
-        val availabilityExpressionString = this[KEY_PARAMETER_AVAILABILITY] as? String
+        val visibilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
+        val availabilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
         val suggestExpressionString = this[KEY_PARAMETER_SUGGEST] as? String
 
         return GeminioRecipe.RecipeParameter.StringParameter(
@@ -154,8 +154,8 @@ class GeminioRecipeReader(
     }
 
     private fun Map<String, Any>.toRecipeBooleanParameter(): GeminioRecipe.RecipeParameter.BooleanParameter {
-        val visibilityExpressionString = this[KEY_PARAMETER_VISIBILITY] as? String
-        val availabilityExpressionString = this[KEY_PARAMETER_AVAILABILITY] as? String
+        val visibilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
+        val availabilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
 
         return GeminioRecipe.RecipeParameter.BooleanParameter(
             id = this[KEY_PARAMETER_ID] as String,
@@ -219,7 +219,7 @@ class GeminioRecipeReader(
     private fun Map<String, Any>.toRecipePredicateCommand(): GeminioRecipe.RecipeCommand.Predicate {
         val commands = this[KEY_COMMAND_COMMANDS] as List<Map<String, Map<String, Any>>>
 
-        val validIfString = this[KEY_COMMAND_VALID_IF] as String
+        val validIfString = requireNotNull(getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY))
 
         return GeminioRecipe.RecipeCommand.Predicate(
             validIf = validIfString.toRecipeExpression(),
@@ -230,6 +230,10 @@ class GeminioRecipeReader(
 
     private fun String.toRecipeExpression(): GeminioRecipe.RecipeExpression {
         return geminioRecipeExpressionReader.parseExpression(this)
+    }
+
+    private fun Map<String, Any>.getBooleanOrStringExpression(key: String): String? {
+        return (this[key] as? Boolean)?.let { "$it" } ?: this[key] as? String
     }
 
 
