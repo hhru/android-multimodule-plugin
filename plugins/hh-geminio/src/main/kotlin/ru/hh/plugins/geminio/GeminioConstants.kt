@@ -3,6 +3,8 @@ package ru.hh.plugins.geminio
 
 object GeminioConstants {
 
+    const val DEFAULT_NOTIFICATIONS_TITLE = "Geminio"
+
     /**
      * Duplicates groupId in plugin.xml
      */

@@ -17,6 +17,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
 import ru.hh.plugins.geminio.model.yaml.GeminioRecipeReader
+import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.template.geminioTemplate
 import java.io.File
 import java.io.FileNotFoundException
@@ -126,6 +127,8 @@ class ExecuteGeminioTemplateAction(
 
         val createdFiles = e.dataContext.getData(CREATED_FILES)
         createdFiles?.addAll(renderModel.createdFiles)
+
+        project.balloonInfo(message = "Finished '$actionText' template execution")
     }
 
 
