@@ -21,10 +21,9 @@ class ModuleFilesFactory(private val project: Project) {
     }
 
     private val freeMarkerConfig by lazy {
-        FreemarkerConfiguration().apply {
-            val templatesDir = File("${pluginConfig.pluginFolderDirPath}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}")
-            setDirectoryForTemplateLoading(templatesDir)
-        }
+        FreemarkerConfiguration(
+            "${pluginConfig.pluginFolderDirPath}/${PluginConstants.DEFAULT_TEMPLATES_DIR_NAME}"
+        )
     }
 
 
