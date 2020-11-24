@@ -219,7 +219,7 @@ class GeminioRecipeReader(
     private fun Map<String, Any>.toRecipePredicateCommand(): GeminioRecipe.RecipeCommand.Predicate {
         val commands = this[KEY_COMMAND_COMMANDS] as List<Map<String, Map<String, Any>>>
 
-        val validIfString = requireNotNull(getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY))
+        val validIfString = requireNotNull(getBooleanOrStringExpression(KEY_COMMAND_VALID_IF))
 
         return GeminioRecipe.RecipeCommand.Predicate(
             validIf = validIfString.toRecipeExpression(),
