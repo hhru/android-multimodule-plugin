@@ -11,7 +11,6 @@ import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.DataKey
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -36,13 +35,8 @@ class ExecuteGeminioTemplateAction(
 ) : AnAction() {
 
     companion object {
-        private const val CREATED_FILES_DATA_KEY = "ExecuteGeminioTemplateActionCreatedFiles"
         private const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
     }
-
-
-    @JvmField
-    val CREATED_FILES = DataKey.create<MutableList<File>>(CREATED_FILES_DATA_KEY)
 
 
     init {
@@ -124,9 +118,6 @@ class ExecuteGeminioTemplateAction(
             .setProject(project)
             .build()
         dialog.show()
-
-        val createdFiles = e.dataContext.getData(CREATED_FILES)
-        createdFiles?.addAll(renderModel.createdFiles)
 
         project.balloonInfo(message = "Finished '$actionText' template execution")
     }
