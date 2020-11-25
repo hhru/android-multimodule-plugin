@@ -1,0 +1,36 @@
+<idea-plugin>
+    <id>ru.hh.plugins.Geminio</id>
+    <name>Geminio</name>
+    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
+
+    <description><![CDATA[
+    Plugin for generating code from templates.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.android</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="ru.hh.plugins.geminio.services.GeminioStartupActivity"/>
+
+        <!-- region Plugin config -->
+        <projectService serviceImplementation="ru.hh.plugins.geminio.config.editor.GeminioPluginSettings"/>
+        <projectConfigurable
+                groupId="appearance"
+                instance="ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"/>
+        <!-- endregion -->
+    </extensions>
+
+    <actions>
+        <group id="ru.hh.plugins.geminio.New.HHTemplatesGroup" text="HH Templates" popup="true">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </group>
+        <group id="ru.hh.plugins.geminio.Generate.HHTemplatesGroup" text="From HH Templates" popup="true">
+            <separator/>
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </group>
+    </actions>
+
+</idea-plugin>

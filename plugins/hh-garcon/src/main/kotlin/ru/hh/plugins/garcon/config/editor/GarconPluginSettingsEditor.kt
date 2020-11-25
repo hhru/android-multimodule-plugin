@@ -3,20 +3,19 @@ package ru.hh.plugins.garcon.config.editor
 import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
+import ru.hh.plugins.PluginsConstants
+import ru.hh.plugins.extensions.layout.fileChooserButton
 import ru.hh.plugins.garcon.config.GarconPluginConfig
-import java.io.File
 import javax.swing.JCheckBox
 import javax.swing.JComponent
-import javax.swing.JFileChooser
 import javax.swing.JTextField
-import javax.swing.filechooser.FileNameExtensionFilter
 
 
 class GarconPluginSettingsEditor(
-    val initialConfigFilePath: String,
-    val initialEnableDebugMode: Boolean,
-    val initialScreenPageObjectTemplatePath: String,
-    val initialRvItemPageObjectTemplatePath: String
+    private val initialConfigFilePath: String,
+    private val initialEnableDebugMode: Boolean,
+    private val initialScreenPageObjectTemplatePath: String,
+    private val initialRvItemPageObjectTemplatePath: String
 ) {
 
     companion object {
@@ -40,7 +39,7 @@ class GarconPluginSettingsEditor(
     private lateinit var enableDebugModeCheckBox: JCheckBox
 
 
-    @Suppress("UnstableApiUsage")
+    // property-references doesn't work >_<
     fun createComponent(project: Project): JComponent? {
         return panel {
             titledRow("Config file path:") {
@@ -49,19 +48,14 @@ class GarconPluginSettingsEditor(
                     configFilePathTextField(CCFlags.growX)
                 }
                 row {
-                    button("Choose config file") {
-                        val fileChooser = JFileChooser().apply {
-                            isMultiSelectionEnabled = false
-                            fileSelectionMode = JFileChooser.FILES_ONLY
-                            fileFilter = FileNameExtensionFilter("Config files", "yaml")
-                            project.basePath?.let { currentDirectory = File(it) }
-                        }
-
-                        val result = fileChooser.showDialog(screenPageObjectTemplatePathTextField, "Save")
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            configFilePathTextField.text = fileChooser.selectedFile.absolutePath
-                        }
-
+                    fileChooserButton(
+                        project = project,
+                        buttonText = "Choose config file",
+                        filterText = "Config files",
+                        fileChooserButtonText = "Save",
+                        filterFilesExtensions = arrayOf(PluginsConstants.YAML_FILES_FILTER_EXTENSION)
+                    ) { selectedFile ->
+                        configFilePathTextField.text = selectedFile.absolutePath
                     }
                 }
             }
@@ -74,9 +68,6 @@ class GarconPluginSettingsEditor(
                     rvItemPageObjectTemplatePathTextField = JTextField(initialRvItemPageObjectTemplatePath)
                     rvItemPageObjectTemplatePathTextField(CCFlags.growX)
                 }
-            }
-            titledRow("Default package: ") {
-
             }
 
             titledRow("Debug mode") {

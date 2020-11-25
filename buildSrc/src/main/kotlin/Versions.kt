@@ -11,6 +11,14 @@ object BuildPlugins {
 
 object Libs {
     const val freemarker = "org.freemarker:freemarker:2.3.30"
+
+    val tests = UnitTests
+
+    object UnitTests {
+        private const val kotestVersion = "4.3.1"
+
+        const val kotest = "io.kotest:kotest-runner-junit5:$kotestVersion"
+    }
 }
 
 
@@ -30,6 +38,18 @@ enum class Product(
             "Groovy",
             "git4idea",
             "IntelliLang"
+        )
+    ),
+
+    IDEA_2020_2(
+        isLocal = false,
+        ideVersion = "2020.2",
+        pluginsNames = listOf(
+            "android",
+            "Kotlin",
+            "java",
+            "Groovy",
+            "git4idea"
         )
     ),
 

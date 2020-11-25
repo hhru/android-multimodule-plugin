@@ -42,3 +42,7 @@ fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirecto
 fun String.fromCamelCaseToUnderlines(): String {
     return camelCaseToUnderlines(this)
 }
+
+fun String.toUnderlines(): String {
+    return this.replace(" ", "").fromCamelCaseToUnderlines()
+}

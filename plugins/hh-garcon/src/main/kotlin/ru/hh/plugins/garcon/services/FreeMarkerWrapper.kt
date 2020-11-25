@@ -5,8 +5,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
-import java.io.File
-import java.io.StringWriter
 
 
 @Service
@@ -23,22 +21,7 @@ class FreeMarkerWrapper(
 
 
     fun resolveTemplate(templateName: String, params: Map<String, Any>): String {
-        val template = try {
-            getFreeMarkerConfig().getTemplate(templateName)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            throw IllegalArgumentException("Can't find template [templateName: $templateName]")
-        }
-
-        return StringWriter().use { writer ->
-            try {
-                template.process(params, writer)
-                writer.buffer.toString()
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-                throw UnsupportedOperationException()
-            }
-        }
+        return getFreeMarkerConfig().resolveTemplate(templateName, params)
     }
 
     private fun getFreeMarkerConfig(): FreemarkerConfiguration {
@@ -53,9 +36,7 @@ class FreeMarkerWrapper(
     }
 
     private fun recreateFreemarkerConfiguration(configFilePath: String): FreemarkerConfiguration {
-        return FreemarkerConfiguration().apply {
-            setDirectoryForTemplateLoading(File(configFilePath).parentFile)
-        }
+        return FreemarkerConfiguration(configFilePath)
     }
 
 }

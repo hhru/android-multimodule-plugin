@@ -1,4 +1,4 @@
-package ru.hh.plugins.utils.freemarker
+package ru.hh.plugins.utils.freemarker.adapters
 
 import com.android.tools.idea.observable.core.StringValueProperty
 import freemarker.template.*
