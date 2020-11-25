@@ -12,7 +12,6 @@ data class GeminioPluginConfig(
 
     data class GroupsNames(
         var forNewGroup: String = String.EMPTY,
-        var forGenerateGroup: String = String.EMPTY
     )
 
 }

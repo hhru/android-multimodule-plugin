@@ -7,4 +7,4 @@ fun GeminioPluginConfig.isNotFullyInitialized(): Boolean {
     return configFilePath.isBlank() || templatesRootDirPath.isBlank() || groupsNames.isEmpty()
 }
 
-private fun GeminioPluginConfig.GroupsNames.isEmpty() = forNewGroup.isBlank() || forGenerateGroup.isBlank()
+private fun GeminioPluginConfig.GroupsNames.isEmpty() = forNewGroup.isBlank()

@@ -15,7 +15,6 @@ class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialTemplatesRootDirPath: String,
     private val initialNameForNewGroup: String,
-    private val initialNameForGenerateGroup: String,
     private val initialEnableDebugMode: Boolean
 ) {
 
@@ -27,7 +26,6 @@ class GeminioPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
                     initialTemplatesRootDirPath = config.templatesRootDirPath,
                     initialNameForNewGroup = config.groupsNames.forNewGroup,
-                    initialNameForGenerateGroup = config.groupsNames.forGenerateGroup,
                     initialEnableDebugMode = config.enableDebugMode
                 )
             }
@@ -72,10 +70,6 @@ class GeminioPluginSettingsEditor(
                     nameForNewGroupTextField = JTextField(initialNameForNewGroup)
                     nameForNewGroupTextField(CCFlags.growX)
                 }
-                row {
-                    nameForGenerateGroupTextField = JTextField(initialNameForGenerateGroup)
-                    nameForGenerateGroupTextField(CCFlags.growX)
-                }
             }
 
             titledRow("Debug mode") {
@@ -95,7 +89,6 @@ class GeminioPluginSettingsEditor(
             config.configFilePath != configFilePathTextField.text
                     || config.templatesRootDirPath != templatesRootDirPathTextField.text
                     || config.groupsNames.forNewGroup != nameForNewGroupTextField.text
-                    || config.groupsNames.forGenerateGroup != nameForGenerateGroupTextField.text
                     || config.enableDebugMode != enableDebugModeCheckBox.isSelected
         }
     }
@@ -106,14 +99,12 @@ class GeminioPluginSettingsEditor(
 
             templatesRootDirPathTextField.text = settings.config.templatesRootDirPath
             nameForNewGroupTextField.text = settings.config.groupsNames.forNewGroup
-            nameForGenerateGroupTextField.text = settings.config.groupsNames.forGenerateGroup
             enableDebugModeCheckBox.isSelected = settings.config.enableDebugMode
         } else {
             settings.config = settings.config.copy(
                 templatesRootDirPath = templatesRootDirPathTextField.text,
                 groupsNames = GeminioPluginConfig.GroupsNames(
                     forNewGroup = nameForNewGroupTextField.text,
-                    forGenerateGroup = nameForGenerateGroupTextField.text
                 ),
                 enableDebugMode = enableDebugModeCheckBox.isSelected,
             )

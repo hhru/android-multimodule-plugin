@@ -52,7 +52,6 @@ class GeminioStartupActivity : StartupActivity {
                 hhTemplatesNewGroup.templatePresentation.text = pluginConfig.groupsNames.forNewGroup
                 val hhTemplatesGenerateGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_GENERATE_GROUP_ID)
                         as DefaultActionGroup
-                hhTemplatesGenerateGroup.templatePresentation.text = pluginConfig.groupsNames.forGenerateGroup
 
                 templatesDirectories.forEach { templateName ->
                     val newActionForNewGroup = createActionForTemplate(
