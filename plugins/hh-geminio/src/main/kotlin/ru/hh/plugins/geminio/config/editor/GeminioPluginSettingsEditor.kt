@@ -15,7 +15,6 @@ class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialTemplatesRootDirPath: String,
     private val initialNameForNewGroup: String,
-    private val initialEnableDebugMode: Boolean
 ) {
 
     companion object {
@@ -26,7 +25,6 @@ class GeminioPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
                     initialTemplatesRootDirPath = config.templatesRootDirPath,
                     initialNameForNewGroup = config.groupsNames.forNewGroup,
-                    initialEnableDebugMode = config.enableDebugMode
                 )
             }
         }
@@ -71,16 +69,6 @@ class GeminioPluginSettingsEditor(
                     nameForNewGroupTextField(CCFlags.growX)
                 }
             }
-
-            titledRow("Debug mode") {
-                row {
-                    enableDebugModeCheckBox = checkBox(
-                        text = "Enable debug mode",
-                        isSelected = initialEnableDebugMode
-                    ).component
-                    enableDebugModeCheckBox()
-                }
-            }
         }
     }
 
@@ -89,7 +77,6 @@ class GeminioPluginSettingsEditor(
             config.configFilePath != configFilePathTextField.text
                     || config.templatesRootDirPath != templatesRootDirPathTextField.text
                     || config.groupsNames.forNewGroup != nameForNewGroupTextField.text
-                    || config.enableDebugMode != enableDebugModeCheckBox.isSelected
         }
     }
 
@@ -99,14 +86,12 @@ class GeminioPluginSettingsEditor(
 
             templatesRootDirPathTextField.text = settings.config.templatesRootDirPath
             nameForNewGroupTextField.text = settings.config.groupsNames.forNewGroup
-            enableDebugModeCheckBox.isSelected = settings.config.enableDebugMode
         } else {
             settings.config = settings.config.copy(
                 templatesRootDirPath = templatesRootDirPathTextField.text,
                 groupsNames = GeminioPluginConfig.GroupsNames(
                     forNewGroup = nameForNewGroupTextField.text,
                 ),
-                enableDebugMode = enableDebugModeCheckBox.isSelected,
             )
         }
     }
