@@ -59,6 +59,7 @@
     <depends>org.jetbrains.android</depends>
     <depends>Git4Idea</depends>
 
+    <version>1.0.0</version>
     <idea-version since-build="201.8743.12"/>
 
     <actions>
