@@ -7,6 +7,8 @@
     Plugin for generating Kakao's Page objects from Android's layout.xml files.
     ]]></description>
 
+    <idea-version since-build="201.8743.12"/>
+
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.android</depends>

@@ -59,7 +59,7 @@
     <depends>org.jetbrains.android</depends>
     <depends>Git4Idea</depends>
 
-    <idea-version since-build="192.7142.36"/>
+    <idea-version since-build="201.8743.12"/>
 
     <actions>
         <!-- region Modules actions -->
@@ -158,7 +158,6 @@
                 shortName="AndroidLintWrongViewIdCodeStyleFormatting"
                 hasStaticDescription="true"
                 displayName="Wrong View's id"
-                bundle="messages.PluginBundle"
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="ru.hh.android.plugin.inspections.wrong_view_id.WrongViewIdCodeStyleFormattingInspection"/>
@@ -168,7 +167,6 @@
                 shortName="AndroidLintHardcodedDimensUsing"
                 hasStaticDescription="true"
                 displayName="Hardcoded dimens using"
-                bundle="messages.PluginBundle"
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="ru.hh.android.plugin.inspections.hardcoded_dimen.HardcodedDimensUsingInspection"/>
@@ -178,7 +176,6 @@
                 shortName="AndroidLintPutSerializableIssue"
                 hasStaticDescription="true"
                 displayName="Wrong putSerializable using"
-                bundle="messages.PluginBundle"
                 enabledByDefault="true"
                 level="ERROR"
                 implementationClass="ru.hh.android.plugin.inspections.PutSerializableInspection"/>
