@@ -5,6 +5,12 @@ object Versions {
     val chosenProduct = Product.LOCAL
 }
 
+object GradlePlugins {
+    const val gradleIntelliJPlugin = "org.jetbrains.intellij"
+
+    const val setupIdeaPlugin = "ru.hh.plugins.gradle.setup_idea_plugin"
+}
+
 object BuildPlugins {
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
