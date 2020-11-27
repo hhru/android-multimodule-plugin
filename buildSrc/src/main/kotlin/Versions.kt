@@ -10,6 +10,7 @@ object GradlePlugins {
 
     const val setupIdeaPlugin = "ru.hh.plugins.gradle.setup_idea_plugin"
     const val coreModuleMarker = "ru.hh.plugins.gradle.core_module_marker"
+    const val collectUpdatePluginsXml = "ru.hh.plugins.gradle.collect_update_plugins"
 }
 
 object BuildPlugins {

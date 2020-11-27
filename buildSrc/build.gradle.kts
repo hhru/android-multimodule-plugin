@@ -25,5 +25,11 @@ gradlePlugin {
             implementationClass = "ru.hh.plugins.gradle.core_module_marker.CoreModuleMarkerPlugin"
             displayName = "Simple marker plugin for core modules that should be involved into updatePlugins.xml"
         }
+
+        create("collectUpdatePluginsXml") {
+            id = "ru.hh.plugins.gradle.collect_update_plugins"
+            implementationClass = "ru.hh.plugins.gradle.collect_update_plugins.CollectUpdatePluginsXmlPlugin"
+            displayName = "Collect updatePlugins.xml file"
+        }
     }
 }
