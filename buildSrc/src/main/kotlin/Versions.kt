@@ -9,6 +9,7 @@ object GradlePlugins {
     const val gradleIntelliJPlugin = "org.jetbrains.intellij"
 
     const val setupIdeaPlugin = "ru.hh.plugins.gradle.setup_idea_plugin"
+    const val coreModuleMarker = "ru.hh.plugins.gradle.core_module_marker"
 }
 
 object BuildPlugins {

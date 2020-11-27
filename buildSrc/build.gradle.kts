@@ -19,5 +19,11 @@ gradlePlugin {
             implementationClass = "ru.hh.plugins.gradle.setup_idea_plugin.SetupIdeaPluginGradlePlugin"
             displayName = "Apply common settings to gradle-intellij-plugin"
         }
+
+        create("coreModuleMarker") {
+            id = "ru.hh.plugins.gradle.core_module_marker"
+            implementationClass = "ru.hh.plugins.gradle.core_module_marker.CoreModuleMarkerPlugin"
+            displayName = "Simple marker plugin for core modules that should be involved into updatePlugins.xml"
+        }
     }
 }
