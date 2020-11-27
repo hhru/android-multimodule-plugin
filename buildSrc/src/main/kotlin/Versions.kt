@@ -1,6 +1,6 @@
 object Versions {
-    const val kotlin = "1.4.10"
-    const val intellijPlugin = "0.6.3"
+    const val kotlin = "1.4.20"
+    const val intellijPlugin = "0.6.5"
 
     val chosenProduct = Product.LOCAL
 }
