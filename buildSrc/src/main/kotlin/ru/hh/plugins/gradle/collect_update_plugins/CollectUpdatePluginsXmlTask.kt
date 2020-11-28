@@ -8,12 +8,11 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.internal.file.collections.FileCollectionAdapter
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.property
+import org.gradle.api.tasks.options.Option
 import java.io.File
 import javax.inject.Inject
 
@@ -23,8 +22,17 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     objects: ObjectFactory
 ) : DefaultTask() {
 
+    private var customRepositoryUrl: String = ""
+
+    @Option(option = "customRepositoryUrl", description = "Configures the URL of custom plugins repository")
+    open fun setUrl(url: String) {
+        this.customRepositoryUrl = url
+    }
+
     @Input
-    val customPluginsRepositoryBaseUrl: Property<String> = objects.property()
+    open fun getUrl(): String? {
+        return customRepositoryUrl
+    }
 
     @InputFiles
     val inputFiles: ConfigurableFileCollection = objects.fileCollection()
@@ -38,7 +46,7 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     @TaskAction
     fun produceUpdatePluginsXmlFile() {
         val patchFilesDirs = inputFiles.from as Set<FileCollectionAdapter>
-        val repositoryBaseUrl = customPluginsRepositoryBaseUrl.get()
+        val repositoryBaseUrl = customRepositoryUrl
 
         val updatePluginsXmlFileText = getUpdatePluginsXmlFileText(patchFilesDirs, repositoryBaseUrl)
 

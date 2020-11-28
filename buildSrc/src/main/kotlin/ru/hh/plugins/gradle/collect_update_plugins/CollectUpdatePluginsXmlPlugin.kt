@@ -8,7 +8,6 @@ import org.gradle.kotlin.dsl.register
 import org.jetbrains.intellij.IntelliJPlugin
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import ru.hh.plugins.gradle.core_module_marker.CoreModuleMarkerPlugin
-import ru.hh.plugins.gradle.extensions.getMandatoryStringProperty
 import ru.hh.plugins.gradle.extensions.isRoot
 
 
@@ -23,9 +22,6 @@ open class CollectUpdatePluginsXmlPlugin : Plugin<Project> {
             val patchPluginXmlTasks = target.getPatchXmlFileTasks()
 
             // Inputs
-            customPluginsRepositoryBaseUrl.set(
-                project.getMandatoryStringProperty("hh.plugins.customPluginsRepositoryBaseUrl")
-            )
             inputFiles.setFrom(patchPluginXmlTasks.mapTo(mutableListOf()) { it.destinationDir.path })
 
             // Outputs
