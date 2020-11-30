@@ -31,5 +31,11 @@ gradlePlugin {
             implementationClass = "ru.hh.plugins.gradle.collect_update_plugins.CollectUpdatePluginsXmlPlugin"
             displayName = "Collect updatePlugins.xml file"
         }
+
+        create("buildAllPlugins") {
+            id = "ru.hh.plugins.gradle.build_all_plugins"
+            implementationClass = "ru.hh.plugins.gradle.build_all_plugins.BuildAllPluginsGradlePlugin"
+            displayName = "Build all plugins and move them into single directory"
+        }
     }
 }
