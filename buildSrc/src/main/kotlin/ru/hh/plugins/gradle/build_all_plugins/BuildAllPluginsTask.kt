@@ -27,11 +27,12 @@ open class BuildAllPluginsTask @Inject constructor(
     fun buildAllPlugins() {
         inputFiles.forEach { pluginArchive ->
             val newPluginArchiveDestinationFile = outputFiles.get().asFile.resolve(pluginArchive.name)
-
-            Files.move(
-                pluginArchive.toPath(),
-                newPluginArchiveDestinationFile.toPath()
-            )
+            if (newPluginArchiveDestinationFile.exists().not()) {
+                Files.move(
+                    pluginArchive.toPath(),
+                    newPluginArchiveDestinationFile.toPath()
+                )
+            }
         }
     }
 
