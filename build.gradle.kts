@@ -22,3 +22,8 @@ allprojects {
         kotlinOptions.languageVersion = "1.4"
     }
 }
+
+plugins {
+    id(GradlePlugins.collectUpdatePluginsXml)
+    id(GradlePlugins.buildAllPlugins)
+}

@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>ru.hh.android.plugins.Garcon</id>
+    <id>ru.hh.plugins.Garcon</id>
     <name>Garcon</name>
     <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
 

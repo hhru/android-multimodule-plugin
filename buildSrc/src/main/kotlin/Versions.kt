@@ -1,8 +1,17 @@
 object Versions {
-    const val kotlin = "1.4.10"
-    const val intellijPlugin = "0.6.3"
+    const val kotlin = "1.4.20"
+    const val intellijPlugin = "0.6.5"
 
     val chosenProduct = Product.LOCAL
+}
+
+object GradlePlugins {
+    const val gradleIntelliJPlugin = "org.jetbrains.intellij"
+
+    const val setupIdeaPlugin = "ru.hh.plugins.gradle.setup_idea_plugin"
+    const val coreModuleMarker = "ru.hh.plugins.gradle.core_module_marker"
+    const val collectUpdatePluginsXml = "ru.hh.plugins.gradle.collect_update_plugins"
+    const val buildAllPlugins = "ru.hh.plugins.gradle.build_all_plugins"
 }
 
 object BuildPlugins {

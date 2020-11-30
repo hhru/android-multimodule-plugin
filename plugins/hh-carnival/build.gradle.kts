@@ -1,15 +1,12 @@
-import java.net.URI
-
 plugins {
-    id("org.jetbrains.intellij") version Versions.intellijPlugin
+    id(GradlePlugins.gradleIntelliJPlugin)
     kotlin("jvm")
+    id(GradlePlugins.setupIdeaPlugin)
 }
 
 repositories {
     mavenCentral()
-    maven {
-        url = URI.create("https://packages.atlassian.com/maven/repository/public")
-    }
+    maven("https://packages.atlassian.com/maven/repository/public")
 }
 
 dependencies {
@@ -26,17 +23,3 @@ dependencies {
         }
     }
 }
-
-// region Setup gradle-intellij-plugin
-val currentVersion = Versions.chosenProduct
-
-intellij {
-    type = "IC"
-    if (currentVersion.isLocal) {
-        localPath = currentVersion.ideVersion
-    } else {
-        version = currentVersion.ideVersion
-    }
-    setPlugins(*currentVersion.pluginsNames.toTypedArray())
-}
-// endregion

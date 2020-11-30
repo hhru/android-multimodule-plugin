@@ -5,6 +5,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
+import java.io.File
 
 
 @Service
@@ -28,7 +29,8 @@ class FreeMarkerWrapper(
         val config = GarconPluginSettings.getConfig(project)
 
         if (freeMarkerConfig == null || lastConfigFilePath != config.configFilePath) {
-            freeMarkerConfig = recreateFreemarkerConfiguration(config.configFilePath)
+            val configDir = File(config.configFilePath).parent
+            freeMarkerConfig = recreateFreemarkerConfiguration(configDir)
             lastConfigFilePath = config.configFilePath
         }
 
