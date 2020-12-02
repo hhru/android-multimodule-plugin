@@ -24,7 +24,16 @@ import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 
 
+/**
+ * Package name from SELECTED file.
+ */
 private const val HARDCODED_PARAM_PACKAGE_NAME = "packageName"
+
+/**
+ * Package name from current gradle module.
+ */
+private const val HARDCODED_PARAM_APPLICATION_PACKAGE_NAME = "applicationPackage"
+
 
 /**
  * Build Android Studio [ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate]
@@ -45,7 +54,10 @@ fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = templ
                 existingParametersMap = existingParametersMap,
                 resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
                     entry.key to entry.value.value
-                }.plus(HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName),
+                }.plus(mapOf(
+                    HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName,
+                    HARDCODED_PARAM_APPLICATION_PACKAGE_NAME to moduleTemplateData.projectTemplateData.applicationPackage
+                )),
                 freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
             )
         )
