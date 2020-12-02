@@ -15,11 +15,16 @@ import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.kotlin.idea.core.ShortenReferences
+import org.jetbrains.kotlin.idea.core.util.toPsiFile
+import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
+import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.geminio.model.yaml.GeminioRecipeReader
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.template.geminioTemplate
 import java.io.File
 import java.io.FileNotFoundException
+import kotlin.system.measureTimeMillis
 
 
 /**
@@ -36,6 +41,7 @@ class ExecuteGeminioTemplateAction(
 
     companion object {
         private const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
+        private const val COMMAND_AFTER_WIZARD_NAME = "ExecuteGeminioTemplateActionCommandAfterWizard"
     }
 
 
@@ -107,9 +113,21 @@ class ExecuteGeminioTemplateAction(
             this.addResultListener(object : ModelWizard.WizardListener {
                 override fun onWizardFinished(result: ModelWizard.WizardResult) {
                     super.onWizardFinished(result)
-                    if (result.isFinished) {
-                        println("FINISHED")
+
+                    if (result.isFinished.not()) {
+                        return
                     }
+
+                    measureTimeMillis {
+                        project.executeWriteCommand(COMMAND_AFTER_WIZARD_NAME) {
+                            val shortenReferences = ShortenReferences.DEFAULT
+
+                            renderModel.createdFiles.forEach { file ->
+                                val psiFile = file.toPsiFile(project) as? KtFile
+                                psiFile?.let { shortenReferences.process(it) }
+                            }
+                        }
+                    }.also { println("Shorten references time: $it ms") }
                 }
             })
         }
