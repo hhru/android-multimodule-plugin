@@ -15,10 +15,10 @@ import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.kotlin.idea.core.ShortenReferences
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
+import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.model.yaml.GeminioRecipeReader
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.template.geminioTemplate
@@ -100,7 +100,7 @@ class ExecuteGeminioTemplateAction(
             ProjectSyncInvoker.DefaultProjectSyncInvoker(),
             true,
         ).apply {
-            newTemplate = geminioTemplate(geminioRecipe)
+            newTemplate = geminioTemplate(project, geminioRecipe)
         }
 
         val configureTemplateStep = ConfigureTemplateParametersStep(
@@ -118,13 +118,16 @@ class ExecuteGeminioTemplateAction(
                         return
                     }
 
+                    applyShortenReferencesAndCodeStyle()
+                }
+
+
+                private fun applyShortenReferencesAndCodeStyle() {
                     measureTimeMillis {
                         project.executeWriteCommand(COMMAND_AFTER_WIZARD_NAME) {
-                            val shortenReferences = ShortenReferences.DEFAULT
-
                             renderModel.createdFiles.forEach { file ->
                                 val psiFile = file.toPsiFile(project) as? KtFile
-                                psiFile?.let { shortenReferences.process(it) }
+                                psiFile?.shortReferencesAndReformatWithCodeStyle()
                             }
                         }
                     }.also { println("Shorten references time: $it ms") }

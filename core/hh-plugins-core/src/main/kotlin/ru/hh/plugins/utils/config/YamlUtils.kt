@@ -39,4 +39,8 @@ object YamlUtils {
         }
     }
 
+    fun Map<String, Any>.getBooleanOrStringExpression(key: String): String? {
+        return (this[key] as? Boolean)?.let { "$it" } ?: this[key] as? String
+    }
+
 }

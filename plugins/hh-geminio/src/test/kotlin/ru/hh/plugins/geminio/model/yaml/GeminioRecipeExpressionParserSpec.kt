@@ -7,12 +7,12 @@ import ru.hh.plugins.geminio.model.GeminioRecipe.RecipeExpression.Command.*
 import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier.*
 
 
-class GeminioRecipeExpressionReaderSpec : FreeSpec({
+class GeminioRecipeExpressionParserSpec : FreeSpec({
 
-    val geminioRecipeExpressionReader = GeminioRecipeExpressionReader()
+    val expressionParser = GeminioRecipeExpressionParser()
 
     fun String.toRecipeExpression(): GeminioRecipe.RecipeExpression {
-        return geminioRecipeExpressionReader.parseExpression(this)
+        return expressionParser.parseExpression(this)
     }
 
     fun List<GeminioRecipe.RecipeExpression.Command>.intoExpression(): GeminioRecipe.RecipeExpression {

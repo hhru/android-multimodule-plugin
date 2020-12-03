@@ -1,14 +1,14 @@
 package ru.hh.plugins.geminio.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.model.RecipeCommand
 import ru.hh.plugins.geminio.model.mapping.evaluateString
 import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 import java.io.File
 
 
 fun RecipeExecutor.execute(
-    command: GeminioRecipe.RecipeCommand.Instantiate,
+    command: RecipeCommand.Instantiate,
     executorData: GeminioRecipeExecutorData
 ) = with(executorData) {
     val from = command.from.evaluateString(moduleTemplateData, existingParametersMap)

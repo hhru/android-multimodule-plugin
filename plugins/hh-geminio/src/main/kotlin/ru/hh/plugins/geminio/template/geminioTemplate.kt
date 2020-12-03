@@ -11,6 +11,7 @@ import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TemplateBuilder
 import com.android.tools.idea.wizard.template.TextFieldWidget
 import com.android.tools.idea.wizard.template.template
+import com.intellij.openapi.project.Project
 import ru.hh.plugins.geminio.GeminioConstants
 import ru.hh.plugins.geminio.model.GeminioRecipe
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate
@@ -39,17 +40,20 @@ private const val HARDCODED_PARAM_APPLICATION_PACKAGE_NAME = "applicationPackage
  * Build Android Studio [ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate]
  * from [ru.hh.plugins.geminio.model.GeminioRecipe].
  */
-fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = template {
+fun geminioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate = template {
     injectRequiredParams(geminioRecipe)
     injectOptionalParams(geminioRecipe)
 
     val existingParametersMap = injectWidgets(geminioRecipe)
 
+    var isDryRun = true
     recipe = { templateData ->
         val moduleTemplateData = templateData as ModuleTemplateData
         geminioRecipe(
             geminioRecipe = geminioRecipe,
             executorData = GeminioRecipeExecutorData(
+                project = project,
+                isDryRun = isDryRun,
                 moduleTemplateData = moduleTemplateData,
                 existingParametersMap = existingParametersMap,
                 resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
@@ -61,6 +65,7 @@ fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = templ
                 freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
             )
         )
+        isDryRun = false
     }
 }
 
