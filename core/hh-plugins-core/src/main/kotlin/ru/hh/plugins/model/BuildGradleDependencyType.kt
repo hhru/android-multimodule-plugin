@@ -7,6 +7,7 @@ package ru.hh.plugins.model
 enum class BuildGradleDependencyType(
     val yamlKey: String
 ) {
+    KAPT("kapt"),
     COMPILE_ONLY("compileOnly"),
     IMPLEMENTATION("implementation"),
     API("api"),

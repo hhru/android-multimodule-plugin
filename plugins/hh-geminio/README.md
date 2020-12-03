@@ -381,6 +381,7 @@ file: ${srcOut}/di/${moduleName}.kt
   * `implementation`
   * `testImplementation`
   * `androidTestImplementation`
+  * `kapt`
   
 - `dependencies` - список зависимостей, которые нужно добавить.
 

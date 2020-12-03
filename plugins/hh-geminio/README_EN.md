@@ -370,6 +370,7 @@ Options:
   * `implementation`
   * `testImplementation`
   * `androidTestImplementation`
+  * `kapt`
 
 - `dependencies` - dependencies list to add into build.gradle
 
