@@ -128,6 +128,17 @@ recipe:
             to: ${srcOut}/di/${moduleName}.kt
         - open:
             file: ${srcOut}/di/${moduleName}.kt
+  - addDependencies:
+      typeForAll: implementation
+      dependencies:
+        - project: shared-core-model
+        - libsConstant: Libs.jetpack.compose
+        - project:
+            type: api
+            name: shared-rx-core
+        - libsConstant:
+            type: impementation
+            value: org.company:artifact:1.0.1
 ```
 
 The recipe consists of 4 sections:
@@ -343,3 +354,40 @@ commands that you specify in the `commands` list will be executed.
 This list supports all of the above commands.
 
 
+#### `addDependencies` command
+
+This command will add specified dependencies into current module's build.gradle file.
+
+Options:
+
+- `typeForAll` -- connection type for every dependency in the list, could be one of this values:
+  * `compileOnly`
+  * `api`
+  * `implementation`
+
+- `dependencies` - dependencies list to add into build.gradle
+
+You can use dependencies of two different types:
+
+- `project` -- project dependency, e.g. `project(":shared-core-model")`
+- `libsConstant` -- library dependency, e.g `"org.company:artifact:1.0"` or `Libs.jetpack.compose`
+
+Two dependency declarations types allowed:
+
+- The first one, when you don't need to override common connection type: 
+
+```yaml
+- project: shared-core-model
+- libsConstant: org.company:artifact:1.1
+```
+
+- The second one, when you need to override connection type:
+
+```yaml
+- project: 
+    name: shared-core-model
+    type: implementation
+- libsConstant: 
+    value: Libs.jetpack.compose
+    type: api
+```

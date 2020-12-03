@@ -138,6 +138,17 @@ recipe:
             to: ${srcOut}/di/${moduleName}.kt
         - open:
             file: ${srcOut}/di/${moduleName}.kt
+  - addDependencies:
+      typeForAll: implementation
+      dependencies:
+        - project: shared-core-model
+        - libsConstant: Libs.jetpack.compose
+        - project:
+            type: api
+            name: shared-rx-core
+        - libsConstant:
+            type: impementation
+            value: org.company:artifact:1.0.1
 ```  
 
 Рецепт состоит из 4-х секций
@@ -353,3 +364,41 @@ file: ${srcOut}/di/${moduleName}.kt
 Команда вычисляет выражение, которое вы указываете в `validIf`. 
 Если результат равен `true`, то будет выполнен набор команд, которые вы 
 укажете в списке `commands`. Список поддерживает все перечисленные выше команды.
+
+#### Команда `addDependencies`
+
+Команда добавляет указанные зависимости в `build.gradle` файл текущего модуля.
+
+Параметры:
+
+- `typeForAll` -- тип подключения для всех зависимостей в списке, может иметь одно из значений:
+  * `compileOnly`
+  * `api`
+  * `implementation`
+  
+- `dependencies` - список зависимостей, которые нужно добавить.
+
+Зависимости могут быть двух типов:
+
+- `project` -- зависимость от отдельного модуля в вашем проекте, например, `project(":shared-core-model")`
+- `libsConstant` -- зависимость от какой-то библиотеки, например `"org.company:artifact:1.0"` или `Libs.jetpack.compose`
+
+Вы можете использовать 2 способа объявления зависимостей.
+
+Первый, когда вам не нужно переопределение типа подключения:
+
+```yaml
+- project: shared-core-model
+- libsConstant: org.company:artifact:1.1
+```
+
+Второй, когда вам требуется переопределить тип подключения:
+
+```yaml
+- project: 
+    name: shared-core-model
+    type: implementation
+- libsConstant: 
+    value: Libs.jetpack.compose
+    type: api
+```
