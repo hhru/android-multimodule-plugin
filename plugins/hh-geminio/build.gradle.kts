@@ -23,3 +23,18 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
 }
+
+tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
+    changeNotes("""
+    1.0.1 -- Several new features: <br/>
+        - Add new command for recipe: `addDependencies` for adding dependencies into build.gradle file <br/>
+        - Now you can skip `imports` section in FreeMarker templates of Kotlin files; 
+            just use fully qualified class names when you need some class or function from another package. 
+            Imports section should be filled automatically. <br/>
+        - New hardcoded parameter in FTL-files: `applicationPackage` - 
+            it is package name from AndroidManifest.xml file. <br/>
+    
+    <br/>
+    1.0.0 -- Initial release <br/>
+    """)
+}
