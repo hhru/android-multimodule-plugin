@@ -11,6 +11,7 @@ import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TemplateBuilder
 import com.android.tools.idea.wizard.template.TextFieldWidget
 import com.android.tools.idea.wizard.template.template
+import com.intellij.openapi.project.Project
 import ru.hh.plugins.geminio.GeminioConstants
 import ru.hh.plugins.geminio.model.GeminioRecipe
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate
@@ -24,31 +25,47 @@ import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 
 
+/**
+ * Package name from SELECTED file.
+ */
 private const val HARDCODED_PARAM_PACKAGE_NAME = "packageName"
+
+/**
+ * Package name from current gradle module.
+ */
+private const val HARDCODED_PARAM_APPLICATION_PACKAGE_NAME = "applicationPackage"
+
 
 /**
  * Build Android Studio [ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate]
  * from [ru.hh.plugins.geminio.model.GeminioRecipe].
  */
-fun geminioTemplate(geminioRecipe: GeminioRecipe): AndroidStudioTemplate = template {
+fun geminioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate = template {
     injectRequiredParams(geminioRecipe)
     injectOptionalParams(geminioRecipe)
 
     val existingParametersMap = injectWidgets(geminioRecipe)
 
+    var isDryRun = true
     recipe = { templateData ->
         val moduleTemplateData = templateData as ModuleTemplateData
         geminioRecipe(
             geminioRecipe = geminioRecipe,
             executorData = GeminioRecipeExecutorData(
+                project = project,
+                isDryRun = isDryRun,
                 moduleTemplateData = moduleTemplateData,
                 existingParametersMap = existingParametersMap,
                 resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
                     entry.key to entry.value.value
-                }.plus(HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName),
+                }.plus(mapOf(
+                    HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName,
+                    HARDCODED_PARAM_APPLICATION_PACKAGE_NAME to moduleTemplateData.projectTemplateData.applicationPackage
+                )),
                 freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
             )
         )
+        isDryRun = false
     }
 }
 

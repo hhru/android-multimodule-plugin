@@ -5,9 +5,9 @@ import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier
 
 
 /**
- * Converter from recipe's expressions declarations into objects.
+ * Parser from recipe's expressions declarations into objects.
  */
-class GeminioRecipeExpressionReader {
+class GeminioRecipeExpressionParser {
 
     companion object {
         private const val SRC_OUT_FOLDER_NAME = "srcOut"

@@ -1,13 +1,13 @@
 package ru.hh.plugins.geminio.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.model.RecipeCommand
 import ru.hh.plugins.geminio.model.mapping.evaluateBoolean
 import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
 
 
 fun RecipeExecutor.execute(
-    command: GeminioRecipe.RecipeCommand.Predicate,
+    command: RecipeCommand.Predicate,
     executorData: GeminioRecipeExecutorData
 ) = with(executorData) {
     val validIfExpression = command.validIf
