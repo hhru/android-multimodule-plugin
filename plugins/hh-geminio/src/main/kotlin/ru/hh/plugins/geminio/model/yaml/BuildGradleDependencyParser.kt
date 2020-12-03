@@ -38,7 +38,7 @@ class BuildGradleDependencyParser {
     }
 
     private fun String.isProject(): Boolean {
-        return this.endsWith(".project()")
+        return this.startsWith(":") && this.split(":").filter { it.isNotBlank() }.size == 1
     }
 
     private fun String.isMavenArtifact(): Boolean {

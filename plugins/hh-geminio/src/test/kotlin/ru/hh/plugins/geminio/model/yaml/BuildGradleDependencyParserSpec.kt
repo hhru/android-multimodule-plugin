@@ -70,8 +70,8 @@ class BuildGradleDependencyParserSpec : FreeSpec({
 
     "Should parse as project dependency" {
         listOf(
-            "shared.project()",
-            "shared-core-model.project()",
+            ":shared",
+            ":shared-core-model",
         ).forEach { value ->
             val given = mapOf("kapt" to value)
 
