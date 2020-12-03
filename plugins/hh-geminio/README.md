@@ -141,14 +141,18 @@ recipe:
   - addDependencies:
       typeForAll: implementation
       dependencies:
+        - mavenArtifact: org.company:artifact:2.0.1
         - project: shared-core-model
         - libsConstant: Libs.jetpack.compose
+        - mavenArtifact:
+            type: androidTestImplementation
+            name: org.company:artifact:1.1
         - project:
             type: api
             name: shared-rx-core
         - libsConstant:
-            type: impementation
-            value: org.company:artifact:1.0.1
+            type: testImpementation
+            value: Libs.tests.mockito
 ```  
 
 Рецепт состоит из 4-х секций
@@ -375,26 +379,33 @@ file: ${srcOut}/di/${moduleName}.kt
   * `compileOnly`
   * `api`
   * `implementation`
+  * `testImplementation`
+  * `androidTestImplementation`
   
 - `dependencies` - список зависимостей, которые нужно добавить.
 
-Зависимости могут быть двух типов:
+Существуют следующие типы зависимостей:
 
+- `mavenArtifact` -- зависимость от конкретной библиотеки, например `"org.company:artifact:1.0"`
 - `project` -- зависимость от отдельного модуля в вашем проекте, например, `project(":shared-core-model")`
-- `libsConstant` -- зависимость от какой-то библиотеки, например `"org.company:artifact:1.0"` или `Libs.jetpack.compose`
+- `libsConstant` -- зависимость от какой-то библиотеки, представленной вашей, например `Libs.jetpack.compose`
 
 Вы можете использовать 2 способа объявления зависимостей.
 
 Первый, когда вам не нужно переопределение типа подключения:
 
 ```yaml
+- mavenArtifact: org.company:artifact:1.1
 - project: shared-core-model
-- libsConstant: org.company:artifact:1.1
+- libsConstant: Libs.jetpack.compose
 ```
 
 Второй, когда вам требуется переопределить тип подключения:
 
 ```yaml
+- mavenArtifact:
+    notation: org.company:artifact:1.1
+    type: testImplementation
 - project: 
     name: shared-core-model
     type: implementation

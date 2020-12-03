@@ -131,14 +131,18 @@ recipe:
   - addDependencies:
       typeForAll: implementation
       dependencies:
-        - project: shared-core-model
-        - libsConstant: Libs.jetpack.compose
-        - project:
-            type: api
-            name: shared-rx-core
-        - libsConstant:
-            type: impementation
-            value: org.company:artifact:1.0.1
+      - mavenArtifact: org.company:artifact:2.0.1
+      - project: shared-core-model
+      - libsConstant: Libs.jetpack.compose
+      - mavenArtifact:
+          type: androidTestImplementation
+          name: org.company:artifact:1.1
+      - project:
+          type: api
+          name: shared-rx-core
+      - libsConstant:
+          type: testImpementation
+          value: Libs.tests.mockito
 ```
 
 The recipe consists of 4 sections:
@@ -360,15 +364,18 @@ This command will add specified dependencies into current module's build.gradle 
 
 Options:
 
-- `typeForAll` -- connection type for every dependency in the list, could be one of this values:
+- `typeForAll` -- connection type for every dependency in the list, could be one of these values:
   * `compileOnly`
   * `api`
   * `implementation`
+  * `testImplementation`
+  * `androidTestImplementation`
 
 - `dependencies` - dependencies list to add into build.gradle
 
-You can use dependencies of two different types:
+There are few types of dependencies:
 
+- `mavenArtifact` -- maven artifact dependency, e.g. `"org.company:artifact:1.0"`
 - `project` -- project dependency, e.g. `project(":shared-core-model")`
 - `libsConstant` -- library dependency, e.g `"org.company:artifact:1.0"` or `Libs.jetpack.compose`
 
@@ -377,6 +384,7 @@ Two dependency declarations types allowed:
 - The first one, when you don't need to override common connection type: 
 
 ```yaml
+- mavenArtifact: org.company:artifact:1.1
 - project: shared-core-model
 - libsConstant: org.company:artifact:1.1
 ```
@@ -384,6 +392,9 @@ Two dependency declarations types allowed:
 - The second one, when you need to override connection type:
 
 ```yaml
+- mavenArtifact:
+    notation: org.company:artifact:1.1
+    type: testImplementation
 - project: 
     name: shared-core-model
     type: implementation
