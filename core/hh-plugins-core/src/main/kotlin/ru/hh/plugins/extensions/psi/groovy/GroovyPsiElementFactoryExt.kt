@@ -11,7 +11,7 @@ fun GroovyPsiElementFactory.createBuildGradleDependencyElement(dependency: Build
         is BuildGradleDependency.Project -> "project(\":${dependency.projectName}\")"
         is BuildGradleDependency.LibsConstant -> dependency.constant
     }
-    val expressionText = "${dependency.type.yamlKey} $dependencyText"
+    val expressionText = "${dependency.configuration.yamlKey} $dependencyText"
 
     return createExpressionFromText(expressionText)
 }

@@ -10,7 +10,7 @@ import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_DEPENDENCY_TYPE
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_DEPENDENCY_VALUE
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_RECIPE_ADD_DEPENDENCIES
 import ru.hh.plugins.model.BuildGradleDependency
-import ru.hh.plugins.model.BuildGradleDependencyType
+import ru.hh.plugins.model.BuildGradleDependencyConfiguration
 
 
 /**
@@ -19,7 +19,7 @@ import ru.hh.plugins.model.BuildGradleDependencyType
 @Suppress("UNCHECKED_CAST")
 class BuildGradleDependencyParser {
 
-    fun Map<String, Any>.toBuildGradleDependency(typeForAll: BuildGradleDependencyType): BuildGradleDependency {
+    fun Map<String, Any>.toBuildGradleDependency(configurationForAll: BuildGradleDependencyConfiguration): BuildGradleDependency {
         val mavenArtifactAsString = this[KEY_DEPENDENCY_MAVEN_ARTIFACT] as? String
         val mavenArtifactAsMap = this[KEY_DEPENDENCY_MAVEN_ARTIFACT] as? Map<String, Any>
         val projectAsString = this[KEY_DEPENDENCY_PROJECT] as? String
@@ -28,70 +28,70 @@ class BuildGradleDependencyParser {
         val libsConstantAsMap = this[KEY_DEPENDENCY_LIBS_CONSTANT] as? Map<String, Any>
 
         return when {
-            mavenArtifactAsString != null -> mavenArtifactAsString.toMavenArtifactDependency(typeForAll)
-            mavenArtifactAsMap != null -> mavenArtifactAsMap.toMavenArtifactDependency(typeForAll)
-            projectAsString != null -> projectAsString.toProjectDependency(typeForAll)
-            projectAsMap != null -> projectAsMap.toProjectDependency(typeForAll)
-            libsConstantAsString != null -> libsConstantAsString.toLibsConstantDependency(typeForAll)
-            libsConstantAsMap != null -> libsConstantAsMap.toLibsConstantDependency(typeForAll)
+            mavenArtifactAsString != null -> mavenArtifactAsString.toMavenArtifactDependency(configurationForAll)
+            mavenArtifactAsMap != null -> mavenArtifactAsMap.toMavenArtifactDependency(configurationForAll)
+            projectAsString != null -> projectAsString.toProjectDependency(configurationForAll)
+            projectAsMap != null -> projectAsMap.toProjectDependency(configurationForAll)
+            libsConstantAsString != null -> libsConstantAsString.toLibsConstantDependency(configurationForAll)
+            libsConstantAsMap != null -> libsConstantAsMap.toLibsConstantDependency(configurationForAll)
             else -> throw IllegalArgumentException("Unknown dependency type in '${KEY_RECIPE_ADD_DEPENDENCIES}' command, inside '${KEY_COMMAND_DEPENDENCIES}' block")
         }
     }
 
 
     private fun String.toMavenArtifactDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency.MavenArtifact {
-        return BuildGradleDependency.MavenArtifact(this, typeForAll)
+        return BuildGradleDependency.MavenArtifact(this, configurationForAll)
     }
 
     private fun String.toProjectDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency.Project {
-        return BuildGradleDependency.Project(this, typeForAll)
+        return BuildGradleDependency.Project(this, configurationForAll)
     }
 
     private fun String.toLibsConstantDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency.LibsConstant {
-        return BuildGradleDependency.LibsConstant(this, typeForAll)
+        return BuildGradleDependency.LibsConstant(this, configurationForAll)
     }
 
     private fun Map<String, Any>.toMavenArtifactDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency {
         val notation = requireNotNull(this[KEY_DEPENDENCY_NOTATION] as? String) {
             "Not found '${KEY_DEPENDENCY_NOTATION}' for '${KEY_DEPENDENCY_MAVEN_ARTIFACT}' dependency"
         }
 
         return BuildGradleDependency.MavenArtifact(
-            type = parseBuildGradleDependencyType(KEY_DEPENDENCY_MAVEN_ARTIFACT, typeForAll),
+            configuration = parseBuildGradleDependencyType(KEY_DEPENDENCY_MAVEN_ARTIFACT, configurationForAll),
             notation = notation
         )
     }
 
     private fun Map<String, Any>.toProjectDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency.Project {
         val name = requireNotNull(this[KEY_DEPENDENCY_NAME] as? String) {
             "Not found '${KEY_DEPENDENCY_NAME}' for '${KEY_DEPENDENCY_PROJECT}' dependency"
         }
 
         return BuildGradleDependency.Project(
-            type = parseBuildGradleDependencyType(KEY_DEPENDENCY_PROJECT, typeForAll),
+            configuration = parseBuildGradleDependencyType(KEY_DEPENDENCY_PROJECT, configurationForAll),
             projectName = name
         )
     }
 
     private fun Map<String, Any>.toLibsConstantDependency(
-        typeForAll: BuildGradleDependencyType
+        configurationForAll: BuildGradleDependencyConfiguration
     ): BuildGradleDependency.LibsConstant {
         val constant = requireNotNull(this[KEY_DEPENDENCY_VALUE] as? String) {
             "Not found '${KEY_DEPENDENCY_VALUE}' for '${KEY_DEPENDENCY_LIBS_CONSTANT}' dependency"
         }
 
         return BuildGradleDependency.LibsConstant(
-            type = parseBuildGradleDependencyType(KEY_DEPENDENCY_LIBS_CONSTANT, typeForAll),
+            configuration = parseBuildGradleDependencyType(KEY_DEPENDENCY_LIBS_CONSTANT, configurationForAll),
             constant = constant
         )
     }
@@ -99,15 +99,15 @@ class BuildGradleDependencyParser {
 
     private fun Map<String, Any>.parseBuildGradleDependencyType(
         dependencyItemName: String,
-        typeForAll: BuildGradleDependencyType
-    ): BuildGradleDependencyType {
+        configurationForAll: BuildGradleDependencyConfiguration
+    ): BuildGradleDependencyConfiguration {
         val typeYamlKey = this[KEY_DEPENDENCY_TYPE] as? String
 
         return typeYamlKey?.let { yamlKey ->
-            requireNotNull(BuildGradleDependencyType.fromYamlKey(yamlKey)) {
-                "Unknown yaml key for BuildGradleDependencyType in '${dependencyItemName}' dependency [unknown key: $yamlKey, available keys: ${BuildGradleDependencyType.availableYamlKeys()}]"
+            requireNotNull(BuildGradleDependencyConfiguration.fromYamlKey(yamlKey)) {
+                "Unknown yaml key for BuildGradleDependencyType in '${dependencyItemName}' dependency [unknown key: $yamlKey, available keys: ${BuildGradleDependencyConfiguration.availableYamlKeys()}]"
             }
-        } ?: typeForAll
+        } ?: configurationForAll
     }
 
 }

@@ -6,14 +6,15 @@ package ru.hh.plugins.model
  */
 sealed class BuildGradleDependency {
 
-    abstract val type: BuildGradleDependencyType
+    abstract val configuration: BuildGradleDependencyConfiguration
+
 
     /**
      * Dependency in Maven's notation, e.g. `org.company:artifact:123`
      */
     data class MavenArtifact(
         val notation: String,
-        override val type: BuildGradleDependencyType = BuildGradleDependencyType.COMPILE_ONLY
+        override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
     /**
@@ -21,7 +22,7 @@ sealed class BuildGradleDependency {
      */
     data class Project(
         val projectName: String,
-        override val type: BuildGradleDependencyType = BuildGradleDependencyType.COMPILE_ONLY
+        override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
     /**
@@ -29,7 +30,7 @@ sealed class BuildGradleDependency {
      */
     data class LibsConstant(
         val constant: String,
-        override val type: BuildGradleDependencyType = BuildGradleDependencyType.COMPILE_ONLY
+        override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
 }

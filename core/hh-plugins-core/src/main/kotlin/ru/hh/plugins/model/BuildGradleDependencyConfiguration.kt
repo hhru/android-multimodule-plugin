@@ -4,7 +4,7 @@ package ru.hh.plugins.model
 /**
  * Type on dependency declaration
  */
-enum class BuildGradleDependencyType(
+enum class BuildGradleDependencyConfiguration(
     val yamlKey: String
 ) {
     KAPT("kapt"),

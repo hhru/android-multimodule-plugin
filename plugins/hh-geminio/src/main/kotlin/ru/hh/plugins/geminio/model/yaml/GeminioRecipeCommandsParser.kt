@@ -2,7 +2,7 @@
 
 package ru.hh.plugins.geminio.model.yaml
 
-import ru.hh.plugins.model.BuildGradleDependencyType
+import ru.hh.plugins.model.BuildGradleDependencyConfiguration
 import ru.hh.plugins.geminio.model.RecipeCommand
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_COMMANDS
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_DEPENDENCIES
@@ -95,8 +95,8 @@ class GeminioRecipeCommandsParser(
             "Not found '${KEY_COMMAND_DEPENDENCIES}' for '${KEY_RECIPE_ADD_DEPENDENCIES}' command (expect list of objects or strings)"
         }
 
-        val typeForAll = requireNotNull(BuildGradleDependencyType.fromYamlKey(typeForAllYamlKey)) {
-            "Unknown yaml key for BuildGradleDependencyType in '${KEY_RECIPE_ADD_DEPENDENCIES}' command [unknown key: $typeForAllYamlKey, available keys: ${BuildGradleDependencyType.availableYamlKeys()}]"
+        val typeForAll = requireNotNull(BuildGradleDependencyConfiguration.fromYamlKey(typeForAllYamlKey)) {
+            "Unknown yaml key for BuildGradleDependencyType in '${KEY_RECIPE_ADD_DEPENDENCIES}' command [unknown key: $typeForAllYamlKey, available keys: ${BuildGradleDependencyConfiguration.availableYamlKeys()}]"
         }
         return RecipeCommand.AddDependencies(
             dependencies = dependenciesObjects.map { dependencyObject ->
