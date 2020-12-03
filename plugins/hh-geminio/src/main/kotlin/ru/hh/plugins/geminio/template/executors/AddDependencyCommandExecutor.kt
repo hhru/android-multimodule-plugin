@@ -48,7 +48,6 @@ private fun modifyGroovyBuildGradleIfAcceptable(rootDir: PsiDirectory?, dependen
                 .removeSuffix(")")
                 .removeSurrounding("'")
                 .removeSurrounding("\"")
-                .removePrefix(":")
         }
 
     val factory = GroovyPsiElementFactory.getInstance(rootDir.project)
