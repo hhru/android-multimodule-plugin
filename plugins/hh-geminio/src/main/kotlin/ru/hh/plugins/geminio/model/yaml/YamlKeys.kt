@@ -46,10 +46,8 @@ object YamlKeys {
     const val KEY_COMMAND_TYPE_FOR_ALL = "typeForAll"
     const val KEY_COMMAND_DEPENDENCIES = "dependencies"
     const val KEY_DEPENDENCY_TYPE = "type"
-    const val KEY_DEPENDENCY_MAVEN_ARTIFACT = "mavenArtifact"
     const val KEY_DEPENDENCY_PROJECT = "project"
     const val KEY_DEPENDENCY_LIBS_CONSTANT = "libsConstant"
-    const val KEY_DEPENDENCY_NOTATION = "notation"
     const val KEY_DEPENDENCY_NAME = "name"
     const val KEY_DEPENDENCY_VALUE = "value"
 

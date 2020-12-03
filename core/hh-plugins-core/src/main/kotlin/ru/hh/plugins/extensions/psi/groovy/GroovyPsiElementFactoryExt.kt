@@ -7,7 +7,6 @@ import ru.hh.plugins.model.BuildGradleDependency
 
 fun GroovyPsiElementFactory.createBuildGradleDependencyElement(dependency: BuildGradleDependency): PsiElement {
     val dependencyText = when (dependency) {
-        is BuildGradleDependency.MavenArtifact -> "\"${dependency.notation}\""
         is BuildGradleDependency.Project -> "\":${dependency.projectName}\""
         is BuildGradleDependency.LibsConstant -> "\"${dependency.constant}\""
     }
