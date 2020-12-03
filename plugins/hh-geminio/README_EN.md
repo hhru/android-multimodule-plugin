@@ -129,20 +129,11 @@ recipe:
         - open:
             file: ${srcOut}/di/${moduleName}.kt
   - addDependencies:
-      typeForAll: implementation
-      dependencies:
-      - mavenArtifact: org.company:artifact:2.0.1
-      - project: shared-core-model
-      - libsConstant: Libs.jetpack.compose
-      - mavenArtifact:
-          type: androidTestImplementation
-          name: org.company:artifact:1.1
-      - project:
-          type: api
-          name: shared-rx-core
-      - libsConstant:
-          type: testImpementation
-          value: Libs.tests.mockito
+      - implementation: Libs.jetpack.compose
+      - kapt: Libs.di.toothpick
+      - compileOnly: com.github.stephanenicolas.toothpick:toothpick:3.1.0
+      - testImplementation: :shared-core-test
+      - androidTestImplementation: Libs.uiTests.kaspresso
 ```
 
 The recipe consists of 4 sections:
@@ -360,11 +351,16 @@ This list supports all of the above commands.
 
 #### `addDependencies` command
 
-This command will add specified dependencies into current module's build.gradle file.
+This command will add specified dependencies list into `build.gradle` file of current module.
+Each dependency has the following format:
 
-Options:
+```yaml
+- <configurationType>: <dependencyNotation>
+```
 
-- `typeForAll` -- connection type for every dependency in the list, could be one of these values:
+Here:
+
+- `<configurationType>` - dependency configuration type, could be one of the following values: 
   * `compileOnly`
   * `api`
   * `implementation`
@@ -372,34 +368,7 @@ Options:
   * `androidTestImplementation`
   * `kapt`
 
-- `dependencies` - dependencies list to add into build.gradle
-
-There are few types of dependencies:
-
-- `mavenArtifact` -- maven artifact dependency, e.g. `"org.company:artifact:1.0"`
-- `project` -- project dependency, e.g. `project(":shared-core-model")`
-- `libsConstant` -- library dependency, e.g `"org.company:artifact:1.0"` or `Libs.jetpack.compose`
-
-Two dependency declarations types allowed:
-
-- The first one, when you don't need to override common connection type: 
-
-```yaml
-- mavenArtifact: org.company:artifact:1.1
-- project: shared-core-model
-- libsConstant: org.company:artifact:1.1
-```
-
-- The second one, when you need to override connection type:
-
-```yaml
-- mavenArtifact:
-    notation: org.company:artifact:1.1
-    type: testImplementation
-- project: 
-    name: shared-core-model
-    type: implementation
-- libsConstant: 
-    value: Libs.jetpack.compose
-    type: api
-```
+- `<dependencyNotation>` - dependency declaration notation. Has three different formats:
+  * Maven's artifact notation, e.g, `org.company:artifact:version`
+  * Project dependency, e.g. `:shared-core-model`
+  * Library constant, e.g. `Libs.jetpack.compose`
