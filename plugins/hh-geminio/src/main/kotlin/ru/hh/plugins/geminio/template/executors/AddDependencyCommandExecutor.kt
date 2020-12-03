@@ -6,6 +6,7 @@ import com.intellij.psi.util.findDescendantOfType
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrApplicationStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.extensions.psi.groovy.createBuildGradleDependencyElement
@@ -40,11 +41,34 @@ private fun modifyGroovyBuildGradleIfAcceptable(rootDir: PsiDirectory?, dependen
         ?.findDescendantOfType<GrClosableBlock>()
         ?: return
 
+    val existingDependencies = dependenciesClosableBlock.children.filterIsInstance<GrApplicationStatement>()
+        .mapTo(mutableSetOf()) { dependency ->
+            dependency.argumentList.text
+                .removePrefix("project(")
+                .removeSuffix(")")
+                .removeSurrounding("'")
+                .removeSurrounding("\"")
+                .removePrefix(":")
+        }
+
     val factory = GroovyPsiElementFactory.getInstance(rootDir.project)
     dependencies.forEach { dependency ->
-        val element = factory.createBuildGradleDependencyElement(dependency)
-        dependenciesClosableBlock.addBefore(element, dependenciesClosableBlock.rBrace)
+        if (existingDependencies.hasDependency(dependency).not()) {
+            val element = factory.createBuildGradleDependencyElement(dependency)
+            dependenciesClosableBlock.addBefore(element, dependenciesClosableBlock.rBrace)
+        }
     }
 
     buildGradleFile.reformatWithCodeStyle()
+}
+
+
+private fun Set<String>.hasDependency(dependency: BuildGradleDependency): Boolean {
+    val text = when (dependency) {
+        is BuildGradleDependency.MavenArtifact -> dependency.notation
+        is BuildGradleDependency.Project -> dependency.projectName
+        is BuildGradleDependency.LibsConstant -> dependency.constant
+    }
+
+    return this.contains(text)
 }
