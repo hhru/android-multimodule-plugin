@@ -2,14 +2,11 @@
 
 package ru.hh.plugins.geminio.model.yaml
 
-import ru.hh.plugins.model.BuildGradleDependencyConfiguration
 import ru.hh.plugins.geminio.model.RecipeCommand
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_COMMANDS
-import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_DEPENDENCIES
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_FILE
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_FROM
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_TO
-import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_TYPE_FOR_ALL
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_VALID_IF
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_RECIPE
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_RECIPE_ADD_DEPENDENCIES
@@ -28,12 +25,12 @@ class GeminioRecipeCommandsParser(
     private val buildGradleDependencyParser: BuildGradleDependencyParser = BuildGradleDependencyParser()
 ) {
 
-    fun Map<String, Map<String, Any>>.toRecipeCommand(): RecipeCommand {
-        val instantiateCommand = this[KEY_RECIPE_INSTANTIATE]
-        val openCommand = this[KEY_RECIPE_OPEN]
-        val instantiateAndOpenCommand = this[KEY_RECIPE_INSTANTIATE_AND_OPEN]
-        val predicateCommand = this[KEY_RECIPE_PREDICATE]
-        val addDependenciesCommand = this[KEY_RECIPE_ADD_DEPENDENCIES]
+    fun Map<String, Any>.toRecipeCommand(): RecipeCommand {
+        val instantiateCommand = this[KEY_RECIPE_INSTANTIATE] as? Map<String, Any>
+        val openCommand = this[KEY_RECIPE_OPEN] as? Map<String, Any>
+        val instantiateAndOpenCommand = this[KEY_RECIPE_INSTANTIATE_AND_OPEN] as? Map<String, Any>
+        val predicateCommand = this[KEY_RECIPE_PREDICATE] as? Map<String, Any>
+        val addDependenciesCommand = this[KEY_RECIPE_ADD_DEPENDENCIES] as? List<Map<String, String>>
 
         return when {
             instantiateCommand != null -> instantiateCommand.toRecipeInstantiateCommand()
@@ -87,20 +84,10 @@ class GeminioRecipeCommandsParser(
         )
     }
 
-    private fun Map<String, Any>.toRecipeAddDependenciesCommand(): RecipeCommand.AddDependencies {
-        val typeForAllYamlKey = requireNotNull(this[KEY_COMMAND_TYPE_FOR_ALL] as? String) {
-            "Not found '${KEY_COMMAND_TYPE_FOR_ALL}' for '${KEY_RECIPE_ADD_DEPENDENCIES}' command (expect simple string)"
-        }
-        val dependenciesObjects = requireNotNull(this[KEY_COMMAND_DEPENDENCIES] as? List<Map<String, Any>>) {
-            "Not found '${KEY_COMMAND_DEPENDENCIES}' for '${KEY_RECIPE_ADD_DEPENDENCIES}' command (expect list of objects or strings)"
-        }
-
-        val typeForAll = requireNotNull(BuildGradleDependencyConfiguration.fromYamlKey(typeForAllYamlKey)) {
-            "Unknown yaml key for BuildGradleDependencyType in '${KEY_RECIPE_ADD_DEPENDENCIES}' command [unknown key: $typeForAllYamlKey, available keys: ${BuildGradleDependencyConfiguration.availableYamlKeys()}]"
-        }
+    private fun List<Map<String, String>>.toRecipeAddDependenciesCommand(): RecipeCommand.AddDependencies {
         return RecipeCommand.AddDependencies(
-            dependencies = dependenciesObjects.map { dependencyObject ->
-                with(buildGradleDependencyParser) { dependencyObject.toBuildGradleDependency(typeForAll) }
+            dependencies = this.map { dependencyObject ->
+                with(buildGradleDependencyParser) { dependencyObject.toBuildGradleDependency() }
             }
         )
     }

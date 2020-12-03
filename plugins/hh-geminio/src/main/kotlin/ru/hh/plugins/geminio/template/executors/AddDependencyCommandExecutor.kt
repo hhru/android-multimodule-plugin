@@ -22,7 +22,7 @@ fun RecipeExecutor.execute(
 ) {
     println("AddDependencies command [$command], isDryRun: ${executorData.isDryRun}")
     if (executorData.isDryRun.not()) {
-        println("Execute only when isDryRun == false")
+        println("\tExecute only when isDryRun == false")
 
         val rootDir = executorData.moduleTemplateData.rootDir.toPsiDirectory(executorData.project)
 
@@ -53,22 +53,11 @@ private fun modifyGroovyBuildGradleIfAcceptable(rootDir: PsiDirectory?, dependen
 
     val factory = GroovyPsiElementFactory.getInstance(rootDir.project)
     dependencies.forEach { dependency ->
-        if (existingDependencies.hasDependency(dependency).not()) {
+        if (existingDependencies.contains(dependency.value).not()) {
             val element = factory.createBuildGradleDependencyElement(dependency)
             dependenciesClosableBlock.addBefore(element, dependenciesClosableBlock.rBrace)
         }
     }
 
     buildGradleFile.reformatWithCodeStyle()
-}
-
-
-private fun Set<String>.hasDependency(dependency: BuildGradleDependency): Boolean {
-    val text = when (dependency) {
-        is BuildGradleDependency.MavenArtifact -> dependency.notation
-        is BuildGradleDependency.Project -> dependency.projectName
-        is BuildGradleDependency.LibsConstant -> dependency.constant
-    }
-
-    return this.contains(text)
 }

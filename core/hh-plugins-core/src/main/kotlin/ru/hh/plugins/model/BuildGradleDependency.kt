@@ -6,6 +6,7 @@ package ru.hh.plugins.model
  */
 sealed class BuildGradleDependency {
 
+    abstract val value: String
     abstract val configuration: BuildGradleDependencyConfiguration
 
 
@@ -13,7 +14,7 @@ sealed class BuildGradleDependency {
      * Dependency in Maven's notation, e.g. `org.company:artifact:123`
      */
     data class MavenArtifact(
-        val notation: String,
+        override val value: String,
         override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
@@ -21,7 +22,7 @@ sealed class BuildGradleDependency {
      * Dependency on existing module (project), e.g. `project(":shared-core-model")`
      */
     data class Project(
-        val projectName: String,
+        override val value: String,
         override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
@@ -29,7 +30,7 @@ sealed class BuildGradleDependency {
      * Dependency from internal constants, e.g. `Libs.jetpack.viewmodel`, or `org.company:artifact:123`
      */
     data class LibsConstant(
-        val constant: String,
+        override val value: String,
         override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
 
