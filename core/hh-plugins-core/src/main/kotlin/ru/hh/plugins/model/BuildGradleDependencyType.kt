@@ -9,7 +9,9 @@ enum class BuildGradleDependencyType(
 ) {
     COMPILE_ONLY("compileOnly"),
     IMPLEMENTATION("implementation"),
-    API("api");
+    API("api"),
+    TEST_IMPLEMENTATION("testImplementation"),
+    ANDROID_TEST_IMPLEMENTATION("androidTestImplementation");
 
 
     companion object {
