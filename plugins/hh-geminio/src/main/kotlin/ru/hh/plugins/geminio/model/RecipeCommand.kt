@@ -12,15 +12,15 @@ sealed class RecipeCommand {
      * Instantiate file [from] path into [to] destination.
      */
     data class Instantiate(
-        val from: GeminioRecipe.RecipeExpression,
-        val to: GeminioRecipe.RecipeExpression
+        val from: RecipeExpression,
+        val to: RecipeExpression
     ) : RecipeCommand()
 
     /**
      * Try to open file from [file] path.
      */
     data class Open(
-        val file: GeminioRecipe.RecipeExpression
+        val file: RecipeExpression
     ) : RecipeCommand()
 
     /**
@@ -29,15 +29,15 @@ sealed class RecipeCommand {
      * Instantiate file [from] path into [to] destination + try to open created file.
      */
     data class InstantiateAndOpen(
-        val from: GeminioRecipe.RecipeExpression,
-        val to: GeminioRecipe.RecipeExpression
+        val from: RecipeExpression,
+        val to: RecipeExpression
     ) : RecipeCommand()
 
     /**
      * Command which will be executed only if [validIf] predicate returns true.
      */
     data class Predicate(
-        val validIf: GeminioRecipe.RecipeExpression,
+        val validIf: RecipeExpression,
         val commands: List<RecipeCommand>
     ) : RecipeCommand()
 

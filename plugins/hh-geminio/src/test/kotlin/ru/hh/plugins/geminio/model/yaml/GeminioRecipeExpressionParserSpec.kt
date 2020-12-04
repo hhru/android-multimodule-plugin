@@ -2,8 +2,8 @@ package ru.hh.plugins.geminio.model.yaml
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import ru.hh.plugins.geminio.model.GeminioRecipe
-import ru.hh.plugins.geminio.model.GeminioRecipe.RecipeExpression.Command.*
+import ru.hh.plugins.geminio.model.RecipeExpression
+import ru.hh.plugins.geminio.model.RecipeExpression.Command.*
 import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier.*
 
 
@@ -11,18 +11,18 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
 
     val expressionParser = GeminioRecipeExpressionParser()
 
-    fun String.toRecipeExpression(): GeminioRecipe.RecipeExpression {
+    fun String.toRecipeExpression(): RecipeExpression {
         return expressionParser.parseExpression(this)
     }
 
-    fun List<GeminioRecipe.RecipeExpression.Command>.intoExpression(): GeminioRecipe.RecipeExpression {
-        return GeminioRecipe.RecipeExpression(this)
+    fun List<RecipeExpression.Command>.intoExpression(): RecipeExpression {
+        return RecipeExpression(this)
     }
 
 
     "Should return empty object when convert empty string" {
         val givenExpressionString = ""
-        val expected = emptyList<GeminioRecipe.RecipeExpression.Command>().intoExpression()
+        val expected = emptyList<RecipeExpression.Command>().intoExpression()
 
         givenExpressionString.toRecipeExpression() shouldBe expected
     }

@@ -3,7 +3,11 @@ package ru.hh.plugins.geminio.model.yaml
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.GeminioConstants
 import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.model.OptionalParams
 import ru.hh.plugins.geminio.model.RecipeCommand
+import ru.hh.plugins.geminio.model.RecipeExpression
+import ru.hh.plugins.geminio.model.RecipeParameter
+import ru.hh.plugins.geminio.model.RequiredParams
 import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint
 import ru.hh.plugins.geminio.model.enums.GeminioTemplateCategory
 import ru.hh.plugins.geminio.model.enums.GeminioTemplateConstraint
@@ -61,16 +65,16 @@ class GeminioRecipeReader(
     }
 
 
-    private fun Map<String, Any>.extractRequiredParams(): GeminioRecipe.RequiredParams {
+    private fun Map<String, Any>.extractRequiredParams(): RequiredParams {
         val requiredParamsMap = this[KEY_REQUIRED_PARAMS] as LinkedHashMap<String, Any>
 
-        return GeminioRecipe.RequiredParams(
+        return RequiredParams(
             name = requiredParamsMap[KEY_REQUIRED_PARAMS_NAME] as String,
             description = requiredParamsMap[KEY_REQUIRED_PARAMS_DESCRIPTION] as String,
         )
     }
 
-    private fun Map<String, Any>.extractOptionalParams(): GeminioRecipe.OptionalParams? {
+    private fun Map<String, Any>.extractOptionalParams(): OptionalParams? {
         val optionalParamsMap = this[KEY_OPTIONAL_PARAMS] as? LinkedHashMap<String, Any> ?: return null
 
         val revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int
@@ -84,7 +88,7 @@ class GeminioRecipeReader(
         val minBuildApiValue = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_BUILD_API] as? Int
             ?: GeminioConstants.DEFAULT_MIN_BUILD_API_VALUE
 
-        return GeminioRecipe.OptionalParams(
+        return OptionalParams(
             revision = revision,
             category = GeminioTemplateCategory.fromYamlKey(categoryYamlKey),
             formFactor = GeminioTemplateFormFactor.fromYamlKey(formFactorYamlKey),
@@ -99,13 +103,13 @@ class GeminioRecipeReader(
         )
     }
 
-    private fun Map<String, Any>.extractRecipeParameters(): List<GeminioRecipe.RecipeParameter> {
+    private fun Map<String, Any>.extractRecipeParameters(): List<RecipeParameter> {
         val widgetsMap = this[KEY_WIDGETS] as List<Map<String, Map<String, Any>>>
 
         return widgetsMap.map { it.toRecipeParameter() }
     }
 
-    private fun Map<String, Map<String, Any>>.toRecipeParameter(): GeminioRecipe.RecipeParameter {
+    private fun Map<String, Map<String, Any>>.toRecipeParameter(): RecipeParameter {
         val stringParameterMap = this[KEY_WIDGETS_STRING_PARAMETER]
         val booleanParameterMap = this[KEY_WIDGETS_BOOLEAN_PARAMETER]
 
@@ -116,14 +120,14 @@ class GeminioRecipeReader(
         }
     }
 
-    private fun Map<String, Any>.toRecipeStringParameter(): GeminioRecipe.RecipeParameter.StringParameter {
+    private fun Map<String, Any>.toRecipeStringParameter(): RecipeParameter.StringParameter {
         val constraintsKeys = this[KEY_PARAMETER_CONSTRAINTS] as? List<String>
 
         val visibilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
         val availabilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
         val suggestExpressionString = this[KEY_PARAMETER_SUGGEST] as? String
 
-        return GeminioRecipe.RecipeParameter.StringParameter(
+        return RecipeParameter.StringParameter(
             id = this[KEY_PARAMETER_ID] as String,
             name = this[KEY_PARAMETER_NAME] as String,
             help = this[KEY_PARAMETER_HELP] as String,
@@ -137,11 +141,11 @@ class GeminioRecipeReader(
         )
     }
 
-    private fun Map<String, Any>.toRecipeBooleanParameter(): GeminioRecipe.RecipeParameter.BooleanParameter {
+    private fun Map<String, Any>.toRecipeBooleanParameter(): RecipeParameter.BooleanParameter {
         val visibilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
         val availabilityExpressionString = getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
 
-        return GeminioRecipe.RecipeParameter.BooleanParameter(
+        return RecipeParameter.BooleanParameter(
             id = this[KEY_PARAMETER_ID] as String,
             name = this[KEY_PARAMETER_NAME] as String,
             help = this[KEY_PARAMETER_HELP] as String,
@@ -160,7 +164,7 @@ class GeminioRecipeReader(
     }
 
 
-    private fun String.toRecipeExpression(): GeminioRecipe.RecipeExpression {
+    private fun String.toRecipeExpression(): RecipeExpression {
         return expressionParser.parseExpression(this)
     }
 

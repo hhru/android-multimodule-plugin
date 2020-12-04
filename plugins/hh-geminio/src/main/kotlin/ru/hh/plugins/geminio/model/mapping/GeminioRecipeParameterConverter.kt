@@ -3,23 +3,23 @@ package ru.hh.plugins.geminio.model.mapping
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
 import ru.hh.plugins.geminio.model.temp_data.GeminioIdParameterPair
-import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.model.RecipeParameter
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
 
 
-fun GeminioRecipe.RecipeParameter.toAndroidStudioTemplateIdParameterPair(
+fun RecipeParameter.toAndroidStudioTemplateIdParameterPair(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): GeminioIdParameterPair {
     val androidStudioTemplateParameter = when (this) {
-        is GeminioRecipe.RecipeParameter.StringParameter -> {
+        is RecipeParameter.StringParameter -> {
             this.toAndroidStudioTemplateParameter(existingParametersMap)
         }
 
-        is GeminioRecipe.RecipeParameter.BooleanParameter -> {
+        is RecipeParameter.BooleanParameter -> {
             this.toAndroidStudioTemplateParameter(existingParametersMap)
         }
 
-        is GeminioRecipe.RecipeParameter.EnumParameter<*> -> {
+        is RecipeParameter.EnumParameter<*> -> {
             throw UnsupportedOperationException("Not supported enum parameters yet")
         }
     }
@@ -31,7 +31,7 @@ fun GeminioRecipe.RecipeParameter.toAndroidStudioTemplateIdParameterPair(
 }
 
 
-private fun GeminioRecipe.RecipeParameter.StringParameter.toAndroidStudioTemplateParameter(
+private fun RecipeParameter.StringParameter.toAndroidStudioTemplateParameter(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): AndroidStudioTemplateParameter {
     val geminioParameter = this
@@ -48,7 +48,7 @@ private fun GeminioRecipe.RecipeParameter.StringParameter.toAndroidStudioTemplat
     }
 }
 
-private fun GeminioRecipe.RecipeParameter.BooleanParameter.toAndroidStudioTemplateParameter(
+private fun RecipeParameter.BooleanParameter.toAndroidStudioTemplateParameter(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): AndroidStudioTemplateParameter {
     val geminioParameter = this

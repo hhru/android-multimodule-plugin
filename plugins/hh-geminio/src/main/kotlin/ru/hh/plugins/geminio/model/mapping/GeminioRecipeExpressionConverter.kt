@@ -8,8 +8,8 @@ import com.android.tools.idea.wizard.template.fragmentToLayout
 import com.android.tools.idea.wizard.template.layoutToActivity
 import com.android.tools.idea.wizard.template.layoutToFragment
 import com.android.tools.idea.wizard.template.underlinesToCamelCase
-import ru.hh.plugins.geminio.model.GeminioRecipe
-import ru.hh.plugins.geminio.model.GeminioRecipe.RecipeExpression.Command.*
+import ru.hh.plugins.geminio.model.RecipeExpression
+import ru.hh.plugins.geminio.model.RecipeExpression.Command.*
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateBooleanParameter
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameterBooleanLambda
@@ -18,13 +18,13 @@ import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateStringParameter
 import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier.*
 
 
-fun GeminioRecipe.RecipeExpression.toBooleanLambda(
+fun RecipeExpression.toBooleanLambda(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): AndroidStudioTemplateParameterBooleanLambda {
     return { evaluateBoolean(existingParametersMap) }
 }
 
-fun GeminioRecipe.RecipeExpression.evaluateBoolean(
+fun RecipeExpression.evaluateBoolean(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): Boolean {
     return when (expressionCommands.size) {
@@ -35,7 +35,7 @@ fun GeminioRecipe.RecipeExpression.evaluateBoolean(
 }
 
 
-fun GeminioRecipe.RecipeExpression.toStringLambda(
+fun RecipeExpression.toStringLambda(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): AndroidStudioTemplateParameterStringLambda {
     val commands = this.expressionCommands
@@ -51,7 +51,7 @@ fun GeminioRecipe.RecipeExpression.toStringLambda(
     }
 }
 
-fun GeminioRecipe.RecipeExpression.evaluateString(
+fun RecipeExpression.evaluateString(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String? {
@@ -67,7 +67,7 @@ fun GeminioRecipe.RecipeExpression.evaluateString(
 }
 
 
-private fun GeminioRecipe.RecipeExpression.Command.resolveBooleanValue(
+private fun RecipeExpression.Command.resolveBooleanValue(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): Boolean {
     return when (this) {
@@ -96,7 +96,7 @@ private fun GeminioRecipe.RecipeExpression.Command.resolveBooleanValue(
     }
 }
 
-private fun GeminioRecipe.RecipeExpression.Command.toStringValue(
+private fun RecipeExpression.Command.toStringValue(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
     return when (this) {
@@ -110,7 +110,7 @@ private fun GeminioRecipe.RecipeExpression.Command.toStringValue(
     }
 }
 
-private fun GeminioRecipe.RecipeExpression.Command.toStringValue(
+private fun RecipeExpression.Command.toStringValue(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {

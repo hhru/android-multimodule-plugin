@@ -1,6 +1,6 @@
 package ru.hh.plugins.geminio.model.yaml
 
-import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.model.RecipeExpression
 import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier
 
 
@@ -26,8 +26,8 @@ class GeminioRecipeExpressionParser {
     }
 
 
-    fun parseExpression(expressionString: String): GeminioRecipe.RecipeExpression {
-        val commands = mutableListOf<GeminioRecipe.RecipeExpression.Command>()
+    fun parseExpression(expressionString: String): RecipeExpression {
+        val commands = mutableListOf<RecipeExpression.Command>()
 
         var fixed = ""
         var parameterId = ""
@@ -40,7 +40,7 @@ class GeminioRecipeExpressionParser {
             when (char) {
                 CHAR_DYNAMIC_COMMAND_START -> {
                     if (fixed.isNotEmpty()) {
-                        commands += GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
+                        commands += RecipeExpression.Command.Fixed(fixed)
                     }
                     fixed = ""
                     startDynamic = true
@@ -64,19 +64,19 @@ class GeminioRecipeExpressionParser {
                     startDynamic = false
                     commands += when (parameterId) {
                         SRC_OUT_FOLDER_NAME -> {
-                            GeminioRecipe.RecipeExpression.Command.SrcOut(
+                            RecipeExpression.Command.SrcOut(
                                 modifiers = modifiers.toList()
                             )
                         }
 
                         RES_OUT_FOLDER_NAME -> {
-                            GeminioRecipe.RecipeExpression.Command.ResOut(
+                            RecipeExpression.Command.ResOut(
                                 modifiers = modifiers.toList()
                             )
                         }
 
                         else -> {
-                            GeminioRecipe.RecipeExpression.Command.Dynamic(
+                            RecipeExpression.Command.Dynamic(
                                 parameterId = parameterId,
                                 modifiers = modifiers.toList()
                             )
@@ -109,13 +109,13 @@ class GeminioRecipeExpressionParser {
         }
         if (fixed.isNotEmpty()) {
             commands += when {
-                fixed == FIXED_TRUE_VALUE && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnTrue
-                fixed == FIXED_FALSE_VALUE && commands.isEmpty() -> GeminioRecipe.RecipeExpression.Command.ReturnFalse
-                else -> GeminioRecipe.RecipeExpression.Command.Fixed(fixed)
+                fixed == FIXED_TRUE_VALUE && commands.isEmpty() -> RecipeExpression.Command.ReturnTrue
+                fixed == FIXED_FALSE_VALUE && commands.isEmpty() -> RecipeExpression.Command.ReturnFalse
+                else -> RecipeExpression.Command.Fixed(fixed)
             }
         }
 
-        return GeminioRecipe.RecipeExpression(commands)
+        return RecipeExpression(commands)
     }
 
 }
