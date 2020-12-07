@@ -1,9 +1,9 @@
-package ru.hh.plugins.utils.freemarker
+package ru.hh.plugins.freemarker_wrapper
 
 import com.google.common.base.Charsets
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
-import ru.hh.plugins.utils.freemarker.adapters.PropertyObjectWrapper
+import ru.hh.plugins.freemarker_wrapper.adapters.PropertyObjectWrapper
 import java.io.File
 import java.io.StringWriter
 

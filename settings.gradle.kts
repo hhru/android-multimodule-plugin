@@ -3,9 +3,11 @@ rootProject.name = "hh-android-plugins"
 // Core modules
 include(":hh-plugins-core")
 include(":hh-geminio-sdk")
+include(":hh-freemarker-wrapper")
 
 project(":hh-plugins-core").projectDir = File("$settingsDir/core/hh-plugins-core")
 project(":hh-geminio-sdk").projectDir = File("$settingsDir/core/hh-geminio-sdk")
+project(":hh-freemarker-wrapper").projectDir = File("$settingsDir/core/hh-freemarker-wrapper")
 
 
 // Plugins

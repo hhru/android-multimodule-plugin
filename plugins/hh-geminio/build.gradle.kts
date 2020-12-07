@@ -11,6 +11,7 @@ repositories {
 dependencies {
     implementation(project(":hh-plugins-core"))
     implementation(project(":hh-geminio-sdk"))
+    implementation(project(":hh-freemarker-wrapper"))
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))

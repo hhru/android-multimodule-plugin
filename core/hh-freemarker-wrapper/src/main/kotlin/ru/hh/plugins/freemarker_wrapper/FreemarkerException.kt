@@ -1,4 +1,4 @@
-package ru.hh.plugins.utils.freemarker
+package ru.hh.plugins.freemarker_wrapper
 
 
 /**

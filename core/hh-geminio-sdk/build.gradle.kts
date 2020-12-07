@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":hh-freemarker-wrapper"))
+
     implementation(kotlin("stdlib-jdk8"))
     implementation(Libs.freemarker)
 }

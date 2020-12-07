@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation(project(":hh-geminio-sdk"))// todo remove
+    implementation(project(":hh-freemarker-wrapper"))// todo remove
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(Libs.freemarker)

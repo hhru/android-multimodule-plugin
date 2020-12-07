@@ -1,8 +1,11 @@
-package ru.hh.plugins.utils.freemarker.adapters
+package ru.hh.plugins.freemarker_wrapper.adapters
 
 import com.android.tools.idea.observable.core.BoolValueProperty
-import freemarker.template.*
-
+import freemarker.template.AdapterTemplateModel
+import freemarker.template.ObjectWrapper
+import freemarker.template.TemplateBooleanModel
+import freemarker.template.TemplateModelException
+import freemarker.template.WrappingTemplateModel
 
 class BoolPropertyAdapter(
     objectWrapper: ObjectWrapper?,

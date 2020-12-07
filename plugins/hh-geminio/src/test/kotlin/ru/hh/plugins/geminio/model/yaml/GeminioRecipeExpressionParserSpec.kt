@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.model.recipe.RecipeExpression
 import ru.hh.plugins.geminio.sdk.model.recipe.RecipeExpression.Command.*
 import ru.hh.plugins.geminio.sdk.model.enums.GeminioRecipeExpressionModifier.*
+import ru.hh.plugins.geminio.sdk.parsers.GeminioRecipeExpressionParser
 
 
 class GeminioRecipeExpressionParserSpec : FreeSpec({
