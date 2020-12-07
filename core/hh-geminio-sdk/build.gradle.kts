@@ -14,4 +14,6 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(Libs.freemarker)
+
+    testImplementation(Libs.tests.kotest) // for kotest framework
 }

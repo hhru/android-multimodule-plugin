@@ -2,7 +2,7 @@ package ru.hh.plugins.extensions.psi.groovy
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.plugins.geminio.sdk.model.recipe.BuildGradleDependency
+import ru.hh.plugins.geminio.sdk.recipe.models.BuildGradleDependency
 
 
 fun GroovyPsiElementFactory.createBuildGradleDependencyElement(dependency: BuildGradleDependency): PsiElement {

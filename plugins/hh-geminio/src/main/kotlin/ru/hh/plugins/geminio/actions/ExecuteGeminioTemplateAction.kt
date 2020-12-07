@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
-import ru.hh.plugins.geminio.model.yaml.GeminioRecipeReader
+import ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioRecipeReader
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.template.geminioTemplate
 import java.io.File
