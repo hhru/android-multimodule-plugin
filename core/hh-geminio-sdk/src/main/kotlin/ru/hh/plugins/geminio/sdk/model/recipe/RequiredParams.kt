@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.model
+package ru.hh.plugins.geminio.sdk.model.recipe
 
 
 data class RequiredParams(

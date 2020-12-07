@@ -1,4 +1,4 @@
-package ru.hh.plugins.model
+package ru.hh.plugins.geminio.sdk.model.enums
 
 
 /**

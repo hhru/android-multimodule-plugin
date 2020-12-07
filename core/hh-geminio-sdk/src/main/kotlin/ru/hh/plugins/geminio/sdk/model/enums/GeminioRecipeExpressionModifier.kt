@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.model.enums
+package ru.hh.plugins.geminio.sdk.model.enums
 
 
 enum class GeminioRecipeExpressionModifier(

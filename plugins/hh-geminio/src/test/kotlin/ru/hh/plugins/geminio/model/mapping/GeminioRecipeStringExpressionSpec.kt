@@ -4,7 +4,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
-import ru.hh.plugins.geminio.model.RecipeExpression.Command
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeExpression.Command
 import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils.createModuleTemplateData
 import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils.toExpression

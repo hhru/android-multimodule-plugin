@@ -3,7 +3,7 @@ package ru.hh.plugins.geminio.model.mapping
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
 import ru.hh.plugins.geminio.model.temp_data.GeminioIdParameterPair
-import ru.hh.plugins.geminio.model.RecipeParameter
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeParameter
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
 
 

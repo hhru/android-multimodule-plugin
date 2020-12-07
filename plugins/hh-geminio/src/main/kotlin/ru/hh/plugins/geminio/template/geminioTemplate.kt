@@ -13,7 +13,7 @@ import com.android.tools.idea.wizard.template.TextFieldWidget
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.geminio.GeminioConstants
-import ru.hh.plugins.geminio.model.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.model.recipe.GeminioRecipe
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate
 import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateCategory

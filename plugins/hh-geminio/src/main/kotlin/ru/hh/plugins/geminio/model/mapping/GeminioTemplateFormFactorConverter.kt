@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.model.mapping
 
 import com.android.tools.idea.wizard.template.FormFactor
-import ru.hh.plugins.geminio.model.enums.GeminioTemplateFormFactor
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioTemplateFormFactor
 
 
 /**

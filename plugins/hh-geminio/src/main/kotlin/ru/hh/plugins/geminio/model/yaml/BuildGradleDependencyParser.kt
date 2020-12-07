@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.model.yaml
 
-import ru.hh.plugins.model.BuildGradleDependency
-import ru.hh.plugins.model.BuildGradleDependencyConfiguration
+import ru.hh.plugins.geminio.sdk.model.recipe.BuildGradleDependency
+import ru.hh.plugins.geminio.sdk.model.enums.BuildGradleDependencyConfiguration
 
 
 /**

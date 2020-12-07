@@ -2,7 +2,7 @@
 
 package ru.hh.plugins.geminio.model.yaml
 
-import ru.hh.plugins.geminio.model.RecipeCommand
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeCommand
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_COMMANDS
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_FILE
 import ru.hh.plugins.geminio.model.yaml.YamlKeys.KEY_COMMAND_FROM

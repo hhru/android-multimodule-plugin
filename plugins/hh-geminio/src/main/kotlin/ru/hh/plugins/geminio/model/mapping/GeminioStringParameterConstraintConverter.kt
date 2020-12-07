@@ -1,8 +1,8 @@
 package ru.hh.plugins.geminio.model.mapping
 
 import com.android.tools.idea.wizard.template.Constraint
-import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint
-import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint.*
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioStringParameterConstraint.*
 
 
 fun GeminioStringParameterConstraint.toAndroidStudioStringParameterConstraint(): Constraint {

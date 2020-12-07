@@ -1,4 +1,6 @@
-package ru.hh.plugins.model
+package ru.hh.plugins.geminio.sdk.model.recipe
+
+import ru.hh.plugins.geminio.sdk.model.enums.BuildGradleDependencyConfiguration
 
 
 /**

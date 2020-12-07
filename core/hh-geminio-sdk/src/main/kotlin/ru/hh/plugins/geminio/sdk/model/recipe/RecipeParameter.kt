@@ -1,6 +1,6 @@
-package ru.hh.plugins.geminio.model
+package ru.hh.plugins.geminio.sdk.model.recipe
 
-import ru.hh.plugins.geminio.model.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioStringParameterConstraint
 import kotlin.reflect.KClass
 
 

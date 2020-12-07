@@ -5,8 +5,8 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
-import ru.hh.plugins.model.BuildGradleDependency
-import ru.hh.plugins.model.BuildGradleDependencyConfiguration
+import ru.hh.plugins.geminio.sdk.model.recipe.BuildGradleDependency
+import ru.hh.plugins.geminio.sdk.model.enums.BuildGradleDependencyConfiguration
 
 
 class BuildGradleDependencyParserSpec : FreeSpec({

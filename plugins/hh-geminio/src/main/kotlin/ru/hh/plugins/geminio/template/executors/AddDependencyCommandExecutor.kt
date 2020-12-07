@@ -11,9 +11,9 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethod
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.extensions.psi.groovy.createBuildGradleDependencyElement
 import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
-import ru.hh.plugins.geminio.model.RecipeCommand
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeCommand
 import ru.hh.plugins.geminio.model.temp_data.GeminioRecipeExecutorData
-import ru.hh.plugins.model.BuildGradleDependency
+import ru.hh.plugins.geminio.sdk.model.recipe.BuildGradleDependency
 
 
 fun RecipeExecutor.execute(

@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.model.mapping
 
 import com.android.tools.idea.wizard.template.WizardUiContext
-import ru.hh.plugins.geminio.model.enums.GeminioTemplateScreen
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioTemplateScreen
 
 
 /**

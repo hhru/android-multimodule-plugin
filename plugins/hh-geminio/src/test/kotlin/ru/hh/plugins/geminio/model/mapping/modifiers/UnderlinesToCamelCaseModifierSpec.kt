@@ -2,7 +2,7 @@ package ru.hh.plugins.geminio.model.mapping.modifiers
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioRecipeExpressionModifier
 import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils
 
 

@@ -2,9 +2,9 @@ package ru.hh.plugins.geminio.model.yaml
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import ru.hh.plugins.geminio.model.RecipeExpression
-import ru.hh.plugins.geminio.model.RecipeExpression.Command.*
-import ru.hh.plugins.geminio.model.enums.GeminioRecipeExpressionModifier.*
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeExpression
+import ru.hh.plugins.geminio.sdk.model.recipe.RecipeExpression.Command.*
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioRecipeExpressionModifier.*
 
 
 class GeminioRecipeExpressionParserSpec : FreeSpec({

@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.model.mapping
 
 import com.android.tools.idea.wizard.template.TemplateConstraint
-import ru.hh.plugins.geminio.model.enums.GeminioTemplateConstraint
+import ru.hh.plugins.geminio.sdk.model.enums.GeminioTemplateConstraint
 
 
 /**
