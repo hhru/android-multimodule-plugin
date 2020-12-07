@@ -2,6 +2,7 @@ plugins {
     id(GradlePlugins.gradleIntelliJPlugin)
     kotlin("jvm")
     id(GradlePlugins.setupIdeaPlugin)
+    id(GradlePlugins.coreModuleMarker)
 }
 
 repositories {
@@ -9,10 +10,20 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":shared-core-common"))
+    // Core modules
     implementation(project(":shared-core-freemarker"))
+    implementation(project(":shared-core-yaml"))
 
+    // Libraries
     implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
     implementation(Libs.freemarker)
+
+    testImplementation(Libs.tests.kotest) // for kotest framework
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
