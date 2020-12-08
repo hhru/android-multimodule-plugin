@@ -3,12 +3,10 @@ rootProject.name = "hh-android-plugins"
 // region Shared modules
 
 // region Shared core modules
-include(":shared-core-common")
-include(":shared-core-yaml")
+include(":shared-core-utils")
 include(":shared-core-freemarker")
 
-project(":shared-core-common").projectDir = File("$settingsDir/shared/core/common")
-project(":shared-core-yaml").projectDir = File("$settingsDir/shared/core/yaml")
+project(":shared-core-utils").projectDir = File("$settingsDir/shared/core/utils")
 project(":shared-core-freemarker").projectDir = File("$settingsDir/shared/core/freemarker")
 // endregion
 

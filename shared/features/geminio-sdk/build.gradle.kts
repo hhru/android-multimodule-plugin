@@ -12,7 +12,7 @@ repositories {
 dependencies {
     // Core modules
     implementation(project(":shared-core-freemarker"))
-    implementation(project(":shared-core-yaml"))
+    implementation(project(":shared-core-utils"))
 
     // Libraries
     implementation(kotlin("stdlib-jdk8"))

@@ -17,7 +17,7 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_RECIPE_PREDICATE
 
 
 /**
- * Parser for [ru.hh.plugins.geminio.sdk.model.recipe.RecipeCommand].
+ * Parser for [ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand].
  */
 class GeminioRecipeCommandsParser(
     private val expressionParser: GeminioRecipeExpressionParser = GeminioRecipeExpressionParser(),

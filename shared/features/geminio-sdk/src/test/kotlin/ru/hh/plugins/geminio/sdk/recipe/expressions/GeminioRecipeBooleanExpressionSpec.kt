@@ -4,11 +4,12 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.ReturnTrue
-import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils.createParametersMap
-import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils.toExpression
+import ru.hh.plugins.geminio.sdk.template.mapping.evaluateBoolean
 
 
 class GeminioRecipeBooleanExpressionSpec : FreeSpec({

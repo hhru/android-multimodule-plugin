@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioRecipeReader
 import ru.hh.plugins.geminio.services.balloonInfo
-import ru.hh.plugins.geminio.template.geminioTemplate
+import ru.hh.plugins.geminio.sdk.template.geminioTemplate
 import java.io.File
 import java.io.FileNotFoundException
 import kotlin.system.measureTimeMillis

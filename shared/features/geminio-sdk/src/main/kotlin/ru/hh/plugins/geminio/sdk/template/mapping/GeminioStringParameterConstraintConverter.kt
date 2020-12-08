@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.Constraint
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioStringParameterConstraint

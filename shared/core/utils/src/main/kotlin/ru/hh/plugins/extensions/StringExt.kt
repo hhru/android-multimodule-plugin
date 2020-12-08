@@ -6,7 +6,9 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
 import com.intellij.refactoring.PackageWrapper
-import ru.hh.plugins.PluginsConstants
+
+
+private const val KOTLIN_FILE_EXTENSION = ".kt"
 
 
 val String.Companion.EMPTY: String get() = ""
@@ -29,7 +31,7 @@ fun String.replaceLineBreaks(): String {
     return this.replace("\n", "\n<br />", true)
 }
 
-fun String.toKotlinFileName() = "${this}${PluginsConstants.KOTLIN_FILE_EXTENSION}"
+fun String.toKotlinFileName() = "${this}${KOTLIN_FILE_EXTENSION}"
 
 
 fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirectory? {

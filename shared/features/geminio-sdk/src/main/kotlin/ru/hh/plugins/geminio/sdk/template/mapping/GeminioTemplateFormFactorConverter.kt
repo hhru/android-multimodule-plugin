@@ -1,11 +1,11 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.FormFactor
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateFormFactor
 
 
 /**
- * Mapping from [ru.hh.plugins.geminio.model.GeminioTemplateFormFactor] into
+ * Mapping from [ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateFormFactor] into
  * Android Studio's [com.android.tools.idea.wizard.template.FormFactor].
  */
 fun GeminioTemplateFormFactor.toAndroidStudioTemplateFormFactor(): FormFactor {

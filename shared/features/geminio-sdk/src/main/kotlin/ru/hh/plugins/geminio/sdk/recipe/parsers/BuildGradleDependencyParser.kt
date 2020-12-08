@@ -5,7 +5,7 @@ import ru.hh.plugins.geminio.sdk.recipe.enums.BuildGradleDependencyConfiguration
 
 
 /**
- * Parser from YAML to [ru.hh.plugins.geminio.sdk.model.recipe.BuildGradleDependency]
+ * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.BuildGradleDependency]
  */
 @Suppress("UNCHECKED_CAST")
 class BuildGradleDependencyParser {

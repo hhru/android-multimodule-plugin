@@ -10,7 +10,7 @@ repositories {
 
 dependencies {
     // Core modules
-    implementation(project(":shared-core-common"))
+    implementation(project(":shared-core-utils"))
     implementation(project(":shared-core-freemarker"))
 
     // Feature modules

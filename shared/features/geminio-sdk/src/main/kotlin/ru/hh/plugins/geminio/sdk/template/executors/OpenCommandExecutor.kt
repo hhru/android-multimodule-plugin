@@ -1,8 +1,8 @@
-package ru.hh.plugins.geminio.template.executors
+package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
-import ru.hh.plugins.geminio.model.mapping.evaluateString
+import ru.hh.plugins.geminio.sdk.template.mapping.evaluateString
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 import java.io.File
 

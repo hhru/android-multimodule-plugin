@@ -1,10 +1,9 @@
-package ru.hh.plugins.yaml_utils
+package ru.hh.plugins.utils.yaml
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
 import java.io.File
 import java.io.FileReader
-
 
 object YamlUtils {
 

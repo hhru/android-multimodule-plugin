@@ -9,10 +9,10 @@ import com.android.tools.idea.wizard.template.ProjectTemplateData
 import com.android.tools.idea.wizard.template.ThemesData
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier
-import ru.hh.plugins.geminio.model.mapping.evaluateString
+import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.evaluateString
 import java.io.File
 
 

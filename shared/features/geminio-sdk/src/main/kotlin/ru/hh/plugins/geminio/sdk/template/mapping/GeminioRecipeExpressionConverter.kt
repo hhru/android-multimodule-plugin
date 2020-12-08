@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.activityToLayout
@@ -10,11 +10,11 @@ import com.android.tools.idea.wizard.template.layoutToFragment
 import com.android.tools.idea.wizard.template.underlinesToCamelCase
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.*
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateBooleanParameter
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameterBooleanLambda
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameterStringLambda
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateStringParameter
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBooleanParameter
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterBooleanLambda
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier.*
 
 

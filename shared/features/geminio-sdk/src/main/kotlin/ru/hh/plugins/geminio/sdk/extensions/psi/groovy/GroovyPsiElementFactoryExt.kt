@@ -1,4 +1,4 @@
-package ru.hh.plugins.extensions.psi.groovy
+package ru.hh.plugins.geminio.sdk.extensions.psi.groovy
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory

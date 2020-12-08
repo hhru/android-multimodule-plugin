@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.template.executors
+package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.intellij.psi.PsiDirectory
@@ -9,7 +9,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlo
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrApplicationStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
-import ru.hh.plugins.extensions.psi.groovy.createBuildGradleDependencyElement
+import ru.hh.plugins.geminio.sdk.extensions.psi.groovy.createBuildGradleDependencyElement
 import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData

@@ -2,8 +2,8 @@ package ru.hh.plugins.geminio.sdk.recipe.expressions.modifiers
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier
-import ru.hh.plugins.geminio.tests_helpers.GeminioExpressionUtils
 
 
 class UnderlinesToCamelCaseModifierSpec : FreeSpec({

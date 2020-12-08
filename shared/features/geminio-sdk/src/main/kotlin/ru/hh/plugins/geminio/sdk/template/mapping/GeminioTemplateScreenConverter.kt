@@ -1,11 +1,11 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.WizardUiContext
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateScreen
 
 
 /**
- * Mapping from [ru.hh.plugins.geminio.model.GeminioTemplateScreen] into
+ * Mapping from [ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateScreen] into
  * Android Studio's [com.android.tools.idea.wizard.template.WizardUiContext].
  */
 fun GeminioTemplateScreen.toAndroidStudioTemplateWizardUiContext(): WizardUiContext {

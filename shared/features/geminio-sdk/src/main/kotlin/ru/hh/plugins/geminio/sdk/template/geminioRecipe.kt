@@ -1,9 +1,9 @@
-package ru.hh.plugins.geminio.template
+package ru.hh.plugins.geminio.sdk.template
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
-import ru.hh.plugins.geminio.template.executors.executeCommands
+import ru.hh.plugins.geminio.sdk.template.executors.executeCommands
 
 
 fun RecipeExecutor.geminioRecipe(

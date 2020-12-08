@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.template
+package ru.hh.plugins.geminio.sdk.template
 
 import com.android.tools.idea.wizard.template.BooleanParameter
 import com.android.tools.idea.wizard.template.Category
@@ -12,33 +12,22 @@ import com.android.tools.idea.wizard.template.TemplateBuilder
 import com.android.tools.idea.wizard.template.TextFieldWidget
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
-import ru.hh.plugins.geminio.GeminioConstants
+import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateCategory
-import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateConstraint
-import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateFormFactor
-import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateIdParameterPair
-import ru.hh.plugins.geminio.model.mapping.toAndroidStudioTemplateWizardUiContext
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplateCategory
+import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplateConstraint
+import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplateFormFactor
+import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplateIdParameterPair
+import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplateWizardUiContext
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
-import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 
 
 /**
- * Package name from SELECTED file.
- */
-private const val HARDCODED_PARAM_PACKAGE_NAME = "packageName"
-
-/**
- * Package name from current gradle module.
- */
-private const val HARDCODED_PARAM_APPLICATION_PACKAGE_NAME = "applicationPackage"
-
-
-/**
- * Build Android Studio [ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplate]
- * from [ru.hh.plugins.geminio.model.GeminioRecipe].
+ * Build Android Studio [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate]
+ * from [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe].
  */
 fun geminioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate = template {
     injectRequiredParams(geminioRecipe)
@@ -58,10 +47,12 @@ fun geminioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStud
                 existingParametersMap = existingParametersMap,
                 resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
                     entry.key to entry.value.value
-                }.plus(mapOf(
-                    HARDCODED_PARAM_PACKAGE_NAME to moduleTemplateData.packageName,
-                    HARDCODED_PARAM_APPLICATION_PACKAGE_NAME to moduleTemplateData.projectTemplateData.applicationPackage
-                )),
+                }.plus(
+                    mapOf(
+                        GeminioSdkConstants.HardcodedParams.PACKAGE_NAME to moduleTemplateData.packageName,
+                        GeminioSdkConstants.HardcodedParams.APPLICATION_PACKAGE to moduleTemplateData.projectTemplateData.applicationPackage
+                    )
+                ),
                 freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
             )
         )
@@ -80,13 +71,13 @@ private fun TemplateBuilder.injectRequiredParams(geminioRecipe: GeminioRecipe) {
 private fun TemplateBuilder.injectOptionalParams(geminioRecipe: GeminioRecipe) {
     with(geminioRecipe) {
         if (optionalParams == null) {
-            revision = GeminioConstants.DEFAULT_REVISION_VALUE
+            revision = GeminioSdkConstants.DEFAULT_REVISION_VALUE
             category = Category.Other
             formFactor = FormFactor.Mobile
             constraints = emptyList()
             screens = emptyList()
-            minApi = GeminioConstants.DEFAULT_MIN_API_VALUE
-            minBuildApi = GeminioConstants.DEFAULT_MIN_BUILD_API_VALUE
+            minApi = GeminioSdkConstants.DEFAULT_MIN_API_VALUE
+            minBuildApi = GeminioSdkConstants.DEFAULT_MIN_BUILD_API_VALUE
         } else {
             revision = optionalParams.revision
             category = optionalParams.category.toAndroidStudioTemplateCategory()

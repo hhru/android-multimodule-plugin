@@ -1,11 +1,11 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.Category
 import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateCategory
 
 
 /**
- * Mapping from [ru.hh.plugins.geminio.model.GeminioTemplateCategory] into
+ * Mapping from [ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateCategory] into
  * Android Studio's [com.android.tools.idea.wizard.template.Category].
  */
 fun GeminioTemplateCategory.toAndroidStudioTemplateCategory(): Category {

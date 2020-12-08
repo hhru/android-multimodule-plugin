@@ -1,10 +1,10 @@
-package ru.hh.plugins.geminio.model.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping
 
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioIdParameterPair
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeParameter
-import ru.hh.plugins.geminio.model.aliases.AndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 
 
 fun RecipeParameter.toAndroidStudioTemplateIdParameterPair(

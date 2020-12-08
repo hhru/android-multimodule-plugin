@@ -1,16 +1,18 @@
 package ru.hh.plugins.geminio.sdk.recipe.parsers
 
+import ru.hh.plugins.extensions.EMPTY
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
+import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateCategory
+import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateConstraint
+import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateFormFactor
+import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateScreen
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.OptionalParams
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.RequiredParams
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioStringParameterConstraint
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateCategory
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateConstraint
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateFormFactor
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioTemplateScreen
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_OPTIONAL_PARAMS
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_OPTIONAL_PARAMS_CATEGORY
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_OPTIONAL_PARAMS_CONSTRAINTS
@@ -34,7 +36,7 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_REQUIRED_PARAMS_NAM
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_WIDGETS
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_WIDGETS_BOOLEAN_PARAMETER
 import ru.hh.plugins.geminio.sdk.recipe.parsers.YamlKeys.KEY_WIDGETS_STRING_PARAMETER
-import ru.hh.plugins.utils.config.YamlUtils
+import ru.hh.plugins.utils.yaml.YamlUtils
 import java.io.File
 
 
@@ -75,15 +77,15 @@ class GeminioRecipeReader(
         val optionalParamsMap = this[KEY_OPTIONAL_PARAMS] as? LinkedHashMap<String, Any> ?: return null
 
         val revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int
-            ?: GeminioConstants.DEFAULT_REVISION_VALUE
+            ?: GeminioSdkConstants.DEFAULT_REVISION_VALUE
         val categoryYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_CATEGORY] as? String ?: String.EMPTY
         val formFactorYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_FORM_FACTOR] as? String ?: String.EMPTY
         val constraintsYamlKeys = optionalParamsMap[KEY_OPTIONAL_PARAMS_CONSTRAINTS] as? List<String> ?: emptyList()
         val screensYamlKeys = optionalParamsMap[KEY_OPTIONAL_PARAMS_SCREENS] as? List<String> ?: emptyList()
         val minApiValue = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_API] as? Int
-            ?: GeminioConstants.DEFAULT_MIN_API_VALUE
+            ?: GeminioSdkConstants.DEFAULT_MIN_API_VALUE
         val minBuildApiValue = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_BUILD_API] as? Int
-            ?: GeminioConstants.DEFAULT_MIN_BUILD_API_VALUE
+            ?: GeminioSdkConstants.DEFAULT_MIN_BUILD_API_VALUE
 
         return OptionalParams(
             revision = revision,
