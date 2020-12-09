@@ -1,10 +1,10 @@
-package ru.hh.plugins.geminio.sdk.recipe.enums
+package ru.hh.plugins.geminio.sdk.recipe.models.optional
 
 
 /**
  * Determines to which menu entry the template belongs.
  */
-enum class GeminioTemplateCategory(
+internal enum class TemplateCategory(
     val yamlKey: String
 ) {
 
@@ -24,7 +24,7 @@ enum class GeminioTemplateCategory(
 
 
     companion object {
-        fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey } ?: OTHER
+        fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }
         fun availableYamlKeys() = values().joinToString { "'${it.yamlKey}'" }
     }
 }

@@ -1,11 +1,11 @@
-package ru.hh.plugins.geminio.sdk.recipe.enums
+package ru.hh.plugins.geminio.sdk.recipe.models.optional
 
 
 /**
  * Determines to which form factor the template belongs.
- * Templates with particular form factor may only be rendered in the project of corresponding [GeminioTemplateCategory].
+ * Templates with particular form factor may only be rendered in the project of corresponding [TemplateCategory].
  */
-enum class GeminioTemplateFormFactor(
+internal enum class TemplateFormFactor(
     val yamlKey: String
 ) {
 
@@ -18,7 +18,7 @@ enum class GeminioTemplateFormFactor(
 
 
     companion object {
-        fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey } ?: GENERIC
+        fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }
         fun availableYamlKeys() = values().joinToString { "'${it.yamlKey}'" }
     }
 }

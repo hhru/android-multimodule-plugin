@@ -1,10 +1,12 @@
-package ru.hh.plugins.geminio.sdk.recipe.models
+package ru.hh.plugins.geminio.sdk.recipe.models.commands
+
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 
 
 /**
  * Recipe's commands for execution.
  */
-sealed class RecipeCommand {
+internal sealed class RecipeCommand {
 
     /**
      * Instantiate file [from] path into [to] destination.
@@ -38,7 +40,6 @@ sealed class RecipeCommand {
         val validIf: RecipeExpression,
         val commands: List<RecipeCommand>
     ) : RecipeCommand()
-
 
     /**
      * Command which will add dependencies into build.gradle

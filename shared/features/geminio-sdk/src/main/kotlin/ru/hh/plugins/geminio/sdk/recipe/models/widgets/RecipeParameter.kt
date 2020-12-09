@@ -1,10 +1,10 @@
-package ru.hh.plugins.geminio.sdk.recipe.models
+package ru.hh.plugins.geminio.sdk.recipe.models.widgets
 
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioStringParameterConstraint
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import kotlin.reflect.KClass
 
 
-sealed class RecipeParameter {
+internal sealed class RecipeParameter {
 
     abstract val id: String
     abstract val name: String
@@ -21,7 +21,7 @@ sealed class RecipeParameter {
         override val availabilityExpression: RecipeExpression?,
         val default: String?,
         val suggestExpression: RecipeExpression?,
-        val constraints: List<GeminioStringParameterConstraint>,
+        val constraints: List<StringParameterConstraint>,
     ) : RecipeParameter()
 
     data class BooleanParameter(

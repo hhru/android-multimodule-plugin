@@ -1,12 +1,10 @@
-package ru.hh.plugins.geminio.sdk.recipe.models
-
-import ru.hh.plugins.geminio.sdk.recipe.enums.BuildGradleDependencyConfiguration
+package ru.hh.plugins.geminio.sdk.recipe.models.commands
 
 
 /**
  * Dependency for build.gradle files
  */
-sealed class BuildGradleDependency {
+internal sealed class BuildGradleDependency {
 
     abstract val value: String
     abstract val configuration: BuildGradleDependencyConfiguration
@@ -29,7 +27,7 @@ sealed class BuildGradleDependency {
     ) : BuildGradleDependency()
 
     /**
-     * Dependency from internal constants, e.g. `Libs.jetpack.viewmodel`, or `org.company:artifact:123`
+     * Dependency from internal constants, e.g. `Libs.jetpack.viewmodel`.
      */
     data class LibsConstant(
         override val value: String,

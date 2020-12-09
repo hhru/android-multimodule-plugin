@@ -1,10 +1,10 @@
-package ru.hh.plugins.geminio.sdk.recipe.enums
+package ru.hh.plugins.geminio.sdk.recipe.models.commands
 
 
 /**
  * Dependency declaration configuration.
  */
-enum class BuildGradleDependencyConfiguration(
+internal enum class BuildGradleDependencyConfiguration(
     val yamlKey: String
 ) {
     KAPT("kapt"),
