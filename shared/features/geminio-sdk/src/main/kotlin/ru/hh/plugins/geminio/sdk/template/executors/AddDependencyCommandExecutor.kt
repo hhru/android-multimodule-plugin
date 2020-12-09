@@ -9,14 +9,14 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlo
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrApplicationStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
-import ru.hh.plugins.geminio.sdk.extensions.psi.groovy.createBuildGradleDependencyElement
 import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
+import ru.hh.plugins.geminio.sdk.extensions.psi.groovy.createBuildGradleDependencyElement
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.BuildGradleDependency
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
-import ru.hh.plugins.geminio.sdk.recipe.models.BuildGradleDependency
 
 
-fun RecipeExecutor.execute(
+internal fun RecipeExecutor.execute(
     command: RecipeCommand.AddDependencies,
     executorData: GeminioRecipeExecutorData
 ) {

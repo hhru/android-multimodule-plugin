@@ -1,13 +1,13 @@
 package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
-import ru.hh.plugins.geminio.sdk.template.mapping.evaluateString
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 import java.io.File
 
 
-fun RecipeExecutor.execute(
+internal fun RecipeExecutor.execute(
     command: RecipeCommand.Open,
     executorData: GeminioRecipeExecutorData
 ) = with(executorData) {

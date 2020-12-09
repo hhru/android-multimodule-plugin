@@ -1,12 +1,12 @@
 package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
-import ru.hh.plugins.geminio.sdk.template.mapping.evaluateBoolean
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 
 
-fun RecipeExecutor.execute(
+internal fun RecipeExecutor.execute(
     command: RecipeCommand.Predicate,
     executorData: GeminioRecipeExecutorData
 ) = with(executorData) {

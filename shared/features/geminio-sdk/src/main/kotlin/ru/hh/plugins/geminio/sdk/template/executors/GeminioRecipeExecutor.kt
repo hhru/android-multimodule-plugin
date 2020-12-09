@@ -1,12 +1,21 @@
 package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.wizard.template.RecipeExecutor
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeCommand
+import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.kotlin.exhaustive
 
 
-fun RecipeExecutor.executeCommands(
+internal fun RecipeExecutor.executeGeminioRecipe(
+    geminioRecipe: GeminioRecipe,
+    executorData: GeminioRecipeExecutorData
+) {
+    executeCommands(geminioRecipe.recipeCommands.commands, executorData)
+}
+
+
+internal fun RecipeExecutor.executeCommands(
     commands: List<RecipeCommand>,
     executorData: GeminioRecipeExecutorData
 ) {
@@ -17,7 +26,6 @@ fun RecipeExecutor.executeCommands(
         )
     }
 }
-
 
 private fun RecipeCommand.execute(
     recipeExecutor: RecipeExecutor,
