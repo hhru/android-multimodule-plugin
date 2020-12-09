@@ -6,7 +6,7 @@ import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 
 
-data class GeminioRecipeExecutorData(
+internal data class GeminioRecipeExecutorData(
     val project: Project,
     val isDryRun: Boolean,
     val moduleTemplateData: ModuleTemplateData,

@@ -1,7 +1,6 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.widgets
 
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
-import kotlin.reflect.KClass
 
 
 internal sealed class RecipeParameter {
@@ -31,16 +30,6 @@ internal sealed class RecipeParameter {
         override val visibilityExpression: RecipeExpression?,
         override val availabilityExpression: RecipeExpression?,
         val default: Boolean?
-    ) : RecipeParameter()
-
-    data class EnumParameter<T : Enum<T>>(
-        override val id: String,
-        override val name: String,
-        override val help: String,
-        override val visibilityExpression: RecipeExpression?,
-        override val availabilityExpression: RecipeExpression?,
-        val enumClass: KClass<T>,
-        val default: T?
     ) : RecipeParameter()
 
 }

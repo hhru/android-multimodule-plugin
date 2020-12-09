@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.sdk.template.mapping
+package ru.hh.plugins.geminio.sdk.template.mapping.expressions
 
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.activityToLayout
@@ -8,34 +8,31 @@ import com.android.tools.idea.wizard.template.fragmentToLayout
 import com.android.tools.idea.wizard.template.layoutToActivity
 import com.android.tools.idea.wizard.template.layoutToFragment
 import com.android.tools.idea.wizard.template.underlinesToCamelCase
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.*
-import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBooleanParameter
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Fixed
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ResOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.FRAGMENT_TO_LAYOUT
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.LAYOUT_TO_ACTIVITY
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.LAYOUT_TO_FRAGMENT
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERLINES_TO_CAMEL_CASE
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterBooleanLambda
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier.*
 
 
-fun RecipeExpression.toBooleanLambda(
-    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
-): AndroidStudioTemplateParameterBooleanLambda {
-    return { evaluateBoolean(existingParametersMap) }
-}
-
-fun RecipeExpression.evaluateBoolean(
-    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
-): Boolean {
-    return when (expressionCommands.size) {
-        0 -> true
-        1 -> expressionCommands[0].resolveBooleanValue(existingParametersMap)
-        else -> throw IllegalArgumentException("Unexpected commands for boolean parameter evaluation [$expressionCommands]")
-    }
-}
-
-
-fun RecipeExpression.toStringLambda(
+/**
+ * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression]
+ * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda].
+ */
+internal fun RecipeExpression.toStringLambda(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): AndroidStudioTemplateParameterStringLambda {
     val commands = this.expressionCommands
@@ -51,7 +48,11 @@ fun RecipeExpression.toStringLambda(
     }
 }
 
-fun RecipeExpression.evaluateString(
+/**
+ * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression]
+ * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda].
+ */
+internal fun RecipeExpression.evaluateString(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String? {
@@ -67,36 +68,7 @@ fun RecipeExpression.evaluateString(
 }
 
 
-private fun RecipeExpression.Command.resolveBooleanValue(
-    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
-): Boolean {
-    return when (this) {
-        is Dynamic -> {
-            val parameter = existingParametersMap[this.parameterId] as? AndroidStudioTemplateBooleanParameter
-                ?: throw IllegalArgumentException(
-                    "Unknown parameter or not boolean parameter for boolean expression [id: ${this.parameterId}]"
-                )
-
-            parameter.value
-        }
-
-        ReturnTrue -> {
-            true
-        }
-
-        ReturnFalse -> {
-            false
-        }
-
-        is Fixed,
-        is SrcOut,
-        is ResOut -> {
-            throw IllegalArgumentException("Unexpected command for boolean parameter [$this]")
-        }
-    }
-}
-
-private fun RecipeExpression.Command.toStringValue(
+private fun RecipeExpressionCommand.toStringValue(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
     return when (this) {
@@ -110,7 +82,7 @@ private fun RecipeExpression.Command.toStringValue(
     }
 }
 
-private fun RecipeExpression.Command.toStringValue(
+private fun RecipeExpressionCommand.toStringValue(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
