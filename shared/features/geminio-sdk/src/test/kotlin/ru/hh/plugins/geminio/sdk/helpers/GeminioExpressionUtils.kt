@@ -9,16 +9,17 @@ import com.android.tools.idea.wizard.template.ProjectTemplateData
 import com.android.tools.idea.wizard.template.ThemesData
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.sdk.template.mapping.evaluateString
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 import java.io.File
 
 
-object GeminioExpressionUtils {
+internal object GeminioExpressionUtils {
 
-    fun List<RecipeExpression.Command>.toExpression(): RecipeExpression {
+    fun List<RecipeExpressionCommand>.toExpression(): RecipeExpression {
         return RecipeExpression(this)
     }
 
@@ -85,9 +86,9 @@ object GeminioExpressionUtils {
     }
 
 
-    fun getEvaluatedValue(className: String, modifier: GeminioRecipeExpressionModifier): String? {
+    fun getEvaluatedValue(className: String, modifier: RecipeExpressionModifier): String? {
         val expression = listOf(
-            RecipeExpression.Command.Dynamic(
+            RecipeExpressionCommand.Dynamic(
                 parameterId = "className",
                 modifiers = listOf(
                     modifier

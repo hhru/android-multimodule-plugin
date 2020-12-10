@@ -6,16 +6,16 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.ReturnFalse
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.ReturnTrue
-import ru.hh.plugins.geminio.sdk.template.mapping.evaluateBoolean
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 
 
-class GeminioRecipeBooleanExpressionSpec : FreeSpec({
+internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
     "Should return 'true'" {
-        val given = listOf<Command>(
+        val given = listOf<RecipeExpressionCommand>(
             ReturnTrue
         ).toExpression()
 
@@ -23,7 +23,7 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should return 'true' even there are some parameters" {
-        val given = listOf<Command>(
+        val given = listOf<RecipeExpressionCommand>(
             ReturnTrue
         ).toExpression()
 
@@ -31,7 +31,7 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should return 'false'" {
-        val given = listOf<Command>(
+        val given = listOf<RecipeExpressionCommand>(
             ReturnFalse
         ).toExpression()
 
@@ -39,7 +39,7 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should return 'false' even there are some parameters" {
-        val given = listOf<Command>(
+        val given = listOf<RecipeExpressionCommand>(
             ReturnFalse
         ).toExpression()
 
@@ -47,8 +47,8 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should read value from parameter" {
-        val given = listOf<Command>(
-            Command.Dynamic("includeModule", emptyList())
+        val given = listOf<RecipeExpressionCommand>(
+            RecipeExpressionCommand.Dynamic("includeModule", emptyList())
         ).toExpression()
 
         given.evaluateBoolean(createParametersMap()) shouldBe true
@@ -56,9 +56,9 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should throw exceptions if have illegal commands for boolean expression" {
-        val given1 = listOf(Command.Fixed("fragment_")).toExpression()
-        val given2 = listOf(Command.ResOut(emptyList())).toExpression()
-        val given3 = listOf(Command.SrcOut(emptyList())).toExpression()
+        val given1 = listOf(RecipeExpressionCommand.Fixed("fragment_")).toExpression()
+        val given2 = listOf(RecipeExpressionCommand.ResOut(emptyList())).toExpression()
+        val given3 = listOf(RecipeExpressionCommand.SrcOut(emptyList())).toExpression()
 
         val ex1 = shouldThrow<IllegalArgumentException> { given1.evaluateBoolean(createParametersMap()) }
         val ex2 = shouldThrow<IllegalArgumentException> { given2.evaluateBoolean(createParametersMap()) }
@@ -70,9 +70,9 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should throw exception when there are several commands for boolean expression" {
-        val given = listOf<Command>(
-            Command.Dynamic("includeModule", emptyList()),
-            Command.Dynamic("includeModule", emptyList())
+        val given = listOf<RecipeExpressionCommand>(
+            RecipeExpressionCommand.Dynamic("includeModule", emptyList()),
+            RecipeExpressionCommand.Dynamic("includeModule", emptyList())
         ).toExpression()
 
         val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(createParametersMap()) }
@@ -81,8 +81,8 @@ class GeminioRecipeBooleanExpressionSpec : FreeSpec({
     }
 
     "Should throw exception if trying to evaluate not defined parameter for boolean expression" {
-        val command = Command.Dynamic("includeFactory", emptyList())
-        val given = listOf<Command>(command).toExpression()
+        val command = RecipeExpressionCommand.Dynamic("includeFactory", emptyList())
+        val given = listOf<RecipeExpressionCommand>(command).toExpression()
 
         val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(createParametersMap()) }
 

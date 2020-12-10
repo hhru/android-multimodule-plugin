@@ -7,21 +7,21 @@ import io.kotest.matchers.string.shouldStartWith
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createModuleTemplateData
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command
-import ru.hh.plugins.geminio.sdk.template.mapping.evaluateString
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 
 
-class GeminioRecipeStringExpressionSpec : FreeSpec({
+internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should return null" {
-        val given = listOf<Command>().toExpression()
+        val given = listOf<RecipeExpressionCommand>().toExpression()
 
         given.evaluateString(createModuleTemplateData(), emptyMap()) shouldBe null
     }
 
     "Should return fixed content" {
-        val given = listOf<Command>(
-            Command.Fixed("fragment_")
+        val given = listOf<RecipeExpressionCommand>(
+            RecipeExpressionCommand.Fixed("fragment_")
         ).toExpression()
 
         given.evaluateString(createModuleTemplateData(), emptyMap()) shouldBe "fragment_"
@@ -29,8 +29,8 @@ class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should read dynamic content from parameter" {
         val given = listOf(
-            Command.Dynamic("className", emptyList()),
-            Command.Fixed("Module")
+            RecipeExpressionCommand.Dynamic("className", emptyList()),
+            RecipeExpressionCommand.Fixed("Module")
         ).toExpression()
 
         given.evaluateString(createModuleTemplateData(), createParametersMap()) shouldBe "BlankFragmentModule"
@@ -42,8 +42,8 @@ class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should read 'srcOut' from module data" {
         val given = listOf(
-            Command.SrcOut(emptyList()),
-            Command.Fixed("Module.kt")
+            RecipeExpressionCommand.SrcOut(emptyList()),
+            RecipeExpressionCommand.Fixed("Module.kt")
         ).toExpression()
 
         given.evaluateString(
@@ -54,8 +54,8 @@ class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should read 'resOut' from module data" {
         val given = listOf(
-            Command.ResOut(emptyList()),
-            Command.Fixed("layout/fragment_blank.xml")
+            RecipeExpressionCommand.ResOut(emptyList()),
+            RecipeExpressionCommand.Fixed("layout/fragment_blank.xml")
         ).toExpression()
 
         given.evaluateString(
@@ -65,8 +65,8 @@ class GeminioRecipeStringExpressionSpec : FreeSpec({
     }
 
     "Should throw exception if have illegal commands for string expression" {
-        val given1 = listOf(Command.ReturnTrue).toExpression()
-        val given2 = listOf(Command.ReturnFalse).toExpression()
+        val given1 = listOf(RecipeExpressionCommand.ReturnTrue).toExpression()
+        val given2 = listOf(RecipeExpressionCommand.ReturnFalse).toExpression()
 
         val ex1 = shouldThrow<IllegalArgumentException> {
             given1.evaluateString(createModuleTemplateData(), createParametersMap())
@@ -80,7 +80,7 @@ class GeminioRecipeStringExpressionSpec : FreeSpec({
     }
 
     "Should throw exception if there is unknown parameter for string expression" {
-        val command = Command.Dynamic("fragmentName", emptyList())
+        val command = RecipeExpressionCommand.Dynamic("fragmentName", emptyList())
         val given = listOf(command).toExpression()
 
         val ex = shouldThrow<IllegalArgumentException> {

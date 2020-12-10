@@ -5,7 +5,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.optional
  * Determines to which form factor the template belongs.
  * Templates with particular form factor may only be rendered in the project of corresponding [TemplateCategory].
  */
-internal enum class TemplateFormFactor(
+enum class TemplateFormFactor(
     val yamlKey: String
 ) {
 

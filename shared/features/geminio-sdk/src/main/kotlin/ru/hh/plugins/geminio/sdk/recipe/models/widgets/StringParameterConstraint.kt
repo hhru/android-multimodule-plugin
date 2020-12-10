@@ -5,7 +5,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.widgets
  * Constraints that can be applied to a parameter which helps the UI add a validator etc for user input.
  * These are typically combined into a set of constraints via an EnumSet.
  */
-internal enum class StringParameterConstraint(
+enum class StringParameterConstraint(
     val yamlKey: String
 ) {
 

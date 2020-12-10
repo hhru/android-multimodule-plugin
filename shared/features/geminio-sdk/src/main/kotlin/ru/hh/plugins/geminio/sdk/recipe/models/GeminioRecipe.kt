@@ -10,7 +10,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection
 /**
  * Recipe data for building template's  UI and creating files.
  */
-internal data class GeminioRecipe(
+data class GeminioRecipe(
     val freemarkerTemplatesRootDirPath: String,
     val requiredParams: RequiredParams,
     val optionalParams: OptionalParams,

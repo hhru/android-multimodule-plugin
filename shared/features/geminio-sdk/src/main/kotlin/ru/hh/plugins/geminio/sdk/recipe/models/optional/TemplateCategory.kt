@@ -4,7 +4,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.optional
 /**
  * Determines to which menu entry the template belongs.
  */
-internal enum class TemplateCategory(
+enum class TemplateCategory(
     val yamlKey: String
 ) {
 

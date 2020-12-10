@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.expressions
 
 
-internal enum class RecipeExpressionModifier(
+enum class RecipeExpressionModifier(
     val yamlKey: String
 ) {
 

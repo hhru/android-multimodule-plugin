@@ -3,15 +3,15 @@ package ru.hh.plugins.geminio.sdk.recipe.expressions.modifiers
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
 
-class LayoutToFragmentModifierSpec : FreeSpec({
+internal class LayoutToFragmentModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
         return GeminioExpressionUtils.getEvaluatedValue(
             className = fragmentName,
-            modifier = GeminioRecipeExpressionModifier.LAYOUT_TO_FRAGMENT
+            modifier = RecipeExpressionModifier.LAYOUT_TO_FRAGMENT
         )
     }
 

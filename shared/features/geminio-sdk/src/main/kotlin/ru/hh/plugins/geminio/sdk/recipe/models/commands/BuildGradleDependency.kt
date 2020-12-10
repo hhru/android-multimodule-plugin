@@ -4,7 +4,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.commands
 /**
  * Dependency for build.gradle files
  */
-internal sealed class BuildGradleDependency {
+sealed class BuildGradleDependency {
 
     abstract val value: String
     abstract val configuration: BuildGradleDependencyConfiguration

@@ -6,7 +6,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 /**
  * Recipe's commands for execution.
  */
-internal sealed class RecipeCommand {
+sealed class RecipeCommand {
 
     /**
      * Instantiate file [from] path into [to] destination.

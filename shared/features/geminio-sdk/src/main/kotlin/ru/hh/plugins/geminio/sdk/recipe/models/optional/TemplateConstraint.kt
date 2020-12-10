@@ -5,7 +5,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.optional
  * Conditions under which the template may be rendered.
  * For example, some templates only support AndroidX.
  */
-internal enum class TemplateConstraint(
+enum class TemplateConstraint(
     val yamlKey: String
 ) {
 

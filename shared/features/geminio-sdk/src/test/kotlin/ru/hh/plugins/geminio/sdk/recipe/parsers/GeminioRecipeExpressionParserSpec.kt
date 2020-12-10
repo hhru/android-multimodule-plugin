@@ -2,29 +2,34 @@ package ru.hh.plugins.geminio.sdk.recipe.parsers
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression
-import ru.hh.plugins.geminio.sdk.recipe.models.RecipeExpression.Command.*
-import ru.hh.plugins.geminio.sdk.recipe.enums.GeminioRecipeExpressionModifier.*
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Fixed
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ResOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERLINES_TO_CAMEL_CASE
+import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
 
-class GeminioRecipeExpressionParserSpec : FreeSpec({
+private const val SECTION_NAME = "Test"
 
-    val expressionParser = GeminioRecipeExpressionParser()
 
-    fun String.toRecipeExpression(): RecipeExpression {
-        return expressionParser.parseExpression(this)
-    }
+internal class GeminioRecipeExpressionParserSpec : FreeSpec({
 
-    fun List<RecipeExpression.Command>.intoExpression(): RecipeExpression {
+    fun List<RecipeExpressionCommand>.intoExpression(): RecipeExpression {
         return RecipeExpression(this)
     }
 
 
     "Should return empty object when convert empty string" {
         val givenExpressionString = ""
-        val expected = emptyList<RecipeExpression.Command>().intoExpression()
+        val expected = emptyList<RecipeExpressionCommand>().intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expected
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expected
     }
 
     "Should return single Fixed command if there is no dynamic parts" {
@@ -33,7 +38,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             Fixed("fragment_blank")
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expected
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expected
     }
 
     "Should find only parameterId in dynamic string" {
@@ -45,7 +50,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             )
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should find dynamic part with modifiers" {
@@ -60,7 +65,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             )
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should change modifiers order according to dynamic part" {
@@ -75,7 +80,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             )
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should normally parse string with several dynamic parts" {
@@ -95,7 +100,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             ),
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should recognize {resOut} variable into separate command" {
@@ -110,7 +115,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             Fixed(".xml"),
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should recognize {srcOut} variable into separate command" {
@@ -125,7 +130,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             Fixed(".kt"),
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should recognize 'true' string as separate command if it is single word" {
@@ -134,7 +139,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             ReturnTrue
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should recognize 'false' string as separate command" {
@@ -143,7 +148,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             ReturnFalse
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should read 'true' or 'false' as fixed value if there is some other symbols in expression" {
@@ -166,8 +171,8 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             Fixed("_false")
         ).intoExpression()
 
-        givenExpressionStringWithTrue.toRecipeExpression() shouldBe expectedExpressionWithTrue
-        givenExpressionStringWithFalse.toRecipeExpression() shouldBe expectedExpressionWithFalse
+        givenExpressionStringWithTrue.toRecipeExpression(SECTION_NAME) shouldBe expectedExpressionWithTrue
+        givenExpressionStringWithFalse.toRecipeExpression(SECTION_NAME) shouldBe expectedExpressionWithFalse
     }
 
     "Should skip unknown modifiers" {
@@ -182,7 +187,7 @@ class GeminioRecipeExpressionParserSpec : FreeSpec({
             Fixed(".xml"),
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression() shouldBe expectedExpression
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
 })

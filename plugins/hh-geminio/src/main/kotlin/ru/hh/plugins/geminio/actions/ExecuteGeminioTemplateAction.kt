@@ -19,11 +19,8 @@ import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
-import ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioRecipeReader
+import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.balloonInfo
-import ru.hh.plugins.geminio.sdk.template.geminioTemplate
-import java.io.File
-import java.io.FileNotFoundException
 import kotlin.system.measureTimeMillis
 
 
@@ -68,20 +65,8 @@ class ExecuteGeminioTemplateAction(
     override fun actionPerformed(e: AnActionEvent) {
         println("Start executing template [$actionText]")
 
-        println("Search for recipe file: $geminioRecipePath")
-        val recipeFile = File(geminioRecipePath)
-        if (recipeFile.exists().not()) {
-            println("Recipe file doesn't exists [look into $geminioRecipePath]")
-            throw FileNotFoundException("Recipe file doesn't exists [look into $geminioRecipePath]")
-        }
-
-        println("Recipe file exists -> need to parse, execute, etc")
-
-        val geminioRecipe = GeminioRecipeReader().parse(geminioRecipePath)
-
-        println("geminio recipe to String:\n $geminioRecipe")
-        println("==========")
-        println("geminio recipe:\n ${geminioRecipe.toIndentString()}")
+        val geminioSdk = GeminioSdkFactory.createGeminioSdk()
+        val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
 
         val (project, facet) = e.fetchEventData()
 
@@ -91,7 +76,6 @@ class ExecuteGeminioTemplateAction(
 
         val initialPackageSuggestion = facet.getPackageForPath(moduleTemplates, targetDirectory).orEmpty()
 
-        // It's ok that everything in IDE is red >_< It's ok only for Android Studio 4.1
         val renderModel = RenderTemplateModel.fromFacet(
             facet,
             initialPackageSuggestion,
@@ -100,7 +84,7 @@ class ExecuteGeminioTemplateAction(
             ProjectSyncInvoker.DefaultProjectSyncInvoker(),
             true,
         ).apply {
-            newTemplate = geminioTemplate(project, geminioRecipe)
+            newTemplate = geminioSdk.createAndroidStudioTemplate(project, geminioRecipe)
         }
 
         val configureTemplateStep = ConfigureTemplateParametersStep(
@@ -182,38 +166,4 @@ class ExecuteGeminioTemplateAction(
     )
 
 
-}
-
-
-private fun Any?.toIndentString(): String {
-    val notFancy = toString()
-    return buildString(notFancy.length) {
-        var indent = 0
-        fun StringBuilder.line() {
-            appendln()
-            repeat(2 * indent) { append(' ') }
-        }
-
-        for (char in notFancy) {
-            if (char == ' ') continue
-
-            when (char) {
-                ')', ']' -> {
-                    indent--
-                    line()
-                }
-            }
-
-            if (char == '=') append(' ')
-            append(char)
-            if (char == '=') append(' ')
-
-            when (char) {
-                '(', '[', ',' -> {
-                    if (char != ',') indent++
-                    line()
-                }
-            }
-        }
-    }
 }

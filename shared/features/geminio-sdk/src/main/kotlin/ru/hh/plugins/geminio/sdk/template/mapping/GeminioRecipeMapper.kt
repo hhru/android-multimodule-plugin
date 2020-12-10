@@ -4,7 +4,6 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
-import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate
 import ru.hh.plugins.geminio.sdk.template.executors.executeGeminioRecipe
@@ -41,8 +40,8 @@ internal fun GeminioRecipe.toAndroidStudioTemplate(project: Project): AndroidStu
                         entry.key to entry.value.value
                     }.plus(
                         mapOf(
-                            GeminioSdkConstants.HardcodedParams.PACKAGE_NAME to moduleTemplateData.packageName,
-                            GeminioSdkConstants.HardcodedParams.APPLICATION_PACKAGE to moduleTemplateData.projectTemplateData.applicationPackage
+                            HardcodedParams.PACKAGE_NAME to moduleTemplateData.packageName,
+                            HardcodedParams.APPLICATION_PACKAGE to moduleTemplateData.projectTemplateData.applicationPackage
                         )
                     ),
                     freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
@@ -51,4 +50,17 @@ internal fun GeminioRecipe.toAndroidStudioTemplate(project: Project): AndroidStu
             isDryRun = false
         }
     }
+}
+
+
+private object HardcodedParams {
+    /**
+     * Package name from SELECTED file.
+     */
+    const val PACKAGE_NAME = "packageName"
+
+    /**
+     * Package name from current gradle module.
+     */
+    const val APPLICATION_PACKAGE = "applicationPackage"
 }

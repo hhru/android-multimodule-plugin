@@ -3,7 +3,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.globals
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 
 
-internal sealed class GlobalsSectionParameter {
+sealed class GlobalsSectionParameter {
 
     abstract val id: String
     abstract val value: RecipeExpression

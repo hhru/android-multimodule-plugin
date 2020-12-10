@@ -4,7 +4,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.optional
 /**
  * Determines in which context (basically a screen) the template should be shown.
  */
-internal enum class TemplateScreen(
+enum class TemplateScreen(
     val yamlKey: String
 ) {
     NEW_PROJECT("new_project"),

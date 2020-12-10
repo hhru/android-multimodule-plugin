@@ -3,7 +3,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.widgets
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 
 
-internal sealed class RecipeParameter {
+sealed class RecipeParameter {
 
     abstract val id: String
     abstract val name: String

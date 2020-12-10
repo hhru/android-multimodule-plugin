@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.expressions
 
 
-internal sealed class RecipeExpressionCommand {
+sealed class RecipeExpressionCommand {
 
     data class Fixed(
         val value: String

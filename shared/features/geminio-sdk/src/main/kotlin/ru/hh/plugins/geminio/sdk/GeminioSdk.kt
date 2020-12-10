@@ -1,6 +1,8 @@
 package ru.hh.plugins.geminio.sdk
 
-import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
+import com.intellij.openapi.project.Project
+import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate
 
 
 /**
@@ -8,8 +10,8 @@ import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
  */
 interface GeminioSdk {
 
-    fun parseGeminioRecipe(
-        recipeFilePath: String
-    ): ConfigureTemplateParametersStep
+    fun parseYamlRecipe(recipeFilePath: String): GeminioRecipe
+
+    fun createAndroidStudioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate
 
 }
