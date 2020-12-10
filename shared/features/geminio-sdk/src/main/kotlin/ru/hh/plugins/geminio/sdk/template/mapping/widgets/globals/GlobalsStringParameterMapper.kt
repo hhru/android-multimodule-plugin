@@ -1,8 +1,11 @@
 package ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals
 
 import com.android.tools.idea.wizard.template.stringParameter
+import ru.hh.plugins.extensions.EMPTY
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.expressions.toBooleanLambda
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.toStringLambda
 
 
@@ -20,9 +23,12 @@ internal fun GlobalsSectionParameter.StringParameter.toAndroidStudioTemplatePara
         name = globalsParameter.id
         help = globalsParameter.id
 
+        this.default = String.EMPTY
         this.constraints = emptyList()
         this.suggest = globalsParameter.value.toStringLambda(existingParametersMap)
-        this.visible = { existingParametersMap[showHiddenValuesId]!!.value as Boolean }
-        this.enabled = { false }
+
+        this.visible = RecipeExpression.globalsVisibilityExpression(showHiddenValuesId)
+            .toBooleanLambda(existingParametersMap)
+        this.enabled = { true }
     }
 }

@@ -1,6 +1,8 @@
 package ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals
 
 import com.android.tools.idea.wizard.template.booleanParameter
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 
@@ -22,4 +24,16 @@ internal fun GlobalsSection.toShowHiddenGlobalsParameter(
         visible = { true }
         enabled = { true }
     }
+}
+
+
+internal fun RecipeExpression.Companion.globalsVisibilityExpression(showHiddenValuesId: String): RecipeExpression {
+    return RecipeExpression(
+        expressionCommands = listOf(
+            RecipeExpressionCommand.Dynamic(
+                parameterId = showHiddenValuesId,
+                modifiers = emptyList()
+            )
+        )
+    )
 }
