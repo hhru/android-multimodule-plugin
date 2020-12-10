@@ -8,6 +8,7 @@ import com.android.tools.idea.wizard.template.fragmentToLayout
 import com.android.tools.idea.wizard.template.layoutToActivity
 import com.android.tools.idea.wizard.template.layoutToFragment
 import com.android.tools.idea.wizard.template.underlinesToCamelCase
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
@@ -16,6 +17,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
@@ -33,19 +35,21 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringPar
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda].
  */
 internal fun RecipeExpression.toStringLambda(
-    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
+    existingParametersMap: Map<String, AndroidStudioTemplateParameter>,
+    parameterId: String
 ): AndroidStudioTemplateParameterStringLambda {
-    val commands = this.expressionCommands
-
     return {
-        val result = StringBuilder()
-
-        for (command in commands) {
-            result.append(command.toStringValue(existingParametersMap))
-        }
-
-        result.toString().takeIf { it.isNotEmpty() }
+        val evaluatedValue = evaluateString(existingParametersMap)
+        (existingParametersMap[parameterId] as? AndroidStudioTemplateStringParameter)?.value =
+            evaluatedValue ?: String.EMPTY
+        evaluatedValue
     }
+}
+
+internal fun RecipeExpression.evaluateString(
+    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
+): String? {
+    return executeAllCommands(expressionCommands, existingParametersMap)
 }
 
 /**
@@ -102,9 +106,27 @@ private fun RecipeExpressionCommand.toStringValue(
 private fun Dynamic.evaluate(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
-    var result = (existingParametersMap[parameterId] as? AndroidStudioTemplateStringParameter)?.value
+    val result = (existingParametersMap[parameterId] as? AndroidStudioTemplateStringParameter)?.value
         ?: throw IllegalArgumentException("Unknown parameter or not string parameter for string expression [${this.parameterId}]")
 
+    return result.applyModifiers(modifiers)
+}
+
+private fun executeAllCommands(
+    expressionCommands: List<RecipeExpressionCommand>,
+    existingParametersMap: Map<String, AndroidStudioTemplateParameter>
+): String? {
+    val resultBuilder = StringBuilder()
+
+    for (command in expressionCommands) {
+        resultBuilder.append(command.toStringValue(existingParametersMap))
+    }
+
+    return resultBuilder.toString().takeIf { it.isNotEmpty() }
+}
+
+private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): String {
+    var result = this
     for (modifier in modifiers) {
         result = when (modifier) {
             ACTIVITY_TO_LAYOUT -> activityToLayout(result)
@@ -116,6 +138,5 @@ private fun Dynamic.evaluate(
             UNDERLINES_TO_CAMEL_CASE -> underlinesToCamelCase(result)
         }
     }
-
     return result
 }
