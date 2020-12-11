@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import ru.hh.plugins.garcon.config.GarconPluginConfig
 import ru.hh.plugins.garcon.config.extensions.isNotFullyInitialized
-import ru.hh.plugins.utils.config.YamlUtils
+import ru.hh.plugins.utils.yaml.YamlUtils
 
 
 @State(

@@ -3,8 +3,8 @@ package ru.hh.plugins.garcon.services
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
-import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
 import java.io.File
 
 
