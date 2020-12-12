@@ -12,13 +12,13 @@ sealed class RecipeExpressionCommand {
         val modifiers: List<RecipeExpressionModifier>
     ) : RecipeExpressionCommand()
 
-    data class SrcOut(
-        val modifiers: List<RecipeExpressionModifier>
-    ) : RecipeExpressionCommand()
+    object SrcOut : RecipeExpressionCommand()
 
-    data class ResOut(
-        val modifiers: List<RecipeExpressionModifier>
-    ) : RecipeExpressionCommand()
+    object ResOut : RecipeExpressionCommand()
+
+    object ManifestOut : RecipeExpressionCommand()
+
+    object RootOut : RecipeExpressionCommand()
 
     object ReturnTrue : RecipeExpressionCommand()
 

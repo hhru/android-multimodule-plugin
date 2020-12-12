@@ -13,10 +13,12 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Fixed
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ManifestOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ResOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.RootOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
@@ -79,8 +81,11 @@ private fun RecipeExpressionCommand.toStringValue(
         is Fixed -> this.value
         is Dynamic -> this.evaluate(existingParametersMap)
 
-        is SrcOut,
-        is ResOut,
+        SrcOut,
+        ResOut,
+        ManifestOut,
+        RootOut,
+
         ReturnTrue,
         ReturnFalse -> throw IllegalArgumentException("Unexpected command for string parameter [$this]")
     }
@@ -90,13 +95,16 @@ private fun RecipeExpressionCommand.toStringValue(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
-    val (_, srcOut, resOut, _) = moduleTemplateData
+    val (_, srcOut, resOut, manifestOut, _, _, _, rootOut) = moduleTemplateData
 
     return when (this) {
         is Fixed -> this.value
         is Dynamic -> this.evaluate(existingParametersMap)
-        is SrcOut -> "${srcOut.absolutePath}/"
-        is ResOut -> "${resOut.absolutePath}/"
+
+        SrcOut -> "${srcOut.absolutePath}/"
+        ResOut -> "${resOut.absolutePath}/"
+        ManifestOut -> "${manifestOut.absolutePath}/"
+        RootOut -> "${rootOut.absolutePath}/"
 
         ReturnTrue,
         ReturnFalse -> throw IllegalArgumentException("Unexpected command for string value [$this]")
