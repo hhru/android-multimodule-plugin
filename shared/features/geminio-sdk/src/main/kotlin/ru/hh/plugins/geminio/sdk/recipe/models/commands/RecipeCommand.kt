@@ -47,4 +47,11 @@ sealed class RecipeCommand {
     data class AddDependencies(
         val dependencies: List<BuildGradleDependency>
     ) : RecipeCommand()
+
+    /**
+     * Command for creating directories structure..
+     */
+    data class MkDirs(
+        val dirs: List<MkDirItem>
+    ) : RecipeCommand()
 }

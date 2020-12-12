@@ -11,6 +11,7 @@ private const val KEY_COMMAND_OPEN = "open"
 private const val KEY_COMMAND_INSTANTIATE_AND_OPEN = "instantiateAndOpen"
 private const val KEY_COMMAND_PREDICATE = "predicate"
 private const val KEY_COMMAND_ADD_DEPENDENCIES = "addDependencies"
+private const val KEY_MK_DIRS = "mkDirs"
 
 
 /**
@@ -22,6 +23,7 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
     val instantiateAndOpenCommandMap = this[KEY_COMMAND_INSTANTIATE_AND_OPEN] as? Map<String, Any>
     val predicateCommandMap = this[KEY_COMMAND_PREDICATE] as? Map<String, Any>
     val addDependenciesCommandList = this[KEY_COMMAND_ADD_DEPENDENCIES] as? List<Map<String, Any>>
+    val mkDirsCommandList = this[KEY_MK_DIRS] as? List<Any>
 
     
     return when {
@@ -45,6 +47,10 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
             addDependenciesCommandList.toAddDependenciesCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
         }
 
+        mkDirsCommandList != null -> {
+            mkDirsCommandList.toMkDirsCommand("${sectionName}:${KEY_MK_DIRS}")
+        }
+
         else -> {
             throw IllegalArgumentException(
                 sectionUnknownEnumKeyErrorMessage(
@@ -56,6 +62,7 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
                         KEY_COMMAND_INSTANTIATE_AND_OPEN,
                         KEY_COMMAND_PREDICATE,
                         KEY_COMMAND_ADD_DEPENDENCIES,
+                        KEY_MK_DIRS,
                     ).joinToString { "'$it'" }
                 )
             )
