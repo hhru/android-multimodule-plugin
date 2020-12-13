@@ -4,6 +4,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.parsers.commands.toRecipeCommandsSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.globals.toGlobalsSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.optional.toOptionalParams
+import ru.hh.plugins.geminio.sdk.recipe.parsers.predefined.toPredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.required.toRequiredParams
 import ru.hh.plugins.geminio.sdk.recipe.parsers.widgets.toWidgetsSection
 import ru.hh.plugins.utils.yaml.YamlUtils
@@ -24,8 +25,9 @@ internal fun String.parseGeminioRecipeFromYamlFile(): GeminioRecipe {
         freemarkerTemplatesRootDirPath = File(this).parent,
         requiredParams = configMap.toRequiredParams(),
         optionalParams = configMap.toOptionalParams(),
-        globalsSection = configMap.toGlobalsSection(),
         widgetsSection = configMap.toWidgetsSection(),
+        predefinedFeaturesSection = configMap.toPredefinedFeaturesSection(),
+        globalsSection = configMap.toGlobalsSection(),
         recipeCommands = configMap.toRecipeCommandsSection()
     )
 }
