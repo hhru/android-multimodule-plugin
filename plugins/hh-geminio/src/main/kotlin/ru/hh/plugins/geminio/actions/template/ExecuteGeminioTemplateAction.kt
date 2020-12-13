@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.actions
+package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
 import com.android.tools.idea.npw.model.ProjectSyncInvoker

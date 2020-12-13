@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import ru.hh.plugins.extensions.toUnderlines
 import ru.hh.plugins.geminio.GeminioConstants
-import ru.hh.plugins.geminio.actions.ExecuteGeminioTemplateAction
+import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import java.io.File
 
