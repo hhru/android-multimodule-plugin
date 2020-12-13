@@ -84,7 +84,7 @@ class ExecuteGeminioTemplateAction(
             ProjectSyncInvoker.DefaultProjectSyncInvoker(),
             true,
         ).apply {
-            newTemplate = geminioSdk.createAndroidStudioTemplate(project, geminioRecipe)
+            newTemplate = geminioSdk.createGeminioTemplateData(project, geminioRecipe).androidStudioTemplate
         }
 
         val configureTemplateStep = ConfigureTemplateParametersStep(
