@@ -4,7 +4,6 @@ import com.android.tools.idea.wizard.template.BooleanParameter
 import com.android.tools.idea.wizard.template.CheckBoxWidget
 import com.android.tools.idea.wizard.template.EnumParameter
 import com.android.tools.idea.wizard.template.EnumWidget
-import com.android.tools.idea.wizard.template.PackageNameWidget
 import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TextFieldWidget
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
@@ -37,13 +36,7 @@ internal fun AndroidStudioTemplateBuilder.injectWidgets(
 
     val allWidgets = parametersData.templateParameters.mapNotNull { parameterData ->
         when (parameterData.parameter) {
-            is StringParameter -> {
-                if (parameterData.parameterId == FEATURE_PACKAGE_NAME_PARAMETER_ID) {
-                    PackageNameWidget(parameterData.parameter)
-                } else {
-                    TextFieldWidget(parameterData.parameter)
-                }
-            }
+            is StringParameter -> TextFieldWidget(parameterData.parameter)
             is BooleanParameter -> CheckBoxWidget(parameterData.parameter)
             is EnumParameter<*> -> EnumWidget(parameterData.parameter)
             else -> null

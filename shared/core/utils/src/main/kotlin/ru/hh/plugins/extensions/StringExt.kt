@@ -48,3 +48,10 @@ fun String.fromCamelCaseToUnderlines(): String {
 fun String.toUnderlines(): String {
     return this.replace(" ", "").fromCamelCaseToUnderlines()
 }
+
+fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
+    val formattedModuleName = this
+        .replace(Char.SPACE, Char.UNDERSCORE)
+        .replace(Char.HYPHEN, Char.UNDERSCORE)
+    return "${packageNamePrefix}.${formattedModuleName}"
+}

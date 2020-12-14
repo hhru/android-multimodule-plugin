@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined
 
 import com.android.tools.idea.wizard.template.stringParameter
+import ru.hh.plugins.extensions.toPackageNameFromModuleName
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
@@ -39,7 +40,7 @@ internal fun PredefinedFeaturesSection.Companion.createPackageNameParameter(
                 AndroidStudioTemplateStringParameterConstraint.UNIQUE,
             )
             default = "${defaultPackageNamePrefix}.mymodule"
-            suggest = { "${defaultPackageNamePrefix}.${moduleNameParameter.value}" }
+            suggest = { moduleNameParameter.value.toPackageNameFromModuleName(defaultPackageNamePrefix) }
             visible = { true }
             enabled = { true }
         }
