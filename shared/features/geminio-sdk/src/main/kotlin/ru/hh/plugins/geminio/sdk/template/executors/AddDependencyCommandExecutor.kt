@@ -21,8 +21,8 @@ internal fun RecipeExecutor.execute(
     executorData: GeminioRecipeExecutorData
 ) {
     println("AddDependencies command [$command], isDryRun: ${executorData.isDryRun}")
-    if (executorData.isDryRun.not()) {
-        println("\tExecute only when isDryRun == false")
+    if (executorData.isDryRun) {
+        println("\tExecute only when isDryRun == true")
 
         val rootDir = executorData.moduleTemplateData.rootDir.toPsiDirectory(executorData.project)
 
