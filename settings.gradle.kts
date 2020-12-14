@@ -5,8 +5,10 @@ rootProject.name = "hh-android-plugins"
 // region Shared core modules
 include(":shared-core-utils")
 include(":shared-core-freemarker")
+include(":shared-core-ui")
 
 project(":shared-core-utils").projectDir = File("$settingsDir/shared/core/utils")
+project(":shared-core-ui").projectDir = File("$settingsDir/shared/core/ui")
 project(":shared-core-freemarker").projectDir = File("$settingsDir/shared/core/freemarker")
 // endregion
 
