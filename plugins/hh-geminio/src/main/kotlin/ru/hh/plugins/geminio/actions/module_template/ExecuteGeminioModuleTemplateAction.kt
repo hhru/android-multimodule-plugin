@@ -11,6 +11,8 @@ import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
 import ru.hh.plugins.code_modification.models.BuildGradleDependency
 import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.geminio.actions.module_template.steps.ChooseModulesModelWizardStep
 import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
@@ -103,6 +105,10 @@ class ExecuteGeminioModuleTemplateAction(
             .addStep(chooseAppsStep)
             .build()
 
+        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
+            .setProject(project)
+            .build()
+
         wizard.addResultListener(object : ModelWizard.WizardListener {
             override fun onWizardFinished(result: ModelWizard.WizardResult) {
                 super.onWizardFinished(result)
@@ -121,21 +127,31 @@ class ExecuteGeminioModuleTemplateAction(
 
                 propagateAdditionalParams()
 
-                project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-                    with(recipeExecutorModel) {
-                        geminioTemplateData.androidStudioTemplate.recipe.invoke(
-                            recipeExecutor,
-                            moduleTemplateData
-                        )
+                try {
+                    project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
+
+                        with(recipeExecutorModel) {
+                            geminioTemplateData.androidStudioTemplate.recipe.invoke(
+                                recipeExecutor,
+                                moduleTemplateData
+                            )
+                        }
+
+                        modifySettingGradle(recipeExecutorModel)
+                        modifyBuildGradle(recipeExecutorModel)
                     }
 
-                    modifySettingGradle(recipeExecutorModel)
-                    modifyBuildGradle(recipeExecutorModel)
+                    SyncProjectAction().actionPerformed(actionEvent)
+
+                    project.balloonInfo(message = "Finished '$actionText' module template execution")
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+
+                    dialog.disposeIfNeeded()
+                    dialog.close(1)
+
+                    project.balloonInfo(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
                 }
-
-                SyncProjectAction().actionPerformed(actionEvent)
-
-                project.balloonInfo(message = "Finished '$actionText' module template execution")
             }
 
             override fun onWizardAdvanceError(e: Exception) {
@@ -149,8 +165,13 @@ class ExecuteGeminioModuleTemplateAction(
                     val librariesModules = chooseModulesStep.getSelectedModules()
                     val applicationModules = chooseAppsStep.getSelectedModules()
 
-                    paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { it.name }
-                    paramsStore[geminioIds.newModuleLibrariesModulesParameterId] = librariesModules.map { it.name }
+                    val projectNamePrefix = project.name.replace(Char.SPACE, Char.UNDERSCORE) + "."
+                    paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { module ->
+                        module.name.removePrefix(projectNamePrefix)
+                    }
+                    paramsStore[geminioIds.newModuleLibrariesModulesParameterId] = librariesModules.map { module ->
+                        module.name.removePrefix(projectNamePrefix)
+                    }
                 }
             }
 
@@ -179,9 +200,6 @@ class ExecuteGeminioModuleTemplateAction(
 
         })
 
-        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
-            .setProject(project)
-            .build()
         dialog.show()
     }
 
