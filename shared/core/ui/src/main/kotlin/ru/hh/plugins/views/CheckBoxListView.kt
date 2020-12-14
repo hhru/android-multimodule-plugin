@@ -86,6 +86,10 @@ class CheckBoxListView<T>(
     }
 
     private fun getSelectedItem(): T? {
+        if (items.isEmpty()) {
+            return null
+        }
+
         val leadSelectionIndex = selectionModel.leadSelectionIndex
         return if (leadSelectionIndex < 0) null else items[leadSelectionIndex]
     }

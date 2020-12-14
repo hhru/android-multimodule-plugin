@@ -6,7 +6,10 @@ import ru.hh.plugins.models.CheckBoxListViewItem
 
 data class ModuleDisplayableItem(
     override val text: String,
-    override val isForceEnabled: Boolean,
     override var isChecked: Boolean,
     val gradleModule: Module
-) : CheckBoxListViewItem
+) : CheckBoxListViewItem {
+
+    override val isForceEnabled: Boolean = false
+
+}

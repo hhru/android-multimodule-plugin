@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
+import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.balloonInfo
 import kotlin.system.measureTimeMillis
@@ -83,6 +84,7 @@ class ExecuteGeminioTemplateAction(
                     super.onWizardFinished(result)
 
                     if (result.isFinished.not()) {
+                        project.balloonError(message = "User closed Geminio Template Wizard")
                         return
                     }
 

@@ -10,11 +10,13 @@ import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
-import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.geminio.actions.module_template.steps.ChooseModulesModelWizardStep
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
+import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 import kotlin.system.measureTimeMillis
 
 
@@ -54,62 +56,85 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
         val geminioRecipe = geminioSdk.parseYamlRecipe(project.basePath + RECIPE_PATH)
 
         check(geminioRecipe.predefinedFeaturesSection.hasFeature(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
-            "Recipe for module creation should enable ${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS} feature."
+            "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
         }
 
         println("Recipe successfully parsed!")
 
         val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
 
-        val stepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
-        val stepModule = stepFactory.createForNewModule(
+        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val stepModel = configureTemplateParametersStepFactory.createForNewModule(
             project = project,
             stepTitle = "Create new $MODULE_TYPE_NAME",
             directoryPath = directoryPath,
             defaultPackageName = "ru.hh",   // TODO - fetch from settings
             androidStudioTemplate = geminioTemplateData.androidStudioTemplate
         )
+        val chooseModulesStep = ChooseModulesModelWizardStep(
+            renderTemplateModel = stepModel.renderTemplateModel,
+            stepTitle = "Choose modules",
+            project = project,
+            isForAppModules = false
+        )
+        val chooseAppsStep = ChooseModulesModelWizardStep(
+            renderTemplateModel = stepModel.renderTemplateModel,
+            stepTitle = "Choose applications",
+            project = project,
+            isForAppModules = true
+        )
+
+        val wizard = ModelWizard.Builder()
+            .addStep(stepModel.configureTemplateParametersStep)
+            .addStep(chooseModulesStep)
+            .addStep(chooseAppsStep)
+            .build()
+
+        wizard.addResultListener(object : ModelWizard.WizardListener {
+            override fun onWizardFinished(result: ModelWizard.WizardResult) {
+                super.onWizardFinished(result)
+
+                if (result.isFinished.not()) {
+                    project.balloonError(message = "User closed Geminio Module Template Wizard")
+                    return
+                }
+
+                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService.getInstance(project)
+                val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
+                    project = project,
+                    newModuleRootDirectoryPath = directoryPath,
+                    geminioTemplateData = geminioTemplateData
+                )
+
+                project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
+                    with(recipeExecutorModel) {
+                        geminioTemplateData.androidStudioTemplate.recipe.invoke(
+                            recipeExecutor,
+                            moduleTemplateData
+                        )
+                    }
+                }
+
+                applyShortenReferencesAndCodeStyle()
+            }
+
+            override fun onWizardAdvanceError(e: Exception) {
+                super.onWizardAdvanceError(e)
+                e.printStackTrace()
+            }
 
 
-        val wizard = ModelWizard.Builder().addStep(stepModule.configureTemplateParametersStep).build().apply {
-            this.addResultListener(object : ModelWizard.WizardListener {
-                override fun onWizardFinished(result: ModelWizard.WizardResult) {
-                    super.onWizardFinished(result)
-
-                    val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService.getInstance(project)
-                    val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
-                        project = project,
-                        newModuleRootDirectoryPath = directoryPath,
-                        geminioTemplateData = geminioTemplateData
-                    )
-
-                    project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-                        with(recipeExecutorModel) {
-                            geminioTemplateData.androidStudioTemplate.recipe.invoke(recipeExecutor, moduleTemplateData)
+            private fun applyShortenReferencesAndCodeStyle() {
+                measureTimeMillis {
+                    project.executeWriteCommand(COMMAND_AFTER_WIZARD) {
+                        stepModel.renderTemplateModel.createdFiles.forEach { file ->
+                            val psiFile = file.toPsiFile(project) as? KtFile
+                            psiFile?.shortReferencesAndReformatWithCodeStyle()
                         }
                     }
-
-                    applyShortenReferencesAndCodeStyle()
-                }
-
-                override fun onWizardAdvanceError(e: Exception) {
-                    super.onWizardAdvanceError(e)
-                    e.printStackTrace()
-                }
-
-
-                private fun applyShortenReferencesAndCodeStyle() {
-                    measureTimeMillis {
-                        project.executeWriteCommand(COMMAND_AFTER_WIZARD) {
-                            stepModule.renderTemplateModel.createdFiles.forEach { file ->
-                                val psiFile = file.toPsiFile(project) as? KtFile
-                                psiFile?.shortReferencesAndReformatWithCodeStyle()
-                            }
-                        }
-                    }.also { println("Shorten references time: $it ms") }
-                }
-            })
-        }
+                }.also { println("Shorten references time: $it ms") }
+            }
+        })
 
         val dialog = StudioWizardDialogBuilder(wizard, "Geminio Module wizard")
             .setProject(project)
