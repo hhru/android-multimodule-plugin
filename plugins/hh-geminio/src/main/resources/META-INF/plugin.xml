@@ -30,6 +30,7 @@
         <projectService
                 serviceImplementation="ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory"/>
         <projectService serviceImplementation="ru.hh.plugins.geminio.services.MarkdownParserService"/>
+        <projectService serviceImplementation="ru.hh.plugins.code_modification.SettingsGradleModificationService"/>
     </extensions>
 
     <actions>

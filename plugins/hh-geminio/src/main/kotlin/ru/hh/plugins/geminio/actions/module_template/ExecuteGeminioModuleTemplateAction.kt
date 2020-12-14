@@ -1,31 +1,31 @@
 package ru.hh.plugins.geminio.actions.module_template
 
+import com.android.tools.idea.npw.model.ProjectSyncInvoker
 import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
-import org.jetbrains.kotlin.idea.core.util.toPsiFile
+import org.jetbrains.annotations.Nullable
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
-import org.jetbrains.kotlin.psi.KtFile
+import ru.hh.plugins.code_modification.SettingsGradleModificationService
 import ru.hh.plugins.extensions.getSelectedPsiElement
-import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.actions.module_template.steps.ChooseModulesModelWizardStep
+import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
 import ru.hh.plugins.geminio.services.balloonError
+import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
-import kotlin.system.measureTimeMillis
 
 
 class ExecuteGeminioModuleTemplateAction : AnAction() {
 
     companion object {
         private const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
-        private const val COMMAND_AFTER_WIZARD = "ExecuteGeminioModuleTemplateAction.AfterWizard"
-
 
         // TODO - fetch from directory name
         private const val MODULE_TYPE_NAME = "Core Module"
@@ -121,10 +121,16 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
                             moduleTemplateData
                         )
                     }
+
+                    modifySettingGradle(recipeExecutorModel)
                 }
 
-                applyShortenReferencesAndCodeStyle()
+                ProjectSyncInvoker.DefaultProjectSyncInvoker().syncProject(project)
+
+                project.balloonInfo(message = "Finished '$MODULE_TYPE_NAME' module template execution")
             }
+
+
 
             override fun onWizardAdvanceError(e: Exception) {
                 super.onWizardAdvanceError(e)
@@ -132,16 +138,16 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
             }
 
 
-            private fun applyShortenReferencesAndCodeStyle() {
-                measureTimeMillis {
-                    project.executeWriteCommand(COMMAND_AFTER_WIZARD) {
-                        stepModel.renderTemplateModel.createdFiles.forEach { file ->
-                            val psiFile = file.toPsiFile(project) as? KtFile
-                            psiFile?.shortReferencesAndReformatWithCodeStyle()
-                        }
-                    }
-                }.also { println("Shorten references time: $it ms") }
+            private fun modifySettingGradle(recipeExecutorModel: GeminioRecipeExecutorModel) {
+                val settingsGradleModificationService = SettingsGradleModificationService.getInstance(project)
+                val newModuleRelativePath =
+                    directoryPath.removePrefix("${project.basePath!!}/") + "/" + recipeExecutorModel.moduleName
+                settingsGradleModificationService.addGradleModuleDescription(
+                    moduleName = recipeExecutorModel.moduleName,
+                    moduleRelativePath = newModuleRelativePath
+                )
             }
+
         })
 
         val dialog = StudioWizardDialogBuilder(wizard, "Geminio Module wizard")

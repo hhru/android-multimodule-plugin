@@ -4,6 +4,8 @@ import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.codeStyle.CodeStyleManager
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.extensions.UNDERSCORE
 
 
 /**
@@ -44,4 +46,9 @@ fun Project.getAndroidApplicationsModules(): List<Module> {
  */
 fun Project.getLibrariesModules(): List<Module> {
     return getExistingModules().filter { it.isLibraryModule() }
+}
+
+fun Project.getRootModule(): Module {
+    return ModuleManager.getInstance(this).modules.toList()
+        .first { it.name == this.name || it.name == this.name.replace(Char.SPACE, Char.UNDERSCORE) }
 }

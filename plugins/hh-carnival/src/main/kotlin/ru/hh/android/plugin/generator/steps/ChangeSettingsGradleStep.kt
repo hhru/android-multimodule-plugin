@@ -4,11 +4,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.android.plugin.extensions.psi.groovy.createProjectDirPathExpression
-import ru.hh.android.plugin.extensions.psi.groovy.generateIncludeExpression
-import ru.hh.android.plugin.extensions.psi.groovy.getBreakLineElement
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.enums.FeatureModuleType
+import ru.hh.plugins.code_modification.extensions.psi.getBreakLineElement
+import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpressionElement
+import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleRelativePathSetupElement
 
 
 class ChangeSettingsGradleStep {
@@ -28,11 +28,11 @@ class ChangeSettingsGradleStep {
 
         with(settingsGradlePsiFile) {
             add(factory.getBreakLineElement())
-            add(factory.generateIncludeExpression(config.params.moduleName))
+            add(factory.getIncludeModuleExpressionElement(config.params.moduleName))
             add(factory.getBreakLineElement())
 
             if (config.params.moduleType != FeatureModuleType.STANDALONE) {
-                add(factory.createProjectDirPathExpression(config.params.moduleName, modulePath))
+                add(factory.getIncludeModuleRelativePathSetupElement(config.params.moduleName, modulePath))
                 add(factory.getBreakLineElement())
             }
         }

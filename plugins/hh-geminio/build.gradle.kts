@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":shared-core-ui"))
     implementation(project(":shared-core-utils"))
     implementation(project(":shared-core-freemarker"))
+    implementation(project(":shared-core-code-modification"))
 
     // Feature modules
     implementation(project(":shared-feature-geminio-sdk"))

@@ -66,6 +66,7 @@ class GeminioRecipeExecutorFactoryService {
 
 
         return GeminioRecipeExecutorModel(
+            moduleName = moduleName,
             recipeExecutor = DefaultRecipeExecutor(renderingContext),
             moduleTemplateData = moduleTemplateData
         )

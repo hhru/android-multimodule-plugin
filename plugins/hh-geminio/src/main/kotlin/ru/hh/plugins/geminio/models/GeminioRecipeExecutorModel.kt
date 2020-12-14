@@ -5,6 +5,7 @@ import com.android.tools.idea.wizard.template.RecipeExecutor
 
 
 data class GeminioRecipeExecutorModel(
+    val moduleName: String,
     val recipeExecutor: RecipeExecutor,
     val moduleTemplateData: ModuleTemplateData
 )
