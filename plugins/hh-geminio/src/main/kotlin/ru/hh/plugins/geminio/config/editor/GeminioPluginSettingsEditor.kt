@@ -4,9 +4,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
-import ru.hh.plugins.views.layouts.fileChooserButton
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
-import javax.swing.JCheckBox
+import ru.hh.plugins.views.layouts.fileChooserButton
 import javax.swing.JComponent
 import javax.swing.JTextField
 
@@ -14,6 +13,7 @@ import javax.swing.JTextField
 class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialTemplatesRootDirPath: String,
+    private val initialModulesTemplatesRootDirPath: String,
     private val initialNameForNewGroup: String,
 ) {
 
@@ -24,6 +24,7 @@ class GeminioPluginSettingsEditor(
                 GeminioPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
                     initialTemplatesRootDirPath = config.templatesRootDirPath,
+                    initialModulesTemplatesRootDirPath = config.modulesTemplatesRootDirPath,
                     initialNameForNewGroup = config.groupsNames.forNewGroup,
                 )
             }
@@ -33,12 +34,11 @@ class GeminioPluginSettingsEditor(
 
     private lateinit var configFilePathTextField: JTextField
     private lateinit var templatesRootDirPathTextField: JTextField
+    private lateinit var modulesTemplatesRootDirPathTextField: JTextField
     private lateinit var nameForNewGroupTextField: JTextField
-    private lateinit var nameForGenerateGroupTextField: JTextField
-    private lateinit var enableDebugModeCheckBox: JCheckBox
 
 
-    fun createComponent(project: Project): JComponent? {
+    fun createComponent(project: Project): JComponent {
         return panel {
             titledRow("Config file path:") {
                 row {
@@ -61,6 +61,12 @@ class GeminioPluginSettingsEditor(
                 row {
                     templatesRootDirPathTextField = JTextField(initialTemplatesRootDirPath)
                     templatesRootDirPathTextField(CCFlags.growX)
+                }
+            }
+            titledRow("Modules templates paths:") {
+                row {
+                    modulesTemplatesRootDirPathTextField = JTextField(initialModulesTemplatesRootDirPath)
+                    modulesTemplatesRootDirPathTextField(CCFlags.growX)
                 }
             }
             titledRow("Groups names:") {
@@ -89,6 +95,7 @@ class GeminioPluginSettingsEditor(
         } else {
             settings.config = settings.config.copy(
                 templatesRootDirPath = templatesRootDirPathTextField.text,
+                modulesTemplatesRootDirPath = modulesTemplatesRootDirPathTextField.text,
                 groupsNames = GeminioPluginConfig.GroupsNames(
                     forNewGroup = nameForNewGroupTextField.text,
                 ),
