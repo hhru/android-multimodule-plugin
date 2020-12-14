@@ -26,6 +26,7 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
     val geminioRecipe = this
 
     val existingParametersMap = mutableMapOf<String, AndroidStudioTemplateParameter>()
+    val paramsStore = GeminioAdditionalParamsStore()
     val androidStudioTemplate = template {
         injectRequiredParams(geminioRecipe)
         injectOptionalParams(geminioRecipe)
@@ -46,6 +47,8 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
                         entry.key to entry.value.value
                     }.plus(
                         getHardcodedParamsMap(moduleTemplateData, existingParametersMap)
+                    ).plus(
+                        paramsStore
                     ),
                     freemarkerConfiguration = FreemarkerConfiguration(geminioRecipe.freemarkerTemplatesRootDirPath)
                 )
@@ -63,7 +66,7 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
             newModuleLibrariesModulesParameterId = GeminioSdkConstants.FEATURE_LIBRARIES_MODULES_PARAMETER_ID,
             newApplicationModulesParameterId = GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID,
         ),
-        paramsStore = GeminioAdditionalParamsStore()
+        paramsStore = paramsStore
     )
 }
 

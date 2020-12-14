@@ -40,6 +40,8 @@ class GeminioStartupActivity : StartupActivity {
             println("\tpathToConfig: $pathToConfig")
             println("\tpathToTemplates: $pathToTemplates")
             println("\tpathToModulesTemplates: $pathToModulesTemplates")
+            println("============")
+            println("============")
 
             createActionsForTemplates(pluginConfig, pathToTemplates, false)
             createActionsForTemplates(pluginConfig, pathToModulesTemplates, true)
