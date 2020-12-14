@@ -24,6 +24,11 @@
                 groupId="appearance"
                 instance="ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"/>
         <!-- endregion -->
+
+        <projectService
+                serviceImplementation="ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService"/>
+        <projectService
+                serviceImplementation="ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory"/>
     </extensions>
 
     <actions>
@@ -34,6 +39,14 @@
             <separator/>
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </group>
+
+        <!-- TODO remove after testing -->
+        <action id="ExecuteGeminioModuleTemplateAction"
+                class="ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction"
+                text="Execute Module Template"
+                description="Try to invoke module template">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
     </actions>
 
 </idea-plugin>

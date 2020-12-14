@@ -1,11 +1,6 @@
 package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
-import com.android.tools.idea.npw.model.ProjectSyncInvoker
-import com.android.tools.idea.npw.model.RenderTemplateModel
-import com.android.tools.idea.npw.project.getModuleTemplates
-import com.android.tools.idea.npw.project.getPackageForPath
-import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
 import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
@@ -20,6 +15,7 @@ import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
+import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.balloonInfo
 import kotlin.system.measureTimeMillis
 
@@ -71,29 +67,17 @@ class ExecuteGeminioTemplateAction(
         val (project, facet) = e.fetchEventData()
 
         val targetDirectory = e.getTargetDirectory()
-        val moduleTemplates = facet.getModuleTemplates(targetDirectory)
-        assert(moduleTemplates.isNotEmpty())
 
-        val initialPackageSuggestion = facet.getPackageForPath(moduleTemplates, targetDirectory).orEmpty()
-
-        val renderModel = RenderTemplateModel.fromFacet(
-            facet,
-            initialPackageSuggestion,
-            moduleTemplates[0],
-            COMMAND_NAME,
-            ProjectSyncInvoker.DefaultProjectSyncInvoker(),
-            true,
-        ).apply {
-            newTemplate = geminioSdk.createGeminioTemplateData(project, geminioRecipe).androidStudioTemplate
-        }
-
-        val configureTemplateStep = ConfigureTemplateParametersStep(
-            model = renderModel,
-            title = actionText,
-            templates = moduleTemplates
+        val stepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val stepModel = stepFactory.createFromAndroidFacet(
+            commandName = COMMAND_NAME,
+            stepTitle = actionText,
+            facet = facet,
+            targetDirectory = targetDirectory,
+            androidStudioTemplate = geminioSdk.createGeminioTemplateData(project, geminioRecipe).androidStudioTemplate
         )
 
-        val wizard = ModelWizard.Builder().addStep(configureTemplateStep).build().apply {
+        val wizard = ModelWizard.Builder().addStep(stepModel.configureTemplateParametersStep).build().apply {
             this.addResultListener(object : ModelWizard.WizardListener {
                 override fun onWizardFinished(result: ModelWizard.WizardResult) {
                     super.onWizardFinished(result)
@@ -109,7 +93,7 @@ class ExecuteGeminioTemplateAction(
                 private fun applyShortenReferencesAndCodeStyle() {
                     measureTimeMillis {
                         project.executeWriteCommand(COMMAND_AFTER_WIZARD_NAME) {
-                            renderModel.createdFiles.forEach { file ->
+                            stepModel.renderTemplateModel.createdFiles.forEach { file ->
                                 val psiFile = file.toPsiFile(project) as? KtFile
                                 psiFile?.shortReferencesAndReformatWithCodeStyle()
                             }

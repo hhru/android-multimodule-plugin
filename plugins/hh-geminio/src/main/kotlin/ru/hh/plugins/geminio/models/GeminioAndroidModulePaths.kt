@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.actions.module_template.models
+package ru.hh.plugins.geminio.models
 
 import com.android.tools.idea.projectsystem.AndroidModulePaths
 import ru.hh.plugins.extensions.EMPTY

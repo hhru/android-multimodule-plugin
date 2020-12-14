@@ -4,7 +4,6 @@ import com.android.tools.idea.util.androidFacet
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
-import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.kotlin.idea.util.module
@@ -12,9 +11,8 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import ru.hh.android.plugin.services.git.GitService
+import ru.hh.plugins.extensions.getSelectedPsiElement
 
-
-fun AnActionEvent.getSelectedPsiElement(): PsiElement? = getData(PlatformDataKeys.PSI_ELEMENT)
 
 fun AnActionEvent.canReachKotlinDataClass(): Boolean {
     return when {
