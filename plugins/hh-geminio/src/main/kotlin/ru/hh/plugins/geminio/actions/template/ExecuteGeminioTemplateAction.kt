@@ -16,8 +16,8 @@ import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.balloonError
-import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.balloonInfo
+import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import kotlin.system.measureTimeMillis
 
 
@@ -26,7 +26,6 @@ import kotlin.system.measureTimeMillis
  *
  * This action not registered in plugin.xml, because we create it in runtime.
  */
-@Suppress("ComponentNotRegistered")
 class ExecuteGeminioTemplateAction(
     private val actionText: String,
     private val actionDescription: String,
@@ -36,6 +35,8 @@ class ExecuteGeminioTemplateAction(
     companion object {
         private const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
         private const val COMMAND_AFTER_WIZARD_NAME = "ExecuteGeminioTemplateActionCommandAfterWizard"
+
+        private const val WIZARD_TITLE = "Geminio wizard"
     }
 
 
@@ -89,6 +90,8 @@ class ExecuteGeminioTemplateAction(
                     }
 
                     applyShortenReferencesAndCodeStyle()
+
+                    project.balloonInfo(message = "Finished '$actionText' template execution")
                 }
 
 
@@ -105,12 +108,10 @@ class ExecuteGeminioTemplateAction(
             })
         }
 
-        val dialog = StudioWizardDialogBuilder(wizard, "Geminio wizard")
+        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
             .setProject(project)
             .build()
         dialog.show()
-
-        project.balloonInfo(message = "Finished '$actionText' template execution")
     }
 
 

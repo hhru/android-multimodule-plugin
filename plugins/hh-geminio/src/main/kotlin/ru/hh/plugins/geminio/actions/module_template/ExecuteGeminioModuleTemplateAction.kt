@@ -23,38 +23,50 @@ import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepF
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 
 
-class ExecuteGeminioModuleTemplateAction : AnAction() {
+/**
+ * Action for creating new module.
+ */
+class ExecuteGeminioModuleTemplateAction(
+    private val actionText: String,
+    private val actionDescription: String,
+    private val geminioRecipePath: String
+) : AnAction() {
 
     companion object {
         private const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
 
-        // TODO - fetch from directory name
-        private const val MODULE_TYPE_NAME = "Core Module"
-        private const val RECIPE_PATH = "/android-style-guide/geminio/modules_templates/Core Module/recipe.yaml"
+        private const val WIZARD_TITLE = "Geminio Module wizard"
     }
 
 
-    override fun actionPerformed(actionEvent: AnActionEvent) {
-        println("Start executing template [New module from Geminio]")
+    init {
+        with(templatePresentation) {
+            text = actionText
+            description = actionDescription
+            isEnabledAndVisible = true
+        }
+    }
 
-        // region TODO - check in `update` method
-        val project = actionEvent.project
-        if (project == null) {
-            println("Project is null -> good bye")
-            return
-        }
-        val selectedPsiElement = actionEvent.getSelectedPsiElement()
-        if (selectedPsiElement == null || selectedPsiElement !is PsiDirectory) {
-            println("You should select directory for new module")
-            return
-        }
-        // endregion
+
+    override fun update(e: AnActionEvent) {
+        super.update(e)
+
+        val selectedPsiElement = e.getSelectedPsiElement()
+        e.presentation.isEnabledAndVisible =
+            (e.project == null || selectedPsiElement == null || selectedPsiElement !is PsiDirectory).not()
+    }
+
+    override fun actionPerformed(actionEvent: AnActionEvent) {
+        println("Start executing template '$actionText'")
+
+        val project = actionEvent.project!!
+        val selectedPsiElement = actionEvent.getSelectedPsiElement() as PsiDirectory
 
         val directoryPath = selectedPsiElement.virtualFile.path
         println("Selected directory path: $directoryPath")
 
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
-        val geminioRecipe = geminioSdk.parseYamlRecipe(project.basePath + RECIPE_PATH)
+        val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
 
         check(geminioRecipe.predefinedFeaturesSection.hasFeature(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
             "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
@@ -67,7 +79,7 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
         val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
         val stepModel = configureTemplateParametersStepFactory.createForNewModule(
             project = project,
-            stepTitle = "Create new $MODULE_TYPE_NAME",
+            stepTitle = "Create new $actionText",
             directoryPath = directoryPath,
             defaultPackageName = "ru.hh",   // TODO - fetch from settings
             androidStudioTemplate = geminioTemplateData.androidStudioTemplate
@@ -123,7 +135,7 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
 
                 SyncProjectAction().actionPerformed(actionEvent)
 
-                project.balloonInfo(message = "Finished '$MODULE_TYPE_NAME' module template execution")
+                project.balloonInfo(message = "Finished '$actionText' module template execution")
             }
 
             override fun onWizardAdvanceError(e: Exception) {
@@ -167,7 +179,7 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
 
         })
 
-        val dialog = StudioWizardDialogBuilder(wizard, "Geminio Module wizard")
+        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
             .setProject(project)
             .build()
         dialog.show()

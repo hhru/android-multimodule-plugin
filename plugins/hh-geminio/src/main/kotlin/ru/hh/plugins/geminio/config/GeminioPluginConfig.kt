@@ -12,6 +12,7 @@ data class GeminioPluginConfig(
 
     data class GroupsNames(
         var forNewGroup: String = String.EMPTY,
+        var forNewModulesGroup: String = String.EMPTY
     )
 
 }

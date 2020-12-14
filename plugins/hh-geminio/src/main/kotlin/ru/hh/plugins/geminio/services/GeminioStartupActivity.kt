@@ -8,7 +8,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import ru.hh.plugins.extensions.toUnderlines
 import ru.hh.plugins.geminio.GeminioConstants
+import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction
 import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
+import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import java.io.File
 
@@ -20,6 +22,7 @@ class GeminioStartupActivity : StartupActivity {
 
     companion object {
         private const val BASE_ID = "ru.hh.plugins.geminio.actions."
+
         private const val NEW_GROUP_ID_SUFFIX = "NewGroup."
         private const val GENERATE_GROUP_ID_SUFFIX = "GenerateGroup."
     }
@@ -32,45 +35,14 @@ class GeminioStartupActivity : StartupActivity {
 
             val pathToConfig = pluginConfig.configFilePath
             val pathToTemplates = project.basePath + pluginConfig.templatesRootDirPath
+            val pathToModulesTemplates = project.basePath + pluginConfig.modulesTemplatesRootDirPath
 
             println("\tpathToConfig: $pathToConfig")
             println("\tpathToTemplates: $pathToTemplates")
+            println("\tpathToModulesTemplates: $pathToModulesTemplates")
 
-            val templatesRootDirectory = File(pathToTemplates)
-            if (templatesRootDirectory.exists() && templatesRootDirectory.isDirectory) {
-                println("\tTemplates directory exists")
-                val templatesDirectories = templatesRootDirectory.list { file, _ ->
-                    file.isDirectory
-                } ?: emptyArray()
-
-                println("\tTemplates count: ${templatesDirectories.size}")
-                println("============")
-
-                val actionManager = ActionManager.getInstance()
-                val hhTemplatesNewGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_NEW_GROUP_ID)
-                        as DefaultActionGroup
-                hhTemplatesNewGroup.templatePresentation.text = pluginConfig.groupsNames.forNewGroup
-                val hhTemplatesGenerateGroup = actionManager.getAction(GeminioConstants.HH_TEMPLATES_GENERATE_GROUP_ID)
-                        as DefaultActionGroup
-
-                templatesDirectories.forEach { templateName ->
-                    val newActionForNewGroup = createActionForTemplate(
-                        templatesRootDirPath = pathToTemplates,
-                        templateDirName = templateName,
-                        actionManager = actionManager,
-                        actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines()
-                    )
-                    hhTemplatesNewGroup += newActionForNewGroup
-
-                    val newActionForGenerateGroup = createActionForTemplate(
-                        templatesRootDirPath = pathToTemplates,
-                        templateDirName = templateName,
-                        actionManager = actionManager,
-                        actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines()
-                    )
-                    hhTemplatesGenerateGroup += newActionForGenerateGroup
-                }
-            }
+            createActionsForTemplates(pluginConfig, pathToTemplates, false)
+            createActionsForTemplates(pluginConfig, pathToModulesTemplates, true)
 
             println("GeminioStartupActivity::END")
             println("==============================================")
@@ -78,28 +50,120 @@ class GeminioStartupActivity : StartupActivity {
     }
 
 
+    private fun createActionsForTemplates(
+        pluginConfig: GeminioPluginConfig,
+        rootDirPath: String,
+        isModulesTemplates: Boolean
+    ) {
+        val rootDirectory = File(rootDirPath)
+        if (rootDirectory.exists().not() || rootDirectory.isDirectory.not()) {
+            println("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+            return
+        }
+
+        println("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+        val templatesDirs = rootDirectory.list { file, _ -> file.isDirectory } ?: emptyArray()
+
+        println("\tTemplates count: ${templatesDirs.size}")
+        println("============")
+
+        val actionManager = ActionManager.getInstance()
+
+        val bundle = getTemplateActionsBundle(pluginConfig, isModulesTemplates)
+
+
+        val hhNewGroup = actionManager.getAction(bundle.templatesNewGroupId) as DefaultActionGroup
+        hhNewGroup.templatePresentation.text = bundle.templatesNewGroupName
+        val hhGenerateGroup = actionManager.getAction(bundle.templatesGenerateGroupId) as DefaultActionGroup
+
+        templatesDirs.forEach { templateName ->
+            val newActionForNewGroup = createActionForTemplate(
+                templatesRootDirPath = rootDirPath,
+                templateDirName = templateName,
+                isModulesTemplates = isModulesTemplates,
+                actionManager = actionManager,
+                actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines()
+            )
+            hhNewGroup += newActionForNewGroup
+
+            val newActionForGenerateGroup = createActionForTemplate(
+                templatesRootDirPath = rootDirPath,
+                templateDirName = templateName,
+                isModulesTemplates = isModulesTemplates,
+                actionManager = actionManager,
+                actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines()
+            )
+            hhGenerateGroup += newActionForGenerateGroup
+        }
+    }
+
+
     private fun createActionForTemplate(
         templatesRootDirPath: String,
         templateDirName: String,
+        isModulesTemplates: Boolean,
         actionManager: ActionManager,
         actionId: String,
     ): AnAction {
-        return ExecuteGeminioTemplateAction(
-            actionText = templateDirName,
-            actionDescription = "Action for executing '$templateDirName'",
-            geminioRecipePath = getGeminioRecipeFilePath(templatesRootDirPath, templateDirName)
-        ).also { action ->
-            actionManager.registerAction(actionId, action)
+        val action = when {
+            isModulesTemplates -> {
+                ExecuteGeminioModuleTemplateAction(
+                    actionText = templateDirName,
+                    actionDescription = "Action for executing '$templateDirName'",
+                    geminioRecipePath = getGeminioRecipeFilePath(templatesRootDirPath, templateDirName)
+                )
+            }
+
+            else -> {
+                ExecuteGeminioTemplateAction(
+                    actionText = templateDirName,
+                    actionDescription = "Action for executing '$templateDirName'",
+                    geminioRecipePath = getGeminioRecipeFilePath(templatesRootDirPath, templateDirName)
+                )
+            }
         }
+        actionManager.registerAction(actionId, action)
+
+        return action
     }
 
     private fun getGeminioRecipeFilePath(templatesRootDirPath: String, templateDirName: String): String {
         return "$templatesRootDirPath/$templateDirName/${GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME}"
     }
 
+
+    private fun getTemplateActionsBundle(
+        pluginConfig: GeminioPluginConfig,
+        isModulesTemplates: Boolean
+    ): TemplateActionsBundle {
+        return when {
+            isModulesTemplates -> {
+                TemplateActionsBundle(
+                    GeminioConstants.HH_MODULES_TEMPLATES_NEW_GROUP_ID,
+                    GeminioConstants.HH_MODULES_TEMPLATES_GENERATE_GROUP_ID,
+                    pluginConfig.groupsNames.forNewModulesGroup
+                )
+            }
+
+            else -> {
+                TemplateActionsBundle(
+                    GeminioConstants.HH_TEMPLATES_NEW_GROUP_ID,
+                    GeminioConstants.HH_TEMPLATES_GENERATE_GROUP_ID,
+                    pluginConfig.groupsNames.forNewGroup
+                )
+            }
+        }
+    }
+
+
+    private data class TemplateActionsBundle(
+        val templatesNewGroupId: String,
+        val templatesGenerateGroupId: String,
+        val templatesNewGroupName: String
+    )
+
     private operator fun DefaultActionGroup.plusAssign(action: AnAction) {
         this.add(action)
     }
-
 
 }
