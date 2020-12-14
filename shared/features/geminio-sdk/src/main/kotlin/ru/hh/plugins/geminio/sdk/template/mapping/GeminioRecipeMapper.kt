@@ -57,13 +57,13 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
     return GeminioTemplateData(
         existingParametersMap = existingParametersMap,
         androidStudioTemplate = androidStudioTemplate,
-        geminioParametersIds = GeminioTemplateParametersIds(
+        geminioIds = GeminioTemplateParametersIds(
             newModuleNameParameterId = GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID,
             newModulePackageNameParameterId = GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID,
             newModuleLibrariesModulesParameterId = GeminioSdkConstants.FEATURE_LIBRARIES_MODULES_PARAMETER_ID,
             newApplicationModulesParameterId = GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID,
         ),
-        additionalParamsStore = GeminioAdditionalParamsStore()
+        paramsStore = GeminioAdditionalParamsStore()
     )
 }
 

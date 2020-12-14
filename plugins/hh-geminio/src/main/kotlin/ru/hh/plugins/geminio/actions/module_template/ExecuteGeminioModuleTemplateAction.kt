@@ -106,6 +106,14 @@ class ExecuteGeminioModuleTemplateAction : AnAction() {
                     geminioTemplateData = geminioTemplateData
                 )
 
+                with(geminioTemplateData) {
+                    val librariesModules = chooseModulesStep.getSelectedModules()
+                    val applicationModules = chooseAppsStep.getSelectedModules()
+
+                    paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { it.name }
+                    paramsStore[geminioIds.newModuleLibrariesModulesParameterId] = librariesModules.map { it.name }
+                }
+
                 project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
                     with(recipeExecutorModel) {
                         geminioTemplateData.androidStudioTemplate.recipe.invoke(

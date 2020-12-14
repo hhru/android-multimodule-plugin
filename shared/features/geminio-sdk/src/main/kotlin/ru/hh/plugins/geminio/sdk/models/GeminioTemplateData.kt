@@ -8,6 +8,6 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 data class GeminioTemplateData(
     val existingParametersMap: Map<String, AndroidStudioTemplateParameter>,
     val androidStudioTemplate: AndroidStudioTemplate,
-    val geminioParametersIds: GeminioTemplateParametersIds,
-    val additionalParamsStore: GeminioAdditionalParamsStore
+    val geminioIds: GeminioTemplateParametersIds,
+    val paramsStore: GeminioAdditionalParamsStore
 )

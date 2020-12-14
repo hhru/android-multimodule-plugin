@@ -2,6 +2,7 @@ package ru.hh.plugins.geminio.actions.module_template.steps
 
 import com.android.tools.idea.npw.model.RenderTemplateModel
 import com.android.tools.idea.wizard.model.ModelWizardStep
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.extensions.SPACE
@@ -109,6 +110,9 @@ class ChooseModulesModelWizardStep(
         }
     }
 
+    fun getSelectedModules(): List<Module> {
+        return selectedModulesItems.map { it.gradleModule }
+    }
 
     private fun updateListView(items: List<ModuleDisplayableItem>) {
         modulesJList.setItems(items)
