@@ -1,11 +1,10 @@
 package ru.hh.android.plugin.generator.steps
 
 import com.intellij.openapi.module.Module
-import ru.hh.android.plugin.core.model.psi.GradleDependency
-import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
-import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.model.CreateModuleConfig
-import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
+import ru.hh.plugins.code_modification.BuildGradleModificationService
+import ru.hh.plugins.code_modification.models.BuildGradleDependency
+import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
 
 
 class AddFeatureModuleIntoDependenciesStep {
@@ -19,13 +18,12 @@ class AddFeatureModuleIntoDependenciesStep {
 
     private fun modifyDependenciesBlock(module: Module, config: CreateModuleConfig) {
         BuildGradleModificationService.getInstance(module.project)
-            .addGradleDependenciesIntoModule(
+            .addDepsIntoModule(
                 module = module,
                 gradleDependencies = listOf(
-                    GradleDependency(
-                        text = config.params.moduleName,
-                        type = GradleDependencyType.MODULE,
-                        mode = GradleDependencyMode.IMPLEMENTATION
+                    BuildGradleDependency.Project(
+                        configuration = BuildGradleDependencyConfiguration.IMPLEMENTATION,
+                        value = config.params.moduleName
                     )
                 )
             )

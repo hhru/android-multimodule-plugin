@@ -12,17 +12,17 @@ import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import org.jetbrains.kotlin.idea.refactoring.ui.KotlinDestinationFolderComboBox
-import ru.hh.plugins.garcon.GarconConstants
-import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.extensions.isQualifiedPackageName
 import ru.hh.plugins.extensions.isValidIdentifier
-import ru.hh.plugins.extensions.layout.kotlinDestinationFolderComboBox
-import ru.hh.plugins.extensions.layout.targetPackageComboBox
 import ru.hh.plugins.extensions.packageName
 import ru.hh.plugins.extensions.psi.checkFileCanBeCreated
 import ru.hh.plugins.extensions.psi.xml.extractClassNameFromFileName
 import ru.hh.plugins.extensions.toKotlinFileName
+import ru.hh.plugins.garcon.GarconConstants
+import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.utils.recents_manager.RecentsUtils
+import ru.hh.plugins.views.layouts.kotlinDestinationFolderComboBox
+import ru.hh.plugins.views.layouts.targetPackageComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
@@ -46,7 +46,7 @@ class CreateScreenPageObjectDialog(
     }
 
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         return panel {
             titledRow("Enter <Screen> page object class name:") {
                 row {

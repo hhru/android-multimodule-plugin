@@ -25,6 +25,16 @@ class SettingsGradleModificationService(
     }
 
 
+    /**
+     * Adds module description into settings.gradle file.
+     * <code>
+     * include(":moduleName")
+     * project(":moduleName").projectDir = new File(settingsDir, "shared/core/moduleName")
+     * </code>
+     *
+     * @param moduleName - module name without ':', e.g. "mylibrary"
+     * @param moduleRelativePath - relative path for module directory from settings.gradle, e.g. 'shared/core/mylibrary'
+     */
     fun addGradleModuleDescription(moduleName: String, moduleRelativePath: String) {
         val settingsGradlePsiFile = project.getRootModule().findPsiFileByName(SETTINGS_GRADLE_FILENAME)
             ?: throw IllegalStateException("Can't find settings.gradle file!")

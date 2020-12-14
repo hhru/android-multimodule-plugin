@@ -1,5 +1,4 @@
-package ru.hh.plugins.geminio.sdk.recipe.models.commands
-
+package ru.hh.plugins.code_modification.models
 
 /**
  * Dependency declaration configuration.

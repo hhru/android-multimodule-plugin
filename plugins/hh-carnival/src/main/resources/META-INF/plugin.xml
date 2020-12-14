@@ -135,9 +135,9 @@
         <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
         <projectService
-                serviceImplementation="ru.hh.android.plugin.services.code_generator.BuildGradleModificationService"/>
+                serviceImplementation="ru.hh.plugins.code_modification.BuildGradleModificationService"/>
         <projectService
-                serviceImplementation="ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService"/>
+                serviceImplementation="ru.hh.plugins.code_modification.SettingsGradleModificationService"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService

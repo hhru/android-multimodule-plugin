@@ -21,9 +21,6 @@ import ru.hh.android.plugin.actions.modules.copy_module.model.NewModuleDirectori
 import ru.hh.android.plugin.actions.modules.copy_module.model.NewModulePackagesInfo
 import ru.hh.android.plugin.actions.modules.copy_module.model.NewModuleParams
 import ru.hh.android.plugin.actions.modules.copy_module.view.CopyAndroidModuleActionDialog
-import ru.hh.android.plugin.core.model.psi.GradleDependency
-import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
-import ru.hh.android.plugin.core.model.psi.GradleDependencyType
 import ru.hh.android.plugin.extensions.androidFacet
 import ru.hh.android.plugin.extensions.canCreateSubdirectory
 import ru.hh.android.plugin.extensions.copyFile
@@ -34,11 +31,13 @@ import ru.hh.android.plugin.extensions.moduleParentPsiDirectory
 import ru.hh.android.plugin.extensions.packageName
 import ru.hh.android.plugin.extensions.relativePathToParent
 import ru.hh.android.plugin.extensions.rootPsiDirectory
-import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
-import ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
+import ru.hh.plugins.code_modification.BuildGradleModificationService
+import ru.hh.plugins.code_modification.SettingsGradleModificationService
+import ru.hh.plugins.code_modification.models.BuildGradleDependency
+import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
 import ru.hh.plugins.extensions.openapi.isLibraryModule
 import kotlin.system.measureTimeMillis
 
@@ -87,18 +86,16 @@ class CopyAndroidModuleAction : AnAction() {
                     copyModule(newModuleParams)
                     SettingsGradleModificationService.getInstance(project)
                         .addGradleModuleDescription(
-                            project = project,
                             moduleName = newModuleParams.newModuleName,
                             moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"
                         )
                     BuildGradleModificationService.getInstance(project)
-                        .addGradleDependenciesIntoModule(
+                        .addDepsIntoModule(
                             module = newModuleParams.appModule,
                             gradleDependencies = listOf(
-                                GradleDependency(
-                                    text = newModuleParams.newModuleName,
-                                    type = GradleDependencyType.MODULE,
-                                    mode = GradleDependencyMode.IMPLEMENTATION
+                                BuildGradleDependency.Project(
+                                    configuration = BuildGradleDependencyConfiguration.IMPLEMENTATION,
+                                    value = newModuleParams.newModuleName
                                 )
                             )
                         )
@@ -137,16 +134,15 @@ class CopyAndroidModuleAction : AnAction() {
                 ?.map { psiFile ->
                     project.logDebug("\tFind ${psiFile.name}, start copying...")
                     psiFile.copyFile().also { newPsiFile ->
-                        if (newPsiFile.name == BuildGradleModificationService.BUILD_GRADLE_FILENAME) {
+                        if (newPsiFile.name == "build.gradle") {
                             project.logDebug("\tFind build.gradle file, need modification of dependencies block")
                             BuildGradleModificationService.getInstance(project)
-                                .addGradleDependenciesIntoBuildGradleFile(
+                                .addDepsIntoFile(
                                     psiFile = newPsiFile,
                                     gradleDependencies = listOf(
-                                        GradleDependency(
-                                            text = params.moduleToCopy.name,
-                                            type = GradleDependencyType.MODULE,
-                                            mode = GradleDependencyMode.IMPLEMENTATION
+                                        BuildGradleDependency.Project(
+                                            configuration = BuildGradleDependencyConfiguration.IMPLEMENTATION,
+                                            value = params.moduleToCopy.name
                                         )
                                     )
                                 )

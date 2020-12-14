@@ -15,8 +15,8 @@ import ru.hh.plugins.garcon.GarconConstants
 import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.garcon.services.ClassFiltersFactory
 import ru.hh.plugins.extensions.EMPTY
-import ru.hh.plugins.extensions.layout.createKotlinClassChooserComboBox
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
+import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
@@ -36,11 +36,11 @@ class CollectWidgetsIntoPageObjectDialog(
 
     init {
         init()
-        title = "Collect widgets into Page Object"
+        title = "Collect Widgets into Page Object"
     }
 
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         return panel {
             titledRow("Choose target <Screen> Page Object class") {
                 row {
