@@ -18,7 +18,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(Libs.freemarker)
     implementation("commons-io:commons-io:2.4")
-    implementation("com.vladsch.flexmark:flexmark-all:0.50.42")
+    implementation(Libs.flexmark)
     implementation("com.atlassian.jira:jira-rest-java-client-core:4.0.0") {
         exclude(group = "org.slf4j")
         dependencies {

@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
-import ru.hh.plugins.extensions.layout.fileChooserButton
+import ru.hh.plugins.views.layouts.fileChooserButton
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import javax.swing.JCheckBox
 import javax.swing.JComponent

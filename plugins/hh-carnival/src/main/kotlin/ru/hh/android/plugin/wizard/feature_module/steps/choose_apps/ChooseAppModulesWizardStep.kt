@@ -1,18 +1,19 @@
 package ru.hh.android.plugin.wizard.feature_module.steps.choose_apps
 
+import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
-import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_apps.model.AppModuleDisplayableItem
+import ru.hh.plugins.extensions.openapi.getAndroidApplicationsModules
 import javax.swing.JComponent
 
 
 class ChooseAppModulesWizardStep(
-        private val model: FeatureModuleWizardModel,
-        private val moduleRepository: ModuleRepository
+    private val project: Project,
+    private val model: FeatureModuleWizardModel,
 ) : WizardStep<FeatureModuleWizardModel>() {
 
     private val allModulesItems: List<AppModuleDisplayableItem>
@@ -26,15 +27,15 @@ class ChooseAppModulesWizardStep(
         selectedItems += allModulesItems.filter { it.isChecked }
 
         uiBuilder = ChooseItemsStepViewBuilder(
-                textBundle = ChooseItemsStepViewTextBundle(
-                        descriptionMessage = "Choose applications which should include new feature module",
-                        filterTextFieldMessage = "You can filter applications by names",
-                        listDescriptionMessage = "Choose applications"
-                ),
-                onFilterTextChanged = { filterItems(it) },
-                onModuleItemChecked = { onModuleItemChecked(it) },
-                onEnableAllButtonClicked = { enableAllItems() },
-                onDisableAllButtonClicked = { disableAllItems() }
+            textBundle = ChooseItemsStepViewTextBundle(
+                descriptionMessage = "Choose applications which should include new feature module",
+                filterTextFieldMessage = "You can filter applications by names",
+                listDescriptionMessage = "Choose applications"
+            ),
+            onFilterTextChanged = { filterItems(it) },
+            onModuleItemChecked = { onModuleItemChecked(it) },
+            onEnableAllButtonClicked = { enableAllItems() },
+            onDisableAllButtonClicked = { disableAllItems() }
         )
     }
 
@@ -68,14 +69,14 @@ class ChooseAppModulesWizardStep(
     }
 
     private fun getModulesDisplayableItems(): List<AppModuleDisplayableItem> {
-        val modules = moduleRepository.fetchAppModules()
+        val modules = project.getAndroidApplicationsModules()
 
         return modules.map { module ->
             AppModuleDisplayableItem(
-                    text = module.name,
-                    isForceEnabled = false,
-                    isChecked = false,
-                    gradleModule = module
+                text = module.name,
+                isForceEnabled = false,
+                isChecked = false,
+                gradleModule = module
             )
         }
     }

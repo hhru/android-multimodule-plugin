@@ -8,10 +8,6 @@ import com.intellij.openapi.project.Project
 import java.io.File
 
 
-fun Project.getExistingModules(): List<Module> {
-    return ModuleManager.getInstance(this).modules.toList().filter { it.name != this.name }
-}
-
 fun Project.getRootModulePath(): String {
     val file = File(getRootModule().moduleFilePath)
     return file.parent

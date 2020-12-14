@@ -142,7 +142,6 @@
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.modules.ModuleRepository"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraIssueFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraLinkFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraRestClientService"/>

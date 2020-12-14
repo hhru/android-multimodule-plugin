@@ -1,6 +1,7 @@
 package ru.hh.android.plugin.wizard.feature_module.steps.choose_modules
 
 import com.android.tools.idea.util.toIoFile
+import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardNavigationState
 import com.intellij.ui.wizard.WizardStep
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
@@ -8,7 +9,6 @@ import com.vladsch.flexmark.ext.tables.TablesExtension
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.MutableDataSet
-import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewBuilder
 import ru.hh.android.plugin.core.ui.wizard.ChooseItemsStepViewTextBundle
 import ru.hh.android.plugin.extensions.EMPTY
@@ -18,12 +18,13 @@ import ru.hh.android.plugin.model.enums.PredefinedFeature
 import ru.hh.android.plugin.model.extensions.checkFeature
 import ru.hh.android.plugin.wizard.feature_module.FeatureModuleWizardModel
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_modules.model.ModuleDisplayableItem
+import ru.hh.plugins.extensions.openapi.getLibrariesModules
 import javax.swing.JComponent
 
 
 class ChooseModulesWizardStep(
-        private val model: FeatureModuleWizardModel,
-        private val moduleRepository: ModuleRepository
+    private val project: Project,
+    private val model: FeatureModuleWizardModel
 ) : WizardStep<FeatureModuleWizardModel>() {
 
     companion object {
@@ -56,17 +57,17 @@ class ChooseModulesWizardStep(
         selectedItems += allModulesItems.filter { it.isChecked }
 
         uiBuilder = ChooseItemsStepViewBuilder(
-                textBundle = ChooseItemsStepViewTextBundle(
-                        descriptionMessage = "Choose modules as dependencies for new feature module",
-                        filterTextFieldMessage = "You can filter modules by names",
-                        listDescriptionMessage = "Choose modules"
-                ),
-                onFilterTextChanged = { filterItems(it) },
-                onModuleSelectionChanged = { changeReadmeBlockText(it) },
-                onModuleItemChecked = { onModuleItemChecked(it) },
-                onEnableAllButtonClicked = { enableAllItems() },
-                onDisableAllButtonClicked = { disableAllItems() },
-                isReadmeBlockAvailable = true
+            textBundle = ChooseItemsStepViewTextBundle(
+                descriptionMessage = "Choose modules as dependencies for new feature module",
+                filterTextFieldMessage = "You can filter modules by names",
+                listDescriptionMessage = "Choose modules"
+            ),
+            onFilterTextChanged = { filterItems(it) },
+            onModuleSelectionChanged = { changeReadmeBlockText(it) },
+            onModuleItemChecked = { onModuleItemChecked(it) },
+            onEnableAllButtonClicked = { enableAllItems() },
+            onDisableAllButtonClicked = { disableAllItems() },
+            isReadmeBlockAvailable = true
         )
     }
 
@@ -130,16 +131,16 @@ class ChooseModulesWizardStep(
 
     private fun getModulesDisplayableItems(): List<ModuleDisplayableItem> {
         val forceSelectedNames = getForceSelectedModulesNames(model.params)
-        val modules = moduleRepository.fetchLibrariesModules()
+        val modules = project.getLibrariesModules()
 
         return modules.map { module ->
             val isForceSelected = forceSelectedNames.contains(module.name)
 
             ModuleDisplayableItem(
-                    text = module.name,
-                    isForceEnabled = isForceSelected,
-                    isChecked = isForceSelected,
-                    gradleModule = module
+                text = module.name,
+                isForceEnabled = isForceSelected,
+                isChecked = isForceSelected,
+                gradleModule = module
             )
         }
     }

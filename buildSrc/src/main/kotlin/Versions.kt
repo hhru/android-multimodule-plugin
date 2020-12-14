@@ -21,6 +21,7 @@ object BuildPlugins {
 
 object Libs {
     const val freemarker = "org.freemarker:freemarker:2.3.30"
+    const val flexmark = "com.vladsch.flexmark:flexmark-all:0.50.42"
 
     val tests = UnitTests
 

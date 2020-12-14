@@ -3,7 +3,6 @@ package ru.hh.android.plugin.wizard.feature_module
 import com.intellij.openapi.project.Project
 import com.intellij.ui.wizard.WizardModel
 import ru.hh.android.plugin.model.MainParametersHolder
-import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_apps.ChooseAppModulesWizardStep
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_apps.model.AppModuleDisplayableItem
 import ru.hh.android.plugin.wizard.feature_module.steps.choose_modules.ChooseModulesWizardStep
@@ -18,11 +17,9 @@ class FeatureModuleWizardModel(
 ) : WizardModel("Feature module wizard") {
 
     init {
-        val moduleRepository = ModuleRepository.getInstance(project)
-
         add(FeatureModuleParamsWizardStep(project, this))
-        add(ChooseModulesWizardStep(this, moduleRepository))
-        add(ChooseAppModulesWizardStep(this, moduleRepository))
+        add(ChooseModulesWizardStep(project, this))
+        add(ChooseAppModulesWizardStep(project, this))
     }
 
 }

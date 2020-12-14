@@ -4,8 +4,8 @@ import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.core.wizard.EmptyFormState
 import ru.hh.android.plugin.core.wizard.WizardStepFormState
 import ru.hh.android.plugin.core.wizard.WizardStepViewBuilder
-import ru.hh.android.plugin.extensions.layout.boldLabel
-import ru.hh.android.plugin.extensions.layout.onTextChange
+import ru.hh.plugins.extensions.layout.boldLabel
+import ru.hh.plugins.extensions.layout.onTextChange
 import ru.hh.plugins.models.CheckBoxListViewItem
 import ru.hh.plugins.views.CheckBoxListView
 import javax.swing.JComponent

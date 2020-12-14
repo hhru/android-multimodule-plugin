@@ -4,8 +4,8 @@ import com.intellij.ui.layout.LayoutBuilder
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.framework_ui.UiConstants
 import ru.hh.android.plugin.extensions.isCorrectPackageName
-import ru.hh.android.plugin.extensions.layout.onTextChange
 import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
+import ru.hh.plugins.extensions.layout.onTextChange
 import java.awt.Color
 import javax.swing.BorderFactory
 import javax.swing.JButton

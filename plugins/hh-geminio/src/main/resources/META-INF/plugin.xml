@@ -29,6 +29,7 @@
                 serviceImplementation="ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService"/>
         <projectService
                 serviceImplementation="ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory"/>
+        <projectService serviceImplementation="ru.hh.plugins.geminio.services.MarkdownParserService"/>
     </extensions>
 
     <actions>

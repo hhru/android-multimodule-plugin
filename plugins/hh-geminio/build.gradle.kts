@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     // Core modules
+    implementation(project(":shared-core-ui"))
     implementation(project(":shared-core-utils"))
     implementation(project(":shared-core-freemarker"))
 
@@ -19,6 +20,7 @@ dependencies {
     // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation(Libs.flexmark)   // Markdown parser
 }
 
 

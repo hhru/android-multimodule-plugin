@@ -24,12 +24,22 @@ import ru.hh.android.plugin.actions.modules.copy_module.view.CopyAndroidModuleAc
 import ru.hh.android.plugin.core.model.psi.GradleDependency
 import ru.hh.android.plugin.core.model.psi.GradleDependencyMode
 import ru.hh.android.plugin.core.model.psi.GradleDependencyType
-import ru.hh.android.plugin.extensions.*
+import ru.hh.android.plugin.extensions.androidFacet
+import ru.hh.android.plugin.extensions.canCreateSubdirectory
+import ru.hh.android.plugin.extensions.copyFile
+import ru.hh.android.plugin.extensions.copyInto
+import ru.hh.android.plugin.extensions.createSubdirectoriesForPackageName
+import ru.hh.android.plugin.extensions.findSubdirectoryByPackageName
+import ru.hh.android.plugin.extensions.moduleParentPsiDirectory
+import ru.hh.android.plugin.extensions.packageName
+import ru.hh.android.plugin.extensions.relativePathToParent
+import ru.hh.android.plugin.extensions.rootPsiDirectory
 import ru.hh.android.plugin.services.code_generator.BuildGradleModificationService
 import ru.hh.android.plugin.services.code_generator.SettingsGradleModificationService
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
+import ru.hh.plugins.extensions.openapi.isLibraryModule
 import kotlin.system.measureTimeMillis
 
 

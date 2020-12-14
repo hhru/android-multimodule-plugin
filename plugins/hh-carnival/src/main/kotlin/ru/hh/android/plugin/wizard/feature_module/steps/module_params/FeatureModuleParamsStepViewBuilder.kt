@@ -8,21 +8,28 @@ import ru.hh.android.plugin.core.framework_ui.view.ModuleNamePanel
 import ru.hh.android.plugin.core.wizard.WizardStepFormState
 import ru.hh.android.plugin.core.wizard.WizardStepViewBuilder
 import ru.hh.android.plugin.extensions.EMPTY
-import ru.hh.android.plugin.extensions.layout.bigTitleRow
-import ru.hh.android.plugin.extensions.layout.boldLabel
 import ru.hh.android.plugin.model.enums.FeatureModuleType
 import ru.hh.android.plugin.model.enums.PredefinedFeature
+import ru.hh.plugins.extensions.layout.bigTitleRow
+import ru.hh.plugins.extensions.layout.boldLabel
 import java.io.File
-import javax.swing.*
+import javax.swing.ButtonGroup
+import javax.swing.JButton
+import javax.swing.JCheckBox
+import javax.swing.JComponent
+import javax.swing.JFileChooser
+import javax.swing.JLabel
+import javax.swing.JRadioButton
+import javax.swing.JTextField
 
 
 // TODO - Перенести сообщения в Bundle
 @Suppress("UnstableApiUsage")
 class FeatureModuleParamsStepViewBuilder(
-        private val project: Project,
-        private val defaultModuleType: FeatureModuleType,
-        private val onEnableAllPredefinedSettingsButtonClicked: () -> Unit,
-        private val onDisableAllPredefinedSettingsButtonClicked: () -> Unit
+    private val project: Project,
+    private val defaultModuleType: FeatureModuleType,
+    private val onEnableAllPredefinedSettingsButtonClicked: () -> Unit,
+    private val onDisableAllPredefinedSettingsButtonClicked: () -> Unit
 ) : WizardStepViewBuilder {
 
     private lateinit var moduleNamePanel: ModuleNamePanel
@@ -60,15 +67,15 @@ class FeatureModuleParamsStepViewBuilder(
 
     override fun collectFormState(): WizardStepFormState {
         val enabledFeatures = predefinedFeaturesCheckboxes
-                .filter { it.value.isSelected }
-                .map { it.key }
+            .filter { it.value.isSelected }
+            .map { it.key }
 
         return FeatureModuleParamsFormState(
-                moduleName = moduleNamePanel.getModuleName(),
-                packageName = moduleNamePanel.getPackageName(),
-                moduleType = selectedFeatureModuleType,
-                customModuleTypePath = customModulePath,
-                enabledFeatures = enabledFeatures
+            moduleName = moduleNamePanel.getModuleName(),
+            packageName = moduleNamePanel.getPackageName(),
+            moduleType = selectedFeatureModuleType,
+            customModuleTypePath = customModulePath,
+            enabledFeatures = enabledFeatures
         )
     }
 
@@ -85,8 +92,8 @@ class FeatureModuleParamsStepViewBuilder(
             PredefinedFeature.values().forEach { feature ->
                 row {
                     val featureCheckBox = checkBox(
-                            text = feature.uiText,
-                            isSelected = feature.defaultValue
+                        text = feature.uiText,
+                        isSelected = feature.defaultValue
                     ).component
                     predefinedFeaturesCheckboxes[feature] = featureCheckBox
                 }
@@ -153,11 +160,12 @@ class FeatureModuleParamsStepViewBuilder(
                 }
             }
             row {
-                customFolderPathCommentLabel = JLabel("Choose folder for feature module (e.g. 'feature/feature-profile', 'core/some-core', etc)").apply {
-                    font = font.deriveFont(font.size2D - 2.0f)
-                    isFocusable = false
-                    foreground = UIUtil.getContextHelpForeground()
-                }
+                customFolderPathCommentLabel =
+                    JLabel("Choose folder for feature module (e.g. 'feature/feature-profile', 'core/some-core', etc)").apply {
+                        font = font.deriveFont(font.size2D - 2.0f)
+                        isFocusable = false
+                        foreground = UIUtil.getContextHelpForeground()
+                    }
                 customFolderPathCommentLabel()
             }
         }
