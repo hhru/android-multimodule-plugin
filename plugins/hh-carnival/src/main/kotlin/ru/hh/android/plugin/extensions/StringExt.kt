@@ -1,6 +1,9 @@
 package ru.hh.android.plugin.extensions
 
 import ru.hh.android.plugin.PluginConstants
+import ru.hh.plugins.extensions.HYPHEN
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.extensions.UNDERSCORE
 
 
 val String.Companion.EMPTY: String get() = ""

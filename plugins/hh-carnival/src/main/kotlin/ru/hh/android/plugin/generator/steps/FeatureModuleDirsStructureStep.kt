@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiDirectory
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
-import ru.hh.android.plugin.extensions.SLASH
+import ru.hh.plugins.extensions.SLASH
 import ru.hh.android.plugin.model.CreateModuleConfig
 import ru.hh.android.plugin.model.enums.FeatureModuleType.CUSTOM_PATH
 import ru.hh.android.plugin.model.enums.FeatureModuleType.STANDALONE

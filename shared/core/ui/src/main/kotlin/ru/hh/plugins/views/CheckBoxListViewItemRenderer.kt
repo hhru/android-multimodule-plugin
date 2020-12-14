@@ -1,7 +1,7 @@
-package ru.hh.android.plugin.core.ui.custom_view
+package ru.hh.plugins.views
 
 import com.intellij.util.ui.UIUtil
-import ru.hh.android.plugin.core.ui.model.CheckBoxListViewItem
+import ru.hh.plugins.models.CheckBoxListViewItem
 import java.awt.Component
 import javax.swing.JCheckBox
 import javax.swing.JList
@@ -21,11 +21,11 @@ class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxLi
 
 
     override fun getListCellRendererComponent(
-            list: JList<out T>?,
-            value: T,
-            index: Int,
-            isSelected: Boolean,
-            cellHasFocus: Boolean
+        list: JList<out T>?,
+        value: T,
+        index: Int,
+        isSelected: Boolean,
+        cellHasFocus: Boolean
     ): Component {
         if (isSelected) {
             itemCheckBox.background = UIUtil.getListSelectionBackground(true)

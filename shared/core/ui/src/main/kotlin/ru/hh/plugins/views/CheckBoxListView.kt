@@ -1,10 +1,10 @@
-package ru.hh.android.plugin.core.ui.custom_view
+package ru.hh.plugins.views
 
 import com.intellij.ui.ClickListener
 import com.intellij.ui.CollectionListModel
-import ru.hh.android.plugin.core.ui.model.CheckBoxListViewItem
-import ru.hh.android.plugin.extensions.EMPTY
-import ru.hh.android.plugin.extensions.SPACE
+import ru.hh.plugins.extensions.EMPTY
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.models.CheckBoxListViewItem
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
@@ -16,8 +16,8 @@ import javax.swing.JList
  * List view with checkboxes and force enabled items support.
  */
 class CheckBoxListView<T>(
-        private val onItemSelectedListener: ((T) -> Unit)? = null,
-        private val onItemToggleChangedListener: ((T) -> Unit)? = null
+    private val onItemSelectedListener: ((T) -> Unit)? = null,
+    private val onItemToggleChangedListener: ((T) -> Unit)? = null
 ) : JList<T>() where T : CheckBoxListViewItem {
 
     companion object {

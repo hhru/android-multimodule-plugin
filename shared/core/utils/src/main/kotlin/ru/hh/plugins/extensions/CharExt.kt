@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.extensions
+package ru.hh.plugins.extensions
 
 
 val Char.Companion.SPACE: Char get() = ' '

@@ -4,6 +4,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.util.IncorrectOperationException
 import ru.hh.android.plugin.actions.modules.copy_module.exceptions.CopyModuleActionException
 import ru.hh.android.plugin.utils.logDebug
+import ru.hh.plugins.extensions.DOT
 
 
 fun PsiDirectory.canCreateSubdirectory(name: String): Boolean {

@@ -1,4 +1,4 @@
-package ru.hh.android.plugin.core.ui.model
+package ru.hh.plugins.models
 
 
 interface CheckBoxListViewItem {

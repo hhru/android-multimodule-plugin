@@ -1,13 +1,13 @@
 package ru.hh.android.plugin.core.ui.wizard
 
 import com.intellij.ui.layout.panel
-import ru.hh.android.plugin.core.ui.custom_view.CheckBoxListView
-import ru.hh.android.plugin.core.ui.model.CheckBoxListViewItem
 import ru.hh.android.plugin.core.wizard.EmptyFormState
 import ru.hh.android.plugin.core.wizard.WizardStepFormState
 import ru.hh.android.plugin.core.wizard.WizardStepViewBuilder
 import ru.hh.android.plugin.extensions.layout.boldLabel
 import ru.hh.android.plugin.extensions.layout.onTextChange
+import ru.hh.plugins.models.CheckBoxListViewItem
+import ru.hh.plugins.views.CheckBoxListView
 import javax.swing.JComponent
 import javax.swing.JEditorPane
 import javax.swing.JTextField
@@ -15,13 +15,13 @@ import javax.swing.border.EmptyBorder
 
 
 class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
-        private val textBundle: ChooseItemsStepViewTextBundle,
-        private val onFilterTextChanged: (String) -> Unit,
-        private val onModuleSelectionChanged: (T) -> Unit = {},
-        private val onModuleItemChecked: (T) -> Unit,
-        private val onEnableAllButtonClicked: () -> Unit,
-        private val onDisableAllButtonClicked: () -> Unit,
-        private val isReadmeBlockAvailable: Boolean = false
+    private val textBundle: ChooseItemsStepViewTextBundle,
+    private val onFilterTextChanged: (String) -> Unit,
+    private val onModuleSelectionChanged: (T) -> Unit = {},
+    private val onModuleItemChecked: (T) -> Unit,
+    private val onEnableAllButtonClicked: () -> Unit,
+    private val onDisableAllButtonClicked: () -> Unit,
+    private val isReadmeBlockAvailable: Boolean = false
 ) : WizardStepViewBuilder {
 
     companion object {
@@ -49,8 +49,8 @@ class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
             titledRow(textBundle.listDescriptionMessage) {
                 row {
                     modulesJList = CheckBoxListView(
-                            onItemSelectedListener = { onModuleSelectionChanged.invoke(it) },
-                            onItemToggleChangedListener = { onModuleItemChecked.invoke(it) }
+                        onItemSelectedListener = { onModuleSelectionChanged.invoke(it) },
+                        onItemToggleChangedListener = { onModuleItemChecked.invoke(it) }
                     )
 
                     scrollPane(modulesJList)
@@ -62,7 +62,8 @@ class ChooseItemsStepViewBuilder<T : CheckBoxListViewItem>(
                     row {
                         readmeBlockTextArea = JEditorPane().apply {
                             contentType = "text/html"
-                            border = EmptyBorder(TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING)
+                            border =
+                                EmptyBorder(TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING, TEXT_AREA_PADDING)
                         }
                         scrollPane(readmeBlockTextArea)
                     }
