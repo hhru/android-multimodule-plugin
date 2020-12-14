@@ -4,8 +4,10 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.geminio.sdk.GeminioAdditionalParamsStore
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
 import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
+import ru.hh.plugins.geminio.sdk.models.GeminioTemplateParametersIds
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
@@ -55,8 +57,13 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
     return GeminioTemplateData(
         existingParametersMap = existingParametersMap,
         androidStudioTemplate = androidStudioTemplate,
-        newModuleNameParameterId = GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID,
-        newModulePackageNameParameterId = GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
+        geminioParametersIds = GeminioTemplateParametersIds(
+            newModuleNameParameterId = GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID,
+            newModulePackageNameParameterId = GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID,
+            newModuleLibrariesModulesParameterId = GeminioSdkConstants.FEATURE_LIBRARIES_MODULES_PARAMETER_ID,
+            newApplicationModulesParameterId = GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID,
+        ),
+        additionalParamsStore = GeminioAdditionalParamsStore()
     )
 }
 

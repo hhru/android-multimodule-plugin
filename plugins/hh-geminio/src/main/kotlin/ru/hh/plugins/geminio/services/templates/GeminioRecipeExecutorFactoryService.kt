@@ -125,11 +125,11 @@ class GeminioRecipeExecutorFactoryService {
 
 
     private fun GeminioTemplateData.getModuleName(): String {
-        return existingParametersMap[newModuleNameParameterId]!!.value as String
+        return existingParametersMap[geminioParametersIds.newModuleNameParameterId]!!.value as String
     }
 
     private fun GeminioTemplateData.getPackageName(): String {
-        return existingParametersMap[newModulePackageNameParameterId]!!.value as String
+        return existingParametersMap[geminioParametersIds.newModulePackageNameParameterId]!!.value as String
     }
 
 }
