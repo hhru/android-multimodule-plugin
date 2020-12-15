@@ -4,49 +4,22 @@
     <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
 
     <description><![CDATA[
-    Enable new option - create feature module in Android application
+    Carnival - plugin for several useful actions and abilities.
     ]]></description>
 
     <change-notes><![CDATA[
-    3.1. Small fixes: </br>
-    - Fix module path generation </br>
-    - Change default templates folder path </br>
-    - Add more readable exception if there are no templates in project </br>
+    1.1.0. Breaking changes: </br>
+        - Remove action for generating new module - this functionality will be available through Geminio plugin </br>
+
     </br>
 
-    3.0. Bug fixing and new features: </br>
-    - Fix crash on start action </br>
-    - Remove old MoxyReflectorStub support </br>
-    - Add flag for supporting Toothpick 3.0 </br>
-    - Add ability to choose any folder for module creation </br>
-    - Add README viewer when choose modules </br>
-    - Add filter for modules names </br>
+    1.0.0. Initial release. <br/>
+        - Action for generating new feature module <br/>
+        - Small actions for quick code generation: EMPTY object generator, @SerializedName annotations generator <br/>
+        - Action for creating new JIRA issue for develop branch merge <br/>
+        - Lint inspections for resources <br/>
+        - Deprecated resources annotator <br/>
     </br>
-
-    2.3. New features: </br>
-    - Add feature page for choosing plugin configuration folder. </br>
-         Fixes: </br>
-    - Remove 'common' module from required modules
-    - Fix code style problem with adding new package into toothpick_registry_children_package_names
-    - fix RegisterMoxyReflectorPackages annotation modification
-
-    2.2. Fix bug with repeating language ID. <br/>
-
-    2.1. Fixing several bugs. <br/>
-
-    2.0. Absolutely new version of plugin.<br/>
-    - Now generated files will be added into Git, if you want (you should see VCS dialog)<br/>
-    - Add normal notification about finishing of process<br/>
-    - Add several new templates (for presentation layer)<br/>
-    - Remove useless 'Library name' field from the first page<br/>
-    - Fix Moxy annotation changing !!!<br/>
-    - Fix several formatting issues<br/>
-
-    1.1. Fixing several bugs and refactoring. <br/>
-
-    1.0. Initial release <br/>
-    First release of our plugin.<br/>
-    Plugin add new cool feature into Android development -> creating of new feature module.
     ]]></change-notes>
 
     <depends>com.intellij.modules.lang</depends>
@@ -55,7 +28,7 @@
     <depends>org.jetbrains.android</depends>
     <depends>Git4Idea</depends>
 
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <idea-version since-build="201.8743.12"/>
 
     <actions>
@@ -68,10 +41,6 @@
             <action class="ru.hh.android.plugin.actions.modules.copy_module.CopyAndroidModuleAction"
                     text="Copy Module..."
                     id="ru.hh.android.plugin.actions.modules.copy_module.CopyAndroidModuleAction"/>
-
-            <action id="ru.hh.android.plugin.actions.modules.new_module.NewFeatureModuleAction"
-                    class="ru.hh.android.plugin.actions.modules.new_module.NewFeatureModuleAction"
-                    text="New Feature Module..." description="Open feature module creation wizard"/>
 
         </group>
         <!-- endregion -->
@@ -108,17 +77,6 @@
         </group>
         <!-- endregion -->
     </actions>
-
-    <project-components>
-        <component>
-            <implementation-class>ru.hh.android.plugin.model.converter.CreateModuleConfigConverter
-            </implementation-class>
-        </component>
-        <component>
-            <implementation-class>ru.hh.android.plugin.generator.FeatureModuleGenerator
-            </implementation-class>
-        </component>
-    </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- region Plugin config -->
