@@ -29,4 +29,4 @@ groupsNames:
 
 ---
 
-[Обратно к содержанию](/README.md#Содержание)
+[Обратно к содержанию](/plugins/hh-geminio/README.md#Содержание)

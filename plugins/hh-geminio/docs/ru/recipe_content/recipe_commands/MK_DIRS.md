@@ -20,8 +20,8 @@ mkDirs:
       - values
 ```
 
-Каждый элемент списка может быть представлен [выражением](/docs/ru/EXPRESSIONS.md).
+Каждый элемент списка может быть представлен [выражением](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md).
 
 --- 
 
-[Обратно к списку команд](/docs/ru/recipe_content/RECIPE.md)
+[Обратно к списку команд](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)

@@ -2,13 +2,13 @@
 
 Параметры:
 
-- `validIf` -- булево [выражение](/docs/ru/EXPRESSIONS.md) для вычисления предиката дя указанных команд
-- `commands` -- набор команд, которые должны выполнится, если [выражение](/docs/ru/EXPRESSIONS.md) `validIf` 
+- `validIf` -- булево [выражение](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md) для вычисления предиката дя указанных команд
+- `commands` -- набор команд, которые должны выполнится, если [выражение](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md) `validIf` 
   возвращает `true`.
-- `elseCommands` -- набор команд, которые должны выполнится, если [выражение](/docs/ru/EXPRESSIONS.md) `validIf`
+- `elseCommands` -- набор команд, которые должны выполнится, если [выражение](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md) `validIf`
   возвращает `false`.
 
-Команда вычисляет [выражение](/docs/ru/EXPRESSIONS.md), которое вы указываете в `validIf`.
+Команда вычисляет [выражение](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md), которое вы указываете в `validIf`.
 
 Если результат равен `true`, то будет выполнен набор команд, которые вы
 укажете в списке `commands`, если `false` - выполняются команды в `elseCommands`. 
@@ -17,4 +17,4 @@
 
 --- 
 
-[Обратно к списку команд](/docs/ru/recipe_content/RECIPE.md)
+[Обратно к списку команд](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)

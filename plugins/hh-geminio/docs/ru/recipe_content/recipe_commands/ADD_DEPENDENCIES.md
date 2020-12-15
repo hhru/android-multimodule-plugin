@@ -24,4 +24,4 @@
 
 --- 
 
-[Обратно к списку команд](/docs/ru/recipe_content/RECIPE.md)
+[Обратно к списку команд](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)

@@ -140,17 +140,17 @@ recipe:
 
 ### Секции "рецептов"
 
-- [requiredParams](/docs/ru/recipe_content/REQURED_PARAMS.md)
-- [optionalParams](/docs/ru/recipe_content/OPTIONAL_PARAMS.md)
-- [predefinedFeatures](/docs/ru/recipe_content/PREDEFINED_FEATURES.md)
-- [widgets](/docs/ru/recipe_content/WIDGETS.md)
-- [globals](/docs/ru/recipe_content/GLOBALS.md)
-- [recipe](/docs/ru/recipe_content/RECIPE.md)
+- [requiredParams](/plugins/hh-geminio/docs/ru/recipe_content/REQURED_PARAMS.md)
+- [optionalParams](/plugins/hh-geminio/docs/ru/recipe_content/OPTIONAL_PARAMS.md)
+- [predefinedFeatures](/plugins/hh-geminio/docs/ru/recipe_content/PREDEFINED_FEATURES.md)
+- [widgets](/plugins/hh-geminio/docs/ru/recipe_content/WIDGETS.md)
+- [globals](/plugins/hh-geminio/docs/ru/recipe_content/GLOBALS.md)
+- [recipe](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)
 
 ### Дополнительно
 
-- [Выражения](/docs/ru/EXPRESSIONS.md)
+- [Выражения](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md)
 
 ---
 
-[Обратно к содержанию](/README.md#Содержание)
+[Обратно к содержанию](/plugins/hh-geminio/README.md#Содержание)

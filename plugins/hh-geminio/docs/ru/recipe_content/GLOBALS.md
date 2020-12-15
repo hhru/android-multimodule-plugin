@@ -4,4 +4,4 @@ TODO
 
 ---
 
-[Обратно к устройству "рецептов"](/docs/ru/RECIPE_CONTENT.md)
+[Обратно к устройству "рецептов"](/plugins/hh-geminio/docs/ru/RECIPE_CONTENT.md)

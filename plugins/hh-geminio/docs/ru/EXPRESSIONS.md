@@ -55,3 +55,7 @@ availability: true
 - `manifestOut` - путь до папки `src/main` в модуле
 - `resOut` - путь до папки `res` внутри модуля
 - `srcOut` - путь до папки `src/<source-set>/<current-dir>` в модуле
+
+---
+
+[Обратно к содержанию](/plugins/hh-geminio/README.md#Содержание)
