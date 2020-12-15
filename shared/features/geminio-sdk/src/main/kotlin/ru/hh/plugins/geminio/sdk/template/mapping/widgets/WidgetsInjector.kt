@@ -6,6 +6,7 @@ import com.android.tools.idea.wizard.template.EnumParameter
 import com.android.tools.idea.wizard.template.EnumWidget
 import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TextFieldWidget
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
@@ -18,6 +19,7 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringPar
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toGeminioTemplateParameterData
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toShowHiddenGlobalsParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.parameters.toGeminioTemplateParameterData
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createFormattedModuleNameParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createModuleNameParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createPackageNameParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeParametersData
@@ -55,13 +57,20 @@ private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
 
     if (predefinedFeaturesSection.features.contains(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
         val moduleNameParameterData = PredefinedFeaturesSection.createModuleNameParameter()
-        val packageNameParameterData = PredefinedFeaturesSection.createPackageNameParameter(
-            moduleNameParameter = moduleNameParameterData.parameter as AndroidStudioTemplateStringParameter
+        val moduleNameStringParameter = moduleNameParameterData.parameter as AndroidStudioTemplateStringParameter
+        val formattedModuleNameParameterData = PredefinedFeaturesSection.createFormattedModuleNameParameter(
+            moduleNameParameter = moduleNameStringParameter
         )
+        val packageNameParameterData = PredefinedFeaturesSection.createPackageNameParameter(
+            moduleNameParameter = moduleNameStringParameter
+        )
+
         allParameters += moduleNameParameterData
+        allParameters += formattedModuleNameParameterData
         allParameters += packageNameParameterData
 
         existingParametersMap[FEATURE_MODULE_NAME_PARAMETER_ID] = moduleNameParameterData.parameter
+        existingParametersMap[FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID] = formattedModuleNameParameterData.parameter
         existingParametersMap[FEATURE_PACKAGE_NAME_PARAMETER_ID] = packageNameParameterData.parameter
     }
 

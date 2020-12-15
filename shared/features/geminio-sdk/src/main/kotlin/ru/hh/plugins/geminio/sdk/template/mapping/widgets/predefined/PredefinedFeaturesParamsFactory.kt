@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined
 
 import com.android.tools.idea.wizard.template.stringParameter
+import ru.hh.plugins.extensions.toFormattedModuleName
 import ru.hh.plugins.extensions.toPackageNameFromModuleName
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
@@ -20,6 +21,22 @@ internal fun PredefinedFeaturesSection.Companion.createModuleNameParameter(): Ge
                 AndroidStudioTemplateStringParameterConstraint.UNIQUE,
             )
             default = "mymodule"
+            visible = { true }
+            enabled = { true }
+        }
+    )
+}
+
+internal fun PredefinedFeaturesSection.Companion.createFormattedModuleNameParameter(
+    moduleNameParameter: AndroidStudioTemplateStringParameter,
+): GeminioTemplateParameterData {
+    return GeminioTemplateParameterData(
+        parameterId = GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID,
+        parameter = stringParameter {
+            name = "Module's classes prefix"
+            help = "Prefix for classes with module name"
+            default = "MyModule"
+            suggest = { moduleNameParameter.value.toFormattedModuleName() }
             visible = { true }
             enabled = { true }
         }
