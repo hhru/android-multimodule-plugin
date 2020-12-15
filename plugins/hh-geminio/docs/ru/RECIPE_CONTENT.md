@@ -114,6 +114,10 @@ recipe:
             to: ${srcOut}/di/${moduleName}.kt
         - open:
             file: ${srcOut}/di/${moduleName}.kt
+      elseCommands:
+        - instantiateAndOpen:
+            from: root/src/app_package/AnotherModule.kt.ftl
+            to: ${srcOut}/di/${moduleName}.kt
   - addDependencies:
       - implementation: Libs.jetpack.compose
       - kapt: Libs.di.toothpick
