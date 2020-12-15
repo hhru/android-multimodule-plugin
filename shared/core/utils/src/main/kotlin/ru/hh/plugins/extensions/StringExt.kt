@@ -55,3 +55,22 @@ fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
         .replace(Char.HYPHEN, Char.UNDERSCORE)
     return "${packageNamePrefix}.${formattedModuleName}"
 }
+
+fun String.replaceWordsBreakers(): String {
+    return this.replace('-', '_')
+        .replace('_', ' ')
+        .replace("  ", " ")
+}
+
+fun String.toFormattedModuleName(): String {
+    val moduleName = this
+
+    return with(StringBuilder()) {
+        moduleName
+            .replaceWordsBreakers()
+            .split(' ')
+            .map { it.capitalize() }
+            .forEach { append(it) }
+        toString()
+    }
+}

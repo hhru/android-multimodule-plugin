@@ -3,6 +3,7 @@ package ru.hh.plugins.geminio.sdk.template.mapping
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.extensions.toFormattedModuleName
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.GeminioAdditionalParamsStore
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
@@ -88,9 +89,18 @@ private fun getHardcodedParamsMap(
         }
     }
 
+    val moduleNameParameter = existingParametersMap[GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID]
+            as? AndroidStudioTemplateStringParameter
+
+    val formattedModuleName = when (moduleNameParameter) {
+        null -> null
+        else -> moduleNameParameter.value.toFormattedModuleName()
+    }
+
     return mapOf(
         HardcodedParams.PACKAGE_NAME to packageName,
-        HardcodedParams.APPLICATION_PACKAGE to applicationPackage
+        HardcodedParams.APPLICATION_PACKAGE to applicationPackage,
+        HardcodedParams.FORMATTED_MODULE_NAME to formattedModuleName
     )
 }
 
@@ -104,4 +114,9 @@ private object HardcodedParams {
      * Package name from current gradle module.
      */
     const val APPLICATION_PACKAGE = "applicationPackage"
+
+    /**
+     * Formatted module name
+     */
+    const val FORMATTED_MODULE_NAME = "formattedModuleName"
 }
