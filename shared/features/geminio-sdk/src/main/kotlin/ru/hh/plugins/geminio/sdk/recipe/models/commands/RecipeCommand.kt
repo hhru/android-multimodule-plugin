@@ -36,10 +36,12 @@ sealed class RecipeCommand {
 
     /**
      * Command which will be executed only if [validIf] predicate returns true.
+     * If [validIf] returns false, try to execute [elseCommands].
      */
     data class Predicate(
         val validIf: RecipeExpression,
-        val commands: List<RecipeCommand>
+        val commands: List<RecipeCommand>,
+        val elseCommands: List<RecipeCommand>
     ) : RecipeCommand()
 
     /**
