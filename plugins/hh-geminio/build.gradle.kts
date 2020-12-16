@@ -9,20 +9,19 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":hh-plugins-core"))
+    // Core modules
+    implementation(project(":shared-core-utils"))
+    implementation(project(":shared-core-freemarker"))
+
+    // Feature modules
+    implementation(project(":shared-feature-geminio-sdk"))
+
+    // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation(Libs.freemarker)
-
-    testImplementation(Libs.tests.kotest) // for kotest framework
 }
 
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
+
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
     changeNotes("""

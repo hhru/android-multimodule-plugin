@@ -1,10 +1,22 @@
 rootProject.name = "hh-android-plugins"
 
-// Core modules
-include(":hh-plugins-core")
+// region Shared modules
 
-project(":hh-plugins-core").projectDir = File("$settingsDir/core/hh-plugins-core")
+// region Shared core modules
+include(":shared-core-utils")
+include(":shared-core-freemarker")
 
+project(":shared-core-utils").projectDir = File("$settingsDir/shared/core/utils")
+project(":shared-core-freemarker").projectDir = File("$settingsDir/shared/core/freemarker")
+// endregion
+
+// region Shared features
+include(":shared-feature-geminio-sdk")
+
+project(":shared-feature-geminio-sdk").projectDir = File("$settingsDir/shared/features/geminio-sdk")
+// endregion
+
+// endregion
 
 // Plugins
 include(":hh-carnival")

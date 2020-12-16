@@ -5,8 +5,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.config.PluginConfig
-import ru.hh.plugins.utils.freemarker.FreemarkerConfiguration
-import java.io.File
+import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import java.io.StringWriter
 
 

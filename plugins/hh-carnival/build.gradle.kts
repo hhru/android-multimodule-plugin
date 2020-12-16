@@ -10,7 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":hh-plugins-core"))
+    implementation(project(":shared-core-utils"))
+    implementation(project(":shared-core-freemarker"))
+
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation(Libs.freemarker)

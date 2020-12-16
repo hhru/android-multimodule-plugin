@@ -1,0 +1,24 @@
+#!/bin/bash
+
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+error_msg="Commit declined. Branch name does not match the accepted JIRA task pattern ('MOB-6336')"
+
+task_branch_regex="(^MOB-[0-9]+)"
+
+
+if [[ ! $current_branch =~ $task_branch_regex ]];
+then
+    echo "$error_msg" >&2
+    exit 1
+fi
+
+
+if [[ $current_branch =~ $task_branch_regex ]];
+then
+    TASK=`echo $current_branch | grep -Eo "MOB-[0-9]+"`
+else
+    TASK=`echo $current_branch`
+fi
+
+MESSAGE=$(cat $1)
+echo "[$TASK] -- $MESSAGE" > "$1"

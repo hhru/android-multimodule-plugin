@@ -37,5 +37,11 @@ gradlePlugin {
             implementationClass = "ru.hh.plugins.gradle.build_all_plugins.BuildAllPluginsGradlePlugin"
             displayName = "Build all plugins and move them into single directory"
         }
+
+        create("installGitHooks") {
+            id = "ru.hh.plugins.gradle.install_git_hooks"
+            implementationClass = "ru.hh.plugins.gradle.install_git_hooks.InstallGitHooksGradlePlugin"
+            displayName = "Install git hooks"
+        }
     }
 }

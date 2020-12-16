@@ -12,6 +12,7 @@ object GradlePlugins {
     const val coreModuleMarker = "ru.hh.plugins.gradle.core_module_marker"
     const val collectUpdatePluginsXml = "ru.hh.plugins.gradle.collect_update_plugins"
     const val buildAllPlugins = "ru.hh.plugins.gradle.build_all_plugins"
+    const val installGitHooks = "ru.hh.plugins.gradle.install_git_hooks"
 }
 
 object BuildPlugins {

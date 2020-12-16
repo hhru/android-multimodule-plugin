@@ -26,4 +26,5 @@ allprojects {
 plugins {
     id(GradlePlugins.collectUpdatePluginsXml)
     id(GradlePlugins.buildAllPlugins)
+    id(GradlePlugins.installGitHooks)
 }
