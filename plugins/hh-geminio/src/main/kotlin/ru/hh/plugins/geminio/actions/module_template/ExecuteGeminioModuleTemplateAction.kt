@@ -1,0 +1,207 @@
+package ru.hh.plugins.geminio.actions.module_template
+
+import com.android.tools.idea.gradle.actions.SyncProjectAction
+import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
+import com.android.tools.idea.wizard.model.ModelWizard
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.psi.PsiDirectory
+import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
+import ru.hh.plugins.code_modification.BuildGradleModificationService
+import ru.hh.plugins.code_modification.SettingsGradleModificationService
+import ru.hh.plugins.code_modification.models.BuildGradleDependency
+import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.extensions.UNDERSCORE
+import ru.hh.plugins.extensions.getSelectedPsiElement
+import ru.hh.plugins.geminio.actions.module_template.steps.ChooseModulesModelWizardStep
+import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
+import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
+import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.services.balloonError
+import ru.hh.plugins.geminio.services.balloonInfo
+import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
+import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+
+
+/**
+ * Action for creating new module.
+ */
+class ExecuteGeminioModuleTemplateAction(
+    private val actionText: String,
+    private val actionDescription: String,
+    private val geminioRecipePath: String
+) : AnAction() {
+
+    companion object {
+        private const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
+
+        private const val WIZARD_TITLE = "Geminio Module wizard"
+    }
+
+
+    init {
+        with(templatePresentation) {
+            text = actionText
+            description = actionDescription
+            isEnabledAndVisible = true
+        }
+    }
+
+
+    override fun update(e: AnActionEvent) {
+        super.update(e)
+
+        val selectedPsiElement = e.getSelectedPsiElement()
+        e.presentation.isEnabledAndVisible =
+            (e.project == null || selectedPsiElement == null || selectedPsiElement !is PsiDirectory).not()
+    }
+
+    override fun actionPerformed(actionEvent: AnActionEvent) {
+        println("Start executing template '$actionText'")
+
+        val project = actionEvent.project!!
+        val selectedPsiElement = actionEvent.getSelectedPsiElement() as PsiDirectory
+
+        val directoryPath = selectedPsiElement.virtualFile.path
+        println("Selected directory path: $directoryPath")
+
+        val geminioSdk = GeminioSdkFactory.createGeminioSdk()
+        val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
+
+        check(geminioRecipe.predefinedFeaturesSection.hasFeature(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
+            "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
+        }
+
+        println("Recipe successfully parsed!")
+
+        val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
+
+        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val stepModel = configureTemplateParametersStepFactory.createForNewModule(
+            project = project,
+            stepTitle = "Create new $actionText",
+            directoryPath = directoryPath,
+            defaultPackageName = "ru.hh",   // TODO - fetch from settings
+            androidStudioTemplate = geminioTemplateData.androidStudioTemplate
+        )
+        val chooseModulesStep = ChooseModulesModelWizardStep(
+            renderTemplateModel = stepModel.renderTemplateModel,
+            stepTitle = "Choose modules",
+            project = project,
+            isForAppModules = false
+        )
+        val chooseAppsStep = ChooseModulesModelWizardStep(
+            renderTemplateModel = stepModel.renderTemplateModel,
+            stepTitle = "Choose applications",
+            project = project,
+            isForAppModules = true
+        )
+
+        val wizard = ModelWizard.Builder()
+            .addStep(stepModel.configureTemplateParametersStep)
+            .addStep(chooseModulesStep)
+            .addStep(chooseAppsStep)
+            .build()
+
+        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
+            .setProject(project)
+            .build()
+
+        wizard.addResultListener(object : ModelWizard.WizardListener {
+            override fun onWizardFinished(result: ModelWizard.WizardResult) {
+                super.onWizardFinished(result)
+
+                if (result.isFinished.not()) {
+                    project.balloonError(message = "User closed Geminio Module Template Wizard")
+                    return
+                }
+
+                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService.getInstance(project)
+                val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
+                    project = project,
+                    newModuleRootDirectoryPath = directoryPath,
+                    geminioTemplateData = geminioTemplateData
+                )
+
+                propagateAdditionalParams()
+
+                try {
+                    project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
+
+                        with(recipeExecutorModel) {
+                            geminioTemplateData.androidStudioTemplate.recipe.invoke(
+                                recipeExecutor,
+                                moduleTemplateData
+                            )
+                        }
+
+                        modifySettingGradle(recipeExecutorModel)
+                        modifyBuildGradle(recipeExecutorModel)
+                    }
+
+                    SyncProjectAction().actionPerformed(actionEvent)
+
+                    project.balloonInfo(message = "Finished '$actionText' module template execution")
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+
+                    dialog.disposeIfNeeded()
+                    dialog.close(1)
+
+                    project.balloonError(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
+                    throw ex
+                }
+            }
+
+            override fun onWizardAdvanceError(e: Exception) {
+                super.onWizardAdvanceError(e)
+                e.printStackTrace()
+            }
+
+
+            private fun propagateAdditionalParams() {
+                with(geminioTemplateData) {
+                    val librariesModules = chooseModulesStep.getSelectedModules()
+                    val applicationModules = chooseAppsStep.getSelectedModules()
+
+                    val projectNamePrefix = project.name.replace(Char.SPACE, Char.UNDERSCORE) + "."
+                    paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { module ->
+                        module.name.removePrefix(projectNamePrefix)
+                    }
+                    paramsStore[geminioIds.newModuleLibrariesModulesParameterId] = librariesModules.map { module ->
+                        module.name.removePrefix(projectNamePrefix)
+                    }
+                }
+            }
+
+            private fun modifySettingGradle(recipeExecutorModel: GeminioRecipeExecutorModel) {
+                val settingsGradleModificationService = SettingsGradleModificationService.getInstance(project)
+                val newModuleRelativePath =
+                    directoryPath.removePrefix("${project.basePath!!}/") + "/" + recipeExecutorModel.moduleName
+                settingsGradleModificationService.addGradleModuleDescription(
+                    moduleName = recipeExecutorModel.moduleName,
+                    moduleRelativePath = newModuleRelativePath
+                )
+            }
+
+            private fun modifyBuildGradle(recipeExecutorModel: GeminioRecipeExecutorModel) {
+                val buildGradleModificationService = BuildGradleModificationService.getInstance(project)
+                val addingDependencies = listOf(
+                    BuildGradleDependency.Project(
+                        configuration = BuildGradleDependencyConfiguration.IMPLEMENTATION,
+                        value = recipeExecutorModel.moduleName
+                    )
+                )
+                for (appModule in chooseAppsStep.getSelectedModules()) {
+                    buildGradleModificationService.addDepsIntoModule(appModule, addingDependencies, true)
+                }
+            }
+
+        })
+
+        dialog.show()
+    }
+
+}

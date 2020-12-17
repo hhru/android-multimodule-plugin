@@ -9,34 +9,6 @@ import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
-import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.path.GrCallExpression
-import ru.hh.android.plugin.CodeGeneratorConstants.BUILD_GRADLE_FILE_NAME
-
-
-const val GRADLE_KEYWORD_APPLY = "apply"
-const val GRADLE_KEYWORD_PLUGIN = "plugin"
-
-const val PLUGIN_ANDROID_LIBRARY_NAME = "com.android.library"
-const val PLUGIN_JAVA_LIBRARY = "java-library"
-const val PLUGIN_ANDROID_APP = "com.android.application"
-
-
-fun Module.isLibraryModule(): Boolean {
-    return findPsiFileByName(BUILD_GRADLE_FILE_NAME)?.let { buildGradlePsiFile ->
-        return buildGradlePsiFile.collectDescendantsOfType<GrCallExpression>()
-            .filter { it.text.contains(GRADLE_KEYWORD_APPLY) && it.text.contains(GRADLE_KEYWORD_PLUGIN) }
-            .any { it.text.contains(PLUGIN_ANDROID_LIBRARY_NAME) || it.text.contains(PLUGIN_JAVA_LIBRARY) }
-    } ?: false
-}
-
-fun Module.isAppModule(): Boolean {
-    return findPsiFileByName(BUILD_GRADLE_FILE_NAME)?.let { buildGradlePsiFile ->
-        return buildGradlePsiFile.collectDescendantsOfType<GrCallExpression>()
-            .filter { it.text.contains(GRADLE_KEYWORD_APPLY) && it.text.contains(GRADLE_KEYWORD_PLUGIN) }
-            .any { it.text.contains(PLUGIN_ANDROID_APP) }
-    } ?: false
-}
 
 
 fun Module.findPsiFileByName(name: String): PsiFile? {

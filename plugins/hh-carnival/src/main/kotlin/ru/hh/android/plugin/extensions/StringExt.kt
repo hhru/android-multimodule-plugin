@@ -1,6 +1,9 @@
 package ru.hh.android.plugin.extensions
 
 import ru.hh.android.plugin.PluginConstants
+import ru.hh.plugins.extensions.HYPHEN
+import ru.hh.plugins.extensions.SPACE
+import ru.hh.plugins.extensions.UNDERSCORE
 
 
 val String.Companion.EMPTY: String get() = ""
@@ -11,12 +14,6 @@ private val REGEX_PACKAGE_NAME = Regex("^([A-Za-z]{1}[A-Za-z\\d_]*\\.)*[A-Za-z][
 
 fun String.replaceLineBreaks(): String {
     return this.replace("\n", "\n<br />", true)
-}
-
-fun String.replaceWordsBreakers(): String {
-    return this.replace('-', '_')
-            .replace('_', ' ')
-            .replace("  ", " ")
 }
 
 fun String.replaceMultipleSplashes(): String {

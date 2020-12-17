@@ -6,16 +6,24 @@ import com.android.tools.idea.wizard.template.EnumParameter
 import com.android.tools.idea.wizard.template.EnumWidget
 import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TextFieldWidget
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBuilder
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toAndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toGeminioTemplateParameterData
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toShowHiddenGlobalsParameter
-import ru.hh.plugins.geminio.sdk.template.mapping.widgets.parameters.toAndroidStudioTemplateParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.parameters.toGeminioTemplateParameterData
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createFormattedModuleNameParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createModuleNameParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createPackageNameParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeParametersData
-
-
-private const val GLOBALS_SHOW_HIDDEN_VALUES_ID = "__showHiddenGlobals"
+import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
 
 /**
@@ -28,11 +36,11 @@ internal fun AndroidStudioTemplateBuilder.injectWidgets(
 ): Map<String, AndroidStudioTemplateParameter> {
     val parametersData = recipe.toParametersData()
 
-    val allWidgets = parametersData.templateParameters.mapNotNull { parameter ->
-        when (parameter) {
-            is StringParameter -> TextFieldWidget(parameter)
-            is BooleanParameter -> CheckBoxWidget(parameter)
-            is EnumParameter<*> -> EnumWidget(parameter)
+    val allWidgets = parametersData.templateParameters.mapNotNull { parameterData ->
+        when (parameterData.parameter) {
+            is StringParameter -> TextFieldWidget(parameterData.parameter)
+            is BooleanParameter -> CheckBoxWidget(parameterData.parameter)
+            is EnumParameter<*> -> EnumWidget(parameterData.parameter)
             else -> null
         }
     }
@@ -45,28 +53,48 @@ internal fun AndroidStudioTemplateBuilder.injectWidgets(
 private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
     val existingParametersMap = mutableMapOf<String, AndroidStudioTemplateParameter>()
 
-    val allParameters = mutableListOf<AndroidStudioTemplateParameter>()
-    allParameters += widgetsSection.parameters.map { widgetParameter ->
-        val parameter = widgetParameter.toAndroidStudioTemplateParameter(existingParametersMap)
-        existingParametersMap[widgetParameter.id] = parameter
-        parameter
+    val allParameters = mutableListOf<GeminioTemplateParameterData>()
+
+    if (predefinedFeaturesSection.features.contains(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
+        val moduleNameParameterData = PredefinedFeaturesSection.createModuleNameParameter()
+        val moduleNameStringParameter = moduleNameParameterData.parameter as AndroidStudioTemplateStringParameter
+        val formattedModuleNameParameterData = PredefinedFeaturesSection.createFormattedModuleNameParameter(
+            moduleNameParameter = moduleNameStringParameter
+        )
+        val packageNameParameterData = PredefinedFeaturesSection.createPackageNameParameter(
+            moduleNameParameter = moduleNameStringParameter
+        )
+
+        allParameters += moduleNameParameterData
+        allParameters += formattedModuleNameParameterData
+        allParameters += packageNameParameterData
+
+        existingParametersMap[FEATURE_MODULE_NAME_PARAMETER_ID] = moduleNameParameterData.parameter
+        existingParametersMap[FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID] = formattedModuleNameParameterData.parameter
+        existingParametersMap[FEATURE_PACKAGE_NAME_PARAMETER_ID] = packageNameParameterData.parameter
     }
 
-    globalsSection?.let { globalsSection ->
-        val showHiddenGlobalsParameter = globalsSection.toShowHiddenGlobalsParameter(
+    allParameters += widgetsSection.parameters.map { widgetParameter ->
+        val parameterData = widgetParameter.toGeminioTemplateParameterData(existingParametersMap)
+        existingParametersMap[widgetParameter.id] = parameterData.parameter
+        parameterData
+    }
+
+    if (globalsSection.parameters.isNotEmpty()) {
+        val showHiddenGlobalsParameterData = globalsSection.toShowHiddenGlobalsParameter(
             showHiddenValuesId = GLOBALS_SHOW_HIDDEN_VALUES_ID,
             existingParametersMap = existingParametersMap
         )
-        allParameters += showHiddenGlobalsParameter
-        existingParametersMap[GLOBALS_SHOW_HIDDEN_VALUES_ID] = showHiddenGlobalsParameter
+        allParameters += showHiddenGlobalsParameterData
+        existingParametersMap[GLOBALS_SHOW_HIDDEN_VALUES_ID] = showHiddenGlobalsParameterData.parameter
 
         allParameters += globalsSection.parameters.map { globalsParameter ->
-            val parameter = globalsParameter.toAndroidStudioTemplateParameter(
+            val parameterData = globalsParameter.toGeminioTemplateParameterData(
                 showHiddenValuesId = GLOBALS_SHOW_HIDDEN_VALUES_ID,
                 existingParametersMap = existingParametersMap
             )
-            existingParametersMap[globalsParameter.id] = parameter
-            parameter
+            existingParametersMap[globalsParameter.id] = parameterData.parameter
+            parameterData
         }
     }
 

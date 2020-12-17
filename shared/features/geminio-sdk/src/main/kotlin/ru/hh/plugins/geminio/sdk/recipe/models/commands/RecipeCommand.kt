@@ -1,5 +1,6 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.commands
 
+import ru.hh.plugins.code_modification.models.BuildGradleDependency
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 
 
@@ -35,10 +36,12 @@ sealed class RecipeCommand {
 
     /**
      * Command which will be executed only if [validIf] predicate returns true.
+     * If [validIf] returns false, try to execute [elseCommands].
      */
     data class Predicate(
         val validIf: RecipeExpression,
-        val commands: List<RecipeCommand>
+        val commands: List<RecipeCommand>,
+        val elseCommands: List<RecipeCommand>
     ) : RecipeCommand()
 
     /**
@@ -46,5 +49,12 @@ sealed class RecipeCommand {
      */
     data class AddDependencies(
         val dependencies: List<BuildGradleDependency>
+    ) : RecipeCommand()
+
+    /**
+     * Command for creating directories structure..
+     */
+    data class MkDirs(
+        val dirs: List<MkDirItem>
     ) : RecipeCommand()
 }

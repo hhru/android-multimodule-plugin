@@ -10,6 +10,7 @@ import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
 
 private const val KEY_COMMAND_VALID_IF = "validIf"
 private const val KEY_COMMAND_COMMANDS = "commands"
+private const val KEY_COMMAND_ELSE_COMMANDS = "elseCommands"
 
 
 internal fun Map<String, Any>.toPredicateCommand(sectionName: String): RecipeCommand.Predicate {
@@ -25,9 +26,11 @@ internal fun Map<String, Any>.toPredicateCommand(sectionName: String): RecipeCom
             KEY_COMMAND_COMMANDS
         )
     }
+    val elseCommands = this[KEY_COMMAND_ELSE_COMMANDS] as? List<Map<String, Any>>
 
     return RecipeCommand.Predicate(
         validIf = validIfString.toRecipeExpression(sectionName),
         commands = commands.map { it.toRecipeCommand("${sectionName}:${KEY_COMMAND_COMMANDS}") },
+        elseCommands = elseCommands?.map { it.toRecipeCommand("${sectionName}:${KEY_COMMAND_ELSE_COMMANDS}") } ?: emptyList()
     )
 }

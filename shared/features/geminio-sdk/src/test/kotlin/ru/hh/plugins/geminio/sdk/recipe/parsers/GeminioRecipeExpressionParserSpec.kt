@@ -1,7 +1,9 @@
 package ru.hh.plugins.geminio.sdk.recipe.parsers
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldStartWith
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
@@ -106,7 +108,7 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     "Should recognize {resOut} variable into separate command" {
         val givenExpressionString = "\${resOut}/layout/\${fragmentName}.xml"
         val expectedExpression = listOf(
-            ResOut(emptyList()),
+            ResOut,
             Fixed("/layout/"),
             Dynamic(
                 parameterId = "fragmentName",
@@ -121,13 +123,33 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     "Should recognize {srcOut} variable into separate command" {
         val givenExpressionString = "\${srcOut}/di/\${moduleName}.kt"
         val expectedExpression = listOf(
-            SrcOut(emptyList()),
+            SrcOut,
             Fixed("/di/"),
             Dynamic(
                 parameterId = "moduleName",
                 modifiers = emptyList()
             ),
             Fixed(".kt"),
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+    }
+
+    "Should recognize {manifestOut} variable into separate command" {
+        val givenExpressionString = "\${manifestOut}/AndroidManifest.xml"
+        val expectedExpression = listOf(
+            RecipeExpressionCommand.ManifestOut,
+            Fixed("/AndroidManifest.xml"),
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+    }
+
+    "Should recognize {rootOut} variable into separate command" {
+        val givenExpressionString = "\${rootOut}/build.gradle"
+        val expectedExpression = listOf(
+            RecipeExpressionCommand.RootOut,
+            Fixed("/build.gradle"),
         ).intoExpression()
 
         givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
@@ -175,19 +197,12 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
         givenExpressionStringWithFalse.toRecipeExpression(SECTION_NAME) shouldBe expectedExpressionWithFalse
     }
 
-    "Should skip unknown modifiers" {
+    "Should throw exception when reach unknown modifiers" {
         val givenExpressionString = "\${resOut.unknown()}/layout/\${fragmentName}.xml"
-        val expectedExpression = listOf(
-            ResOut(emptyList()),
-            Fixed("/layout/"),
-            Dynamic(
-                parameterId = "fragmentName",
-                modifiers = emptyList()
-            ),
-            Fixed(".xml"),
-        ).intoExpression()
 
-        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+        val ex = shouldThrow<IllegalArgumentException> { givenExpressionString.toRecipeExpression(SECTION_NAME) }
+
+        ex.message shouldStartWith "'$SECTION_NAME' section: Unknown parsing key [key: unknown"
     }
 
 })

@@ -19,8 +19,9 @@ private const val KEY_PARAMETER_VALUE = "value"
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection].
  */
-internal fun Map<String, Any>.toGlobalsSection(): GlobalsSection? {
-    val globalsSectionList = this[KEY_GLOBALS_SECTION] as? List<Map<String, Any>> ?: return null
+internal fun Map<String, Any>.toGlobalsSection(): GlobalsSection {
+    val globalsSectionList = this[KEY_GLOBALS_SECTION] as? List<Map<String, Any>>
+        ?: return GlobalsSection(emptyList())
 
     return GlobalsSection(
         parameters = globalsSectionList.map { it.toGlobalsSectionParameter() }

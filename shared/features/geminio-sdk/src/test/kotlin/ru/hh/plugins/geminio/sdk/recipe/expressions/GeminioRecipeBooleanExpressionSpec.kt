@@ -57,16 +57,22 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
     "Should throw exceptions if have illegal commands for boolean expression" {
         val given1 = listOf(RecipeExpressionCommand.Fixed("fragment_")).toExpression()
-        val given2 = listOf(RecipeExpressionCommand.ResOut(emptyList())).toExpression()
-        val given3 = listOf(RecipeExpressionCommand.SrcOut(emptyList())).toExpression()
+        val given2 = listOf(RecipeExpressionCommand.ResOut).toExpression()
+        val given3 = listOf(RecipeExpressionCommand.SrcOut).toExpression()
+        val given4 = listOf(RecipeExpressionCommand.ManifestOut).toExpression()
+        val given5 = listOf(RecipeExpressionCommand.RootOut).toExpression()
 
         val ex1 = shouldThrow<IllegalArgumentException> { given1.evaluateBoolean(createParametersMap()) }
         val ex2 = shouldThrow<IllegalArgumentException> { given2.evaluateBoolean(createParametersMap()) }
         val ex3 = shouldThrow<IllegalArgumentException> { given3.evaluateBoolean(createParametersMap()) }
+        val ex4 = shouldThrow<IllegalArgumentException> { given4.evaluateBoolean(createParametersMap()) }
+        val ex5 = shouldThrow<IllegalArgumentException> { given5.evaluateBoolean(createParametersMap()) }
 
         ex1.message shouldStartWith "Unexpected command for boolean parameter"
         ex2.message shouldStartWith "Unexpected command for boolean parameter"
         ex3.message shouldStartWith "Unexpected command for boolean parameter"
+        ex4.message shouldStartWith "Unexpected command for boolean parameter"
+        ex5.message shouldStartWith "Unexpected command for boolean parameter"
     }
 
     "Should throw exception when there are several commands for boolean expression" {

@@ -3,6 +3,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommandsSection
 import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.OptionalParams
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.models.required.RequiredParams
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection
 
@@ -15,6 +16,7 @@ data class GeminioRecipe(
     val requiredParams: RequiredParams,
     val optionalParams: OptionalParams,
     val widgetsSection: WidgetsSection,
-    val globalsSection: GlobalsSection?,
+    val predefinedFeaturesSection: PredefinedFeaturesSection,
+    val globalsSection: GlobalsSection,
     val recipeCommands: RecipeCommandsSection
 )

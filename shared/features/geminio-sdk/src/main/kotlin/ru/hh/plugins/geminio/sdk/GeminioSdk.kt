@@ -1,8 +1,8 @@
 package ru.hh.plugins.geminio.sdk
 
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
-import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate
 
 
 /**
@@ -12,6 +12,6 @@ interface GeminioSdk {
 
     fun parseYamlRecipe(recipeFilePath: String): GeminioRecipe
 
-    fun createAndroidStudioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate
+    fun createGeminioTemplateData(project: Project, geminioRecipe: GeminioRecipe): GeminioTemplateData
 
 }

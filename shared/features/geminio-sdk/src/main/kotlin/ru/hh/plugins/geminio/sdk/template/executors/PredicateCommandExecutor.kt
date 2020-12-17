@@ -21,6 +21,10 @@ internal fun RecipeExecutor.execute(
         )
     } else {
         // Skip predicate command
-        println("\tSkip commands execution [validIf == false]")
+        println("\tSkip commands execution [validIf == false], try to execute 'elseCommands' if exists")
+        executeCommands(
+            commands = command.elseCommands,
+            executorData = executorData
+        )
     }
 }

@@ -42,7 +42,7 @@ class GeminioPluginSettings : PersistentStateComponent<GeminioPluginSettings> {
     var config: GeminioPluginConfig = GeminioPluginConfig()
 
 
-    override fun getState(): GeminioPluginSettings? {
+    override fun getState(): GeminioPluginSettings {
         return this
     }
 

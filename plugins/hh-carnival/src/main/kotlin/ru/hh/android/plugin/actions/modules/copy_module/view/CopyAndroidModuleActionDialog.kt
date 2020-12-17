@@ -9,8 +9,8 @@ import com.intellij.ui.layout.panel
 import ru.hh.android.plugin.PluginConstants.DEFAULT_GH_MODULE_PREFIX
 import ru.hh.android.plugin.core.framework_ui.view.ModuleNamePanel
 import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
-import ru.hh.android.plugin.services.modules.ModuleRepository
 import ru.hh.android.plugin.utils.showErrorMessage
+import ru.hh.plugins.extensions.openapi.getAndroidApplicationsModules
 import java.awt.BorderLayout
 import javax.swing.JComboBox
 import javax.swing.JComponent
@@ -22,7 +22,7 @@ class CopyAndroidModuleActionDialog(
     private val moduleName: String
 ) : DialogWrapper(project, true) {
 
-    private val appModuleComboBoxModel = ModuleRepository.getInstance(project).fetchAppModules()
+    private val appModuleComboBoxModel = project.getAndroidApplicationsModules()
         .run { CollectionComboBoxModel(this) }
 
     private val moduleNamePanel = ModuleNamePanel(

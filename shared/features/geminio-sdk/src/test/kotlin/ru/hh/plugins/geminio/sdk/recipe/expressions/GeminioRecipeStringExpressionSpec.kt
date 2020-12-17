@@ -42,7 +42,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should read 'srcOut' from module data" {
         val given = listOf(
-            RecipeExpressionCommand.SrcOut(emptyList()),
+            RecipeExpressionCommand.SrcOut,
             RecipeExpressionCommand.Fixed("Module.kt")
         ).toExpression()
 
@@ -54,7 +54,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should read 'resOut' from module data" {
         val given = listOf(
-            RecipeExpressionCommand.ResOut(emptyList()),
+            RecipeExpressionCommand.ResOut,
             RecipeExpressionCommand.Fixed("layout/fragment_blank.xml")
         ).toExpression()
 

@@ -1,11 +1,11 @@
 package ru.hh.plugins.geminio.sdk
 
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.toIndentString
 import ru.hh.plugins.geminio.sdk.recipe.parsers.parseGeminioRecipeFromYamlFile
-import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplate
-import ru.hh.plugins.geminio.sdk.template.mapping.toAndroidStudioTemplate
+import ru.hh.plugins.geminio.sdk.template.mapping.toGeminioTemplateData
 import java.io.File
 
 
@@ -26,8 +26,8 @@ internal class GeminioSdkImpl : GeminioSdk {
         }
     }
 
-    override fun createAndroidStudioTemplate(project: Project, geminioRecipe: GeminioRecipe): AndroidStudioTemplate {
-        return geminioRecipe.toAndroidStudioTemplate(project)
+    override fun createGeminioTemplateData(project: Project, geminioRecipe: GeminioRecipe): GeminioTemplateData {
+        return geminioRecipe.toGeminioTemplateData(project)
     }
 
 }

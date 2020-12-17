@@ -4,8 +4,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
-import ru.hh.plugins.extensions.layout.fileChooserButton
 import ru.hh.plugins.garcon.config.GarconPluginConfig
+import ru.hh.plugins.views.layouts.fileChooserButton
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JTextField
@@ -40,7 +40,7 @@ class GarconPluginSettingsEditor(
 
 
     // property-references doesn't work >_<
-    fun createComponent(project: Project): JComponent? {
+    fun createComponent(project: Project): JComponent {
         return panel {
             titledRow("Config file path:") {
                 row {

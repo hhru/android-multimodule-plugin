@@ -4,9 +4,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
-import ru.hh.plugins.extensions.layout.fileChooserButton
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
-import javax.swing.JCheckBox
+import ru.hh.plugins.views.layouts.fileChooserButton
 import javax.swing.JComponent
 import javax.swing.JTextField
 
@@ -14,7 +13,9 @@ import javax.swing.JTextField
 class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialTemplatesRootDirPath: String,
+    private val initialModulesTemplatesRootDirPath: String,
     private val initialNameForNewGroup: String,
+    private val initialNameForNewModulesGroup: String,
 ) {
 
     companion object {
@@ -24,7 +25,9 @@ class GeminioPluginSettingsEditor(
                 GeminioPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
                     initialTemplatesRootDirPath = config.templatesRootDirPath,
+                    initialModulesTemplatesRootDirPath = config.modulesTemplatesRootDirPath,
                     initialNameForNewGroup = config.groupsNames.forNewGroup,
+                    initialNameForNewModulesGroup = config.groupsNames.forNewModulesGroup,
                 )
             }
         }
@@ -33,12 +36,12 @@ class GeminioPluginSettingsEditor(
 
     private lateinit var configFilePathTextField: JTextField
     private lateinit var templatesRootDirPathTextField: JTextField
+    private lateinit var modulesTemplatesRootDirPathTextField: JTextField
     private lateinit var nameForNewGroupTextField: JTextField
-    private lateinit var nameForGenerateGroupTextField: JTextField
-    private lateinit var enableDebugModeCheckBox: JCheckBox
+    private lateinit var nameForNewModulesGroupTextField: JTextField
 
 
-    fun createComponent(project: Project): JComponent? {
+    fun createComponent(project: Project): JComponent {
         return panel {
             titledRow("Config file path:") {
                 row {
@@ -57,16 +60,24 @@ class GeminioPluginSettingsEditor(
                     }
                 }
             }
-            titledRow("Templates paths:") {
-                row {
+            titledRow("Templates paths") {
+                row("Templates:") {
                     templatesRootDirPathTextField = JTextField(initialTemplatesRootDirPath)
                     templatesRootDirPathTextField(CCFlags.growX)
                 }
+                row("Modules templates:") {
+                    modulesTemplatesRootDirPathTextField = JTextField(initialModulesTemplatesRootDirPath)
+                    modulesTemplatesRootDirPathTextField(CCFlags.growX)
+                }
             }
-            titledRow("Groups names:") {
-                row {
+            titledRow("Groups names") {
+                row("Templates group:") {
                     nameForNewGroupTextField = JTextField(initialNameForNewGroup)
                     nameForNewGroupTextField(CCFlags.growX)
+                }
+                row("Modules templates group:") {
+                    nameForNewModulesGroupTextField = JTextField(initialNameForNewModulesGroup)
+                    nameForNewModulesGroupTextField(CCFlags.growX)
                 }
             }
         }
@@ -76,7 +87,9 @@ class GeminioPluginSettingsEditor(
         return with(settings) {
             config.configFilePath != configFilePathTextField.text
                     || config.templatesRootDirPath != templatesRootDirPathTextField.text
+                    || config.modulesTemplatesRootDirPath != modulesTemplatesRootDirPathTextField.text
                     || config.groupsNames.forNewGroup != nameForNewGroupTextField.text
+                    || config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text
         }
     }
 
@@ -85,12 +98,16 @@ class GeminioPluginSettingsEditor(
             settings.tryLoadFromConfigFile(configFilePathTextField.text)
 
             templatesRootDirPathTextField.text = settings.config.templatesRootDirPath
+            modulesTemplatesRootDirPathTextField.text = settings.config.modulesTemplatesRootDirPath
             nameForNewGroupTextField.text = settings.config.groupsNames.forNewGroup
+            nameForNewModulesGroupTextField.text = settings.config.groupsNames.forNewModulesGroup
         } else {
             settings.config = settings.config.copy(
                 templatesRootDirPath = templatesRootDirPathTextField.text,
+                modulesTemplatesRootDirPath = modulesTemplatesRootDirPathTextField.text,
                 groupsNames = GeminioPluginConfig.GroupsNames(
                     forNewGroup = nameForNewGroupTextField.text,
+                    forNewModulesGroup = nameForNewModulesGroupTextField.text
                 ),
             )
         }

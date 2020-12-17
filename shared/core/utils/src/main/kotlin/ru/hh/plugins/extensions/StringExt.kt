@@ -48,3 +48,29 @@ fun String.fromCamelCaseToUnderlines(): String {
 fun String.toUnderlines(): String {
     return this.replace(" ", "").fromCamelCaseToUnderlines()
 }
+
+fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
+    val formattedModuleName = this
+        .replace(Char.SPACE, Char.UNDERSCORE)
+        .replace(Char.HYPHEN, Char.UNDERSCORE)
+    return "${packageNamePrefix}.${formattedModuleName}"
+}
+
+fun String.replaceWordsBreakers(): String {
+    return this.replace('-', '_')
+        .replace('_', ' ')
+        .replace("  ", " ")
+}
+
+fun String.toFormattedModuleName(): String {
+    val moduleName = this
+
+    return with(StringBuilder()) {
+        moduleName
+            .replaceWordsBreakers()
+            .split(' ')
+            .map { it.capitalize() }
+            .forEach { append(it) }
+        toString()
+    }
+}

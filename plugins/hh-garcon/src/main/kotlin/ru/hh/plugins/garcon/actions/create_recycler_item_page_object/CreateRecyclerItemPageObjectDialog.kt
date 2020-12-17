@@ -11,14 +11,14 @@ import com.intellij.ui.layout.panel
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
 import org.jetbrains.kotlin.psi.KtClass
+import ru.hh.plugins.extensions.EMPTY
+import ru.hh.plugins.extensions.isValidIdentifier
+import ru.hh.plugins.extensions.psi.xml.extractClassNameFromFileName
 import ru.hh.plugins.garcon.GarconConstants
 import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.garcon.services.ClassFiltersFactory
-import ru.hh.plugins.extensions.EMPTY
-import ru.hh.plugins.extensions.isValidIdentifier
-import ru.hh.plugins.extensions.layout.createKotlinClassChooserComboBox
-import ru.hh.plugins.extensions.psi.xml.extractClassNameFromFileName
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
+import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
@@ -57,7 +57,7 @@ class CreateRecyclerItemPageObjectDialog(
     }
 
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         return panel {
             titledRow(title = "Enter page object class name:") {
                 row {
