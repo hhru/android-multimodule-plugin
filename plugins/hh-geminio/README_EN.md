@@ -18,3 +18,4 @@ That's what Geminio is for.
 - [Plugin's configuration](/plugins/hh-geminio/docs/en/PLUGIN_CONFIG.md)
 - [Expressions](/plugins/hh-geminio/docs/en/EXPRESSIONS.md)
 - [`recipe.yaml` content](/plugins/hh-geminio/docs/en/RECIPE_CONTENT.md)
+- [Modules templates](/plugins/hh-geminio/docs/en/MODULES_TEMPLATES.md)

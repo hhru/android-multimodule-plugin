@@ -20,3 +20,4 @@
 - [Конфигурация плагина](/plugins/hh-geminio/docs/ru/PLUGIN_CONFIG.md)
 - [Выражения](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md)
 - [Устройство "рецепта"](/plugins/hh-geminio/docs/ru/RECIPE_CONTENT.md)
+- [Шаблоны модулей](/plugins/hh-geminio/docs/ru/MODULES_TEMPLATES.md)
