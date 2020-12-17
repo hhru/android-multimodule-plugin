@@ -15,7 +15,7 @@ availability: true
 
 The text inside `${}` is considered the «dynamic» part of the expression, which needs to be
 calculated depending on the content. Text outside the curly braces is the fixed part.
-Inside `${}` you can use only those parameters that have already been declared ABOVE in the `widgets` section text.
+Inside `${}` you can use only those parameters that have already been declared ABOVE in the `widgets` (or `globals`) section text.
 
 Additional extension functions can be used for text parameters:
 

@@ -139,7 +139,7 @@ The recipe consists of 6 sections:
 If you think that it looks like the old good FreeMarker's `template.xml` && `recipe.xml`,
 but only combined into a single file, — you are absolutely right.
 
-### Секции "рецептов"
+### Recipe's sections
 
 - [requiredParams](/plugins/hh-geminio/docs/en/recipe_content/REQURED_PARAMS.md)
 - [optionalParams](/plugins/hh-geminio/docs/en/recipe_content/OPTIONAL_PARAMS.md)
@@ -148,7 +148,7 @@ but only combined into a single file, — you are absolutely right.
 - [globals](/plugins/hh-geminio/docs/en/recipe_content/GLOBALS.md)
 - [recipe](/plugins/hh-geminio/docs/en/recipe_content/RECIPE.md)
 
-### Дополнительно
+### Additional info
 
 - [Expressions](/plugins/hh-geminio/docs/en/EXPRESSIONS.md)
 
