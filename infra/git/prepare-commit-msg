@@ -6,7 +6,7 @@ error_msg="Commit declined. Branch name does not match the accepted JIRA task pa
 task_branch_regex="(^MOB-[0-9]+)"
 
 
-if [[ ! $current_branch =~ $task_branch_regex ]];
+if [[ ! $current_branch =~ $task_branch_regex && ! $current_branch =~ "master" ]];
 then
     echo "$error_msg" >&2
     exit 1

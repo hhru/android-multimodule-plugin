@@ -7,7 +7,6 @@ import ru.hh.plugins.extensions.UNDERSCORE
 
 
 val String.Companion.EMPTY: String get() = ""
-val String.Companion.LINE_BREAK: String get() = "\n"
 
 private val REGEX_PACKAGE_NAME = Regex("^([A-Za-z]{1}[A-Za-z\\d_]*\\.)*[A-Za-z][A-Za-z\\d_]*\$")
 
@@ -16,9 +15,6 @@ fun String.replaceLineBreaks(): String {
     return this.replace("\n", "\n<br />", true)
 }
 
-fun String.replaceMultipleSplashes(): String {
-    return this.replace("//", "/")
-}
 
 fun String.toPackageNameFromModuleName(): String {
     val formattedModuleName = this
