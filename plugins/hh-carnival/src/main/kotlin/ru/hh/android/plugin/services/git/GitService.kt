@@ -6,8 +6,8 @@ import com.intellij.openapi.project.Project
 import git4idea.branch.GitBrancher
 import git4idea.repo.GitRepositoryManager
 import ru.hh.android.plugin.PluginConstants.MAIN_REPOSITORY_NAME
-import ru.hh.android.plugin.extensions.EMPTY
 import ru.hh.android.plugin.utils.logDebug
+import ru.hh.plugins.extensions.EMPTY
 
 
 @Service
@@ -40,7 +40,9 @@ class GitService(
         project.logDebug("Try to extractPortfolioBranchName")
         val repositories = repositoryManager.repositories
         project.logDebug("\tis repositories empty: ${repositories.isEmpty()}")
-        val currentBranchName = repositories.firstOrNull { PORTFOLIO_BRANCH_REGEX.matches(it.currentBranch?.name.orEmpty()) }?.currentBranchName
+        val currentBranchName = repositories
+            .firstOrNull { PORTFOLIO_BRANCH_REGEX.matches(it.currentBranch?.name.orEmpty()) }
+            ?.currentBranchName
         val hasPortfolioBranch = currentBranchName != null
         project.logDebug("\thasPortfolioBranch: $hasPortfolioBranch")
 

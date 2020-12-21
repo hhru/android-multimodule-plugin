@@ -10,7 +10,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Attribute
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
-import ru.hh.android.plugin.extensions.EMPTY
+import ru.hh.plugins.extensions.EMPTY
 
 
 @State(name = "ru.hh.android.plugin.config.PluginConfig")

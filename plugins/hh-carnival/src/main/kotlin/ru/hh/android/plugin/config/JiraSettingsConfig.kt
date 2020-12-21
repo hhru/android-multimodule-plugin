@@ -10,7 +10,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.model.jira.JiraSettings
-import ru.hh.android.plugin.extensions.EMPTY
+import ru.hh.plugins.extensions.EMPTY
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter

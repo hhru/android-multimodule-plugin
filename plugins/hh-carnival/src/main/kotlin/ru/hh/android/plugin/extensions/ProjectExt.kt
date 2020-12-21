@@ -3,6 +3,7 @@ package ru.hh.android.plugin.extensions
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.openapi.getRootModule
 import java.io.File
 

@@ -6,8 +6,6 @@ import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 
 
-val String.Companion.EMPTY: String get() = ""
-
 private val REGEX_PACKAGE_NAME = Regex("^([A-Za-z]{1}[A-Za-z\\d_]*\\.)*[A-Za-z][A-Za-z\\d_]*\$")
 
 
@@ -18,8 +16,8 @@ fun String.replaceLineBreaks(): String {
 
 fun String.toPackageNameFromModuleName(): String {
     val formattedModuleName = this
-            .replace(Char.SPACE, Char.UNDERSCORE)
-            .replace(Char.HYPHEN, Char.UNDERSCORE)
+        .replace(Char.SPACE, Char.UNDERSCORE)
+        .replace(Char.HYPHEN, Char.UNDERSCORE)
     return "${PluginConstants.DEFAULT_PACKAGE_NAME_PREFIX}.$formattedModuleName"
 }
 

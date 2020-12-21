@@ -12,9 +12,9 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.psiUtil.getValueParameterList
-import ru.hh.android.plugin.extensions.EMPTY
 import ru.hh.android.plugin.extensions.psi.kotlin.getBreakLineElement
 import ru.hh.android.plugin.utils.reformatWithCodeStyle
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 
 

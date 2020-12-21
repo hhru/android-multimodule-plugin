@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 import ru.hh.android.plugin.services.git.GitService
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.getSelectedPsiElement
 
 

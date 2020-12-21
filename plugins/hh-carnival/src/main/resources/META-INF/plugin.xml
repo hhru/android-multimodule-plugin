@@ -8,6 +8,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    1.1.1. New feature - generate ViewModel for BaseFragment. All code was hardcoded inside plugin. </br>
+
+    </br>
+
     1.1.0. Breaking changes: </br>
         - Remove action for generating new module - this functionality will be available through Geminio plugin </br>
 
@@ -28,7 +32,7 @@
     <depends>org.jetbrains.android</depends>
     <depends>Git4Idea</depends>
 
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <idea-version since-build="201.8743.12"/>
 
     <actions>
@@ -58,6 +62,12 @@
                     id="ru.hh.android.plugin.actions.boilerplate.empty_object.GenerateEmptyObjectAction"
                     text="Generate EMPTY Object..."
                     description="Generates EMPTY object declaration in Kotlin data class">
+                <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="KotlinGenerateGroup"/>
+            </action>
+            <action class="ru.hh.android.plugin.actions.boilerplate.fragment_view_model.GenerateFragmentViewModelAction"
+                    id="ru.hh.android.plugin.actions.boilerplate.fragment_view_model.GenerateFragmentViewModelAction"
+                    text="Fragment ViewModel"
+                    description="Generates ViewModel for fragment and several model classes">
                 <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="KotlinGenerateGroup"/>
             </action>
         </group>
@@ -100,6 +110,7 @@
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService"/>
+        <projectService serviceImplementation="ru.hh.android.plugin.actions.boilerplate.fragment_view_model.GenerateFragmentViewModelTextFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraIssueFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraLinkFactory"/>
         <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraRestClientService"/>
