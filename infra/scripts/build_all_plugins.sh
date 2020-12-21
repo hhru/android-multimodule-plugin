@@ -8,6 +8,6 @@ readonly repoUrl=$(prop "${PROPERTY_PLUGINS_REPO_URL}" "${PLUGINS_PROPERTIES_FIL
 
 logMessage "Build all plugins..."
 
-bash gradlew buildAllPlugins collectUpdatePluginsXmlTask --customRepositoryUrl="${repoUrl}"
+bash gradlew clean buildAllPlugins collectUpdatePluginsXmlTask --customRepositoryUrl="${repoUrl}"
 
 logMessage "Successfully build all plugins"
