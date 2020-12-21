@@ -8,14 +8,14 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    1.1.1. New feature - generate ViewModel for BaseFragment. All code was hardcoded inside plugin. </br>
+    1.1.2. New feature - generate ViewModel for BaseFragment. All code was hardcoded inside plugin. </br>
 
-    </br>
+    </br></br>
 
     1.1.0. Breaking changes: </br>
         - Remove action for generating new module - this functionality will be available through Geminio plugin </br>
 
-    </br>
+    </br></br>
 
     1.0.0. Initial release. <br/>
         - Action for generating new feature module <br/>
@@ -23,7 +23,7 @@
         - Action for creating new JIRA issue for develop branch merge <br/>
         - Lint inspections for resources <br/>
         - Deprecated resources annotator <br/>
-    </br>
+    </br></br>
     ]]></change-notes>
 
     <depends>com.intellij.modules.lang</depends>
@@ -32,7 +32,7 @@
     <depends>org.jetbrains.android</depends>
     <depends>Git4Idea</depends>
 
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <idea-version since-build="201.8743.12"/>
 
     <actions>

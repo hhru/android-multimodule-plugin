@@ -13,7 +13,6 @@ class GenerateFragmentViewModelTextFactory {
         private const val TIMBER_FQCN = "timber.log.Timber"
         private const val RX_JAVA_OBSERVABLE_FQCN = "io.reactivex.Observable"
 
-        private const val HH_EXTENSION_STATE_VIEW_MODEL_FQCN = "ru.hh.android.mvvm.stateViewModel"
         private const val HH_MVI_VIEW_MODEL_FQCN = "ru.hh.android.mvvm.viewmodel.MviViewModel"
 
         fun getInstance(project: Project): GenerateFragmentViewModelTextFactory = project.service()
@@ -58,7 +57,7 @@ class GenerateFragmentViewModelTextFactory {
         names: GenerateFragmentViewModelNames,
     ): String {
         return """
-        private val viewModel: ${names.viewModelClassName} by $HH_EXTENSION_STATE_VIEW_MODEL_FQCN(
+        private val viewModel: ${names.viewModelClassName} by stateViewModel(
             handleEvent = this::handleEvent,
             renderState = this::renderState,
             viewModelProvider = { di.getInstance() }
@@ -71,7 +70,7 @@ class GenerateFragmentViewModelTextFactory {
     ): String {
         val logText = "${TIMBER_FQCN}.tag(LOG_TAG).d(\"handleEvent() called with: event = \$event\")"
         return """
-        fun handleEvent(event: ${names.singleEventClassFQCN}) {
+        private fun handleEvent(event: ${names.singleEventClassFQCN}) {
             $logText
         }    
         """
@@ -82,7 +81,7 @@ class GenerateFragmentViewModelTextFactory {
     ): String {
         val logText = "${TIMBER_FQCN}.tag(LOG_TAG).d(\"renderState() called with: state = \$state\")"
         return """
-        fun renderState(state: ${names.uiStateClassFQCN}) {
+        private fun renderState(state: ${names.uiStateClassFQCN}) {
             $logText
         }    
         """

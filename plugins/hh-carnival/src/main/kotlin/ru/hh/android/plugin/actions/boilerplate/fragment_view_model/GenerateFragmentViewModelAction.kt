@@ -4,21 +4,20 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiFile
-import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.kotlin.asJava.toLightClass
 import org.jetbrains.kotlin.idea.actions.generate.KotlinGenerateActionBase
-import org.jetbrains.kotlin.idea.core.ShortenReferences
-import org.jetbrains.kotlin.idea.formatter.commitAndUnblockDocument
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.getOrCreateBody
+import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.psi.isInheritedFrom
+import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.extensions.toKotlinFileName
 
 
@@ -28,6 +27,10 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
         private const val COMMAND_NAME = "GenerateFragmentViewModelActionCommand"
 
         private const val MODELS_PACKAGE_NAME = "model"
+
+        private const val HH_EXTENSION_STATE_VIEW_MODEL_FQCN = "ru.hh.android.mvvm.stateViewModel"
+        private const val HH_EXTENSION_DI_GET_INSTANCE_FQCN =
+            "ru.hh.shared_core_ui.fragment_plugin.common.di.getInstance"
         private const val BASE_FRAGMENT_FQCN = "ru.hh.shared_core_ui.fragment.BaseFragment"
     }
 
@@ -134,16 +137,19 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
             body.addBefore(psiElements.handleEventKtFunction, body.rBrace)
             body.addBefore(psiElements.renderStateKtFunction, body.rBrace)
 
+            (psiFile as KtFile).addImportPackages(
+                HH_EXTENSION_STATE_VIEW_MODEL_FQCN,
+                HH_EXTENSION_DI_GET_INSTANCE_FQCN
+            )
+
             listOf(
                 singleEventClassAddedPsiFile,
                 uiStateClassAddedPsiFile,
                 uiStateClassConverterAddedPsiFile,
                 viewModelClassAddedPsiFile,
-                psiFile as KtFile
+                psiFile
             ).forEach { ktFile ->
-                ktFile.commitAndUnblockDocument()
-                ShortenReferences.DEFAULT.process(ktFile)
-                CodeStyleManager.getInstance(project).reformat(ktFile)
+                ktFile.shortReferencesAndReformatWithCodeStyle()
             }
         }
     }

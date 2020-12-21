@@ -23,10 +23,17 @@ data class GenerateFragmentViewModelNames(
 
         fun from(featurePrefix: String, packageName: String): GenerateFragmentViewModelNames {
             val (modelsPackageName, mviFeaturePackageName, mviFeatureElementPackageName) = if (packageName.isNotBlank()) {
+                val splitted = packageName.split(".")
+                val previous = if (splitted.isNotEmpty()) {
+                    packageName.removeSuffix(".${splitted.last()}")
+                } else {
+                    packageName
+                }
+
                 Triple(
                     "${packageName}.model.",
-                    "${packageName}.feature.",
-                    "${packageName}.feature.element."
+                    "${previous}.feature.",
+                    "${previous}.feature.element."
                 )
             } else {
                 Triple(String.EMPTY, String.EMPTY, String.EMPTY)
