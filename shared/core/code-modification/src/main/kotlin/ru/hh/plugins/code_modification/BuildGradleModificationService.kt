@@ -1,7 +1,5 @@
 package ru.hh.plugins.code_modification
 
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
@@ -24,7 +22,6 @@ import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
 /**
  * Service for adding dependencies into build.gradle files.
  */
-@Service
 class BuildGradleModificationService(
     private val project: Project
 ) {
@@ -35,8 +32,7 @@ class BuildGradleModificationService(
         private const val BUILD_GRADLE_FILENAME = "build.gradle"
         private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
 
-
-        fun getInstance(project: Project): BuildGradleModificationService = project.service()
+        fun getInstance(project: Project) = BuildGradleModificationService(project)
     }
 
 

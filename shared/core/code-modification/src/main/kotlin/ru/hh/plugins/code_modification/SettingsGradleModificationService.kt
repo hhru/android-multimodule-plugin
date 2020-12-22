@@ -1,7 +1,5 @@
 package ru.hh.plugins.code_modification
 
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
@@ -12,7 +10,6 @@ import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.extensions.openapi.getRootModule
 
 
-@Service
 class SettingsGradleModificationService(
     private val project: Project
 ) {
@@ -21,7 +18,7 @@ class SettingsGradleModificationService(
         private const val COMMAND_NAME = "SettingsGradleModificationCommand"
         private const val SETTINGS_GRADLE_FILENAME = "settings.gradle"
 
-        fun getInstance(project: Project): SettingsGradleModificationService = project.service()
+        fun getInstance(project: Project) = SettingsGradleModificationService(project)
     }
 
 

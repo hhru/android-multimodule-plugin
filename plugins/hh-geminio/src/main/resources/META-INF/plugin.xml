@@ -7,7 +7,7 @@
     Plugin for generating code from templates.
     ]]></description>
 
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <idea-version since-build="201.8743.12"/>
 
     <depends>com.intellij.modules.platform</depends>
@@ -30,7 +30,6 @@
         <projectService
                 serviceImplementation="ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory"/>
         <projectService serviceImplementation="ru.hh.plugins.geminio.services.MarkdownParserService"/>
-        <projectService serviceImplementation="ru.hh.plugins.code_modification.SettingsGradleModificationService"/>
     </extensions>
 
     <actions>
