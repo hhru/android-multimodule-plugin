@@ -7,7 +7,7 @@
     Plugin for generating code from templates.
     ]]></description>
 
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <idea-version since-build="201.8743.12"/>
 
     <depends>com.intellij.modules.platform</depends>
