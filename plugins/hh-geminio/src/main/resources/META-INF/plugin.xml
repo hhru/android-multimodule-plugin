@@ -35,7 +35,7 @@
     <actions>
         <!-- Templates -->
         <group id="ru.hh.plugins.geminio.New.HHTemplatesGroup" text="HH Templates" popup="true">
-            <add-to-group group-id="NewGroup" anchor="last"/>
+            <add-to-group group-id="NewGroup" anchor="first"/>
         </group>
         <group id="ru.hh.plugins.geminio.Generate.HHTemplatesGroup" text="From HH Templates" popup="true">
             <separator/>
@@ -44,7 +44,7 @@
 
         <!-- Modules templates -->
         <group id="ru.hh.plugins.geminio.New.HHModulesTemplatesGroup" text="HH Templates" popup="true">
-            <add-to-group group-id="NewGroup" anchor="last"/>
+            <add-to-group group-id="NewGroup" anchor="first"/>
         </group>
         <group id="ru.hh.plugins.geminio.Generate.HHModulesTemplatesGroup" text="From HH Templates" popup="true">
             <separator/>
