@@ -2,6 +2,7 @@
 
 package ru.hh.plugins.geminio.sdk.recipe.parsers.widgets
 
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
@@ -36,12 +37,8 @@ internal fun Map<String, Any>.toWidgetsStringParameter(sectionName: String): Rec
             key = KEY_PARAMETER_NAME
         )
     }
-    val help = requireNotNull(this[KEY_PARAMETER_HELP] as? String) {
-        sectionRequiredParameterErrorMessage(
-            sectionName = sectionName,
-            key = KEY_PARAMETER_HELP
-        )
-    }
+    val help = this[KEY_PARAMETER_HELP] as? String ?: String.EMPTY
+
     val visibilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
     val availabilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
 
