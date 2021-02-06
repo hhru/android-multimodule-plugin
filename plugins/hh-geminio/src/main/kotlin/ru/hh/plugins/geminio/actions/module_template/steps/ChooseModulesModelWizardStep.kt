@@ -75,7 +75,7 @@ class ChooseModulesModelWizardStep(
                 }
             }
 
-            titledRow("Choose modules") {
+            titledRow("Choose app-modules") {
                 row {
                     modulesJList = CheckBoxListView(
                         onItemSelectedListener = { changeReadmeBlockText(it) },

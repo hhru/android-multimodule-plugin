@@ -16,7 +16,6 @@ and adds a dependency on the created module to the selected application modules.
   the created module will need to be connected.
 
 - Additional parameters are available in FTL-templates of new modules:
-    * `__librariesModules` - a list of module names that the user has selected as dependencies
     * `__applicationsModules` - a list of names of application-modules to which 
       the created module will need to be connected.
 

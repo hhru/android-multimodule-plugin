@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.template.mapping
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
-import ru.hh.plugins.extensions.toFormattedModuleName
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.GeminioAdditionalParamsStore
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
@@ -64,7 +63,6 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
         geminioIds = GeminioTemplateParametersIds(
             newModuleNameParameterId = GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID,
             newModulePackageNameParameterId = GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID,
-            newModuleLibrariesModulesParameterId = GeminioSdkConstants.FEATURE_LIBRARIES_MODULES_PARAMETER_ID,
             newApplicationModulesParameterId = GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID,
         ),
         paramsStore = paramsStore

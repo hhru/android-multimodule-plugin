@@ -86,22 +86,15 @@ class ExecuteGeminioModuleTemplateAction(
             defaultPackageName = "ru.hh",   // TODO - fetch from settings
             androidStudioTemplate = geminioTemplateData.androidStudioTemplate
         )
-        val chooseModulesStep = ChooseModulesModelWizardStep(
-            renderTemplateModel = stepModel.renderTemplateModel,
-            stepTitle = "Choose modules",
-            project = project,
-            isForAppModules = false
-        )
         val chooseAppsStep = ChooseModulesModelWizardStep(
             renderTemplateModel = stepModel.renderTemplateModel,
-            stepTitle = "Choose applications",
+            stepTitle = "Choose app-modules",
             project = project,
             isForAppModules = true
         )
 
         val wizard = ModelWizard.Builder()
             .addStep(stepModel.configureTemplateParametersStep)
-            .addStep(chooseModulesStep)
             .addStep(chooseAppsStep)
             .build()
 
@@ -163,14 +156,10 @@ class ExecuteGeminioModuleTemplateAction(
 
             private fun propagateAdditionalParams() {
                 with(geminioTemplateData) {
-                    val librariesModules = chooseModulesStep.getSelectedModules()
                     val applicationModules = chooseAppsStep.getSelectedModules()
 
                     val projectNamePrefix = project.name.replace(Char.SPACE, Char.UNDERSCORE) + "."
                     paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { module ->
-                        module.name.removePrefix(projectNamePrefix)
-                    }
-                    paramsStore[geminioIds.newModuleLibrariesModulesParameterId] = librariesModules.map { module ->
                         module.name.removePrefix(projectNamePrefix)
                     }
                 }
