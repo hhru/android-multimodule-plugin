@@ -28,6 +28,9 @@ dependencies {
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
     changeNotes("""
+    1.1.3 -- Remove 'choose module' step from modules actions <br/>
+    <br/>
+        
     1.1.2 -- Little fixes: <br/>
         - Made 'help' parameter optional in widgets section <br/>
         - Moved templates actions to the top of 'New' group <br/>
