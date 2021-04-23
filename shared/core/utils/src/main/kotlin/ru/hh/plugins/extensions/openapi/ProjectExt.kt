@@ -4,6 +4,7 @@ import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.codeStyle.CodeStyleManager
+import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 
@@ -36,7 +37,7 @@ fun Project.getExistingModules(): List<Module> {
  * Application module - module with applied `com.android.application` gradle plugin.
  */
 fun Project.getAndroidApplicationsModules(): List<Module> {
-    return getExistingModules().filter { it.isAppModule() }
+    return allModules().filter { it.isAndroidAppModule() }
 }
 
 /**
@@ -45,7 +46,7 @@ fun Project.getAndroidApplicationsModules(): List<Module> {
  * Library module - module with applied `com.android.library` or `java-library` gradle plugins.
  */
 fun Project.getLibrariesModules(): List<Module> {
-    return getExistingModules().filter { it.isLibraryModule() }
+    return getExistingModules().filter { it.isAndroidLibraryModule() }
 }
 
 fun Project.getRootModule(): Module {
