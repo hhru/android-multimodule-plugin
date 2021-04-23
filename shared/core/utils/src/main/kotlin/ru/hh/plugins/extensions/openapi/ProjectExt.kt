@@ -24,14 +24,6 @@ fun Project.executeWithoutCodeStyle(action: () -> Unit) {
 }
 
 /**
- * Fetch all gradle modules in project.
- * You need additional filtration if you want to get only libraries, or only apps.
- */
-fun Project.getExistingModules(): List<Module> {
-    return ModuleManager.getInstance(this).modules.toList().filter { it.name != this.name }
-}
-
-/**
  * Fetch all android applications modules in project.
  *
  * Application module - module with applied `com.android.application` gradle plugin.
@@ -46,7 +38,7 @@ fun Project.getAndroidApplicationsModules(): List<Module> {
  * Library module - module with applied `com.android.library` or `java-library` gradle plugins.
  */
 fun Project.getLibrariesModules(): List<Module> {
-    return getExistingModules().filter { it.isAndroidLibraryModule() }
+    return allModules().filter { it.isAndroidLibraryModule() }
 }
 
 fun Project.getRootModule(): Module {
