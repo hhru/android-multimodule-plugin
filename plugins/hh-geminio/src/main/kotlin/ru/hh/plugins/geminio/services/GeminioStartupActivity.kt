@@ -43,7 +43,11 @@ class GeminioStartupActivity : StartupActivity {
             println("============")
             println("============")
 
-            createActionsForTemplates(pluginConfig, pathToTemplates, false)
+            createActionsForTemplates(
+                pluginConfig = pluginConfig,
+                rootDirPath = pathToTemplates,
+                isModulesTemplates = false
+            )
             createActionsForTemplates(pluginConfig, pathToModulesTemplates, true)
 
             println("GeminioStartupActivity::END")
