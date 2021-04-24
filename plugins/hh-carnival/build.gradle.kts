@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":shared-core-utils"))
-    implementation(project(":shared-core-ui"))
-    implementation(project(":shared-core-freemarker"))
-    implementation(project(":shared-core-code-modification"))
+    implementation(project(":shared:core:utils"))
+    implementation(project(":shared:core:ui"))
+    implementation(project(":shared:core:freemarker"))
+    implementation(project(":shared:core:code-modification"))
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))

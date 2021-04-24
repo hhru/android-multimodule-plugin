@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":shared-core-utils"))
+    implementation(project(":shared:core:utils"))
 
     implementation(kotlin("stdlib-jdk8"))
 }
