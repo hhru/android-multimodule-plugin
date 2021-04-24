@@ -11,4 +11,4 @@
 
 ## Список feature-модулей
 
-* [geminio-sdk](features/geminio-sdk/README.md) - *SDK для работы с geminio-рецептами*
+* [geminio-sdk](feature/geminio-sdk/README.md) - *SDK для работы с geminio-рецептами*
