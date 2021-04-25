@@ -7,9 +7,6 @@
     Plugin for generating code from templates.
     ]]></description>
 
-    <version>1.1.3</version>
-    <idea-version since-build="201.8743.12"/>
-
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.android</depends>
