@@ -25,7 +25,7 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
     val addDependenciesCommandList = this[KEY_COMMAND_ADD_DEPENDENCIES] as? List<Map<String, Any>>
     val mkDirsCommandList = this[KEY_MK_DIRS] as? List<Any>
 
-    
+
     return when {
         instantiateCommandMap != null -> {
             instantiateCommandMap.toInstantiateCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")

@@ -4,6 +4,7 @@ includeBuild("../libraries")
 
 include("kotlin-convention")
 include("testing-convention")
+include("static-analysis-convention")
 include("idea-convention")
 
 pluginManagement {
