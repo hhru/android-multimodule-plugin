@@ -1,11 +1,5 @@
 plugins {
-    id(GradlePlugins.gradleIntelliJPlugin)
-    kotlin("jvm")
-    id(GradlePlugins.setupIdeaPlugin)
-}
-
-repositories {
-    mavenCentral()
+    id("convention.idea-plugin")
 }
 
 dependencies {

@@ -1,12 +1,5 @@
 plugins {
-    id(GradlePlugins.gradleIntelliJPlugin)
-    kotlin("jvm")
-    id(GradlePlugins.setupIdeaPlugin)
-    id(GradlePlugins.coreModuleMarker)
-}
-
-repositories {
-    mavenCentral()
+    id("convention.idea-plugin-library")
 }
 
 dependencies {
@@ -20,11 +13,4 @@ dependencies {
     implementation(Libs.freemarker)
 
     testImplementation(Libs.tests.kotest) // for kotest framework
-}
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
 }
