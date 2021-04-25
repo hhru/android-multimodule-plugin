@@ -1,4 +1,4 @@
-package ru.hh.plugins.extensions.psi
+package ru.hh.plugins.psi_utils
 
 import com.android.tools.idea.util.androidFacet
 import com.intellij.ide.util.EditorHelper

@@ -1,4 +1,4 @@
-package ru.hh.plugins.extensions.psi.xml
+package ru.hh.plugins.psi_utils.xml
 
 import android.databinding.tool.ext.toCamelCase
 import com.intellij.psi.xml.XmlFile

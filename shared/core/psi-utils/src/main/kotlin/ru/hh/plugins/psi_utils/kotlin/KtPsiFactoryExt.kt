@@ -1,9 +1,9 @@
-package ru.hh.plugins.code_modification.extensions.psi
+package ru.hh.plugins.psi_utils.kotlin
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
-import ru.hh.plugins.code_modification.models.extensions.toDependencyText
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.models.gradle.extensions.toDependencyText
 
 
 fun KtPsiFactory.getIncludeModuleExpression(

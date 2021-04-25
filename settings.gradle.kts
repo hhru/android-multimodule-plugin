@@ -57,6 +57,8 @@ include(":shared:core:utils")
 include(":shared:core:freemarker")
 include(":shared:core:ui")
 include(":shared:core:code-modification")
+include(":shared:core:models")
+include(":shared:core:psi-utils")
 // endregion
 
 // region Shared features

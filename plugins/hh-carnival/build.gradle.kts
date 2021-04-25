@@ -9,11 +9,15 @@ repositories {
 }
 
 dependencies {
+    // Core modules
     implementation(project(":shared:core:utils"))
     implementation(project(":shared:core:ui"))
     implementation(project(":shared:core:freemarker"))
     implementation(project(":shared:core:code-modification"))
+    implementation(project(":shared:core:models"))
+    implementation(project(":shared:core:psi-utils"))
 
+    // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("com.atlassian.jira:jira-rest-java-client-core:4.0.0") {

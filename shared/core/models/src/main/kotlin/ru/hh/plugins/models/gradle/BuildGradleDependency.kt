@@ -1,4 +1,4 @@
-package ru.hh.plugins.code_modification.models
+package ru.hh.plugins.models.gradle
 
 
 /**

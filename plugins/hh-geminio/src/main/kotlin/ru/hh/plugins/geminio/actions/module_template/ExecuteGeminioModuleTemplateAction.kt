@@ -9,8 +9,6 @@ import com.intellij.psi.PsiDirectory
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
-import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
@@ -23,6 +21,8 @@ import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
 
 /**

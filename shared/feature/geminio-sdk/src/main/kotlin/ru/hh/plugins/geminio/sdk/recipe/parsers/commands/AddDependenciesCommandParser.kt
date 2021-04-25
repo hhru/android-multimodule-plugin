@@ -1,10 +1,10 @@
 package ru.hh.plugins.geminio.sdk.recipe.parsers.commands
 
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
-import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
 
 /**

@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.commands
 
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
+import ru.hh.plugins.models.gradle.BuildGradleDependency
 
 
 /**

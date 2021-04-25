@@ -5,24 +5,20 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
-import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrApplicationStatement
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
-import ru.hh.plugins.code_modification.extensions.psi.createBuildGradleDependencyElement
-import ru.hh.plugins.code_modification.extensions.psi.createNewLine
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
-import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.psi_utils.groovy.createBuildGradleDependencyElement
+import ru.hh.plugins.psi_utils.groovy.getOrCreateGradleDependenciesBlock
+import ru.hh.plugins.psi_utils.kotlin.createBuildGradleDependencyElement
+import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
+import ru.hh.plugins.psi_utils.reformatWithCodeStyle
 
-
-// TODO add modification for Kotlin build.gradle.kts
 
 /**
  * Service for adding dependencies into build.gradle files.
@@ -36,7 +32,6 @@ class BuildGradleModificationService(
 
         private const val BUILD_GRADLE_FILENAME = "build.gradle"
         private const val BUILD_GRADLE_KTS_FILENAME = "build.gradle.kts"
-        private const val DEPENDENCIES_BLOCK_NAME = "dependencies"
 
         fun getInstance(project: Project) = BuildGradleModificationService(project)
     }
@@ -146,31 +141,6 @@ class BuildGradleModificationService(
         reformatWithCodeStyle()
     }
 
-    private fun GroovyFileImpl.getOrCreateGradleDependenciesBlock(): GrClosableBlock {
-        val existingDependenciesBlock = findChildrenByClass(GrMethodCall::class.java)
-            .firstOrNull { it.text.startsWith(DEPENDENCIES_BLOCK_NAME) }
-            ?.findDescendantOfType<GrClosableBlock>()
-
-        if (existingDependenciesBlock != null) {
-            return existingDependenciesBlock
-        }
-
-        val factory = GroovyPsiElementFactory.getInstance(project)
-
-        val newDependenciesExpression = factory.createExpressionFromText("""
-        dependencies {
-        }    
-        """)
-
-        this.add(factory.createNewLine())
-        val addedDescriptionBlock = this.add(newDependenciesExpression)
-
-        return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
-            "Error with creating new $DEPENDENCIES_BLOCK_NAME block | Groovy"
-        }
-    }
-
-
     private inline fun wrapInCommand(isInWriteCommand: Boolean, crossinline action: () -> Unit) {
         if (isInWriteCommand) {
             action.invoke()
@@ -179,42 +149,6 @@ class BuildGradleModificationService(
                 action.invoke()
             }
         }
-    }
-
-    private fun KtFile.getOrCreateBuildGradleDependenciesBlock(): KtBlockExpression {
-        require(isScript()) {
-            """
-        You can create "$DEPENDENCIES_BLOCK_NAME" block only inside kts scripts.
-            file name: ${this.name}
-            file path: ${this.virtualFilePath}
-        """
-        }
-
-        val existingDependenciesBlock = getGradleDependenciesBlock()
-        if (existingDependenciesBlock != null) {
-            return existingDependenciesBlock
-        }
-
-        val ktPsiFactory = KtPsiFactory(project)
-        val newDependenciesExpression = ktPsiFactory.createExpression("""
-        dependencies {
-        }
-        """
-        )
-
-        this.add(ktPsiFactory.createNewLine())
-        val addedDescriptionBlock = this.add(newDependenciesExpression)
-
-        return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
-            "Error with creating new $DEPENDENCIES_BLOCK_NAME block | kotlin"
-        }
-    }
-
-    private fun KtFile.getGradleDependenciesBlock(): KtBlockExpression? {
-        return script
-            ?.declarations
-            ?.firstOrNull { it.text.startsWith(DEPENDENCIES_BLOCK_NAME) }
-            ?.findDescendantOfType()
     }
 
 }

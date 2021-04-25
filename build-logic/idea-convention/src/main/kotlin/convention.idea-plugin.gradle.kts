@@ -10,12 +10,7 @@ plugins {
     id("org.jetbrains.changelog")
 }
 
-fun properties(key: String): String {
-    println("Invoke 'properties($key)'")
-    return project.findProperty(key).toString().also {
-        println("\t --> $it")
-    }
-}
+fun properties(key: String) = project.findProperty(key).toString()
 
 
 group = properties("pluginGroup")

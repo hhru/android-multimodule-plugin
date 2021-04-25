@@ -7,12 +7,13 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.plugins.code_modification.extensions.psi.createNewLine
-import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpression
-import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpressionElement
-import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleRelativePathSetupElement
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.extensions.openapi.getRootModule
+import ru.hh.plugins.psi_utils.groovy.createNewLine
+import ru.hh.plugins.psi_utils.groovy.getIncludeModuleExpressionElement
+import ru.hh.plugins.psi_utils.groovy.getIncludeModuleRelativePathSetupElement
+import ru.hh.plugins.psi_utils.kotlin.getIncludeModuleExpression
+import ru.hh.plugins.psi_utils.kotlin.getIncludeModuleRelativePathSetupElement
 
 
 class SettingsGradleModificationService(

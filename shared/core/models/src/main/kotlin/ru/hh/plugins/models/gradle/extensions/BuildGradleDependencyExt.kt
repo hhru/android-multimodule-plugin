@@ -1,6 +1,6 @@
-package ru.hh.plugins.code_modification.models.extensions
+package ru.hh.plugins.models.gradle.extensions
 
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
+import ru.hh.plugins.models.gradle.BuildGradleDependency
 
 
 fun BuildGradleDependency.toDependencyText(): String {

@@ -1,4 +1,4 @@
-package ru.hh.plugins.extensions.psi
+package ru.hh.plugins.psi_utils
 
 import com.intellij.psi.JavaDirectoryService
 import com.intellij.psi.PsiDirectory
