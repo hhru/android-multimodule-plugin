@@ -16,10 +16,6 @@ include(":shared:feature:geminio-sdk")
 // endregion
 
 // Plugins
-include(":hh-carnival")
-include(":hh-garcon")
-include(":hh-geminio")
-
-project(":hh-carnival").projectDir = File("$settingsDir/plugins/hh-carnival")
-project(":hh-garcon").projectDir = File("$settingsDir/plugins/hh-garcon")
-project(":hh-geminio").projectDir = File("$settingsDir/plugins/hh-geminio")
+include(":plugins:hh-carnival")
+include(":plugins:hh-garcon")
+include(":plugins:hh-geminio")
