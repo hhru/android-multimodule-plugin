@@ -1,5 +1,9 @@
 # Garcon
 
+<!-- Plugin description -->
+**Garcon** -- Plugin for generating Kakao's Page objects from Android's layout.xml files.
+<!-- Plugin description end -->
+
 Плагин для ускорения создания Page object-ов с использованием [Kakao DSL](https://github.com/agoda-com/Kakao).
 
 ## Содержание

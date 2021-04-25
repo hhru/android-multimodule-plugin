@@ -3,10 +3,6 @@
     <name>Geminio</name>
     <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
 
-    <description><![CDATA[
-    Plugin for generating code from templates.
-    ]]></description>
-
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.android</depends>

@@ -8,12 +8,11 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
 import ru.hh.plugins.code_modification.extensions.psi.getBreakLineElement
+import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpression
 import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpressionElement
 import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleRelativePathSetupElement
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.extensions.openapi.getRootModule
-import ru.hh.plugins.extensions.psi.kotlin.getIncludeModuleExpression
-import ru.hh.plugins.extensions.psi.kotlin.getIncludeModuleRelativePathSetupElement
 
 
 class SettingsGradleModificationService(

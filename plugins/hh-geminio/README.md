@@ -2,6 +2,11 @@
 
 ![Geminio](/plugins/hh-geminio/img/Geminio.png)
 
+<!-- Plugin description -->
+**Geminio** -- Android Studio Plugin for generating code from templates.
+<!-- Plugin description end -->
+
+
 Плагин для генерации кода из freemarker-ных шаблонов
 
 ## Зачем

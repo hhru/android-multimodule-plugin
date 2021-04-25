@@ -3,10 +3,6 @@
     <name>Carnival</name>
     <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
 
-    <description><![CDATA[
-    Carnival - plugin for several useful actions and abilities.
-    ]]></description>
-
     <depends>com.intellij.modules.lang</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>org.intellij.groovy</depends>

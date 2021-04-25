@@ -1,5 +1,7 @@
 rootProject.name = "build-logic"
 
+includeBuild("../libraries")
+
 include("kotlin-convention")
 include("testing-convention")
 include("idea-convention")

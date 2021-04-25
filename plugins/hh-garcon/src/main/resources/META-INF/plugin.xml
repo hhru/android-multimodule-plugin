@@ -3,10 +3,6 @@
     <name>Garcon</name>
     <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
 
-    <description><![CDATA[
-    Plugin for generating Kakao's Page objects from Android's layout.xml files.
-    ]]></description>
-
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.android</depends>
