@@ -1,0 +1,137 @@
+package ru.hh.plugins
+
+import org.gradle.api.JavaVersion
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
+import javax.inject.Inject
+
+
+abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
+
+    val javaVersion = JavaVersion.VERSION_1_8
+    val chosenIdeaVersion = Product.LOCAL
+
+
+    private val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion").get()
+    private val gradleChangelogPluginVersion = systemProperty("gradleChangelogPluginVersion").get()
+    private val kotlinVersion = systemProperty("kotlinVersion").get()
+    private val detektVersion = systemProperty("detektVersion").get()
+
+
+    val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    val gradleIntelliJPlugin = "org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradleIntellijPluginVersion"
+    val gradleChangelogPlugin = "org.jetbrains.intellij.plugins:gradle-changelog-plugin:$gradleChangelogPluginVersion"
+
+
+    val kotlinXCli = "org.jetbrains.kotlinx:kotlinx-cli:0.2.1"
+    val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    val kotlinStdlibJdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    val kotlinHtml = "org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2"
+    val kotlinCompilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion"
+
+    val freemarker = "org.freemarker:freemarker:2.3.30"
+    val flexmark = "com.vladsch.flexmark:flexmark-all:0.50.42"
+
+    val staticAnalysis = StaticAnalysisLibraries(
+        detektVersion = detektVersion
+    )
+    val tests = UnitTests
+
+
+    object UnitTests {
+        const val kotest = "io.kotest:kotest-runner-junit5:4.3.1"
+    }
+
+    class StaticAnalysisLibraries(
+        detektVersion: String
+    ) {
+        val detektFormatting = "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+        val detektCli = "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
+        val detektApi = "io.gitlab.arturbosch.detekt:detekt-api:$detektVersion"
+        val detektTest = "io.gitlab.arturbosch.detekt:detekt-test:$detektVersion"
+        val detektGradlePlugin = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+    }
+
+
+    enum class Product(
+        val isLocal: Boolean = false,
+        val ideVersion: String,
+        val pluginsNames: List<String>
+    ) {
+        LOCAL(
+            isLocal = true,
+            ideVersion = "/Applications/Android Studio.app",
+            pluginsNames = listOf(
+                "android",
+                "android-layoutlib",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea",
+                "IntelliLang"
+            )
+        ),
+
+        IDEA_2020_2(
+            isLocal = false,
+            ideVersion = "2020.2",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea"
+            )
+        ),
+
+        ANDROID_STUDIO_4_1(
+            ideVersion = "201.8743.12",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea"
+            )
+        ),
+
+        ANDROID_STUDIO_4_0(
+            ideVersion = "193.6911.18",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea"
+            )
+        ),
+
+        ANDROID_STUDIO_3_6_3(
+            ideVersion = "192.7142.36",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea"
+            )
+        ),
+
+        ANDROID_STUDIO_3_5_3(
+            ideVersion = "191.8026.42",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "Groovy",
+                "git4idea"
+            )
+        )
+    }
+
+    @Suppress("UnstableApiUsage")
+    private fun systemProperty(name: String): Provider<String> {
+        return providers.systemProperty(name).forUseAtConfigurationTime()
+    }
+}
