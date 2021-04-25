@@ -9,7 +9,7 @@ import ru.hh.plugins.code_modification.models.extensions.toDependencyText
 private const val GR_TOKEN_LINE_BREAK_SYMBOL = "\n"
 
 
-fun GroovyPsiElementFactory.getBreakLineElement(): PsiElement {
+fun GroovyPsiElementFactory.createNewLine(): PsiElement {
     return createLineTerminator(GR_TOKEN_LINE_BREAK_SYMBOL)
 }
 

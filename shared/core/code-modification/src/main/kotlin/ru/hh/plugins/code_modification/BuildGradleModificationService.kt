@@ -16,6 +16,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrApplic
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.code_modification.extensions.psi.createBuildGradleDependencyElement
+import ru.hh.plugins.code_modification.extensions.psi.createNewLine
 import ru.hh.plugins.code_modification.models.BuildGradleDependency
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.extensions.psi.reformatWithCodeStyle
@@ -123,10 +124,7 @@ class BuildGradleModificationService(
     }
 
     private fun GroovyFileImpl.addGradleDependencies(gradleDependencies: List<BuildGradleDependency>) {
-        val dependenciesClosableBlock = findChildrenByClass(GrMethodCall::class.java)
-            .firstOrNull { it.text.startsWith(DEPENDENCIES_BLOCK_NAME) }
-            ?.findDescendantOfType<GrClosableBlock>()
-            ?: return
+        val dependenciesClosableBlock = getOrCreateGradleDependenciesBlock()
 
         val existingDependencies = dependenciesClosableBlock.children.filterIsInstance<GrApplicationStatement>()
             .mapTo(mutableSetOf()) { dependency ->
@@ -146,6 +144,30 @@ class BuildGradleModificationService(
         }
 
         reformatWithCodeStyle()
+    }
+
+    private fun GroovyFileImpl.getOrCreateGradleDependenciesBlock(): GrClosableBlock {
+        val existingDependenciesBlock = findChildrenByClass(GrMethodCall::class.java)
+            .firstOrNull { it.text.startsWith(DEPENDENCIES_BLOCK_NAME) }
+            ?.findDescendantOfType<GrClosableBlock>()
+
+        if (existingDependenciesBlock != null) {
+            return existingDependenciesBlock
+        }
+
+        val factory = GroovyPsiElementFactory.getInstance(project)
+
+        val newDependenciesExpression = factory.createExpressionFromText("""
+        dependencies {
+        }    
+        """)
+
+        this.add(factory.createNewLine())
+        val addedDescriptionBlock = this.add(newDependenciesExpression)
+
+        return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
+            "Error with creating new $DEPENDENCIES_BLOCK_NAME block | Groovy"
+        }
     }
 
 
@@ -184,7 +206,7 @@ class BuildGradleModificationService(
         val addedDescriptionBlock = this.add(newDependenciesExpression)
 
         return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
-            "Error with creating new $DEPENDENCIES_BLOCK_NAME block"
+            "Error with creating new $DEPENDENCIES_BLOCK_NAME block | kotlin"
         }
     }
 

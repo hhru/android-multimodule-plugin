@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.plugins.code_modification.extensions.psi.getBreakLineElement
+import ru.hh.plugins.code_modification.extensions.psi.createNewLine
 import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpression
 import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleExpressionElement
 import ru.hh.plugins.code_modification.extensions.psi.getIncludeModuleRelativePathSetupElement
@@ -100,11 +100,11 @@ class SettingsGradleModificationService(
 
         project.executeWriteCommand(COMMAND_NAME) {
             with(this) {
-                add(factory.getBreakLineElement())
+                add(factory.createNewLine())
                 add(factory.getIncludeModuleExpressionElement(moduleName))
-                add(factory.getBreakLineElement())
+                add(factory.createNewLine())
                 add(factory.getIncludeModuleRelativePathSetupElement(moduleName, moduleRelativePath))
-                add(factory.getBreakLineElement())
+                add(factory.createNewLine())
             }
         }
     }

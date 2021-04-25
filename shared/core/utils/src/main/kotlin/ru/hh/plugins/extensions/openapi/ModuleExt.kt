@@ -8,9 +8,6 @@ import com.intellij.psi.PsiMember
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
-import org.jetbrains.android.dom.manifest.cachedValueFromPrimaryManifest
-import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.path.GrCallExpression
 
 
 fun Module.isAndroidLibraryModule(): Boolean {
