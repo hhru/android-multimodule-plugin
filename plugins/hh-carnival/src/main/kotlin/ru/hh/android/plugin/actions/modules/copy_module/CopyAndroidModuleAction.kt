@@ -36,9 +36,9 @@ import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
-import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
 import ru.hh.plugins.extensions.openapi.isAndroidLibraryModule
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import kotlin.system.measureTimeMillis
 
 

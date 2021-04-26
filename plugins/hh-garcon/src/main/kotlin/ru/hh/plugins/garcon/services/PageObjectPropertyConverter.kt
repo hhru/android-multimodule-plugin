@@ -9,13 +9,13 @@ import com.intellij.psi.PsiClass
 import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.collections.firstOrNull
-import ru.hh.plugins.extensions.psi.isInheritedFrom
 import ru.hh.plugins.garcon.config.GarconPluginConfig
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import ru.hh.plugins.garcon.model.AndroidViewTagInfo
 import ru.hh.plugins.garcon.model.PageObjectPropertyParams
 import ru.hh.plugins.garcon.model.extensions.rFilePackageName
 import ru.hh.plugins.garcon.model.extensions.xmlFileName
+import ru.hh.plugins.psi_utils.isInheritedFrom
 
 
 @Service

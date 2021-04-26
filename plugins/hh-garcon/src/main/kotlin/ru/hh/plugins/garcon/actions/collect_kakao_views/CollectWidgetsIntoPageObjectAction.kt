@@ -10,14 +10,14 @@ import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.getOrCreateBody
 import org.jetbrains.kotlin.psi.psiUtil.visibilityModifierType
+import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
+import ru.hh.plugins.extensions.openapi.executeWithoutCodeStyle
 import ru.hh.plugins.garcon.extensions.psi.collectAndroidViewsTagsInfo
 import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
 import ru.hh.plugins.garcon.services.balloonError
 import ru.hh.plugins.garcon.services.balloonInfo
-import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
-import ru.hh.plugins.extensions.openapi.executeWithoutCodeStyle
-import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
-import ru.hh.plugins.extensions.psi.openInEditor
+import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
+import ru.hh.plugins.psi_utils.openInEditor
 
 
 class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
