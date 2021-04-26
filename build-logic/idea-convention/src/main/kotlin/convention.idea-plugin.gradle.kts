@@ -58,3 +58,7 @@ tasks.withType<PatchPluginXmlTask> {
         }
     )
 }
+
+tasks.getByName<Zip>("buildPlugin") {
+    archiveFileName.set("${properties("pluginName")}.zip")
+}

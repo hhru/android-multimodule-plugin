@@ -1,18 +1,22 @@
 package ru.hh.plugins.gradle.build_all_plugins
 
+import Convention_ideaPluginPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.hasPlugin
 import org.gradle.kotlin.dsl.register
-import org.jetbrains.intellij.IntelliJPlugin
-import ru.hh.plugins.gradle.Constants
-import ru.hh.plugins.gradle.core_module_marker.CoreModuleMarkerPlugin
-import ru.hh.plugins.gradle.extensions.isRoot
+import ru.hh.plugins.core_utils.Constants
+import ru.hh.plugins.core_utils.isRoot
 
 
 class BuildAllPluginsGradlePlugin : Plugin<Project> {
+
+    private companion object {
+        const val BUILD_PLUGIN_TASK_NAME = "buildPlugin"
+    }
+
 
     override fun apply(target: Project) {
         check(target.isRoot()) {
@@ -20,6 +24,7 @@ class BuildAllPluginsGradlePlugin : Plugin<Project> {
         }
 
         target.tasks.register<BuildAllPluginsTask>("buildAllPlugins") {
+            group = "build"
             val buildPluginTasks = target.getBuildPluginTasks()
 
             // Inputs
@@ -33,11 +38,8 @@ class BuildAllPluginsGradlePlugin : Plugin<Project> {
 
     private fun Project.getBuildPluginTasks(): MutableList<Zip> {
         return allprojects
-            .filter { project ->
-                project.plugins.hasPlugin(IntelliJPlugin::class)
-                        && project.plugins.hasPlugin(CoreModuleMarkerPlugin::class).not()
-            }
-            .mapTo(mutableListOf()) { it.tasks.getByName("buildPlugin", Zip::class) }
+            .filter { it.plugins.hasPlugin(Convention_ideaPluginPlugin::class) }
+            .mapTo(mutableListOf()) { it.tasks.getByName(BUILD_PLUGIN_TASK_NAME, Zip::class) }
     }
 
 }

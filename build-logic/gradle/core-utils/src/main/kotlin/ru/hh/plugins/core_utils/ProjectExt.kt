@@ -1,4 +1,4 @@
-package ru.hh.plugins.gradle.extensions
+package ru.hh.plugins.core_utils
 
 import org.gradle.api.Project
 
