@@ -4,9 +4,9 @@ import com.android.SdkConstants
 import com.intellij.psi.XmlRecursiveElementVisitor
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import ru.hh.plugins.garcon.model.AndroidViewTagInfo
 import ru.hh.plugins.extensions.EMPTY
-import ru.hh.plugins.extensions.psi.androidManifestPackageName
+import ru.hh.plugins.garcon.model.AndroidViewTagInfo
+import ru.hh.plugins.psi_utils.androidManifestPackageName
 
 
 val XmlFile.rFilePackageName: String

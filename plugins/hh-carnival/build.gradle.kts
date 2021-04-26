@@ -1,20 +1,23 @@
 plugins {
-    id(GradlePlugins.gradleIntelliJPlugin)
-    kotlin("jvm")
-    id(GradlePlugins.setupIdeaPlugin)
+    id("convention.idea-plugin")
 }
 
+// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle
 repositories {
     mavenCentral()
     maven("https://packages.atlassian.com/maven/repository/public")
 }
 
 dependencies {
-    implementation(project(":shared-core-utils"))
-    implementation(project(":shared-core-ui"))
-    implementation(project(":shared-core-freemarker"))
-    implementation(project(":shared-core-code-modification"))
+    // Core modules
+    implementation(project(":shared:core:utils"))
+    implementation(project(":shared:core:ui"))
+    implementation(project(":shared:core:freemarker"))
+    implementation(project(":shared:core:code-modification"))
+    implementation(project(":shared:core:models"))
+    implementation(project(":shared:core:psi-utils"))
 
+    // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("com.atlassian.jira:jira-rest-java-client-core:4.0.0") {

@@ -17,9 +17,9 @@ import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
 import ru.hh.plugins.garcon.services.balloonError
 import ru.hh.plugins.garcon.services.balloonInfo
 import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
-import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
-import ru.hh.plugins.extensions.psi.openInEditor
 import ru.hh.plugins.extensions.toKotlinFileName
+import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
+import ru.hh.plugins.psi_utils.openInEditor
 
 /**
  * Action for generating Kakao's Screen class declaration from XML layout file.

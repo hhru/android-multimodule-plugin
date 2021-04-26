@@ -36,9 +36,9 @@ import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
-import ru.hh.plugins.code_modification.models.BuildGradleDependency
-import ru.hh.plugins.code_modification.models.BuildGradleDependencyConfiguration
-import ru.hh.plugins.extensions.openapi.isLibraryModule
+import ru.hh.plugins.extensions.openapi.isAndroidLibraryModule
+import ru.hh.plugins.models.gradle.BuildGradleDependency
+import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import kotlin.system.measureTimeMillis
 
 
@@ -51,7 +51,7 @@ class CopyAndroidModuleAction : AnAction() {
         super.update(e)
 
         e.presentation.isEnabled = when {
-            e.androidFacet?.module?.isLibraryModule() == false -> false
+            e.androidFacet?.module?.isAndroidLibraryModule() == false -> false
             else -> true
         }
     }

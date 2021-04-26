@@ -16,9 +16,9 @@ import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.extensions.EMPTY
-import ru.hh.plugins.extensions.psi.isInheritedFrom
-import ru.hh.plugins.extensions.psi.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.extensions.toKotlinFileName
+import ru.hh.plugins.psi_utils.isInheritedFrom
+import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 
 
 class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {

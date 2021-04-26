@@ -1,10 +1,8 @@
 plugins {
-    id(GradlePlugins.gradleIntelliJPlugin)
-    kotlin("jvm")
-    id(GradlePlugins.setupIdeaPlugin)
-    id(GradlePlugins.coreModuleMarker)
+    id("convention.idea-plugin-library")
 }
 
+// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle
 repositories {
     mavenCentral()
 }

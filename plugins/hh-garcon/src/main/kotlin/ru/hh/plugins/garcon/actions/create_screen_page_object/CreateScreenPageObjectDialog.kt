@@ -15,11 +15,11 @@ import org.jetbrains.kotlin.idea.refactoring.ui.KotlinDestinationFolderComboBox
 import ru.hh.plugins.extensions.isQualifiedPackageName
 import ru.hh.plugins.extensions.isValidIdentifier
 import ru.hh.plugins.extensions.packageName
-import ru.hh.plugins.extensions.psi.checkFileCanBeCreated
-import ru.hh.plugins.extensions.psi.xml.extractClassNameFromFileName
 import ru.hh.plugins.extensions.toKotlinFileName
 import ru.hh.plugins.garcon.GarconConstants
 import ru.hh.plugins.garcon.extensions.showErrorDialog
+import ru.hh.plugins.psi_utils.checkFileCanBeCreated
+import ru.hh.plugins.psi_utils.xml.extractClassNameFromFileName
 import ru.hh.plugins.utils.recents_manager.RecentsUtils
 import ru.hh.plugins.views.layouts.kotlinDestinationFolderComboBox
 import ru.hh.plugins.views.layouts.targetPackageComboBox

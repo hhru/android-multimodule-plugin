@@ -1,32 +1,73 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://packages.atlassian.com/maven/repository/public")
+    }
+
+    @Suppress("UnstableApiUsage")
+    fun systemProperty(name: String): Provider<String> {
+        return providers.systemProperty(name).forUseAtConfigurationTime()
+    }
+
+    val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion")
+    val gradleChangelogPluginVersion = systemProperty("gradleChangelogPluginVersion")
+    val kotlinVersion = systemProperty("kotlinVersion")
+    val detektVersion = systemProperty("detektVersion")
+
+    resolutionStrategy {
+        eachPlugin {
+            val pluginId = requested.id.id
+
+            when {
+                pluginId == "org.jetbrains.intellij" ->
+                    useVersion(gradleIntellijPluginVersion.get())
+
+                pluginId == "org.jetbrains.changelog" ->
+                    useVersion(gradleChangelogPluginVersion.get())
+
+                pluginId == "io.gitlab.arturbosch.detekt" ->
+                    useVersion(detektVersion.get())
+
+                pluginId.startsWith("org.jetbrains.kotlin.") ->
+                    useVersion(kotlinVersion.get())
+            }
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://packages.atlassian.com/maven/repository/public")
+    }
+}
+
 rootProject.name = "hh-android-plugins"
+
+includeBuild("libraries")
+includeBuild("build-logic")
 
 // region Shared modules
 
 // region Shared core modules
-include(":shared-core-utils")
-include(":shared-core-freemarker")
-include(":shared-core-ui")
-include(":shared-core-code-modification")
-
-project(":shared-core-utils").projectDir = File("$settingsDir/shared/core/utils")
-project(":shared-core-ui").projectDir = File("$settingsDir/shared/core/ui")
-project(":shared-core-freemarker").projectDir = File("$settingsDir/shared/core/freemarker")
-project(":shared-core-code-modification").projectDir = File("$settingsDir/shared/core/code-modification")
+include(":shared:core:utils")
+include(":shared:core:freemarker")
+include(":shared:core:ui")
+include(":shared:core:code-modification")
+include(":shared:core:models")
+include(":shared:core:psi-utils")
 // endregion
 
 // region Shared features
-include(":shared-feature-geminio-sdk")
-
-project(":shared-feature-geminio-sdk").projectDir = File("$settingsDir/shared/features/geminio-sdk")
+include(":shared:feature:geminio-sdk")
 // endregion
 
 // endregion
 
 // Plugins
-include(":hh-carnival")
-include(":hh-garcon")
-include(":hh-geminio")
-
-project(":hh-carnival").projectDir = File("$settingsDir/plugins/hh-carnival")
-project(":hh-garcon").projectDir = File("$settingsDir/plugins/hh-garcon")
-project(":hh-geminio").projectDir = File("$settingsDir/plugins/hh-geminio")
+include(":plugins:hh-carnival")
+include(":plugins:hh-garcon")
+include(":plugins:hh-geminio")

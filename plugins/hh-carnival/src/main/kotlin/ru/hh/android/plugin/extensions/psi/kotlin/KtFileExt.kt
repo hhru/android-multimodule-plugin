@@ -12,7 +12,7 @@ fun KtFile.addImportPackages(vararg packages: String) {
     importList?.let { importListPsiElement ->
         packages.forEach { packageName ->
             if (existingImports.contains(packageName).not()) {
-                importListPsiElement.add(ktPsiElementFactory.getBreakLineElement())
+                importListPsiElement.add(ktPsiElementFactory.createNewLine())
                 importListPsiElement.add(ktPsiElementFactory.createImportDirective(ImportPath.fromString(packageName)))
             }
         }
