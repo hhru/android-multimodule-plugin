@@ -112,6 +112,7 @@ class BuildGradleModificationService(
             if (existingDependencies.contains(dependency.value).not()) {
                 val element = ktPsiFactory.createBuildGradleDependencyElement(dependency)
                 dependenciesBodyBlock.addBefore(element, dependenciesBodyBlock.rBrace)
+                dependenciesBodyBlock.addBefore(ktPsiFactory.createNewLine(), dependenciesBodyBlock.rBrace)
             }
         }
 
