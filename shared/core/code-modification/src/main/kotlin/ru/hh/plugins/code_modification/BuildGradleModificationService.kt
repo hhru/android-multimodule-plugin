@@ -14,6 +14,7 @@ import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.psi_utils.groovy.createBuildGradleDependencyElement
+import ru.hh.plugins.psi_utils.groovy.createNewLine
 import ru.hh.plugins.psi_utils.groovy.getOrCreateGradleDependenciesBlock
 import ru.hh.plugins.psi_utils.kotlin.createBuildGradleDependencyElement
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
@@ -136,6 +137,7 @@ class BuildGradleModificationService(
             if (existingDependencies.contains(dependency.value).not()) {
                 val element = factory.createBuildGradleDependencyElement(dependency)
                 dependenciesClosableBlock.addBefore(element, dependenciesClosableBlock.rBrace)
+                dependenciesClosableBlock.addBefore(factory.createNewLine(), dependenciesClosableBlock.rBrace)
             }
         }
 
