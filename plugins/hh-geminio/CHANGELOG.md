@@ -1,13 +1,17 @@
 # Geminio
 
-## [Unreleased]
+## [1.1.5]
+### Fixed
+- Fixed adding dependencies into build.gradle / build.gradle.kts files
+
+## [1.1.4]
 ### Added
 - [Gradle Changelog Plugin](https://github.com/JetBrains/gradle-changelog-plugin) integration.
 
 ### Changed
 - Now we configure plugin modules with [gradle convention plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html);
 - Upgrade Gradle Wrapper to `7.0`;
-
+  BuildGradleModificationService.kt
 ## [1.1.3]
 ### Changed
 - Remove `'Choose module'` step from modules actions.
