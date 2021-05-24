@@ -26,3 +26,7 @@ fun KtPsiFactory.createBuildGradleDependencyElement(
 
     return createExpression("${buildGradleDependency.configuration.yamlKey}($dependencyText)")
 }
+
+fun KtPsiFactory.createGradlePluginElement(pluginId: String): PsiElement {
+    return createExpression("id(\"${pluginId}\")")
+}

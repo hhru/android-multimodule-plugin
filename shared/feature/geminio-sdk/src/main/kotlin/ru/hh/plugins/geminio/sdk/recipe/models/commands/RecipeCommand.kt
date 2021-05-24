@@ -57,4 +57,12 @@ sealed class RecipeCommand {
     data class MkDirs(
         val dirs: List<MkDirItem>
     ) : RecipeCommand()
+
+    /**
+     * Command for creating directories structure..
+     */
+    data class AddGradlePlugins(
+        val pluginsIds: List<String>
+    ) : RecipeCommand()
+
 }

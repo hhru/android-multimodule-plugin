@@ -38,5 +38,6 @@ private fun RecipeCommand.execute(
         is RecipeCommand.Predicate -> recipeExecutor.execute(this, executorData)
         is RecipeCommand.AddDependencies -> recipeExecutor.execute(this, executorData)
         is RecipeCommand.MkDirs -> recipeExecutor.execute(this, executorData)
+        is RecipeCommand.AddGradlePlugins -> recipeExecutor.execute(this, executorData)
     }.exhaustive
 }

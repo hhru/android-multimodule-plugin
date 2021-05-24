@@ -124,6 +124,9 @@ recipe:
       - compileOnly: com.github.stephanenicolas.toothpick:toothpick:3.1.0
       - testImplementation: :shared-core-test
       - androidTestImplementation: Libs.uiTests.kaspresso
+  - addGradlePlugins:
+      - kotlinx.serialization
+      - kotlin-kapt
 ```
 
 The recipe consists of 6 sections:

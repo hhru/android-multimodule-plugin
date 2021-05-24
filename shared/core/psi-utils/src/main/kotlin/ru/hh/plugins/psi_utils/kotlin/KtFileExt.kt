@@ -7,8 +7,9 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
-import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
 import ru.hh.plugins.psi_utils.reformatWithCodeStyle
+import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
+import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_PLUGINS_BLOCK_NAME
 
 
 fun KtFile.shortReferencesAndReformatWithCodeStyle() {
@@ -30,29 +31,46 @@ fun KtFile.getOrCreateBuildGradleDependenciesBlock(): KtBlockExpression {
         """
     }
 
-    val existingDependenciesBlock = getGradleDependenciesBlock()
-    if (existingDependenciesBlock != null) {
-        return existingDependenciesBlock
+    return findBlockExpressionByName(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
+        ?: return createScriptBlock(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
+}
+
+/**
+ * Invoke in write command only.
+ */
+fun KtFile.getOrCreateGradlePluginsBlock(): KtBlockExpression {
+    require(isScript()) {
+        """
+        You can create "$BUILD_GRADLE_PLUGINS_BLOCK_NAME" block only inside kts scripts.
+            file name: ${this.name}
+            file path: ${this.virtualFilePath}
+        """
     }
 
+    return findBlockExpressionByName(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
+        ?: return createScriptBlock(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
+}
+
+private fun KtFile.findBlockExpressionByName(blockName: String): KtBlockExpression? {
+    return script
+        ?.declarations
+        ?.firstOrNull { it.text.startsWith(blockName) }
+        ?.findDescendantOfType()
+}
+
+private fun KtFile.createScriptBlock(blockName: String): KtBlockExpression {
     val ktPsiFactory = KtPsiFactory(project)
-    val newDependenciesExpression = ktPsiFactory.createExpression("""
-        dependencies {
+    val newPluginsBlock = ktPsiFactory.createExpression(
+        """
+        $blockName {
         }
         """
     )
 
     this.add(ktPsiFactory.createNewLine())
-    val addedDescriptionBlock = this.add(newDependenciesExpression)
+    val addedPluginsBlock = this.add(newPluginsBlock)
 
-    return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
-        "Error with creating new $BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME block | kotlin"
+    return requireNotNull(addedPluginsBlock.findDescendantOfType()) {
+        "Error with creating new $blockName block | kotlin"
     }
-}
-
-private fun KtFile.getGradleDependenciesBlock(): KtBlockExpression? {
-    return script
-        ?.declarations
-        ?.firstOrNull { it.text.startsWith(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME) }
-        ?.findDescendantOfType()
 }

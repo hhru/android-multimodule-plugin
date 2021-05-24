@@ -5,11 +5,12 @@
 
 #### Список доступных команд
 
-- [mkDirs](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/MK_DIRS.md)
-- [instantiate](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/INSTANTIATE.md)
-- [open](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/OPEN.md)
-- [instantiateAndOpen](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/INSTANTIATE_AND_OPEN.md)
 - [addDependencies](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/ADD_DEPENDENCIES.md)
+- [addGradlePlugins](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/ADD_GRADLE_PLUGINS.md)
+- [instantiate](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/INSTANTIATE.md)
+- [instantiateAndOpen](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/INSTANTIATE_AND_OPEN.md)
+- [mkDirs](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/MK_DIRS.md)
+- [open](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/OPEN.md)
 - [predicate](/plugins/hh-geminio/docs/ru/recipe_content/recipe_commands/PREDICATE.md)
 
 ---
