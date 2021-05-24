@@ -43,6 +43,11 @@ class GeminioStartupActivity : StartupActivity {
             println("============")
             println("============")
 
+            if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
+                println("\tGeminio's config is not valid (may be not configured at all) -> no need to create actions")
+                return@runWhenSmart
+            }
+
             createActionsForTemplates(
                 pluginConfig = pluginConfig,
                 rootDirPath = pathToTemplates,
@@ -54,7 +59,6 @@ class GeminioStartupActivity : StartupActivity {
             println("==============================================")
         }
     }
-
 
     private fun createActionsForTemplates(
         pluginConfig: GeminioPluginConfig,
@@ -170,6 +174,14 @@ class GeminioStartupActivity : StartupActivity {
 
     private operator fun DefaultActionGroup.plusAssign(action: AnAction) {
         this.add(action)
+    }
+
+    private fun Project.isConfigNotValid(
+        pathToConfig: String,
+        pathToTemplates: String,
+        pathToModulesTemplates: String
+    ): Boolean {
+        return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
     }
 
 }
