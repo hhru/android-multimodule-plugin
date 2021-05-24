@@ -74,6 +74,19 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
             )
         ),
 
+        ANDROID_STUDIO_4_2(
+            isLocal = false,
+            ideVersion = "202.7660.26",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea",
+                "IntelliLang"
+            )
+        ),
+
         IDEA_2020_2(
             isLocal = false,
             ideVersion = "2020.2",
