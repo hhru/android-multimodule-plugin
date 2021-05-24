@@ -72,7 +72,7 @@ widgets:
         - unique
       default: BlankModule
       visibility: ${includeModule}
-      suggest: ${className.classToResource().underlinesToCamelCase()}Module
+      suggest: ${className.classToResource().underscoreToCamelCase()}Module
 
 globals:
   - stringParameter:

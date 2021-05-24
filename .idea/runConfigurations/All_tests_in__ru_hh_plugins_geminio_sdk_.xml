@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All tests in 'ru.hh.plugins.geminio.sdk'" type="ioKotest" factoryName="Kotest" nameIsGenerated="true" defaultName="singleModule">
+    <module name="hh-android-plugins.shared.feature.geminio-sdk.test" />
+    <shortenClasspath name="NONE" />
+    <option name="passParentEnvs" value="true" />
+    <option name="workingDirectory" value="$MODULE_WORKING_DIR$" />
+    <option name="programParameters" value="" />
+    <option name="specName" value="" />
+    <option name="testPath" value="" />
+    <option name="packageName" value="ru.hh.plugins.geminio.sdk" />
+    <option name="vmparams" value="" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

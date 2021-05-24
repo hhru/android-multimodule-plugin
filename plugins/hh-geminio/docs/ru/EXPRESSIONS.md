@@ -8,7 +8,7 @@
 Примеры выражений для секции `widgets`:
 
 ```yaml
-suggest: fragment_${className.classToResource().underlinesToCamelCase()}
+suggest: fragment_${className.classToResource().underscoreToCamelCase()}
 visibility: ${includeModule}
 availability: true
 ```
@@ -25,7 +25,7 @@ availability: true
 - `camelCaseToUnderlines`
 - `layoutToActivity`
 - `layoutToFragment`
-- `underlinesToCamelCase`
+- `underscoreToCamelCase`
 
 Для булевских выражений есть специальные значения - `true` / `false`
 + для них возможно использование только только boolean-параметров

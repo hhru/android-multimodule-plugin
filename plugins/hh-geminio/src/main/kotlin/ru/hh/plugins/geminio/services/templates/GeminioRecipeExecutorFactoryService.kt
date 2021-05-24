@@ -12,6 +12,7 @@ import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.ThemeData
 import com.android.tools.idea.wizard.template.ThemesData
+import com.android.tools.idea.wizard.template.ViewBindingSupport
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -88,7 +89,8 @@ class GeminioRecipeExecutorFactoryService {
 
         return ModuleTemplateDataBuilder(
             projectTemplateDataBuilder = projectTemplateDataBuilder,
-            isNew = true
+            isNewModule = true,
+            viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED
         ).also { builder ->
             builder.setModuleRoots(
                 paths = GeminioAndroidModulePaths(
@@ -111,11 +113,10 @@ class GeminioRecipeExecutorFactoryService {
                 main = ThemeData(STUB_MAIN_THEME_DATA_NAME, true)
             )
             builder.apis = ApiTemplateData(
-                createStubApiVersion(),
-                createStubApiVersion(),
-                createStubApiVersion(),
-                STUB_API_VERSION,
-                null
+                buildApi = createStubApiVersion(),
+                targetApi = createStubApiVersion(),
+                minApi = createStubApiVersion(),
+                appCompatVersion = STUB_API_VERSION,
             )
         }.build()
     }

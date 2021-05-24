@@ -7,7 +7,9 @@ import com.android.tools.idea.npw.project.getModuleTemplates
 import com.android.tools.idea.npw.project.getPackageForPath
 import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
 import com.android.tools.idea.projectsystem.NamedModuleTemplate
+import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.Template
+import com.google.wireless.android.sdk.stats.AndroidStudioEvent
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -108,12 +110,13 @@ class ConfigureTemplateParametersStepFactory {
         val initialPackageSuggestion = facet.getPackageForPath(moduleTemplates, targetDirectory).orEmpty()
 
         return RenderTemplateModel.fromFacet(
-            facet,
-            initialPackageSuggestion,
-            moduleTemplates[0],
-            commandName,
-            ProjectSyncInvoker.DefaultProjectSyncInvoker(),
-            true,
+            facet = facet,
+            initialPackageSuggestion = initialPackageSuggestion,
+            template = moduleTemplates[0],
+            commandName = commandName,
+            projectSyncInvoker = ProjectSyncInvoker.DefaultProjectSyncInvoker(),
+            shouldOpenFiles = true,
+            wizardContext = AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.UNKNOWN_UI_CONTEXT
         ).apply {
             newTemplate = androidStudioTemplate
         }
@@ -126,13 +129,16 @@ class ConfigureTemplateParametersStepFactory {
         androidStudioTemplate: Template
     ): RenderTemplateModel {
         return RenderTemplateModel.fromModuleModel(
-            NewAndroidModuleModel(
+            NewAndroidModuleModel.fromExistingProject(
                 project = project,
                 moduleParent = STUB_PARENT_MODULE_NAME,
                 projectSyncInvoker = ProjectSyncInvoker.DefaultProjectSyncInvoker(),
-                template = namedModuleTemplate,
                 isLibrary = true,
-            ).also { it.packageName.set(defaultPackageName) }
+                formFactor = FormFactor.Mobile
+            ).also {
+                it.packageName.set(defaultPackageName)
+                it.template.set(namedModuleTemplate)
+            }
         ).apply {
             newTemplate = androidStudioTemplate
         }

@@ -41,7 +41,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
 
 
     object UnitTests {
-        const val kotest = "io.kotest:kotest-runner-junit5:4.3.1"
+        const val kotest = "io.kotest:kotest-runner-junit5-jvm:4.3.1"
     }
 
     class StaticAnalysisLibraries(
