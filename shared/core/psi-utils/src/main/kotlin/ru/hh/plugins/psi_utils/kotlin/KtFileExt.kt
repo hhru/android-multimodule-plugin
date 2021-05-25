@@ -44,7 +44,7 @@ fun KtFile.getOrCreateGradlePluginsBlock(): KtBlockExpression {
         You can create "$BUILD_GRADLE_PLUGINS_BLOCK_NAME" block only inside kts scripts.
             file name: ${this.name}
             file path: ${this.virtualFilePath}
-        """
+        """.trimIndent()
     }
 
     return findBlockExpressionByName(BUILD_GRADLE_PLUGINS_BLOCK_NAME)

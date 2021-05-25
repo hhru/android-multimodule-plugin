@@ -38,8 +38,8 @@ class BuildGradleModificationService(
                 ?: module.findPsiFileByName(BUILD_GRADLE_KTS_FILENAME)
                 ?: throw IllegalStateException(
                     """
-                Can't find "$BUILD_GRADLE_FILENAME" / "$BUILD_GRADLE_KTS_FILENAME" in "${module.name}    
-                """
+                    Can't find "$BUILD_GRADLE_FILENAME" / "$BUILD_GRADLE_KTS_FILENAME" in "${module.name}
+                    """.trimIndent()
                 )
 
             buildGradlePsiFile.addGradleDependencies(gradleDependencies)

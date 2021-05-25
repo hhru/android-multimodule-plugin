@@ -52,14 +52,14 @@ sealed class RecipeCommand {
     ) : RecipeCommand()
 
     /**
-     * Command for creating directories structure..
+     * Command for creating directories structure.
      */
     data class MkDirs(
         val dirs: List<MkDirItem>
     ) : RecipeCommand()
 
     /**
-     * Command for creating directories structure..
+     * Command for adding gradle plugins into `plugins { }` block in build.gradle .
      */
     data class AddGradlePlugins(
         val pluginsIds: List<String>
