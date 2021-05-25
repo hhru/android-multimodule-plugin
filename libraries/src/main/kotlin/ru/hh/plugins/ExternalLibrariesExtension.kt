@@ -41,7 +41,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
 
 
     object UnitTests {
-        const val kotest = "io.kotest:kotest-runner-junit5:4.3.1"
+        const val kotest = "io.kotest:kotest-runner-junit5-jvm:4.3.1"
     }
 
     class StaticAnalysisLibraries(
@@ -66,6 +66,19 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
             pluginsNames = listOf(
                 "android",
                 "android-layoutlib",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea",
+                "IntelliLang"
+            )
+        ),
+
+        ANDROID_STUDIO_4_2(
+            isLocal = false,
+            ideVersion = "202.7660.26",
+            pluginsNames = listOf(
+                "android",
                 "Kotlin",
                 "java",
                 "Groovy",

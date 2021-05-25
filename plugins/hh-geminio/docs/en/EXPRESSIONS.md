@@ -8,7 +8,7 @@ Expressions could evaluate values of two types: strings and boolean.
 Examples of expressions for the `widgets` section:
 
 ```yaml
-suggest: fragment_${className.classToResource().underlinesToCamelCase()}
+suggest: fragment_${className.classToResource().underscoreToCamelCase()}
 visibility: ${includeModule}
 availability: true
 ```
@@ -25,7 +25,7 @@ Additional extension functions can be used for text parameters:
 - `camelCaseToUnderlines`;
 - `layoutToActivity`;
 - `layoutToFragment`;
-- `underlinesToCamelCase`.
+- `underscoreToCamelCase`.
 
 There are special values for boolean expressions - `true` / `false`
 + you can use only boolean-parameters inside ${} for them

@@ -7,6 +7,7 @@ import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.ProjectTemplateData
 import com.android.tools.idea.wizard.template.ThemesData
+import com.android.tools.idea.wizard.template.ViewBindingSupport
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
@@ -80,8 +81,8 @@ internal object GeminioExpressionUtils {
                 targetApi = ApiVersion(29, "29"),
                 minApi = ApiVersion(21, "21"),
                 appCompatVersion = 21,
-                buildApiRevision = null
-            )
+            ),
+            viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED
         )
     }
 

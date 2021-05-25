@@ -21,12 +21,11 @@ enum class RecipeExpressionModifier(
     LAYOUT_TO_FRAGMENT("layoutToFragment"),
 
     /**
-     * Converts an underlined_word into a CamelCase word
-     * ... there is one more function in Android Studio helpers -> 'underscoreToCamelCase' but it will do the same.
+     * Converts an underscore into a CamelCase word
      *
      * @return the CamelCase version of the word
      */
-    UNDERLINES_TO_CAMEL_CASE("underlinesToCamelCase"),
+    UNDERSCORE_TO_CAMEL_CASE("underscoreToCamelCase"),
 
     ;
 

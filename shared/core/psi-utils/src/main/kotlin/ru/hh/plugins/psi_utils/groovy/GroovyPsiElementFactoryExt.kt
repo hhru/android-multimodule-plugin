@@ -1,6 +1,7 @@
 package ru.hh.plugins.psi_utils.groovy
 
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.extensions.toDependencyText
@@ -33,4 +34,8 @@ fun GroovyPsiElementFactory.createBuildGradleDependencyElement(
     val expressionText = "${dependency.configuration.yamlKey} $dependencyText"
 
     return createExpressionFromText(expressionText)
+}
+
+fun GroovyPsiElementFactory.createGradlePluginElement(pluginId: String): PsiElement {
+    return createExpressionFromText("id(\"${pluginId}\")")
 }

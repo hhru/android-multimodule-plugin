@@ -6,12 +6,12 @@ import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
 
-internal class UnderlinesToCamelCaseModifierSpec : FreeSpec({
+internal class UnderscoreToCamelCaseModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
         return GeminioExpressionUtils.getEvaluatedValue(
             className = fragmentName,
-            modifier = RecipeExpressionModifier.UNDERLINES_TO_CAMEL_CASE
+            modifier = RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
         )
     }
 

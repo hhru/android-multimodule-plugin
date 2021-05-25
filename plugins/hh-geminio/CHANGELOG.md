@@ -1,5 +1,16 @@
 # Geminio
 
+## [1.1.6]
+### Added
+- Support for Android Studio 4.2
+
+### Changed
+- **Breaking change**!!! In Android Studio 4.2 `underlinesToCamelCase` function was removed, 
+  so we renamed `underlinesToCamelCase` modifier in templates into `underscoreToCamelCase`. 
+  
+### Fixed
+- Don't generate actions if there is no Geminio config 
+
 ## [1.1.5]
 ### Fixed
 - Fixed adding dependencies into build.gradle / build.gradle.kts files

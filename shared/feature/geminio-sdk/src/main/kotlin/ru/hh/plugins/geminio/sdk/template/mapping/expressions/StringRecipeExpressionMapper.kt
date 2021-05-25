@@ -7,7 +7,7 @@ import com.android.tools.idea.wizard.template.classToResource
 import com.android.tools.idea.wizard.template.fragmentToLayout
 import com.android.tools.idea.wizard.template.layoutToActivity
 import com.android.tools.idea.wizard.template.layoutToFragment
-import com.android.tools.idea.wizard.template.underlinesToCamelCase
+import com.android.tools.idea.wizard.template.underscoreToCamelCase
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
@@ -26,7 +26,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModif
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.FRAGMENT_TO_LAYOUT
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.LAYOUT_TO_ACTIVITY
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.LAYOUT_TO_FRAGMENT
-import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERLINES_TO_CAMEL_CASE
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
@@ -143,7 +143,7 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
             CAMEL_CASE_TO_UNDERLINES -> camelCaseToUnderlines(result)
             LAYOUT_TO_ACTIVITY -> layoutToActivity(result)
             LAYOUT_TO_FRAGMENT -> layoutToFragment(result)
-            UNDERLINES_TO_CAMEL_CASE -> underlinesToCamelCase(result)
+            UNDERSCORE_TO_CAMEL_CASE -> underscoreToCamelCase(result)
         }
     }
     return result

@@ -13,7 +13,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
-import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERLINES_TO_CAMEL_CASE
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
 
@@ -56,13 +56,13 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     }
 
     "Should find dynamic part with modifiers" {
-        val givenExpressionString = "\${className.classToResource().underlinesToCamelCase()}"
+        val givenExpressionString = "\${className.classToResource().underscoreToCamelCase()}"
         val expectedExpression = listOf(
             Dynamic(
                 parameterId = "className",
                 modifiers = listOf(
                     CLASS_TO_RESOURCE,
-                    UNDERLINES_TO_CAMEL_CASE
+                    UNDERSCORE_TO_CAMEL_CASE
                 )
             )
         ).intoExpression()
@@ -71,12 +71,12 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     }
 
     "Should change modifiers order according to dynamic part" {
-        val givenExpressionString = "\${className.underlinesToCamelCase().classToResource()}"
+        val givenExpressionString = "\${className.underscoreToCamelCase().classToResource()}"
         val expectedExpression = listOf(
             Dynamic(
                 parameterId = "className",
                 modifiers = listOf(
-                    UNDERLINES_TO_CAMEL_CASE,
+                    UNDERSCORE_TO_CAMEL_CASE,
                     CLASS_TO_RESOURCE
                 )
             )
@@ -86,13 +86,13 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     }
 
     "Should normally parse string with several dynamic parts" {
-        val givenExpressionString = "\${className.classToResource().underlinesToCamelCase()}Module\${className}"
+        val givenExpressionString = "\${className.classToResource().underscoreToCamelCase()}Module\${className}"
         val expectedExpression = listOf(
             Dynamic(
                 parameterId = "className",
                 modifiers = listOf(
                     CLASS_TO_RESOURCE,
-                    UNDERLINES_TO_CAMEL_CASE
+                    UNDERSCORE_TO_CAMEL_CASE
                 )
             ),
             Fixed("Module"),

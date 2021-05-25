@@ -6,32 +6,44 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlo
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
+import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_PLUGINS_BLOCK_NAME
 
 
 /**
  * Invoke in write command only.
  */
 fun GroovyFileImpl.getOrCreateGradleDependenciesBlock(): GrClosableBlock {
-    val existingDependenciesBlock = findChildrenByClass(GrMethodCall::class.java)
-        .firstOrNull { it.text.startsWith(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME) }
+    return findBlockExpressionByName(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
+        ?: createScriptBlock(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
+}
+
+/**
+ * Invoke in write command only.
+ */
+fun GroovyFileImpl.getOrCreateGradlePluginsBlock(): GrClosableBlock {
+    return findBlockExpressionByName(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
+        ?: createScriptBlock(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
+}
+
+private fun GroovyFileImpl.findBlockExpressionByName(blockName: String): GrClosableBlock? {
+    return findChildrenByClass(GrMethodCall::class.java)
+        .firstOrNull { it.text.startsWith(blockName) }
         ?.findDescendantOfType<GrClosableBlock>()
+}
 
-    if (existingDependenciesBlock != null) {
-        return existingDependenciesBlock
-    }
-
+private fun GroovyFileImpl.createScriptBlock(blockName: String): GrClosableBlock {
     val factory = GroovyPsiElementFactory.getInstance(project)
 
-    val newDependenciesExpression = factory.createExpressionFromText("""
-        dependencies {
+    val newBlockExpression = factory.createExpressionFromText("""
+        $blockName {
         }    
         """
     )
 
     this.add(factory.createNewLine())
-    val addedDescriptionBlock = this.add(newDependenciesExpression)
+    val addedBlock = this.add(newBlockExpression)
 
-    return requireNotNull(addedDescriptionBlock.findDescendantOfType()) {
-        "Error with creating new $BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME block | Groovy"
+    return requireNotNull(addedBlock.findDescendantOfType()) {
+        "Error with creating new $blockName block | Groovy"
     }
 }
