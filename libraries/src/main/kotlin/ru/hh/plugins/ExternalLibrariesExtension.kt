@@ -63,7 +63,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     ) {
         LOCAL(
             isLocal = true,
-            ideVersion = "/Users/p.strelchenko/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-0/203.7583922/Android Studio.app",
+            ideVersion = "/Applications/Android Studio.app",
             pluginsNames = listOf(
                 "android",
                 "android-layoutlib",
