@@ -13,7 +13,6 @@ enum class TemplateFormFactor(
     WEAR("wear"),
     TV("tv"),
     AUTOMOTIVE("automotive"),
-    THINGS("things"),
     GENERIC("generic");
 
 
