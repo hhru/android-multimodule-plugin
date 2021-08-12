@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.0.2]
+### Added
+- Support for Android Studio Arctic Fox | 2020.3.1
+
 ## [1.0.1]
 ### Added
 - [Gradle Changelog Plugin](https://github.com/JetBrains/gradle-changelog-plugin) integration.

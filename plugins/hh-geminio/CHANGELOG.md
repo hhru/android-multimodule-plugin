@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.1.7]
+### Added
+- Support for Android Studio Arctic Fox | 2020.3.1
+
 ## [1.1.6]
 ### Added
 - Support for Android Studio 4.2
