@@ -9,9 +9,6 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.psi.xml.XmlTag
-import org.jetbrains.android.dom.wrappers.LazyValueResourceElementWrapper
-import kotlin.system.measureTimeMillis
 
 
 /**
@@ -62,18 +59,19 @@ class DeprecatedAndroidResourceAnnotator : Annotator {
         return RESOURCES_PREFIXES.any { this.value.startsWith(it) }
     }
 
+    // TODO: Fix annotator, https://github.com/hhru/android-multimodule-plugin/issues/42
     private fun XmlAttributeValue.hasDeprecatedMark(): Boolean {
-        var result = false
-        val computationTime = measureTimeMillis {
-            result = ((this.reference?.resolve() as? LazyValueResourceElementWrapper)
-                ?.resourceInfo
-                ?.computeXmlElement()
-                ?.parent
-                ?.parent as? XmlTag)
-                ?.getAttributeValue(DEPRECATED_ATTRIBUTE_NAME) == DEPRECATED_TRUE_VALUE
-        }
-        logger.debug("Checked if XML Android resource `${this.value}` is deprecated (result: $result) in $computationTime ms")
-        return result
+//        var result = false
+//        val computationTime = measureTimeMillis {
+//            result = ((this.reference?.resolve() as? LazyValueResourceElementWrapper)
+//                ?.resourceInfo
+//                ?.computeXmlElement()
+//                ?.parent
+//                ?.parent as? XmlTag)
+//                ?.getAttributeValue(DEPRECATED_ATTRIBUTE_NAME) == DEPRECATED_TRUE_VALUE
+//        }
+//        logger.debug("Checked if XML Android resource `${this.value}` is deprecated (result: $result) in $computationTime ms")
+        return false
     }
 
 }
