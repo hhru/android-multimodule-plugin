@@ -6,13 +6,13 @@ plugins {
 }
 
 configure<IntelliJPluginExtension> {
-    type = "IC"
+    type.set("IC")
 
     val currentVersion = Libs.chosenIdeaVersion
     if (currentVersion.isLocal) {
-        localPath = currentVersion.ideVersion
+        localPath.set(currentVersion.ideVersion)
     } else {
-        version = currentVersion.ideVersion
+        version.set(currentVersion.ideVersion)
     }
-    setPlugins(*currentVersion.pluginsNames.toTypedArray())
+    plugins.set(currentVersion.pluginsNames)
 }
