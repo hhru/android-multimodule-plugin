@@ -1,4 +1,6 @@
 import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.intellij.tasks.IntelliJInstrumentCodeTask
+import org.gradle.kotlin.dsl.configure
 
 plugins {
     id("convention.kotlin-jvm")
@@ -15,4 +17,11 @@ configure<IntelliJPluginExtension> {
         version.set(currentVersion.ideVersion)
     }
     plugins.set(currentVersion.pluginsNames)
+}
+
+@Suppress("UnstableApiUsage")
+tasks.getByName<IntelliJInstrumentCodeTask>("instrumentCode") {
+    if (Libs.chosenIdeaVersion.isLocal) {
+        compilerVersion.set(Libs.chosenIdeaVersion.compilerVersion)
+    }
 }

@@ -58,11 +58,12 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     enum class Product(
         val isLocal: Boolean = false,
         val ideVersion: String,
+        val compilerVersion: String = "",
         val pluginsNames: List<String>
     ) {
         LOCAL(
             isLocal = true,
-            ideVersion = "/Applications/Android Studio.app",
+            ideVersion = "/Users/p.strelchenko/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-0/203.7583922/Android Studio.app",
             pluginsNames = listOf(
                 "android",
                 "android-layoutlib",
@@ -71,7 +72,22 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
                 "Groovy",
                 "git4idea",
                 "IntelliLang"
-            )
+            ),
+            // Для локальной версии Android Studio надо указывать версию компилятора для IntelliJInstrumentCodeTask
+            compilerVersion = "203.7717.56"
+        ),
+
+        ANDROID_STUDIO_ARCTIC_FOX(
+            isLocal = false,
+            ideVersion = "203.7717.56",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea",
+                "IntelliLang"
+            ),
         ),
 
         ANDROID_STUDIO_4_2(
