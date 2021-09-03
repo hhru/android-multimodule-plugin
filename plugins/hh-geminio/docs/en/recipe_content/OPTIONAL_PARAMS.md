@@ -29,7 +29,6 @@ they are not needed yet. Perhaps we will add the ability to automatically add te
   * `wear`;
   * `tv`;
   * `automotive`;
-  * `things`;
   * `generic`.
 
 - `constraints` — constraints on the project in which your template can be run.

@@ -17,7 +17,7 @@ group = properties("pluginGroup")
 version = properties("pluginVersion")
 
 configure<IntelliJPluginExtension> {
-    pluginName = properties("pluginName")
+    pluginName.set(properties("pluginName"))
 }
 
 configure<ChangelogPluginExtension> {
@@ -32,12 +32,12 @@ configure<ChangelogPluginExtension> {
 }
 
 tasks.withType<PatchPluginXmlTask> {
-    version(properties("pluginVersion"))
-    sinceBuild(properties("pluginSinceBuild"))
-    untilBuild(properties("pluginUntilBuild"))
+    version.set(properties("pluginVersion"))
+    sinceBuild.set(properties("pluginSinceBuild"))
+    untilBuild.set(properties("pluginUntilBuild"))
 
     // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-    pluginDescription(
+    pluginDescription.set(
         closure {
             File(projectDir, "README.md").readText().lines().run {
                 val start = "<!-- Plugin description -->"
@@ -48,14 +48,14 @@ tasks.withType<PatchPluginXmlTask> {
                 }
                 subList(indexOf(start) + 1, indexOf(end))
             }.joinToString("\n").run { markdownToHTML(this) }
-        }
+        }.call()
     )
 
     // Get the latest available change notes from the changelog file
-    changeNotes(
+    changeNotes.set(
         closure {
             changelog.getLatest().toHTML()
-        }
+        }.call()
     )
 }
 

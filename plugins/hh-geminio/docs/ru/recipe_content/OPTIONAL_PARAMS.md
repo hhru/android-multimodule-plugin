@@ -31,7 +31,6 @@
     * `wear`
     * `tv`
     * `automotive`
-    * `things`
     * `generic`
 
 - `constraints` - ограничения на проект, в котором может работать ваш шаблон.

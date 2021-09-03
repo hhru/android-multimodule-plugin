@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
 
-    val javaVersion = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_11
     val chosenIdeaVersion = Product.LOCAL
 
 
@@ -58,6 +58,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     enum class Product(
         val isLocal: Boolean = false,
         val ideVersion: String,
+        val compilerVersion: String = "",
         val pluginsNames: List<String>
     ) {
         LOCAL(
@@ -71,7 +72,22 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
                 "Groovy",
                 "git4idea",
                 "IntelliLang"
-            )
+            ),
+            // Для локальной версии Android Studio надо указывать версию компилятора для IntelliJInstrumentCodeTask
+            compilerVersion = "203.7717.56"
+        ),
+
+        ANDROID_STUDIO_ARCTIC_FOX(
+            isLocal = false,
+            ideVersion = "203.7717.56",
+            pluginsNames = listOf(
+                "android",
+                "Kotlin",
+                "java",
+                "Groovy",
+                "git4idea",
+                "IntelliLang"
+            ),
         ),
 
         ANDROID_STUDIO_4_2(
