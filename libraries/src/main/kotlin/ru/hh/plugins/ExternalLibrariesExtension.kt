@@ -11,6 +11,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     val javaVersion = JavaVersion.VERSION_11
     val chosenIdeaVersion = Product.LOCAL.apply {
         ideVersion = systemProperty("androidStudioPath").get()
+        compilerVersion = systemProperty("androidStudioCompilerVersion").get()
     }
 
 
@@ -60,7 +61,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     enum class Product(
         val isLocal: Boolean = false,
         var ideVersion: String,
-        val compilerVersion: String = "",
+        var compilerVersion: String = "",
         val pluginsNames: List<String>
     ) {
         LOCAL(
