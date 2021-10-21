@@ -22,7 +22,7 @@ jobs:
           wget -q https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
           mkdir androidstudio
           tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./androidstudio/
-          ls ./androidstudio/
-          ls "${pwd}/androidstudio/"
+          ls ./androidstudio/android-studio
+          ls "$(pwd)/androidstudio/android-studio"
       - name: Build Geminio
-        run: ./gradlew plugins:hh-geminio:buildPlugin -DandroidStudioPath="${pwd}/androidstudio/"
+        run: ./gradlew plugins:hh-geminio:buildPlugin -DandroidStudioPath="$(pwd)/androidstudio/android-studio"
