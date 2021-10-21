@@ -19,8 +19,8 @@ jobs:
           java-version: '11'
       - name: Download Android Studio
         run: |
-          wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
-          tar -xf archive.tar.gz -C ./androidstudio/
+          wget -q https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
+          tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./androidstudio/
           ls ./androidstudio/
           ls "${pwd}/androidstudio/"
       - name: Build Geminio
