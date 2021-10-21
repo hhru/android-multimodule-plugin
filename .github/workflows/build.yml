@@ -18,4 +18,4 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Build Geminio
-        run: ./gradlew plugins:hh-geminio:buildPlugin
+        run: ./gradlew plugins:hh-geminio:buildPlugin -PsystemProp.productType=ANDROID_STUDIO_ARCTIC_FOX
