@@ -11,9 +11,10 @@
 ### Чтобы собрать любой из плагинов, нужно 
 
 1. Убедитесь, что у вас есть Intellij IDEA (минимум CE) с подключенным Plugin Dev Kit
-2. Склонировать проект и запустить его в Intellij IDEA
-3. Запустить gradle-таску `buildPlugin` в проекте нужного плагина
-4. Собранный zip-архив плагина можно подключить в Android Studio через `Preferences -> Plugins -> Install from disk`
+2. Склонировать проект
+3. Если вы скачивали Android Studio через Toolbox, или у вас не Mac OS, то вероятно вам потребуется изменить путь к локальной версии Android Studio, который указывается [вот здесь](/libraries/src/main/kotlin/ru/hh/plugins/ExternalLibrariesExtension.kt) - объект `Product.LOCAL`
+4. Запустить gradle-таску `buildPlugin` в проекте нужного плагина
+5. Собранный zip-архив плагина можно подключить в Android Studio через `Preferences -> Plugins -> Install from disk`
 
 Готово, можно пользоваться!
 
