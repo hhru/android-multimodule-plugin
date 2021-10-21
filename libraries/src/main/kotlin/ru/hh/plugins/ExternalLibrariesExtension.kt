@@ -9,7 +9,9 @@ import javax.inject.Inject
 abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
 
     val javaVersion = JavaVersion.VERSION_11
-    val chosenIdeaVersion = Product.valueOf(systemProperty("productType").get())
+    val chosenIdeaVersion = Product.LOCAL.apply {
+        ideVersion = systemProperty("androidStudioPath").get()
+    }
 
 
     private val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion").get()
@@ -57,7 +59,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
 
     enum class Product(
         val isLocal: Boolean = false,
-        val ideVersion: String,
+        var ideVersion: String,
         val compilerVersion: String = "",
         val pluginsNames: List<String>
     ) {
