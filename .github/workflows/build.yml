@@ -20,9 +20,6 @@ jobs:
       - name: Download Android Studio
         run: |
           wget -q https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
-          mkdir androidstudio
-          tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./androidstudio/
-          ls ./androidstudio/android-studio
-          ls "$(pwd)/androidstudio/android-studio"
+          tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./
       - name: Build Geminio
-        run: ./gradlew plugins:hh-geminio:buildPlugin -DandroidStudioPath="$(pwd)/androidstudio/android-studio"
+        run: ./gradlew plugins:hh-geminio:buildPlugin -DandroidStudioPath="$(pwd)/android-studio"
