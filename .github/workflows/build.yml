@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  # Link for Linux zip file from https://developer.android.com/studio/archive
+  ANDROID_STUDIO_URL: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
+  COMPILER_VERSION: 203.7717.56
+
+jobs:
+  build:
+    name: Build Plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Download Android Studio
+        run: |
+          wget -q $ANDROID_STUDIO_URL
+          tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./
+      - name: Build plugins
+        run: ./gradlew buildAllPlugins -DandroidStudioPath="$(pwd)/android-studio" -DandroidStudioCompilerVersion="$COMPILER_VERSION"
+      - name: Publish plugins
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            build/plugins/hh-carnival.zip
+            build/plugins/hh-garcon.zip
+            build/plugins/hh-geminio.zip
+          tag_name: build-${{ github.run_number }}
+          name: Build №${{ github.run_number }}
+          draft: false
+          prerelease: true
