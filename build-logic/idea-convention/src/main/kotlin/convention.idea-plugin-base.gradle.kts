@@ -1,6 +1,7 @@
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.IntelliJInstrumentCodeTask
 import org.gradle.kotlin.dsl.configure
+import ru.hh.plugins.ExternalLibrariesExtension
 
 plugins {
     id("convention.kotlin-jvm")
@@ -11,17 +12,22 @@ configure<IntelliJPluginExtension> {
     type.set("IC")
 
     val currentVersion = Libs.chosenIdeaVersion
-    if (currentVersion.isLocal) {
-        localPath.set(currentVersion.ideVersion)
-    } else {
-        version.set(currentVersion.ideVersion)
+    when (currentVersion) {
+        is ExternalLibrariesExtension.Product.ICBasedIde -> {
+            version.set(currentVersion.ideVersion)
+        }
+
+        is ExternalLibrariesExtension.Product.LocalIde -> {
+            localPath.set(currentVersion.pathToIde)
+        }
     }
     plugins.set(currentVersion.pluginsNames)
 }
 
 @Suppress("UnstableApiUsage")
 tasks.getByName<IntelliJInstrumentCodeTask>("instrumentCode") {
-    if (Libs.chosenIdeaVersion.isLocal) {
-        compilerVersion.set(Libs.chosenIdeaVersion.compilerVersion)
+    val currentVersion = Libs.chosenIdeaVersion
+    if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {
+        compilerVersion.set(currentVersion.compilerVersion)
     }
 }

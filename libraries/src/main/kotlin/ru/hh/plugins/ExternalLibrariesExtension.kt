@@ -9,10 +9,14 @@ import javax.inject.Inject
 abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
 
     val javaVersion = JavaVersion.VERSION_11
-    val chosenIdeaVersion = Product.LOCAL.apply {
-        ideVersion = systemProperty("androidStudioPath").get()
-        compilerVersion = systemProperty("androidStudioCompilerVersion").get()
-    }
+    val chosenIdeaVersion: Product = Product.LocalIde(
+        pathToIde = systemProperty("androidStudioPath").get(),
+        compilerVersion = systemProperty("androidStudioCompilerVersion").get(),
+        pluginsNames = systemProperty("androidStudioPluginsNames").get()
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+    )
 
 
     private val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion").get()
@@ -57,107 +61,114 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         val detektGradlePlugin = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
     }
 
+    sealed class Product {
 
-    enum class Product(
-        val isLocal: Boolean = false,
-        var ideVersion: String,
-        var compilerVersion: String = "",
-        val pluginsNames: List<String>
-    ) {
-        LOCAL(
-            isLocal = true,
-            ideVersion = "/Applications/Android Studio.app",
-            pluginsNames = listOf(
-                "android",
-                "android-layoutlib",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea",
-                "IntelliLang"
-            ),
+        abstract val pluginsNames: List<String>
+
+        data class LocalIde(
+            override val pluginsNames: List<String>,
+            val pathToIde: String,
             // Для локальной версии Android Studio надо указывать версию компилятора для IntelliJInstrumentCodeTask
-            compilerVersion = "203.7717.56"
-        ),
+            val compilerVersion: String
+        ) : Product()
 
+        data class ICBasedIde(
+            override val pluginsNames: List<String>,
+            val ideVersion: String
+        ) : Product()
+
+    }
+
+    enum class PredefinedIdeProducts(val product: Product.ICBasedIde) {
         ANDROID_STUDIO_ARCTIC_FOX(
-            isLocal = false,
-            ideVersion = "203.7717.56",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea",
-                "IntelliLang"
-            ),
+            Product.ICBasedIde(
+                ideVersion = "202.7660.26",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea",
+                    "IntelliLang"
+                )
+            )
         ),
 
         ANDROID_STUDIO_4_2(
-            isLocal = false,
-            ideVersion = "202.7660.26",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea",
-                "IntelliLang"
+            Product.ICBasedIde(
+                ideVersion = "202.7660.26",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea",
+                    "IntelliLang"
+                )
             )
         ),
 
         IDEA_2020_2(
-            isLocal = false,
-            ideVersion = "2020.2",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea"
+            Product.ICBasedIde(
+                ideVersion = "2020.2",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea"
+                )
             )
         ),
 
         ANDROID_STUDIO_4_1(
-            ideVersion = "201.8743.12",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea"
+            Product.ICBasedIde(
+                ideVersion = "201.8743.12",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea"
+                )
             )
         ),
 
         ANDROID_STUDIO_4_0(
-            ideVersion = "193.6911.18",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea"
+            Product.ICBasedIde(
+                ideVersion = "193.6911.18",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea"
+                )
             )
         ),
 
         ANDROID_STUDIO_3_6_3(
-            ideVersion = "192.7142.36",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "java",
-                "Groovy",
-                "git4idea"
+            Product.ICBasedIde(
+                ideVersion = "192.7142.36",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                    "git4idea"
+                )
             )
         ),
 
         ANDROID_STUDIO_3_5_3(
-            ideVersion = "191.8026.42",
-            pluginsNames = listOf(
-                "android",
-                "Kotlin",
-                "Groovy",
-                "git4idea"
+            Product.ICBasedIde(
+                ideVersion = "191.8026.42",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "Groovy",
+                    "git4idea"
+                )
             )
         )
     }
