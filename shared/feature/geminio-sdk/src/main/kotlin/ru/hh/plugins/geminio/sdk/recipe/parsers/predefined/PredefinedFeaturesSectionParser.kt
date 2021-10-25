@@ -3,32 +3,68 @@
 package ru.hh.plugins.geminio.sdk.recipe.parsers.predefined
 
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
 
 private const val KEY_PREDEFINED_FEATURES_SECTION = "predefinedFeatures"
 
+private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePrefix"
+
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection].
  */
 internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesSection {
-    val featuresList = this[KEY_PREDEFINED_FEATURES_SECTION] as? List<String>
+    val featuresSection = this[KEY_PREDEFINED_FEATURES_SECTION]
         ?: return PredefinedFeaturesSection(emptySet())
+    var predefinedFeatures = featuresSection as? List<Map<String, Any?>>
+    // If featuresSection is not List<Map<String, Any?>>
+    if (predefinedFeatures == null) {
+        predefinedFeatures = (featuresSection as? List<String>)
+            ?.map { mapOf(it to emptyMap<String, Any>()) }
+    }
+    // If featuresSection is not List<String> and is not List<Map<String, Any?>>
+    if (predefinedFeatures == null) {
+        return PredefinedFeaturesSection(emptySet())
+    }
 
     return PredefinedFeaturesSection(
-        features = featuresList.mapTo(mutableSetOf()) { yamlKey ->
-            val result = PredefinedFeature.fromYamlKey(yamlKey)
-                ?: throw IllegalArgumentException(
-                    sectionUnknownEnumKeyErrorMessage(
-                        sectionName = KEY_PREDEFINED_FEATURES_SECTION,
-                        key = yamlKey,
-                        acceptableValues = PredefinedFeature.availableYamlKeys()
-                    )
-                )
-
-            result
-        }
+        features = predefinedFeatures.mapTo(mutableSetOf()) { it.toPredefinedFeatureParameter() }
     )
+}
+
+private fun Map<String, Any?>.toPredefinedFeatureParameter(): PredefinedFeatureParameter {
+    for (feature in PredefinedFeature.values()) {
+        val parameterMap = this[feature.yamlKey] as? Map<String, Any>
+        if (parameterMap != null) {
+            return parameterMap.parseParameter(feature)
+        }
+    }
+
+    throw IllegalArgumentException(
+        sectionUnknownEnumKeyErrorMessage(
+            sectionName = KEY_PREDEFINED_FEATURES_SECTION,
+            key = "${this.keys}",
+            acceptableValues = PredefinedFeature.availableYamlKeys()
+        )
+    )
+}
+
+private fun Map<String, Any>.parseParameter(
+    featureType: PredefinedFeature
+): PredefinedFeatureParameter {
+    return when (featureType) {
+        PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS -> {
+            val defaultPackageNamePrefix = this[KEY_PARAMETER_PREDEFINE_PACKAGE_NAME] as? String
+            if (defaultPackageNamePrefix == null) {
+                PredefinedFeatureParameter.ModuleCreationParameter()
+            } else {
+                PredefinedFeatureParameter.ModuleCreationParameter(
+                    defaultPackageNamePrefix = defaultPackageNamePrefix
+                )
+            }
+        }
+    }
 }
