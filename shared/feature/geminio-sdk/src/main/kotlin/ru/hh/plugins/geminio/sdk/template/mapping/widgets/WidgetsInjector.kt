@@ -11,6 +11,7 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMET
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBuilder
@@ -55,7 +56,7 @@ private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
 
     val allParameters = mutableListOf<GeminioTemplateParameterData>()
 
-    if (predefinedFeaturesSection.features.contains(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
+    if (predefinedFeaturesSection.hasFeature(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
         val moduleNameParameterData = PredefinedFeaturesSection.createModuleNameParameter()
         val moduleNameStringParameter = moduleNameParameterData.parameter as AndroidStudioTemplateStringParameter
         val formattedModuleNameParameterData = PredefinedFeaturesSection.createFormattedModuleNameParameter(
