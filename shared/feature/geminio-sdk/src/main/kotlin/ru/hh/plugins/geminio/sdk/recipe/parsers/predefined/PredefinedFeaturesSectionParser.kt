@@ -18,7 +18,7 @@ private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePref
  */
 internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesSection {
     val featuresSection = this[KEY_PREDEFINED_FEATURES_SECTION]
-        ?: return PredefinedFeaturesSection(emptySet())
+        ?: return PredefinedFeaturesSection(emptyMap())
     var predefinedFeatures = featuresSection as? List<Map<String, Any?>>
     // If featuresSection is not List<Map<String, Any?>>
     if (predefinedFeatures == null) {
@@ -27,19 +27,19 @@ internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesS
     }
     // If featuresSection is not List<String> and is not List<Map<String, Any?>>
     if (predefinedFeatures == null) {
-        return PredefinedFeaturesSection(emptySet())
+        return PredefinedFeaturesSection(emptyMap())
     }
 
     return PredefinedFeaturesSection(
-        features = predefinedFeatures.mapTo(mutableSetOf()) { it.toPredefinedFeatureParameter() }
+        features = predefinedFeatures.associate { it.toPredefinedFeatureParameter() }
     )
 }
 
-private fun Map<String, Any?>.toPredefinedFeatureParameter(): PredefinedFeatureParameter {
+private fun Map<String, Any?>.toPredefinedFeatureParameter(): Pair<PredefinedFeature, PredefinedFeatureParameter> {
     for (feature in PredefinedFeature.values()) {
         val parameterMap = this[feature.yamlKey] as? Map<String, Any>
         if (parameterMap != null) {
-            return parameterMap.parseParameter(feature)
+            return feature to parameterMap.parseParameter(feature)
         }
     }
 
