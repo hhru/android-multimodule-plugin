@@ -6,9 +6,5 @@ import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSect
 
 
 fun PredefinedFeaturesSection.hasFeature(feature: PredefinedFeature): Boolean {
-    return when (feature) {
-        PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS -> {
-            features.find { it is PredefinedFeatureParameter.ModuleCreationParameter } != null
-        }
-    }
+    return features.contains(feature)
 }
