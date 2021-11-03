@@ -39,7 +39,13 @@ class KtScriptsModificationService {
         val existingDependencies = dependenciesBodyBlock
             .children
             .filterIsInstance<KtCallExpression>()
-            .map { it.text.removePrefix("${it.calleeExpression?.text}(").removeSuffix(")") }
+            .map { ktCallExpression ->
+                ktCallExpression.text
+                    .removePrefix("${ktCallExpression.calleeExpression?.text}(")
+                    .removeSuffix(")")
+                    .removePrefix("project(\"")
+                    .removeSuffix("\")")
+            }
             .toSet()
 
         val ktPsiFactory = KtPsiFactory(ktFile.project)
