@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.1.8]
+### Fixed
+- Fixed duplication of projects in dependencies after recipe execution
+
 ## [1.1.7]
 ### Added
 - Support for Android Studio Arctic Fox | 2020.3.1
