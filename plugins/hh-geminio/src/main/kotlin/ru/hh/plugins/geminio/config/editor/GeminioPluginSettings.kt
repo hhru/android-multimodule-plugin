@@ -19,7 +19,7 @@ class GeminioPluginSettings : PersistentStateComponent<GeminioPluginSettings> {
 
     companion object {
 
-        private const val DEFAULT_PATH_TO_CONFIG_FILE = "android-style-guide/tools/geminio/geminio_config.yaml"
+        private const val DEFAULT_PATH_TO_CONFIG_FILE = "code-cookbook/templates/geminio/geminio_config.yaml"
 
 
         fun getInstance(project: Project): GeminioPluginSettings {

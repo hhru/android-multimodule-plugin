@@ -19,7 +19,7 @@ class GarconPluginSettings : PersistentStateComponent<GarconPluginSettings> {
 
     companion object {
 
-        private const val DEFAULT_PATH_TO_CONFIG_FILE = "android-style-guide/tools/garcon/garcon_config.yaml"
+        private const val DEFAULT_PATH_TO_CONFIG_FILE = "code-cookbook/templates/garcon/garcon_config.yaml"
 
 
         fun getInstance(project: Project): GarconPluginSettings {
