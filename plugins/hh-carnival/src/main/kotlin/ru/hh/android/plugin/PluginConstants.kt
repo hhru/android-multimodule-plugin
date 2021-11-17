@@ -12,6 +12,6 @@ object PluginConstants {
     const val DEFAULT_GH_MODULE_PREFIX = "gh-"
 
 
-    const val DEFAULT_PLUGIN_CONFIG_FOLDER_NAME = "android-style-guide/tools/.hhplugin"
+    const val DEFAULT_PLUGIN_CONFIG_FOLDER_NAME = "code-cookbook/templates/.hhplugin"
 
 }
