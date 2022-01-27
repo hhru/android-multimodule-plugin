@@ -28,7 +28,11 @@ jobs:
           wget -O android-studio.tar.gz -q $ANDROID_STUDIO_URL
           tar -xf android-studio.tar.gz -C ./
       - name: Build plugins
-        run: ./gradlew buildAllPlugins -DandroidStudioPath="$(pwd)/android-studio" -DandroidStudioCompilerVersion="$COMPILER_VERSION"
+        run: |
+          ./gradlew buildAllPlugins \
+            -DandroidStudioPath="$(pwd)/android-studio" \
+            -DandroidStudioCompilerVersion="$COMPILER_VERSION" \
+            -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,git4idea,IntelliLang"
       - name: Publish plugins
         uses: softprops/action-gh-release@v1
         env:
