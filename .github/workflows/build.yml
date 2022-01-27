@@ -7,8 +7,8 @@ on:
 
 env:
   # Link for Linux zip file from https://developer.android.com/studio/archive
-  ANDROID_STUDIO_URL: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2020.3.1.25/android-studio-2020.3.1.25-linux.tar.gz
-  COMPILER_VERSION: 203.7717.56
+  ANDROID_STUDIO_URL: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.1.1.20/android-studio-2021.1.1.20-linux.tar.gz
+  COMPILER_VERSION: 211.7628.21
 
 jobs:
   build:
@@ -24,8 +24,8 @@ jobs:
           java-version: '11'
       - name: Download Android Studio
         run: |
-          wget -q $ANDROID_STUDIO_URL
-          tar -xf android-studio-2020.3.1.25-linux.tar.gz -C ./
+          wget -O android-studio.tar.gz -q $ANDROID_STUDIO_URL
+          tar -xf android-studio.tar.gz -C ./
       - name: Build plugins
         run: ./gradlew buildAllPlugins -DandroidStudioPath="$(pwd)/android-studio" -DandroidStudioCompilerVersion="$COMPILER_VERSION"
       - name: Publish plugins
