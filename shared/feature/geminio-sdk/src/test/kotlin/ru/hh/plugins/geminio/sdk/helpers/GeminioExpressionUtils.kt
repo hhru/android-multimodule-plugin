@@ -2,6 +2,7 @@ package ru.hh.plugins.geminio.sdk.helpers
 
 import com.android.tools.idea.wizard.template.ApiTemplateData
 import com.android.tools.idea.wizard.template.ApiVersion
+import com.android.tools.idea.wizard.template.Category
 import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
@@ -45,11 +46,9 @@ internal object GeminioExpressionUtils {
             projectTemplateData = ProjectTemplateData(
                 androidXSupport = true,
                 gradlePluginVersion = "6.3",
-                javaVersion = "1.8",
                 sdkDir = File("/AndroidSdk"),
                 language = Language.Kotlin,
                 kotlinVersion = "1.4.10",
-                buildToolsVersion = "4.1.1",
                 rootDir = File("/Project"),
                 applicationPackage = "com.example.myapplication",
                 includedFormFactorNames = mapOf(
@@ -67,7 +66,6 @@ internal object GeminioExpressionUtils {
             aidlDir = File("/Project/src/main/aidl/"),
             rootDir = File("/Project/"),
             isNewModule = false,
-            hasApplicationTheme = false,
             name = "mylibrary",
             isLibrary = true,
             packageName = "com.example.mylibrary",
@@ -82,7 +80,8 @@ internal object GeminioExpressionUtils {
                 minApi = ApiVersion(21, "21"),
                 appCompatVersion = 21,
             ),
-            viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED
+            viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED,
+            category = Category.Other
         )
     }
 
