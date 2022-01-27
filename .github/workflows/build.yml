@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - ci/new_android_studio
 
 env:
   # Link for Linux zip file from https://developer.android.com/studio/archive
