@@ -11,13 +11,9 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
-      - name: Clone detekt-config
-        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-config.yaml ${{ github.workspace }}/detekt-config.yaml
-      - name: Clone detekt-baseline
-        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml ${{ github.workspace }}/detekt-baseline.xml
       - name: detekt
         uses: alaegin/Detekt-Action@v1.19
         with:
           github_token: ${{ secrets.github_token }}
-          detekt_config: /${{ github.workspace }}/detekt-config.yml
+          detekt_config: build-logic/static-analysis-convention/rules/detekt/detekt-config.yaml
 #          detekt_baseline: /${{ github.workspace }}/detekt-baseline.xml
