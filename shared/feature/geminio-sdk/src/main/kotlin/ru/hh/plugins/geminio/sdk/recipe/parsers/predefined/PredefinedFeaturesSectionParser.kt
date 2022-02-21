@@ -19,19 +19,22 @@ private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePref
 internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesSection {
     val featuresSection = this[KEY_PREDEFINED_FEATURES_SECTION]
         ?: return PredefinedFeaturesSection(emptyMap())
-    var predefinedFeatures = featuresSection as? List<Map<String, Any?>>
-    // If featuresSection is not List<Map<String, Any?>>
-    if (predefinedFeatures == null) {
-        predefinedFeatures = (featuresSection as? List<String>)
-            ?.map { mapOf(it to emptyMap<String, Any>()) }
-    }
-    // If featuresSection is not List<String> and is not List<Map<String, Any?>>
-    if (predefinedFeatures == null) {
-        return PredefinedFeaturesSection(emptyMap())
-    }
+    val featuresSectionList = featuresSection as? List<*> ?: return PredefinedFeaturesSection(emptyMap())
+
+    val featuresSectionMapList = featuresSectionList.map { feature ->
+        when (feature) {
+            is String -> { // If feature is just string
+                mapOf(feature to emptyMap<String, Any>())
+            }
+            is Map<*, *> -> { // If feature is map
+                feature.filterKeys { it is String } as Map<String, Any?>
+            }
+            else -> null
+        }
+    }.filterNotNull()
 
     return PredefinedFeaturesSection(
-        features = predefinedFeatures.associate { it.toPredefinedFeatureParameter() }
+        features = featuresSectionMapList.associate { it.toPredefinedFeatureParameter() }
     )
 }
 
@@ -68,3 +71,12 @@ private fun Map<String, Any>.parseParameter(
         }
     }
 }
+
+/**
+ * @return Returns a list if all elements of this list inherit T
+ */
+@Suppress("UNCHECKED_CAST")
+private inline fun <reified T : Any> List<*>.checkItemsAre() =
+    if (all { it is T })
+        this as List<T>
+    else null
