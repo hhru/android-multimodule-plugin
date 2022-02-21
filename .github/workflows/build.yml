@@ -11,12 +11,31 @@ env:
   COMPILER_VERSION: 211.7628.21
 
 jobs:
+  detekt:
+    name: Check Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          ref: ${{ github.head_ref }}
+
+      - name: detekt
+        uses: alaegin/Detekt-Action@v1.19
+        with:
+          github_token: ${{ secrets.github_token }}
+          detekt_config: build-logic/static-analysis-convention/rules/detekt/detekt-config.yml
+          detekt_excludes: '**/build/**','**/.idea/**','**/resources/**'
+          detekt_baseline: build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml
+
   build:
     name: Build Plugin
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Set up JDK 1.11
         uses: actions/setup-java@v2
         with:
