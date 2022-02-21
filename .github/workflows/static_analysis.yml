@@ -15,6 +15,14 @@ jobs:
         run: echo 'GITHUB_WORKSPACE = ${{ github.workspace }}'
       - name: Logs 2
         run: ls ${{ github.workspace }}
+      - name: Logs 3
+        run: ls ${{ github.workspace }}/build-logic
+      - name: Logs 4
+        run: ls ${{ github.workspace }}/build-logic/static-analysis-convention
+      - name: Logs 5
+        run: ls ${{ github.workspace }}/build-logic/static-analysis-convention/rules
+      - name: Logs 6
+        run: ls ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt
       - name: detekt
         uses: alaegin/Detekt-Action@v1.19
         with:
