@@ -1,5 +1,4 @@
 import org.jetbrains.changelog.ChangelogPluginExtension
-import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.IntelliJPluginExtension
@@ -21,14 +20,14 @@ configure<IntelliJPluginExtension> {
 }
 
 configure<ChangelogPluginExtension> {
-    version = properties("pluginVersion")
+    version.set(properties("pluginVersion"))
 
-    path = "${project.projectDir}/CHANGELOG.md"
-    header = closure { "[$version] - ${date()}" }
-    itemPrefix = "-"
-    keepUnreleasedSection = true
-    unreleasedTerm = "[Unreleased]"
-    groups = listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security")
+    path.set("${project.projectDir}/CHANGELOG.md")
+    header.set(provider { "[$version] - ${date()}" })
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Unreleased]")
+    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
 }
 
 tasks.withType<PatchPluginXmlTask> {
@@ -38,25 +37,23 @@ tasks.withType<PatchPluginXmlTask> {
 
     // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
     pluginDescription.set(
-        closure {
-            File(projectDir, "README.md").readText().lines().run {
-                val start = "<!-- Plugin description -->"
-                val end = "<!-- Plugin description end -->"
+        projectDir.resolve("README.md").readText().lines().run {
+            val start = "<!-- Plugin description -->"
+            val end = "<!-- Plugin description end -->"
 
-                if (!containsAll(listOf(start, end))) {
-                    throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
-                }
-                subList(indexOf(start) + 1, indexOf(end))
-            }.joinToString("\n").run { markdownToHTML(this) }
-        }.call()
+            if (!containsAll(listOf(start, end))) {
+                throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
+            }
+            subList(indexOf(start) + 1, indexOf(end))
+        }.joinToString("\n").run { markdownToHTML(this) }
     )
 
     // Get the latest available change notes from the changelog file
-    changeNotes.set(
-        closure {
-            changelog.getLatest().toHTML()
-        }.call()
-    )
+    changeNotes.set(provider {
+        changelog.run {
+            getOrNull(properties("pluginVersion")) ?: getLatest()
+        }.toHTML()
+    })
 }
 
 tasks.getByName<Zip>("buildPlugin") {
