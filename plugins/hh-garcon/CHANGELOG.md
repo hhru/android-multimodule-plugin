@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.0.3]
+### Added
+- Support for Android Studio Bumblebee | 2021.1.1
+
 ## [1.0.2]
 ### Added
 - Support for Android Studio Arctic Fox | 2020.3.1

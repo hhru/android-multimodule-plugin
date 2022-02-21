@@ -1,5 +1,9 @@
 # Carnival
 
+## [1.1.6]
+### Added
+- Support for Android Studio Bumblebee | 2021.1.1
+
 ## [1.1.5]
 ### Added
 - Support for Android Studio Arctic Fox | 2020.3.1
