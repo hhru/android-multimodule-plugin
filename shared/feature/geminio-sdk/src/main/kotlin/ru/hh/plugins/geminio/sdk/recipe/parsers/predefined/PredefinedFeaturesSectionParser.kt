@@ -10,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnkn
 private const val KEY_PREDEFINED_FEATURES_SECTION = "predefinedFeatures"
 private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePrefix"
 
-
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection].
  */

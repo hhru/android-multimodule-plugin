@@ -85,6 +85,7 @@ class GenerateFragmentViewModelTextFactory {
         """
     }
 
+    @Suppress("detekt.MaxLineLength")
     fun getViewModelClassText(
         names: GenerateFragmentViewModelNames,
     ): String {

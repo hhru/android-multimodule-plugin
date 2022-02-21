@@ -34,7 +34,7 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
                     explanation = """
                     Lint rule for checking is `Bundle.putSerializable` invoking with correct Serializable argument.
                     
-                    When you use current method you should be sure that every inner field in your argument, recursively, 
+                    When you use current method you should be sure that every inner field in your argument, recursively,
                     implements $FQCN_SERIALIZABLE_INTERFACE .
                     """,
                     category = Category.LINT,

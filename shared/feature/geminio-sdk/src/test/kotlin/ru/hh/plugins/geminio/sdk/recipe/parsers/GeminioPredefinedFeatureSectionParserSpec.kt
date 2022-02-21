@@ -18,7 +18,7 @@ internal class GeminioPredefinedFeatureSectionParserSpec : FreeSpec({
         val expected = PredefinedFeaturesSection(
             mapOf(
                 PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS to
-                        PredefinedFeatureParameter.ModuleCreationParameter()
+                    PredefinedFeatureParameter.ModuleCreationParameter()
             )
         )
 
@@ -36,7 +36,7 @@ internal class GeminioPredefinedFeatureSectionParserSpec : FreeSpec({
         val expected = PredefinedFeaturesSection(
             mapOf(
                 PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS to
-                        PredefinedFeatureParameter.ModuleCreationParameter(testPackageNamePrefix)
+                    PredefinedFeatureParameter.ModuleCreationParameter(testPackageNamePrefix)
             )
         )
 
@@ -53,7 +53,7 @@ internal class GeminioPredefinedFeatureSectionParserSpec : FreeSpec({
         val expected = PredefinedFeaturesSection(
             mapOf(
                 PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS to
-                        PredefinedFeatureParameter.ModuleCreationParameter()
+                    PredefinedFeatureParameter.ModuleCreationParameter()
             )
         )
 
