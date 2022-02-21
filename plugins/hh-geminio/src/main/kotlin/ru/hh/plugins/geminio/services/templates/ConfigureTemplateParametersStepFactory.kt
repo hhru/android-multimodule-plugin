@@ -7,6 +7,7 @@ import com.android.tools.idea.npw.project.getModuleTemplates
 import com.android.tools.idea.npw.project.getPackageForPath
 import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
 import com.android.tools.idea.projectsystem.NamedModuleTemplate
+import com.android.tools.idea.wizard.template.Category
 import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.Template
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent
@@ -134,7 +135,8 @@ class ConfigureTemplateParametersStepFactory {
                 moduleParent = STUB_PARENT_MODULE_NAME,
                 projectSyncInvoker = ProjectSyncInvoker.DefaultProjectSyncInvoker(),
                 isLibrary = true,
-                formFactor = FormFactor.Mobile
+                formFactor = FormFactor.Mobile,
+                category = Category.Other
             ).also {
                 it.packageName.set(defaultPackageName)
                 it.template.set(namedModuleTemplate)

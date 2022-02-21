@@ -1,12 +1,13 @@
 package ru.hh.plugins.geminio.services.templates
 
-import com.android.tools.idea.templates.ModuleTemplateDataBuilder
-import com.android.tools.idea.templates.ProjectTemplateDataBuilder
+import com.android.tools.idea.npw.template.ModuleTemplateDataBuilder
+import com.android.tools.idea.npw.template.ProjectTemplateDataBuilder
 import com.android.tools.idea.templates.recipe.DefaultRecipeExecutor
 import com.android.tools.idea.templates.recipe.RenderingContext
 import com.android.tools.idea.wizard.template.ApiTemplateData
 import com.android.tools.idea.wizard.template.ApiVersion
 import com.android.tools.idea.wizard.template.BaseFeature
+import com.android.tools.idea.wizard.template.Category
 import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.Language
 import com.android.tools.idea.wizard.template.ModuleTemplateData
@@ -118,6 +119,7 @@ class GeminioRecipeExecutorFactoryService {
                 minApi = createStubApiVersion(),
                 appCompatVersion = STUB_API_VERSION,
             )
+            builder.category = Category.Other
         }.build()
     }
 
