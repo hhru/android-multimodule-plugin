@@ -1,0 +1,27 @@
+name: Publish plugins artifacts
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build Plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build plugins
+        uses: ./.github/workflows/build.yml
+      - name: Publish plugins
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            build/plugins/hh-carnival.zip
+            build/plugins/hh-garcon.zip
+            build/plugins/hh-geminio.zip
+          tag_name: build-${{ github.run_number }}
+          name: Build №${{ github.run_number }}
+          draft: false
+          prerelease: true

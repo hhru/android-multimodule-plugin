@@ -1,9 +1,5 @@
-name: Release
-
-on:
-  push:
-    branches:
-      - master
+name: Build plugins artifacts
+on: [pull_request, workflow_call]
 
 env:
   # Link for Linux zip file from https://developer.android.com/studio/archive
@@ -32,16 +28,3 @@ jobs:
             -DandroidStudioPath="$(pwd)/android-studio" \
             -DandroidStudioCompilerVersion="$COMPILER_VERSION" \
             -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,git4idea,IntelliLang"
-      - name: Publish plugins
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            build/plugins/hh-carnival.zip
-            build/plugins/hh-garcon.zip
-            build/plugins/hh-geminio.zip
-          tag_name: build-${{ github.run_number }}
-          name: Build №${{ github.run_number }}
-          draft: false
-          prerelease: true
