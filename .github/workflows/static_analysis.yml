@@ -11,12 +11,10 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
-      - name: List files
-        run: ls ${{ github.workspace }}
       - name: Clone detekt-config
-        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt-config.yaml ${{ github.workspace }}/detekt-config.yaml
+        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-config.yaml ${{ github.workspace }}/detekt-config.yaml
       - name: Clone detekt-baseline
-        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt-baseline.xml ${{ github.workspace }}/detekt-baseline.xml
+        run: cp ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml ${{ github.workspace }}/detekt-baseline.xml
       - name: detekt
         uses: alaegin/Detekt-Action@v1.19
         with:
