@@ -13,6 +13,16 @@ Available list values:
     * `__packageName` - the packageName of the module that is added to` AndroidManifest.xml`
     * `__formattedModuleName` is a formatted module name that can be used as a prefix for classes inside a new module.
 
+Also you have ability to change base package name for new creating module with special property:
+
+```yaml
+predefinedFeatures:
+  enableModuleCreationParams:
+    defaultPackageNamePrefix: ru.hh.test
+```
+
+Here, `ru.hh.test` - new value of your custom package name.
+
 ---
 
 [Back to `recipe.yaml` content](/plugins/hh-geminio/docs/en/RECIPE_CONTENT.md)

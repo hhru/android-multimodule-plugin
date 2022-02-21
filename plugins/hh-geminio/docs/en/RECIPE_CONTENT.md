@@ -26,7 +26,8 @@ optionalParams:
 
 # required only for modules templates
 predefinedFeatures:
-  - enableModuleCreationParams
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: ru.hh.test
 
 widgets:
   - stringParameter:
