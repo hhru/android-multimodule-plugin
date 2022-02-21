@@ -2,7 +2,7 @@ package ru.hh.plugins.geminio.sdk.recipe.models.predefined
 
 
 enum class PredefinedFeature(
-    val yamlKey: String
+    val yamlKey: String,
 ) {
     /**
      * Adds two additional string parameters for modules creation:
