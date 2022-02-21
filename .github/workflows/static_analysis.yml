@@ -11,9 +11,13 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
+      - name: Logs
+        run: echo 'GITHUB_WORKSPACE = ${{ github.workspace }}'
+      - name: Logs 2
+        run: ls ${{ github.workspace }}
       - name: detekt
         uses: alaegin/Detekt-Action@v1.19
         with:
           github_token: ${{ secrets.github_token }}
-          detekt_config: ${GITHUB_WORKSPACE}/build-logic/static-analysis-convention/rules/detekt/detekt-config.yml
-          detekt_baseline: ${GITHUB_WORKSPACE}/build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml
+          detekt_config: ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-config.yml
+          detekt_baseline: ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml
