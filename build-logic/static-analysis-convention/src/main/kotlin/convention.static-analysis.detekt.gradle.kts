@@ -25,10 +25,10 @@ fun Detekt.setupCommonDetektSettings() {
 
     // reports configuration
     reports {
-        xml.enabled = true
-        html.enabled = true
-        txt.enabled = true
-        sarif.enabled = false
+        xml.required.set(true)
+        html.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(false)
     }
 }
 
