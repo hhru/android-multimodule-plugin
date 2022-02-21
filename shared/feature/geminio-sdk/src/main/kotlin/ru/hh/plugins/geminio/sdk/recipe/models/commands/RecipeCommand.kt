@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.recipe.models.commands
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 
-
 /**
  * Recipe's commands for execution.
  */
@@ -64,5 +63,4 @@ sealed class RecipeCommand {
     data class AddGradlePlugins(
         val pluginsIds: List<String>
     ) : RecipeCommand()
-
 }

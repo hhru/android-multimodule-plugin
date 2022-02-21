@@ -9,7 +9,6 @@ import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
 import java.net.URI
 
-
 @Service
 class JiraRestClientService(
     private val project: Project
@@ -18,7 +17,6 @@ class JiraRestClientService(
     companion object {
         fun getInstance(project: Project): JiraRestClientService = project.service()
     }
-
 
     private val jiraSettings get() = JiraSettingsConfig.getInstance(project).getJiraSettings()
     private val jiraIssueFactory by lazy { JiraIssueFactory.getInstance(project) }
@@ -33,7 +31,6 @@ class JiraRestClientService(
                     jiraSettings.password.toString()
                 )
         }
-
 
     @Suppress("UnstableApiUsage")
     fun createMergeDevelopToPortfolioIssue(portfolioKey: String): String {
@@ -55,5 +52,4 @@ class JiraRestClientService(
 
         return issueKey
     }
-
 }

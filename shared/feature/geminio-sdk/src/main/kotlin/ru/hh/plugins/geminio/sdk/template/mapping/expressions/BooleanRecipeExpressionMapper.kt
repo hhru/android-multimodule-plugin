@@ -6,7 +6,6 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBooleanPa
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterBooleanLambda
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterBooleanLambda].
@@ -30,7 +29,6 @@ internal fun RecipeExpression.evaluateBoolean(
         else -> throw IllegalArgumentException("Unexpected commands for boolean parameter evaluation [$expressionCommands]")
     }
 }
-
 
 private fun RecipeExpressionCommand.resolveBooleanValue(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>

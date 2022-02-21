@@ -6,7 +6,6 @@ import ru.hh.android.plugin.config.view.PluginConfigEditor
 import ru.hh.android.plugin.core.model.jira.JiraSettings
 import javax.swing.JComponent
 
-
 /**
  * Wrapper for plugin configuration page.
  */
@@ -19,13 +18,11 @@ class PluginConfigConfigurable(
         private const val DISPLAY_NAME = "Geminio plugin"
     }
 
-
     private val pluginConfig by lazy {
         PluginConfig.getInstance(project)
     }
 
     private var pluginConfigPropertiesEditor: PluginConfigEditor? = null
-
 
     override fun isModified(): Boolean {
         return pluginConfigPropertiesEditor?.isModified() ?: false
@@ -48,15 +45,12 @@ class PluginConfigConfigurable(
         return pluginConfigPropertiesEditor?.createComponent()
     }
 
-
     override fun disposeUIResources() {
         pluginConfigPropertiesEditor = null
     }
-
 
     private fun getJiraSettings(project: Project): JiraSettings {
         val config = JiraSettingsConfig.getInstance(project)
         return config.getJiraSettings()
     }
-
 }

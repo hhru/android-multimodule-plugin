@@ -9,4 +9,3 @@ plugins {
 tasks.create("staticAnalysis") {
     dependsOn("detektAll")
 }
-

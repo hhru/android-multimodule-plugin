@@ -7,7 +7,6 @@ import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import java.io.File
 
-
 @Service
 class FreeMarkerWrapper(
     private val project: Project
@@ -19,7 +18,6 @@ class FreeMarkerWrapper(
 
     private var freeMarkerConfig: FreemarkerConfiguration? = null
     private var lastConfigFilePath: String? = null
-
 
     fun resolveTemplate(templateName: String, params: Map<String, Any>): String {
         return getFreeMarkerConfig().resolveTemplate(templateName, params)
@@ -40,5 +38,4 @@ class FreeMarkerWrapper(
     private fun recreateFreemarkerConfiguration(configFilePath: String): FreemarkerConfiguration {
         return FreemarkerConfiguration(configFilePath)
     }
-
 }

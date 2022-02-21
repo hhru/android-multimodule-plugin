@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.optional
 
-
 data class OptionalParams(
     val revision: Int,
     val category: TemplateCategory,
@@ -12,5 +11,4 @@ data class OptionalParams(
 ) {
 
     companion object
-
 }

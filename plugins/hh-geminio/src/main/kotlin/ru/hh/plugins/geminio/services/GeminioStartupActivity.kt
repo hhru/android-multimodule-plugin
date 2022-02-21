@@ -14,7 +14,6 @@ import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import java.io.File
 
-
 /**
  * This code will be executed on project's startup.
  */
@@ -26,7 +25,6 @@ class GeminioStartupActivity : StartupActivity {
         private const val NEW_GROUP_ID_SUFFIX = "NewGroup."
         private const val GENERATE_GROUP_ID_SUFFIX = "GenerateGroup."
     }
-
 
     override fun runActivity(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
@@ -81,7 +79,6 @@ class GeminioStartupActivity : StartupActivity {
 
         val bundle = getTemplateActionsBundle(pluginConfig, isModulesTemplates)
 
-
         val hhNewGroup = actionManager.getAction(bundle.templatesNewGroupId) as DefaultActionGroup
         hhNewGroup.templatePresentation.text = bundle.templatesNewGroupName
         val hhGenerateGroup = actionManager.getAction(bundle.templatesGenerateGroupId) as DefaultActionGroup
@@ -106,7 +103,6 @@ class GeminioStartupActivity : StartupActivity {
             hhGenerateGroup += newActionForGenerateGroup
         }
     }
-
 
     private fun createActionForTemplate(
         templatesRootDirPath: String,
@@ -141,7 +137,6 @@ class GeminioStartupActivity : StartupActivity {
         return "$templatesRootDirPath/$templateDirName/${GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME}"
     }
 
-
     private fun getTemplateActionsBundle(
         pluginConfig: GeminioPluginConfig,
         isModulesTemplates: Boolean
@@ -165,7 +160,6 @@ class GeminioStartupActivity : StartupActivity {
         }
     }
 
-
     private data class TemplateActionsBundle(
         val templatesNewGroupId: String,
         val templatesGenerateGroupId: String,
@@ -183,5 +177,4 @@ class GeminioStartupActivity : StartupActivity {
     ): Boolean {
         return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
     }
-
 }

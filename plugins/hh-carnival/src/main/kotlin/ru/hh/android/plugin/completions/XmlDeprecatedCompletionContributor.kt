@@ -10,7 +10,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 
-
 class XmlDeprecatedCompletionContributor : CompletionContributor() {
 
     companion object {
@@ -27,7 +26,6 @@ class XmlDeprecatedCompletionContributor : CompletionContributor() {
 
     private val logger = Logger.getInstance(XmlDeprecatedCompletionContributor::class.java)
 
-
     override fun fillCompletionVariants(parameters: CompletionParameters, result: CompletionResultSet) {
         val psiElement = parameters.position
         val androidFacet = psiElement.androidFacet
@@ -42,5 +40,4 @@ class XmlDeprecatedCompletionContributor : CompletionContributor() {
             }
         }
     }
-
 }

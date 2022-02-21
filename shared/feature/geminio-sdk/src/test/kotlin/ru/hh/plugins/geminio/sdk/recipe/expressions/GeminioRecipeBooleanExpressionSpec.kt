@@ -11,7 +11,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 
-
 internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
     "Should return 'true'" {
@@ -94,5 +93,4 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
         ex.message shouldStartWith "Unknown parameter or not boolean parameter for boolean expression [id: ${command.parameterId}]"
     }
-
 })

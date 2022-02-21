@@ -38,7 +38,6 @@ class ModuleNamePanel(
 
     private lateinit var normalTextFieldBorder: Border
 
-
     private var isPackageNameTextFieldEnabled: Boolean = false
         set(value) {
             field = value
@@ -64,11 +63,9 @@ class ModuleNamePanel(
             }
         }
 
-
     private var isPackageNameInEditMode = false
     private var isPackageNameWasChangedByUser = false
     private var wantTriggerPackageNameChanged = false
-
 
     fun create(layoutBuilder: LayoutBuilder) {
         with(layoutBuilder) {
@@ -80,7 +77,6 @@ class ModuleNamePanel(
     fun getModuleName(): String = moduleNameJTextField.text
 
     fun getPackageName(): String = packageNameJTextField.text
-
 
     private fun onModuleNameChanged(newModuleName: String) {
         if (isPackageNameWasChangedByUser) {
@@ -114,7 +110,6 @@ class ModuleNamePanel(
         isPackageNameTextFieldEnabled = isPackageNameInEditMode.not()
         isPackageNameInEditMode = !isPackageNameInEditMode
     }
-
 
     @Suppress("UnstableApiUsage")
     private fun LayoutBuilder.createModuleNameSection() {
@@ -164,5 +159,4 @@ class ModuleNamePanel(
             }
         }
     }
-
 }

@@ -5,7 +5,6 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import javax.inject.Inject
 
-
 abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
 
     val javaVersion = JavaVersion.VERSION_11
@@ -18,17 +17,14 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
             .filter(String::isNotEmpty)
     )
 
-
     private val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion").get()
     private val gradleChangelogPluginVersion = systemProperty("gradleChangelogPluginVersion").get()
     private val kotlinVersion = systemProperty("kotlinVersion").get()
     private val detektVersion = systemProperty("detektVersion").get()
 
-
     val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val gradleIntelliJPlugin = "org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradleIntellijPluginVersion"
     val gradleChangelogPlugin = "org.jetbrains.intellij.plugins:gradle-changelog-plugin:$gradleChangelogPluginVersion"
-
 
     val kotlinXCli = "org.jetbrains.kotlinx:kotlinx-cli:0.2.1"
     val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -45,7 +41,6 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         detektVersion = detektVersion
     )
     val tests = UnitTests
-
 
     object UnitTests {
         const val kotest = "io.kotest:kotest-runner-junit5-jvm:4.3.1"
@@ -76,7 +71,6 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
             override val pluginsNames: List<String>,
             val ideVersion: String
         ) : Product()
-
     }
 
     enum class PredefinedIdeProducts(val product: Product.ICBasedIde) {

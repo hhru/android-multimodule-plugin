@@ -5,7 +5,6 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
-
 internal class ClassToResourceModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
@@ -14,7 +13,6 @@ internal class ClassToResourceModifierSpec : FreeSpec({
             modifier = RecipeExpressionModifier.CLASS_TO_RESOURCE
         )
     }
-
 
     "Showcase of using" {
         getEvaluatedValue("BlankFragment") shouldBe "blank"
@@ -73,5 +71,4 @@ internal class ClassToResourceModifierSpec : FreeSpec({
     "Every letter in upper case will be transformed as separate word" {
         getEvaluatedValue("FAQActivity") shouldBe "f_a_q"
     }
-
 })

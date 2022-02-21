@@ -7,14 +7,13 @@ import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 internal fun GlobalsSection.toShowHiddenGlobalsParameter(
     showHiddenValuesId: String,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): GeminioTemplateParameterData {
     check(existingParametersMap[showHiddenValuesId] == null) {
         "You cannot have template parameter with id='$showHiddenValuesId' with 'globals' section in your recipe.yaml. " +
-                "Rename your parameter from widgets section."
+            "Rename your parameter from widgets section."
     }
 
     return GeminioTemplateParameterData(
@@ -29,7 +28,6 @@ internal fun GlobalsSection.toShowHiddenGlobalsParameter(
         }
     )
 }
-
 
 internal fun RecipeExpression.Companion.globalsVisibilityExpression(showHiddenValuesId: String): RecipeExpression {
     return RecipeExpression(

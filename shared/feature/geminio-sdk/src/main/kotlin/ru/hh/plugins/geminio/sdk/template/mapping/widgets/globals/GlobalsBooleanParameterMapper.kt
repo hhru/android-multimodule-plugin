@@ -8,7 +8,6 @@ import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.toBooleanLambda
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter.BooleanParameter]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter].

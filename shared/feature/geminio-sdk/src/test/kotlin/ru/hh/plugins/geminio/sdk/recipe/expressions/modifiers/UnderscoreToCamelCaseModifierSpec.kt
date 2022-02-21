@@ -5,7 +5,6 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
-
 internal class UnderscoreToCamelCaseModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
@@ -14,7 +13,6 @@ internal class UnderscoreToCamelCaseModifierSpec : FreeSpec({
             modifier = RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
         )
     }
-
 
     "Showcase of using" {
         getEvaluatedValue("fragment_blank") shouldBe "FragmentBlank"
@@ -44,5 +42,4 @@ internal class UnderscoreToCamelCaseModifierSpec : FreeSpec({
         getEvaluatedValue("some_word_") shouldBe "SomeWord"
         getEvaluatedValue("_some_word_") shouldBe "SomeWord"
     }
-
 })

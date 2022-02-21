@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.jira
 
-
 enum class JiraIssueLabel(val text: String) {
 
     ANDROID("android"),
@@ -8,5 +7,4 @@ enum class JiraIssueLabel(val text: String) {
     TAX("tax"),
     APPLICANTS("applicants"),
     EMPLOYERS("employers")
-
 }

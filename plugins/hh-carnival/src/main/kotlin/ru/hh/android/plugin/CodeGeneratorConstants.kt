@@ -1,6 +1,5 @@
 package ru.hh.android.plugin
 
-
 object CodeGeneratorConstants {
 
     const val ANDROID_MANIFEST_XML_FILE_NAME = "AndroidManifest.xml"
@@ -10,5 +9,4 @@ object CodeGeneratorConstants {
     const val KOTLIN_SOURCE_FOLDER_NAME = "kotlin"
 
     const val EMPTY_OBJECT_PROPERTY_NAME = "EMPTY"
-
 }

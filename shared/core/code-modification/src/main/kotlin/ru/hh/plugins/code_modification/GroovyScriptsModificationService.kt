@@ -60,5 +60,4 @@ class GroovyScriptsModificationService {
 
         groovyFileImpl.reformatWithCodeStyle()
     }
-
 }

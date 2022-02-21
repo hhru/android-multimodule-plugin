@@ -14,7 +14,6 @@ import javax.swing.JComponent
 import javax.swing.JPasswordField
 import javax.swing.JTextField
 
-
 /**
  * Editor page for plugin configuration
  */
@@ -39,9 +38,7 @@ class PluginConfigEditor(
                 initialJiraDevelopmentTeam = pluginConfig.jiraDevelopmentTeam
             )
         }
-
     }
-
 
     private lateinit var pluginFolderDirPathTextField: JTextField
     private lateinit var enableDebugModeCheckBox: JCheckBox
@@ -49,7 +46,6 @@ class PluginConfigEditor(
     private lateinit var jiraUsernameTextField: JTextField
     private lateinit var jiraPasswordTextField: JPasswordField
     private lateinit var jiraDevelopmentTeamComboBoxModel: CollectionComboBoxModel<String>
-
 
     @Suppress("UnstableApiUsage")
     fun createComponent(): JComponent? {
@@ -104,12 +100,12 @@ class PluginConfigEditor(
     }
 
     fun isModified(): Boolean {
-        return initialPluginFolderDirPath != pluginFolderDirPathTextField.text
-                || initialEnableDebugMode != enableDebugModeCheckBox.isSelected
-                || initialJiraHostName != jiraHostNameTextField.text
-                || initialJiraUsername != jiraUsernameTextField.text
-                || initialJiraPassword != jiraPasswordTextField.text
-                || initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
+        return initialPluginFolderDirPath != pluginFolderDirPathTextField.text ||
+            initialEnableDebugMode != enableDebugModeCheckBox.isSelected ||
+            initialJiraHostName != jiraHostNameTextField.text ||
+            initialJiraUsername != jiraUsernameTextField.text ||
+            initialJiraPassword != jiraPasswordTextField.text ||
+            initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {
@@ -123,5 +119,4 @@ class PluginConfigEditor(
             loadState(Credentials(jiraUsernameTextField.text, jiraPasswordTextField.text))
         }
     }
-
 }

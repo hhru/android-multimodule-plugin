@@ -10,7 +10,6 @@ import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.extensions.replaceLineBreaks
 import javax.swing.event.HyperlinkEvent
 
-
 @Service
 class NotificationsFactory(
     private val project: Project
@@ -27,11 +26,9 @@ class NotificationsFactory(
     private val loggingNotificationGroup = NotificationGroup.balloonGroup(LOGGING_NOTIFICATION_GROUP_ID)
     private val errorsNotificationGroup = NotificationGroup.balloonGroup(ERROR_NOTIFICATION_GROUP_ID)
 
-
     override fun hyperlinkUpdate(notification: Notification, event: HyperlinkEvent) {
         // do nothing by default.
     }
-
 
     fun info(message: String) {
         showNotification(loggingNotificationGroup, NotificationType.INFORMATION, message)
@@ -40,7 +37,6 @@ class NotificationsFactory(
     fun error(message: String) {
         showNotification(errorsNotificationGroup, NotificationType.ERROR, message)
     }
-
 
     private fun showNotification(
         notificationGroup: NotificationGroup,
@@ -54,5 +50,4 @@ class NotificationsFactory(
             this
         ).notify(project)
     }
-
 }

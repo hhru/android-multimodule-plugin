@@ -7,7 +7,6 @@ import ru.hh.android.plugin.extensions.getCurrentPortfolioBranchName
 import ru.hh.android.plugin.services.git.GitService
 import ru.hh.android.plugin.services.jira.JiraRestClientService
 
-
 class JiraMergeDevelopToPortfolioAction : AnAction() {
 
     override fun update(e: AnActionEvent) {
@@ -25,5 +24,4 @@ class JiraMergeDevelopToPortfolioAction : AnAction() {
                 .checkoutMobForMergeDevelopToPortfolio(mobIssueKey, portfolioBranchName)
         }
     }
-
 }

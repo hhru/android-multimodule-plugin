@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.template.aliases
 
-
 // templates
 internal typealias AndroidStudioTemplate = com.android.tools.idea.wizard.template.Template
 internal typealias AndroidStudioTemplateBuilder = com.android.tools.idea.wizard.template.TemplateBuilder
@@ -18,5 +17,9 @@ internal typealias AndroidStudioTemplateStringParameter = com.android.tools.idea
 
 internal typealias AndroidStudioTemplateStringParameterConstraint = com.android.tools.idea.wizard.template.Constraint
 
-internal typealias AndroidStudioTemplateParameterBooleanLambda = (com.android.tools.idea.wizard.template.WizardParameterData) -> Boolean
-internal typealias AndroidStudioTemplateParameterStringLambda = (com.android.tools.idea.wizard.template.WizardParameterData) -> String?
+internal typealias AndroidStudioTemplateParameterBooleanLambda = (
+    com.android.tools.idea.wizard.template.WizardParameterData
+) -> Boolean
+internal typealias AndroidStudioTemplateParameterStringLambda = (
+    com.android.tools.idea.wizard.template.WizardParameterData
+) -> String?

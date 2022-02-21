@@ -4,7 +4,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 
-
 @Service
 class GenerateFragmentViewModelTextFactory {
 
@@ -17,7 +16,6 @@ class GenerateFragmentViewModelTextFactory {
 
         fun getInstance(project: Project): GenerateFragmentViewModelTextFactory = project.service()
     }
-
 
     fun getSingleEventClassText(names: GenerateFragmentViewModelNames): String {
         return """
@@ -68,7 +66,7 @@ class GenerateFragmentViewModelTextFactory {
     fun getHandleEventMethodText(
         names: GenerateFragmentViewModelNames,
     ): String {
-        val logText = "${TIMBER_FQCN}.tag(LOG_TAG).d(\"handleEvent() called with: event = \$event\")"
+        val logText = "$TIMBER_FQCN.tag(LOG_TAG).d(\"handleEvent() called with: event = \$event\")"
         return """
         private fun handleEvent(event: ${names.singleEventClassFQCN}) {
             $logText
@@ -79,14 +77,13 @@ class GenerateFragmentViewModelTextFactory {
     fun getRenderStateMethodText(
         names: GenerateFragmentViewModelNames,
     ): String {
-        val logText = "${TIMBER_FQCN}.tag(LOG_TAG).d(\"renderState() called with: state = \$state\")"
+        val logText = "$TIMBER_FQCN.tag(LOG_TAG).d(\"renderState() called with: state = \$state\")"
         return """
         private fun renderState(state: ${names.uiStateClassFQCN}) {
             $logText
         }    
         """
     }
-
 
     fun getViewModelClassText(
         names: GenerateFragmentViewModelNames,
@@ -119,9 +116,7 @@ class GenerateFragmentViewModelTextFactory {
         """
     }
 
-
     private fun packageDirective(packageName: String): String {
         return "package $packageName"
     }
-
 }

@@ -24,9 +24,7 @@ class FreemarkerConfiguration(
             val freemarkerConfiguration = FreemarkerConfiguration(templatesDirPath)
             return freemarkerConfiguration.resolveTemplate(templateName, params)
         }
-
     }
-
 
     init {
         defaultEncoding = Charsets.UTF_8.name()
@@ -36,7 +34,6 @@ class FreemarkerConfiguration(
 
         setDirectoryForTemplateLoading(File(configuredPath))
     }
-
 
     /**
      * Method for resolving template.ftl into [String].
@@ -54,7 +51,7 @@ class FreemarkerConfiguration(
         } catch (ex: Exception) {
             ex.printStackTrace()
             throw FreemarkerException(
-                "Can't find template [configuredPath: ${configuredPath}, templateRelativePath: $templateRelativePath]",
+                "Can't find template [configuredPath: $configuredPath, templateRelativePath: $templateRelativePath]",
                 ex
             )
         }
@@ -66,11 +63,10 @@ class FreemarkerConfiguration(
             } catch (ex: Exception) {
                 ex.printStackTrace()
                 throw FreemarkerException(
-                    "Can't resolve template [configuredPath: ${configuredPath}, templateRelativePath: $templateRelativePath, templateParams: $templateParams]",
+                    "Can't resolve template [configuredPath: $configuredPath, templateRelativePath: $templateRelativePath, templateParams: $templateParams]",
                     ex
                 )
             }
         }
     }
-
 }

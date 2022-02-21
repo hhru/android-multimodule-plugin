@@ -2,7 +2,6 @@ package ru.hh.plugins.geminio.sdk.recipe.models.extensions
 
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 
-
 internal fun GeminioRecipe.toIndentString(): String {
     val notFancy = toString()
     return buildString(notFancy.length) {

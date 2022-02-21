@@ -20,7 +20,6 @@ import ru.hh.plugins.extensions.toKotlinFileName
 import ru.hh.plugins.psi_utils.isInheritedFrom
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 
-
 class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
 
     companion object {
@@ -33,7 +32,6 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
             "ru.hh.shared_core_ui.fragment_plugin.common.di.getInstance"
         private const val BASE_FRAGMENT_FQCN = "ru.hh.shared_core_ui.fragment.BaseFragment"
     }
-
 
     override fun invoke(project: Project, editor: Editor, psiFile: PsiFile) {
         val featurePrefix = Messages.showInputDialog(
@@ -59,10 +57,9 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
     }
 
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
-        return targetClass is KtClass
-                && targetClass.toLightClass()?.isInheritedFrom(BASE_FRAGMENT_FQCN) ?: false
+        return targetClass is KtClass &&
+            targetClass.toLightClass()?.isInheritedFrom(BASE_FRAGMENT_FQCN) ?: false
     }
-
 
     private fun createPsiElements(
         project: Project,
@@ -153,5 +150,4 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
             }
         }
     }
-
 }

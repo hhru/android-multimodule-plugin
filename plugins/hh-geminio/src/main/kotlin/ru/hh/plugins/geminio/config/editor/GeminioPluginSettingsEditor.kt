@@ -9,7 +9,6 @@ import ru.hh.plugins.views.layouts.fileChooserButton
 import javax.swing.JComponent
 import javax.swing.JTextField
 
-
 class GeminioPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialTemplatesRootDirPath: String,
@@ -31,7 +30,6 @@ class GeminioPluginSettingsEditor(
                 )
             }
         }
-
     }
 
     private lateinit var configFilePathTextField: JTextField
@@ -39,7 +37,6 @@ class GeminioPluginSettingsEditor(
     private lateinit var modulesTemplatesRootDirPathTextField: JTextField
     private lateinit var nameForNewGroupTextField: JTextField
     private lateinit var nameForNewModulesGroupTextField: JTextField
-
 
     fun createComponent(project: Project): JComponent {
         return panel {
@@ -85,11 +82,11 @@ class GeminioPluginSettingsEditor(
 
     fun isModified(settings: GeminioPluginSettings): Boolean {
         return with(settings) {
-            config.configFilePath != configFilePathTextField.text
-                    || config.templatesRootDirPath != templatesRootDirPathTextField.text
-                    || config.modulesTemplatesRootDirPath != modulesTemplatesRootDirPathTextField.text
-                    || config.groupsNames.forNewGroup != nameForNewGroupTextField.text
-                    || config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text
+            config.configFilePath != configFilePathTextField.text ||
+                config.templatesRootDirPath != templatesRootDirPathTextField.text ||
+                config.modulesTemplatesRootDirPath != modulesTemplatesRootDirPathTextField.text ||
+                config.groupsNames.forNewGroup != nameForNewGroupTextField.text ||
+                config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text
         }
     }
 
@@ -112,5 +109,4 @@ class GeminioPluginSettingsEditor(
             )
         }
     }
-
 }

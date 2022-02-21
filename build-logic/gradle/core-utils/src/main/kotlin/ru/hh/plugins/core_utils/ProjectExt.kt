@@ -2,7 +2,6 @@ package ru.hh.plugins.core_utils
 
 import org.gradle.api.Project
 
-
 fun Project.isRoot() = project == project.rootProject
 
 fun Project.getMandatoryStringProperty(name: String): String {

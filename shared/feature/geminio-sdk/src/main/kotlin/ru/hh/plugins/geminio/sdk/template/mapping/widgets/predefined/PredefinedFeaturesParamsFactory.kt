@@ -9,7 +9,6 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringPar
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameterConstraint
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 internal fun PredefinedFeaturesSection.Companion.createModuleNameParameter(): GeminioTemplateParameterData {
     return GeminioTemplateParameterData(
         parameterId = GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID,
@@ -56,7 +55,7 @@ internal fun PredefinedFeaturesSection.Companion.createPackageNameParameter(
                 AndroidStudioTemplateStringParameterConstraint.PACKAGE,
                 AndroidStudioTemplateStringParameterConstraint.UNIQUE,
             )
-            default = "${defaultPackageNamePrefix}.mymodule"
+            default = "$defaultPackageNamePrefix.mymodule"
             suggest = { moduleNameParameter.value.toPackageNameFromModuleName(defaultPackageNamePrefix) }
             visible = { true }
             enabled = { true }

@@ -9,7 +9,6 @@ import ru.hh.android.plugin.PluginConstants.MAIN_REPOSITORY_NAME
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.plugins.extensions.EMPTY
 
-
 @Service
 class GitService(
     private val project: Project
@@ -24,13 +23,12 @@ class GitService(
     private val repositoryManager: GitRepositoryManager
         get() = GitRepositoryManager.getInstance(project)
 
-
     fun checkoutMobForMergeDevelopToPortfolio(mobIssueKey: String, portfolioKey: String) {
         project.logDebug("checkoutMobForMergeDevelopToPortfolio | mob issue: $mobIssueKey, portfolio: $portfolioKey")
-        val newBranchName = "${mobIssueKey}__merge_develop_to_${portfolioKey}"
+        val newBranchName = "${mobIssueKey}__merge_develop_to_$portfolioKey"
         project.logDebug("\tnewBranchName = $newBranchName")
         val repository = repositoryManager.repositories.find { it.presentableUrl.endsWith(MAIN_REPOSITORY_NAME) }
-            ?: throw IllegalStateException("Can't find ${MAIN_REPOSITORY_NAME} repository in Git")
+            ?: throw IllegalStateException("Can't find $MAIN_REPOSITORY_NAME repository in Git")
 
         project.logDebug("\trepository = ${repository.presentableUrl}")
         GitBrancher.getInstance(project).checkoutNewBranch(newBranchName, listOf(repository))
@@ -53,5 +51,4 @@ class GitService(
             String.EMPTY
         }
     }
-
 }

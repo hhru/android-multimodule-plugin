@@ -6,7 +6,6 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.toBooleanLambda
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter.BooleanParameter]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter].

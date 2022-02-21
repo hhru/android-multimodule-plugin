@@ -10,13 +10,11 @@ import org.gradle.kotlin.dsl.register
 import ru.hh.plugins.core_utils.Constants
 import ru.hh.plugins.core_utils.isRoot
 
-
 class BuildAllPluginsGradlePlugin : Plugin<Project> {
 
     private companion object {
         const val BUILD_PLUGIN_TASK_NAME = "buildPlugin"
     }
-
 
     override fun apply(target: Project) {
         check(target.isRoot()) {
@@ -35,11 +33,9 @@ class BuildAllPluginsGradlePlugin : Plugin<Project> {
         }
     }
 
-
     private fun Project.getBuildPluginTasks(): MutableList<Zip> {
         return allprojects
             .filter { it.plugins.hasPlugin(Convention_ideaPluginPlugin::class) }
             .mapTo(mutableListOf()) { it.tasks.getByName(BUILD_PLUGIN_TASK_NAME, Zip::class) }
     }
-
 }

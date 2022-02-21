@@ -20,7 +20,6 @@ import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepF
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import kotlin.system.measureTimeMillis
 
-
 /**
  * Base action for executing templates from YAML config.
  *
@@ -39,7 +38,6 @@ class ExecuteGeminioTemplateAction(
         private const val WIZARD_TITLE = "Geminio wizard"
     }
 
-
     init {
         with(templatePresentation) {
             text = actionText
@@ -47,7 +45,6 @@ class ExecuteGeminioTemplateAction(
             isEnabledAndVisible = true
         }
     }
-
 
     override fun update(e: AnActionEvent) {
         val dataContext = e.dataContext
@@ -58,7 +55,6 @@ class ExecuteGeminioTemplateAction(
         e.presentation
             .isEnabledAndVisible = (e.project == null || facet == null || AndroidModel.get(facet) == null).not()
     }
-
 
     override fun actionPerformed(e: AnActionEvent) {
         println("Start executing template [$actionText]")
@@ -94,7 +90,6 @@ class ExecuteGeminioTemplateAction(
                     project.balloonInfo(message = "Finished '$actionText' template execution")
                 }
 
-
                 private fun applyShortenReferencesAndCodeStyle() {
                     measureTimeMillis {
                         project.executeWriteCommand(COMMAND_AFTER_WIZARD_NAME) {
@@ -113,7 +108,6 @@ class ExecuteGeminioTemplateAction(
             .build()
         dialog.show()
     }
-
 
     private fun AnActionEvent.fetchEventData(): EventData {
         val dataContext = dataContext
@@ -146,11 +140,8 @@ class ExecuteGeminioTemplateAction(
         }
     }
 
-
     private data class EventData(
         val project: Project,
         val androidFacet: AndroidFacet
     )
-
-
 }

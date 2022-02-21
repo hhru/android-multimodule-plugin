@@ -4,12 +4,10 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.util.InheritanceUtil
 import ru.hh.android.plugin.core.model.enums.CodeStyleViewDeclaration
 
-
 /**
  * Simple map for storing mapping of View classes FQNs to code style declarations.
  */
 private val codeStyleClassesMap = mutableMapOf<String?, CodeStyleViewDeclaration>()
-
 
 fun PsiClass.findClosestViewClassDeclaration(): CodeStyleViewDeclaration {
     val mapValue = codeStyleClassesMap[this.qualifiedName]
@@ -31,7 +29,6 @@ private fun PsiClass.isInheritor(ViewDeclaration: CodeStyleViewDeclaration): Boo
         if (InheritanceUtil.isInheritor(this, androidViewClassName)) {
             return true
         }
-
     }
 
     return false

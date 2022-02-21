@@ -3,7 +3,6 @@ package ru.hh.plugins.freemarker_wrapper.adapters
 import com.android.tools.idea.observable.core.IntValueProperty
 import freemarker.template.*
 
-
 class IntPropertyAdapter(
     objectWrapper: ObjectWrapper?,
     private val myIntProperty: IntValueProperty
@@ -17,5 +16,4 @@ class IntPropertyAdapter(
     override fun getAsNumber(): Number {
         return myIntProperty.get()
     }
-
 }

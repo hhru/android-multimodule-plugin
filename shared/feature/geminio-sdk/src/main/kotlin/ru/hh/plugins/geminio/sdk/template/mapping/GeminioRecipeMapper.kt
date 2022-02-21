@@ -17,7 +17,6 @@ import ru.hh.plugins.geminio.sdk.template.mapping.required.injectRequiredParams
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.injectWidgets
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe]
  * into [ru.hh.plugins.geminio.sdk.models.GeminioTemplateData].
@@ -69,13 +68,12 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
     )
 }
 
-
 private fun getHardcodedParamsMap(
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): Map<String, Any?> {
     val packageNameParameter = existingParametersMap[GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID]
-            as? AndroidStudioTemplateStringParameter
+        as? AndroidStudioTemplateStringParameter
 
     val (packageName, applicationPackage) = when {
         packageNameParameter != null -> {

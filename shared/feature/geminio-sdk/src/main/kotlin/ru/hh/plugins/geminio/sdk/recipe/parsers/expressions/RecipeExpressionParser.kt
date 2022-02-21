@@ -5,7 +5,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
-
 private const val SRC_OUT_FOLDER_NAME = "srcOut"
 private const val RES_OUT_FOLDER_NAME = "resOut"
 private const val MANIFEST_OUT_FOLDER_NAME = "manifestOut"
@@ -21,7 +20,6 @@ private const val CHAR_DYNAMIC_COMMAND_SKIP = '{'
 private const val CHAR_COMMAND_MODIFIER_START = '.'
 private const val CHAR_COMMAND_MODIFIER_END = '('
 private const val CHAR_COMMAND_MODIFIER_SKIP = ')'
-
 
 /**
  * Parser from recipe's expressions declarations into objects.

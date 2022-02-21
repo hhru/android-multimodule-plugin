@@ -15,7 +15,6 @@ import ru.hh.plugins.psi_utils.groovy.getIncludeModuleRelativePathSetupElement
 import ru.hh.plugins.psi_utils.kotlin.getIncludeModuleExpression
 import ru.hh.plugins.psi_utils.kotlin.getIncludeModuleRelativePathSetupElement
 
-
 class SettingsGradleModificationService(
     private val project: Project
 ) {
@@ -27,7 +26,6 @@ class SettingsGradleModificationService(
 
         fun getInstance(project: Project) = SettingsGradleModificationService(project)
     }
-
 
     /**
      * Adds module description into settings.gradle / settings.gradle.kts file.
@@ -109,5 +107,4 @@ class SettingsGradleModificationService(
             }
         }
     }
-
 }

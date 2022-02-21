@@ -25,7 +25,6 @@ import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createPacka
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeParametersData
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 /**
  * Injects parameters from [ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection]
  * and [ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection]
@@ -48,7 +47,6 @@ internal fun AndroidStudioTemplateBuilder.injectWidgets(
 
     return parametersData.existingParametersMap
 }
-
 
 private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
     val existingParametersMap = mutableMapOf<String, AndroidStudioTemplateParameter>()

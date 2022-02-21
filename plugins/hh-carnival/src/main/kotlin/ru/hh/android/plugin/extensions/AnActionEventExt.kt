@@ -14,7 +14,6 @@ import ru.hh.android.plugin.services.git.GitService
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.getSelectedPsiElement
 
-
 fun AnActionEvent.canReachKotlinDataClass(): Boolean {
     return when {
         ktClassFromEditor?.isData() == true -> true
@@ -34,7 +33,6 @@ fun AnActionEvent.getCurrentPortfolioBranchName(): String {
 fun AnActionEvent.getKotlinDataClass(): KtClass? {
     return (ktClassFromEditor ?: selectedKtClass)?.takeIf { it.isData() }
 }
-
 
 val AnActionEvent.androidFacet: AndroidFacet?
     get() = getSelectedPsiElement()?.module?.androidFacet

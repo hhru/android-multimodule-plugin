@@ -24,7 +24,6 @@ import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryServ
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
-
 /**
  * Action for creating new module.
  */
@@ -40,7 +39,6 @@ class ExecuteGeminioModuleTemplateAction(
         private const val WIZARD_TITLE = "Geminio Module wizard"
     }
 
-
     init {
         with(templatePresentation) {
             text = actionText
@@ -48,7 +46,6 @@ class ExecuteGeminioModuleTemplateAction(
             isEnabledAndVisible = true
         }
     }
-
 
     override fun update(e: AnActionEvent) {
         super.update(e)
@@ -83,7 +80,7 @@ class ExecuteGeminioModuleTemplateAction(
             project = project,
             stepTitle = "Create new $actionText",
             directoryPath = directoryPath,
-            defaultPackageName = "ru.hh",   // TODO - fetch from settings
+            defaultPackageName = "ru.hh", // TODO - fetch from settings
             androidStudioTemplate = geminioTemplateData.androidStudioTemplate
         )
         val chooseAppsStep = ChooseModulesModelWizardStep(
@@ -153,7 +150,6 @@ class ExecuteGeminioModuleTemplateAction(
                 e.printStackTrace()
             }
 
-
             private fun propagateAdditionalParams() {
                 with(geminioTemplateData) {
                     val applicationModules = chooseAppsStep.getSelectedModules()
@@ -187,10 +183,8 @@ class ExecuteGeminioModuleTemplateAction(
                     buildGradleModificationService.addDepsIntoModule(appModule, addingDependencies, true)
                 }
             }
-
         })
 
         dialog.show()
     }
-
 }

@@ -7,9 +7,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
 import com.intellij.refactoring.PackageWrapper
 
-
 private const val KOTLIN_FILE_EXTENSION = ".kt"
-
 
 val String.Companion.EMPTY: String get() = ""
 
@@ -31,8 +29,7 @@ fun String.replaceLineBreaks(): String {
     return this.replace("\n", "\n<br />", true)
 }
 
-fun String.toKotlinFileName() = "${this}${KOTLIN_FILE_EXTENSION}"
-
+fun String.toKotlinFileName() = "${this}$KOTLIN_FILE_EXTENSION"
 
 fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirectory? {
     val psiManager = PsiManager.getInstance(project)
@@ -53,7 +50,7 @@ fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
     val formattedModuleName = this
         .replace(Char.SPACE, Char.UNDERSCORE)
         .replace(Char.HYPHEN, Char.UNDERSCORE)
-    return "${packageNamePrefix}.${formattedModuleName}"
+    return "$packageNamePrefix.$formattedModuleName"
 }
 
 fun String.replaceWordsBreakers(): String {

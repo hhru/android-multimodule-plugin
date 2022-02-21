@@ -9,7 +9,6 @@ import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
 
-
 fun Module.isAndroidLibraryModule(): Boolean {
     return androidFacet?.configuration?.isLibraryProject ?: false
 }
@@ -17,7 +16,6 @@ fun Module.isAndroidLibraryModule(): Boolean {
 fun Module.isAndroidAppModule(): Boolean {
     return androidFacet?.configuration?.isAppProject ?: false
 }
-
 
 fun Module.findPsiFileByName(name: String): PsiFile? {
     return FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()

@@ -17,7 +17,6 @@ import ru.hh.plugins.garcon.model.extensions.rFilePackageName
 import ru.hh.plugins.garcon.model.extensions.xmlFileName
 import ru.hh.plugins.psi_utils.isInheritedFrom
 
-
 @Service
 class PageObjectPropertyConverter(
     private val project: Project
@@ -32,7 +31,6 @@ class PageObjectPropertyConverter(
 
         fun getInstance(project: Project): PageObjectPropertyConverter = project.service()
     }
-
 
     fun convert(item: AndroidViewTagInfo): String {
         val pluginConfig = GarconPluginSettings.getConfig(project)
@@ -50,11 +48,10 @@ class PageObjectPropertyConverter(
         }
     }
 
-
     private fun getRecyclerViewWidgetDeclaration(params: PageObjectPropertyParams): String {
         return with(params) {
             """
-            private val $propertyName = $kakaoClassFQN({ withId(${viewIdDeclaration}) }) {
+            private val $propertyName = $kakaoClassFQN({ withId($viewIdDeclaration) }) {
                 // TODO - add KRecyclerItem declarations   
             }    
             """.trimMargin()
@@ -64,11 +61,10 @@ class PageObjectPropertyConverter(
     private fun getAndroidWidgetDeclaration(params: PageObjectPropertyParams): String {
         return with(params) {
             """
-            private val $propertyName = $kakaoClassFQN { withId(${viewIdDeclaration}) }    
+            private val $propertyName = $kakaoClassFQN { withId($viewIdDeclaration) }    
             """.trimMargin()
         }
     }
-
 
     private fun AndroidViewTagInfo.toWidgetDescription(
         pluginConfig: GarconPluginConfig
@@ -114,5 +110,4 @@ class PageObjectPropertyConverter(
     private fun AndroidViewTagInfo.isRecyclerViewWidget(): Boolean {
         return tagPsiClass.qualifiedName == SdkConstants.RECYCLER_VIEW.newName()
     }
-
 }

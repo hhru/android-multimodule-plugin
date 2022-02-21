@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.expressions
 
-
 sealed class RecipeExpressionCommand {
 
     data class Fixed(
@@ -23,5 +22,4 @@ sealed class RecipeExpressionCommand {
     object ReturnTrue : RecipeExpressionCommand()
 
     object ReturnFalse : RecipeExpressionCommand()
-
 }

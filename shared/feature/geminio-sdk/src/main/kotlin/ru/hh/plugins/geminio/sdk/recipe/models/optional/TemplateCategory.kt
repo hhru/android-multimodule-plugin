@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.optional
 
-
 /**
  * Determines to which menu entry the template belongs.
  */
@@ -21,7 +20,6 @@ enum class TemplateCategory(
     GOOGLE("google"),
     COMPOSE("compose"),
     OTHER("other");
-
 
     companion object {
         fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }

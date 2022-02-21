@@ -7,7 +7,6 @@ plugins {
     id("convention.libraries")
 }
 
-
 fun Detekt.setupCommonDetektSettings() {
     // Common properties
     parallel = true

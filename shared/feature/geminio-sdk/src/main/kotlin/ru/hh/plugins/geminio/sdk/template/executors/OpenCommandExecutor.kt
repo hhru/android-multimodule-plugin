@@ -6,7 +6,6 @@ import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 import java.io.File
 
-
 internal fun RecipeExecutor.execute(
     command: RecipeCommand.Open,
     executorData: GeminioRecipeExecutorData

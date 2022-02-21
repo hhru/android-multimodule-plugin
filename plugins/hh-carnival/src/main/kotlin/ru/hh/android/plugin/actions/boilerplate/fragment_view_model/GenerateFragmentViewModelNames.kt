@@ -2,7 +2,6 @@ package ru.hh.android.plugin.actions.boilerplate.fragment_view_model
 
 import ru.hh.plugins.extensions.EMPTY
 
-
 data class GenerateFragmentViewModelNames(
     val packageName: String,
     val viewModelClassName: String,
@@ -31,9 +30,9 @@ data class GenerateFragmentViewModelNames(
                 }
 
                 Triple(
-                    "${packageName}.model.",
-                    "${previous}.feature.",
-                    "${previous}.feature.element."
+                    "$packageName.model.",
+                    "$previous.feature.",
+                    "$previous.feature.element."
                 )
             } else {
                 Triple(String.EMPTY, String.EMPTY, String.EMPTY)
@@ -44,12 +43,12 @@ data class GenerateFragmentViewModelNames(
             val uiStateClassName = "${featurePrefix}UiState"
             val uiStateConverterClassName = "${featurePrefix}UiStateConverter"
 
-            val singleEventClassFQCN = "${modelsPackageName}${singleEventClassName}"
-            val uiStateClassFQCN = "${modelsPackageName}${uiStateClassName}"
-            val uiStateConverterClassFQCN = "${modelsPackageName}${uiStateConverterClassName}"
+            val singleEventClassFQCN = "${modelsPackageName}$singleEventClassName"
+            val uiStateClassFQCN = "${modelsPackageName}$uiStateClassName"
+            val uiStateConverterClassFQCN = "${modelsPackageName}$uiStateConverterClassName"
 
             val mviFeatureClassName = "${featurePrefix}MviFeature"
-            val mviFeatureClassFQCN = "${mviFeaturePackageName}${mviFeatureClassName}"
+            val mviFeatureClassFQCN = "${mviFeaturePackageName}$mviFeatureClassName"
             val mviFeatureStateClassFQCN = "${mviFeatureElementPackageName}${mviFeatureClassName}State"
             val mviFeatureNewsClassFQCN = "${mviFeatureElementPackageName}${mviFeatureClassName}News"
 
@@ -69,7 +68,5 @@ data class GenerateFragmentViewModelNames(
                 mviFeatureNewsClassFQCN = mviFeatureNewsClassFQCN
             )
         }
-
     }
-
 }

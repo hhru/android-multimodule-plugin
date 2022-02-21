@@ -8,7 +8,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.PluginConfig
 
-
 @Service
 class Logger(
     private val project: Project
@@ -18,9 +17,7 @@ class Logger(
         private const val EVENT_TITLE = "Geminio"
 
         fun getInstance(project: Project): Logger = project.service()
-
     }
-
 
     fun debug(message: String) {
         if (PluginConfig.getInstance(project).isDebugModeEnabled) {
@@ -37,7 +34,6 @@ class Logger(
         Notifications.Bus.notify(AntiroutineErrorEventNotification(message))
     }
 
-
     private class AntiroutineEventNotification(content: String) : Notification(
         Notifications.SYSTEM_MESSAGES_GROUP_ID,
         EVENT_TITLE,
@@ -51,5 +47,4 @@ class Logger(
         content,
         NotificationType.ERROR
     )
-
 }

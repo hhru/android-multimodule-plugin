@@ -10,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 
-
 internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
     "Should return null" {
@@ -89,5 +88,4 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
         ex.message shouldStartWith "Unknown parameter or not string parameter for string expression [${command.parameterId}]"
     }
-
 })

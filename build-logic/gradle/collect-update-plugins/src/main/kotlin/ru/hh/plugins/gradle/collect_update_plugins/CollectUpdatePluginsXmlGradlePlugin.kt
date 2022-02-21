@@ -10,13 +10,11 @@ import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import ru.hh.plugins.core_utils.Constants
 import ru.hh.plugins.core_utils.isRoot
 
-
 open class CollectUpdatePluginsXmlGradlePlugin : Plugin<Project> {
 
     private companion object {
         const val PATCH_PLUGIN_XML_TASK_NAME = "patchPluginXml"
     }
-
 
     override fun apply(target: Project) {
         check(target.isRoot()) {
@@ -37,11 +35,9 @@ open class CollectUpdatePluginsXmlGradlePlugin : Plugin<Project> {
         }
     }
 
-
     private fun Project.getPatchXmlFileTasks(): MutableList<PatchPluginXmlTask> {
         return allprojects
             .filter { it.plugins.hasPlugin(Convention_ideaPluginPlugin::class) }
             .mapTo(mutableListOf()) { it.tasks.getByName(PATCH_PLUGIN_XML_TASK_NAME, PatchPluginXmlTask::class) }
     }
-
 }

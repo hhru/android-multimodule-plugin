@@ -4,7 +4,6 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.project.Project
 import com.intellij.ui.RecentsManager
 
-
 object RecentsUtils {
 
     fun putRecentsEntry(project: Project, key: String, value: String) {
@@ -18,5 +17,4 @@ object RecentsUtils {
     fun getBooleanFromProperties(key: String, defaultValue: Boolean = true): Boolean {
         return PropertiesComponent.getInstance().getBoolean(key, defaultValue)
     }
-
 }

@@ -7,7 +7,6 @@ import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.openapi.getRootModule
 import java.io.File
 
-
 fun Project.getRootModulePath(): String {
     val file = File(getRootModule().moduleFilePath)
     return file.parent

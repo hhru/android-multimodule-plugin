@@ -7,11 +7,9 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequ
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
 
-
 private const val KEY_COMMAND_VALID_IF = "validIf"
 private const val KEY_COMMAND_COMMANDS = "commands"
 private const val KEY_COMMAND_ELSE_COMMANDS = "elseCommands"
-
 
 internal fun Map<String, Any>.toPredicateCommand(sectionName: String): RecipeCommand.Predicate {
     val validIfString = requireNotNull(getBooleanOrStringExpression(KEY_COMMAND_VALID_IF)) {
@@ -30,7 +28,7 @@ internal fun Map<String, Any>.toPredicateCommand(sectionName: String): RecipeCom
 
     return RecipeCommand.Predicate(
         validIf = validIfString.toRecipeExpression(sectionName),
-        commands = commands.map { it.toRecipeCommand("${sectionName}:${KEY_COMMAND_COMMANDS}") },
-        elseCommands = elseCommands?.map { it.toRecipeCommand("${sectionName}:${KEY_COMMAND_ELSE_COMMANDS}") } ?: emptyList()
+        commands = commands.map { it.toRecipeCommand("$sectionName:$KEY_COMMAND_COMMANDS") },
+        elseCommands = elseCommands?.map { it.toRecipeCommand("$sectionName:$KEY_COMMAND_ELSE_COMMANDS") } ?: emptyList()
     )
 }

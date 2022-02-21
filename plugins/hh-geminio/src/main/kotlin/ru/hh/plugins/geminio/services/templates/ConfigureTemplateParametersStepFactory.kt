@@ -19,7 +19,6 @@ import org.jetbrains.android.facet.AndroidFacet
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioConfigureTemplateStepModel
 
-
 @Service
 class ConfigureTemplateParametersStepFactory {
 
@@ -29,10 +28,8 @@ class ConfigureTemplateParametersStepFactory {
         private const val STUB_MODULE_NAME = "stub_module_name"
         private const val STUB_PARENT_MODULE_NAME = "stub_parent_module_name"
 
-
         fun getInstance(project: Project): ConfigureTemplateParametersStepFactory = project.service()
     }
-
 
     fun createFromAndroidFacet(
         commandName: String,
@@ -90,7 +87,6 @@ class ConfigureTemplateParametersStepFactory {
         )
     }
 
-
     private fun createNamedModuleTemplate(directoryPath: String): NamedModuleTemplate {
         return NamedModuleTemplate(
             name = NAMED_MODULE_TEMPLATE_NAME,
@@ -145,5 +141,4 @@ class ConfigureTemplateParametersStepFactory {
             newTemplate = androidStudioTemplate
         }
     }
-
 }

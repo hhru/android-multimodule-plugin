@@ -5,7 +5,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 
-
 internal fun RecipeExecutor.execute(
     command: RecipeCommand.Predicate,
     executorData: GeminioRecipeExecutorData

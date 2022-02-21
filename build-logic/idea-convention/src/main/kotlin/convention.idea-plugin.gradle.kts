@@ -11,7 +11,6 @@ plugins {
 
 fun properties(key: String) = project.findProperty(key).toString()
 
-
 group = properties("pluginGroup")
 version = properties("pluginVersion")
 
@@ -49,11 +48,13 @@ tasks.withType<PatchPluginXmlTask> {
     )
 
     // Get the latest available change notes from the changelog file
-    changeNotes.set(provider {
-        changelog.run {
-            getOrNull(properties("pluginVersion")) ?: getLatest()
-        }.toHTML()
-    })
+    changeNotes.set(
+        provider {
+            changelog.run {
+                getOrNull(properties("pluginVersion")) ?: getLatest()
+            }.toHTML()
+        }
+    )
 }
 
 tasks.getByName<Zip>("buildPlugin") {

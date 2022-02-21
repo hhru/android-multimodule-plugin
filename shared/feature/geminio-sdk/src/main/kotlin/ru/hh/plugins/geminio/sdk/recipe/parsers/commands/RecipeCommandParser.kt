@@ -5,7 +5,6 @@ package ru.hh.plugins.geminio.sdk.recipe.parsers.commands
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
-
 private const val KEY_COMMAND_INSTANTIATE = "instantiate"
 private const val KEY_COMMAND_OPEN = "open"
 private const val KEY_COMMAND_INSTANTIATE_AND_OPEN = "instantiateAndOpen"
@@ -13,7 +12,6 @@ private const val KEY_COMMAND_PREDICATE = "predicate"
 private const val KEY_COMMAND_ADD_DEPENDENCIES = "addDependencies"
 private const val KEY_MK_DIRS = "mkDirs"
 private const val KEY_COMMAND_ADD_GRADLE_PLUGINS = "addGradlePlugins"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand]
@@ -27,34 +25,33 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
     val mkDirsCommandList = this[KEY_MK_DIRS] as? List<Any>
     val addGradlePluginsCommandList = this[KEY_COMMAND_ADD_GRADLE_PLUGINS] as? List<String>
 
-
     return when {
         instantiateCommandMap != null -> {
-            instantiateCommandMap.toInstantiateCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
+            instantiateCommandMap.toInstantiateCommand("$sectionName:$KEY_COMMAND_INSTANTIATE")
         }
 
         openCommandMap != null -> {
-            openCommandMap.toOpenCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
+            openCommandMap.toOpenCommand("$sectionName:$KEY_COMMAND_INSTANTIATE")
         }
 
         instantiateAndOpenCommandMap != null -> {
-            instantiateAndOpenCommandMap.toInstantiateAndOpenCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
+            instantiateAndOpenCommandMap.toInstantiateAndOpenCommand("$sectionName:$KEY_COMMAND_INSTANTIATE")
         }
 
         predicateCommandMap != null -> {
-            predicateCommandMap.toPredicateCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
+            predicateCommandMap.toPredicateCommand("$sectionName:$KEY_COMMAND_INSTANTIATE")
         }
 
         addDependenciesCommandList != null -> {
-            addDependenciesCommandList.toAddDependenciesCommand("${sectionName}:${KEY_COMMAND_INSTANTIATE}")
+            addDependenciesCommandList.toAddDependenciesCommand("$sectionName:$KEY_COMMAND_INSTANTIATE")
         }
 
         mkDirsCommandList != null -> {
-            mkDirsCommandList.toMkDirsCommand("${sectionName}:${KEY_MK_DIRS}")
+            mkDirsCommandList.toMkDirsCommand("$sectionName:$KEY_MK_DIRS")
         }
 
         addGradlePluginsCommandList != null -> {
-            addGradlePluginsCommandList.toAddGradlePluginsCommand("${sectionName}:${KEY_COMMAND_ADD_GRADLE_PLUGINS}")
+            addGradlePluginsCommandList.toAddGradlePluginsCommand("$sectionName:$KEY_COMMAND_ADD_GRADLE_PLUGINS")
         }
 
         else -> {

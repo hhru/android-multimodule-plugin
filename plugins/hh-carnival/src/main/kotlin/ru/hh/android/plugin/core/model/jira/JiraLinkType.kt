@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.jira
 
-
 /**
  * Available link types in JIRA
  *
@@ -91,5 +90,4 @@ enum class JiraLinkType(val remoteName: String) {
      * outward: разделить на
      */
     PROBLEM_DIVIDED("Проблема, разделенная")
-
 }

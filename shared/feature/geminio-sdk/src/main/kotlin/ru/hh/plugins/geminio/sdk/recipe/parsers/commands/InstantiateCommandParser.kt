@@ -4,10 +4,8 @@ import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
-
 private const val KEY_COMMAND_FROM = "from"
 private const val KEY_COMMAND_TO = "to"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand.Instantiate] command.

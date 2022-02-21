@@ -41,7 +41,6 @@ import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import kotlin.system.measureTimeMillis
 
-
 /**
  * Action for copy module.
  */
@@ -61,7 +60,6 @@ class CopyAndroidModuleAction : AnAction() {
             handleAction(CopyModuleActionData(e, androidFacet))
         }
     }
-
 
     private fun handleAction(actionData: CopyModuleActionData) {
         val project = actionData.project
@@ -257,5 +255,4 @@ class CopyAndroidModuleAction : AnAction() {
 
         return true
     }
-
 }

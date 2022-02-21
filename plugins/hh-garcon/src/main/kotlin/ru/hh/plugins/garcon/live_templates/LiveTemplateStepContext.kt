@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.asJava.toLightClass
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.plugins.garcon.GarconConstants
 
-
 class LiveTemplateStepContext : TemplateContextType(LIVE_TEMPLATE_STEP_ID, LIVE_TEMPLATE_STEP_NAME) {
 
     companion object {
@@ -16,14 +15,12 @@ class LiveTemplateStepContext : TemplateContextType(LIVE_TEMPLATE_STEP_ID, LIVE_
         private const val LIVE_TEMPLATE_STEP_NAME = "Step function context"
     }
 
-
     override fun isInContext(file: PsiFile, offset: Int): Boolean {
         val psiElement = file.findElementAt(offset)
         val closestKtClass = PsiTreeUtil.getParentOfType(psiElement, KtClass::class.java)?.toLightClass()
             ?: return false
 
-        return InheritanceUtil.isInheritor(closestKtClass, GarconConstants.HH_SCREEN_INTENTIONS_CLASS_FQN)
-                || InheritanceUtil.isInheritor(closestKtClass, GarconConstants.AGODA_SCREEN_CLASS_FQN)
+        return InheritanceUtil.isInheritor(closestKtClass, GarconConstants.HH_SCREEN_INTENTIONS_CLASS_FQN) ||
+            InheritanceUtil.isInheritor(closestKtClass, GarconConstants.AGODA_SCREEN_CLASS_FQN)
     }
-
 }

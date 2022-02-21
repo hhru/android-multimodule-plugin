@@ -54,7 +54,6 @@ fun Row.createKotlinClassChooserComboBox(
                     val userObject = node.userObject as? KtClassOrObjectTreeNode ?: return null
                     return userObject.value.toLightClass()
                 }
-
             }
 
             chooser.showDialog()

@@ -7,12 +7,10 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.rootSectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
-
 private const val KEY_WIDGETS_SECTION = "widgets"
 
 private const val KEY_STRING_PARAMETER_TYPE = "stringParameter"
 private const val KEY_BOOLEAN_PARAMETER_TYPE = "booleanParameter"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection].
@@ -27,18 +25,17 @@ internal fun Map<String, Any>.toWidgetsSection(): WidgetsSection {
     )
 }
 
-
 private fun Map<String, Any>.toRecipeParameter(): RecipeParameter {
     val stringParameterMap = this[KEY_STRING_PARAMETER_TYPE] as? Map<String, Any>
     val booleanParameterMap = this[KEY_BOOLEAN_PARAMETER_TYPE] as? Map<String, Any>
 
     return when {
         stringParameterMap != null -> {
-            stringParameterMap.toWidgetsStringParameter("${KEY_WIDGETS_SECTION}:${KEY_STRING_PARAMETER_TYPE}")
+            stringParameterMap.toWidgetsStringParameter("$KEY_WIDGETS_SECTION:$KEY_STRING_PARAMETER_TYPE")
         }
 
         booleanParameterMap != null -> {
-            booleanParameterMap.toWidgetsBooleanParameter("${KEY_WIDGETS_SECTION}:${KEY_BOOLEAN_PARAMETER_TYPE}")
+            booleanParameterMap.toWidgetsBooleanParameter("$KEY_WIDGETS_SECTION:$KEY_BOOLEAN_PARAMETER_TYPE")
         }
 
         else -> {

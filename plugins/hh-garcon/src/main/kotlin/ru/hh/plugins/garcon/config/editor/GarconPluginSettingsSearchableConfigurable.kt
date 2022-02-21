@@ -4,7 +4,6 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import javax.swing.JComponent
 
-
 class GarconPluginSettingsSearchableConfigurable(
     private val project: Project
 ) : SearchableConfigurable {
@@ -14,13 +13,11 @@ class GarconPluginSettingsSearchableConfigurable(
         private const val DISPLAY_NAME = "Garcon plugin"
     }
 
-
     private val pluginConfig by lazy {
         GarconPluginSettings.getInstance(project)
     }
 
     private var pluginConfigPropertiesEditor: GarconPluginSettingsEditor? = null
-
 
     override fun isModified(): Boolean {
         return pluginConfigPropertiesEditor?.isModified(pluginConfig) ?: false
@@ -43,9 +40,7 @@ class GarconPluginSettingsSearchableConfigurable(
         return pluginConfigPropertiesEditor?.createComponent(project)
     }
 
-
     override fun disposeUIResources() {
         pluginConfigPropertiesEditor = null
     }
-
 }

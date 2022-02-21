@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio
 
-
 object GeminioConstants {
 
     const val DEFAULT_NOTIFICATIONS_TITLE = "Geminio"
@@ -14,5 +13,4 @@ object GeminioConstants {
     const val HH_MODULES_TEMPLATES_GENERATE_GROUP_ID = "ru.hh.plugins.geminio.Generate.HHModulesTemplatesGroup"
 
     const val GEMINIO_TEMPLATE_CONFIG_FILE_NAME = "recipe.yaml"
-
 }

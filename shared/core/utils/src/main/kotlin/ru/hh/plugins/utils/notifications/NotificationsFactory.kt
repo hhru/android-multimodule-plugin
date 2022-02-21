@@ -8,13 +8,11 @@ import com.intellij.openapi.project.Project
 import ru.hh.plugins.extensions.replaceLineBreaks
 import javax.swing.event.HyperlinkEvent
 
-
 object NotificationsFactory : NotificationListener {
 
     override fun hyperlinkUpdate(p0: Notification, p1: HyperlinkEvent) {
         // do nothing
     }
-
 
     fun balloonInfo(
         project: Project,
@@ -34,7 +32,6 @@ object NotificationsFactory : NotificationListener {
         showNotification(project, errorNotificationGroupId, NotificationType.ERROR, title, message)
     }
 
-
     private fun showNotification(
         project: Project,
         notificationGroupId: String,
@@ -50,5 +47,4 @@ object NotificationsFactory : NotificationListener {
             this
         ).notify(project)
     }
-
 }

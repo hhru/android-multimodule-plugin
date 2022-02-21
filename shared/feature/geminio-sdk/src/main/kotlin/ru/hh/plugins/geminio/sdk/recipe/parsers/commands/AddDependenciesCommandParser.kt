@@ -6,7 +6,6 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnkn
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
-
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand.AddDependencies] command.
  */
@@ -17,7 +16,6 @@ internal fun List<Map<String, Any>>.toAddDependenciesCommand(sectionName: String
         dependencies = dependencies
     )
 }
-
 
 private fun Map<String, Any>.toBuildGradleDependency(sectionName: String): BuildGradleDependency {
     check(this.size == 1) {

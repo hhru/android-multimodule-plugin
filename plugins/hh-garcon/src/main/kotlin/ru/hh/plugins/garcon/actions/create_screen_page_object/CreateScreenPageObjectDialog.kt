@@ -1,6 +1,5 @@
 package ru.hh.plugins.garcon.actions.create_screen_page_object
 
-
 import com.android.tools.idea.util.androidFacet
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -26,7 +25,6 @@ import ru.hh.plugins.views.layouts.targetPackageComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
-
 class CreateScreenPageObjectDialog(
     private val xmlFile: XmlFile,
 ) : DialogWrapper(xmlFile.project) {
@@ -39,12 +37,10 @@ class CreateScreenPageObjectDialog(
     private lateinit var destinationFolderComboBox: KotlinDestinationFolderComboBox
     private lateinit var openInEditorCheckBox: JCheckBox
 
-
     init {
         init()
         title = "Create <Screen> Page Object"
     }
-
 
     override fun createCenterPanel(): JComponent {
         return panel {
@@ -89,7 +85,6 @@ class CreateScreenPageObjectDialog(
         }
     }
 
-
     override fun doOKAction() {
         if (isFormValid()) {
             saveRecentsValues()
@@ -107,7 +102,6 @@ class CreateScreenPageObjectDialog(
         )
     }
 
-
     private fun getTargetPackageName(): String {
         return packageNameChooserComboBox.text.trim()
     }
@@ -122,7 +116,6 @@ class CreateScreenPageObjectDialog(
     private fun getOpenInEditor(): Boolean {
         return openInEditorCheckBox.isSelected
     }
-
 
     private fun isFormValid(): Boolean {
         return isClassNameValid() && isPackageNameValid() && isTargetDirectoryValid() && checkFileCanBeCreated()
@@ -207,5 +200,4 @@ class CreateScreenPageObjectDialog(
     private fun saveOpenInEditorFlag(isOpenInEditor: Boolean) {
         RecentsUtils.putProperty(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, isOpenInEditor.toString())
     }
-
 }

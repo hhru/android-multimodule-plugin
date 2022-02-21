@@ -4,7 +4,6 @@ import com.android.tools.idea.lint.common.AndroidLintInspectionBase
 import com.android.tools.idea.lint.common.LintIdeIssueRegistry
 import com.android.tools.lint.detector.api.Issue
 
-
 @Suppress("UnstableApiUsage")
 abstract class AutoRegisterAndroidLintInspection(
     displayName: String,
@@ -20,5 +19,4 @@ abstract class AutoRegisterAndroidLintInspection(
             issues?.add(issue)
         }
     }
-
 }

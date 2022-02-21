@@ -21,5 +21,4 @@ class JiraLinkFactory {
             null
         )
     }
-
 }

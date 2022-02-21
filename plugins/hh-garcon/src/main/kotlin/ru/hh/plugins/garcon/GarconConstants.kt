@@ -1,6 +1,5 @@
 package ru.hh.plugins.garcon
 
-
 object GarconConstants {
 
     const val DEFAULT_GARCON_NOTIFICATIONS_TITLE = "Garcon"
@@ -11,7 +10,6 @@ object GarconConstants {
 
     const val DEFAULT_PACKAGE_NAME = "com.example.myapplication"
 
-
     object RecentsKeys {
         private const val BASE = "ru.hh.android.plugins.garcon"
 
@@ -19,6 +17,4 @@ object GarconConstants {
         const val TARGET_PACKAGE_NAME = "$BASE.target_package_name"
         const val TARGET_SCREEN_CLASS = "$BASE.target_screen_class"
     }
-
 }
-

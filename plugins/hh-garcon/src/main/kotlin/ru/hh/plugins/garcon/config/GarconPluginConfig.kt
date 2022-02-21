@@ -2,7 +2,6 @@ package ru.hh.plugins.garcon.config
 
 import ru.hh.plugins.extensions.EMPTY
 
-
 data class GarconPluginConfig(
     var configFilePath: String = String.EMPTY,
     var enableDebugMode: Boolean = false,
@@ -19,5 +18,4 @@ data class GarconPluginConfig(
         var kakaoWidgetFQN: String = String.EMPTY,
         var idSuffixes: MutableList<String> = mutableListOf()
     )
-
 }

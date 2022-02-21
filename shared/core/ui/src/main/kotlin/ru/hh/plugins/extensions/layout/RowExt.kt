@@ -6,13 +6,11 @@ import ru.hh.plugins.extensions.EMPTY
 import java.awt.Font
 import javax.swing.JLabel
 
-
 fun Row.titleLabel(text: String = String.EMPTY, fontSize: Float = BIG_LABEL_FONT_SIZE, isBold: Boolean = true) {
     JLabel(text).apply {
         font = font.deriveFont(fontSize)
         if (isBold) {
             font = font.deriveFont(Font.BOLD)
-
         }
     }()
 }

@@ -10,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateFormFactor
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateScreen
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
-
 private const val KEY_OPTIONAL_PARAMS_SECTION = "optionalParams"
 
 private const val KEY_OPTIONAL_PARAMS_REVISION = "revision"
@@ -24,7 +23,6 @@ private const val KEY_OPTIONAL_PARAMS_MIN_BUILD_API = "minBuildApi"
 private const val DEFAULT_REVISION_VALUE = 1
 private const val DEFAULT_MIN_API_VALUE = 1
 private const val DEFAULT_MIN_BUILD_API_VALUE = 1
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.optional.OptionalParams].
@@ -53,7 +51,6 @@ internal fun Map<String, Any>.toOptionalParams(): OptionalParams {
     )
 }
 
-
 private fun OptionalParams.Companion.default(): OptionalParams {
     return OptionalParams(
         revision = DEFAULT_REVISION_VALUE,
@@ -66,11 +63,10 @@ private fun OptionalParams.Companion.default(): OptionalParams {
     )
 }
 
-
 private fun String.toTemplateCategory(): TemplateCategory {
     return requireNotNull(TemplateCategory.fromYamlKey(this)) {
         sectionUnknownEnumKeyErrorMessage(
-            sectionName = "${KEY_OPTIONAL_PARAMS_SECTION}:${KEY_OPTIONAL_PARAMS_CATEGORY}",
+            sectionName = "$KEY_OPTIONAL_PARAMS_SECTION:$KEY_OPTIONAL_PARAMS_CATEGORY",
             key = this,
             acceptableValues = TemplateCategory.availableYamlKeys()
         )
@@ -80,7 +76,7 @@ private fun String.toTemplateCategory(): TemplateCategory {
 private fun String.toTemplateFormFactor(): TemplateFormFactor {
     return requireNotNull(TemplateFormFactor.fromYamlKey(this)) {
         sectionUnknownEnumKeyErrorMessage(
-            sectionName = "${KEY_OPTIONAL_PARAMS_SECTION}:${KEY_OPTIONAL_PARAMS_FORM_FACTOR}",
+            sectionName = "$KEY_OPTIONAL_PARAMS_SECTION:$KEY_OPTIONAL_PARAMS_FORM_FACTOR",
             key = this,
             acceptableValues = TemplateFormFactor.availableYamlKeys()
         )
@@ -90,7 +86,7 @@ private fun String.toTemplateFormFactor(): TemplateFormFactor {
 private fun String.toTemplateConstraint(): TemplateConstraint {
     return requireNotNull(TemplateConstraint.fromYamlKey(this)) {
         sectionUnknownEnumKeyErrorMessage(
-            sectionName = "${KEY_OPTIONAL_PARAMS_SECTION}:${KEY_OPTIONAL_PARAMS_CONSTRAINTS}",
+            sectionName = "$KEY_OPTIONAL_PARAMS_SECTION:$KEY_OPTIONAL_PARAMS_CONSTRAINTS",
             key = this,
             acceptableValues = TemplateConstraint.availableYamlKeys()
         )
@@ -100,7 +96,7 @@ private fun String.toTemplateConstraint(): TemplateConstraint {
 private fun String.toTemplateScreen(): TemplateScreen {
     return requireNotNull(TemplateScreen.fromYamlKey(this)) {
         sectionUnknownEnumKeyErrorMessage(
-            sectionName = "${KEY_OPTIONAL_PARAMS_SECTION}:${KEY_OPTIONAL_PARAMS_SCREENS}",
+            sectionName = "$KEY_OPTIONAL_PARAMS_SECTION:$KEY_OPTIONAL_PARAMS_SCREENS",
             key = this,
             acceptableValues = TemplateScreen.availableYamlKeys()
         )

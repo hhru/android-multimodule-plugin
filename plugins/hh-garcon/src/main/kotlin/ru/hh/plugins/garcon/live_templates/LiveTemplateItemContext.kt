@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.idea.references.KtSimpleNameReference
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
-
 class LiveTemplateItemContext : TemplateContextType(LIVE_TEMPLATE_ITEM_ID, LIVE_TEMPLATE_ITEM_NAME) {
 
     companion object {
@@ -16,7 +15,6 @@ class LiveTemplateItemContext : TemplateContextType(LIVE_TEMPLATE_ITEM_ID, LIVE_
 
         private const val KAKAO_RECYCLER_VIEW_CLASS_NAME = "KRecyclerView"
     }
-
 
     override fun isInContext(file: PsiFile, offset: Int): Boolean {
         val psiElement = file.findElementAt(offset)
@@ -27,5 +25,4 @@ class LiveTemplateItemContext : TemplateContextType(LIVE_TEMPLATE_ITEM_ID, LIVE_
             ?.firstIsInstanceOrNull<KtSimpleNameReference>()
             ?.value == KAKAO_RECYCLER_VIEW_CLASS_NAME
     }
-
 }

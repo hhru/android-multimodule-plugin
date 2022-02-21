@@ -5,7 +5,6 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
-
 internal class ActivityToLayoutModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(activityName: String): String? {
@@ -14,7 +13,6 @@ internal class ActivityToLayoutModifierSpec : FreeSpec({
             modifier = RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
         )
     }
-
 
     "Should return normal layout name with 'activity_' prefix if there is 'Activity' word" {
         getEvaluatedValue("MyActivity") shouldBe "activity_my"
@@ -52,5 +50,4 @@ internal class ActivityToLayoutModifierSpec : FreeSpec({
         getEvaluatedValue("SomeActivity") shouldBe "activity_some"
         getEvaluatedValue("ActivityNormal") shouldBe "activity_normal"
     }
-
 })

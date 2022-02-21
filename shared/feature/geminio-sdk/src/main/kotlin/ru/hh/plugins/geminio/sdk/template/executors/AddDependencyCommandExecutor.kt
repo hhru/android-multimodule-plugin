@@ -6,7 +6,6 @@ import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 
-
 internal fun RecipeExecutor.execute(
     command: RecipeCommand.AddDependencies,
     executorData: GeminioRecipeExecutorData
@@ -19,6 +18,5 @@ internal fun RecipeExecutor.execute(
 
         BuildGradleModificationService.getInstance(executorData.project)
             .addDepsInModuleDirectory(rootDir, command.dependencies)
-
     }
 }
