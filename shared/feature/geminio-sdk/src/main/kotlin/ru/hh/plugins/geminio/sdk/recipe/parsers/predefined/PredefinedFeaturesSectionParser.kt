@@ -71,12 +71,3 @@ private fun Map<String, Any>.parseParameter(
         }
     }
 }
-
-/**
- * @return Returns a list if all elements of this list inherit T
- */
-@Suppress("UNCHECKED_CAST")
-private inline fun <reified T : Any> List<*>.checkItemsAre() =
-    if (all { it is T })
-        this as List<T>
-    else null
