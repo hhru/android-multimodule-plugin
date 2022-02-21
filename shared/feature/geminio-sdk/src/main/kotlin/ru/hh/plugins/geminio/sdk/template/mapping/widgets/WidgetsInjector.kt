@@ -6,12 +6,15 @@ import com.android.tools.idea.wizard.template.EnumParameter
 import com.android.tools.idea.wizard.template.EnumWidget
 import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TextFieldWidget
+import com.android.tools.idea.wizard.template.impl.defaultPackageNameParameter
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBuilder
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
@@ -53,13 +56,16 @@ private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
 
     val allParameters = mutableListOf<GeminioTemplateParameterData>()
 
-    if (predefinedFeaturesSection.features.contains(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
+    val moduleCreationParams = predefinedFeaturesSection.features[PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS]
+            as? PredefinedFeatureParameter.ModuleCreationParameter
+    if (moduleCreationParams != null) {
         val moduleNameParameterData = PredefinedFeaturesSection.createModuleNameParameter()
         val moduleNameStringParameter = moduleNameParameterData.parameter as AndroidStudioTemplateStringParameter
         val formattedModuleNameParameterData = PredefinedFeaturesSection.createFormattedModuleNameParameter(
             moduleNameParameter = moduleNameStringParameter
         )
         val packageNameParameterData = PredefinedFeaturesSection.createPackageNameParameter(
+            defaultPackageNamePrefix = moduleCreationParams.defaultPackageNamePrefix,
             moduleNameParameter = moduleNameStringParameter
         )
 
