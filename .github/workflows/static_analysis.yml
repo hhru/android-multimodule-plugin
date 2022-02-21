@@ -14,7 +14,7 @@ jobs:
       - name: Clone detekt-config
         run: mv ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt-config.yaml ${{ github.workspace }}/detekt-config.yaml
       - name: Clone detekt-baseline
-      run: mv ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt-baseline.xml ${{ github.workspace }}/detekt-baseline.xml
+        run: mv ${{ github.workspace }}/build-logic/static-analysis-convention/rules/detekt-baseline.xml ${{ github.workspace }}/detekt-baseline.xml
       - name: detekt
         uses: alaegin/Detekt-Action@v1.19
         with:
