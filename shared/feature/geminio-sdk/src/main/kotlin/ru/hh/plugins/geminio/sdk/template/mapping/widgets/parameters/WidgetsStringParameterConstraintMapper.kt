@@ -19,7 +19,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint.VALUES
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameterConstraint
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameterConstraint].

@@ -7,7 +7,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
-
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand.MkDirs] command.
  */
@@ -16,7 +15,6 @@ internal fun List<Any>.toMkDirsCommand(sectionName: String): RecipeCommand.MkDir
         dirs = this.parseMkDirsItems(sectionName)
     )
 }
-
 
 private fun List<Any>.parseMkDirsItems(sectionName: String): List<MkDirItem> {
     val items = mutableListOf<MkDirItem>()
@@ -42,7 +40,7 @@ private fun List<Any>.parseMkDirsItems(sectionName: String): List<MkDirItem> {
                     )
                 }
 
-                val nextSectionName = "${sectionName}:$dirName"
+                val nextSectionName = "$sectionName:$dirName"
                 MkDirItem(
                     name = dirName.toRecipeExpression(nextSectionName),
                     subDirs = map[dirName]!!.parseMkDirsItems(nextSectionName)

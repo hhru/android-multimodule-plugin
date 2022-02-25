@@ -22,5 +22,5 @@ dependencies {
     // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation(Libs.flexmark)   // Markdown parser
+    implementation(Libs.flexmark) // Markdown parser
 }

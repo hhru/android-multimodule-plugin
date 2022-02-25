@@ -7,7 +7,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSect
 import ru.hh.plugins.geminio.sdk.recipe.models.required.RequiredParams
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection
 
-
 /**
  * Recipe data for building template's  UI and creating files.
  */

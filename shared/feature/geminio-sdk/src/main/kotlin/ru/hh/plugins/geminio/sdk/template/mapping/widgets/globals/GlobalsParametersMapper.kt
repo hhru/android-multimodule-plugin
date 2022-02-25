@@ -4,7 +4,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter].

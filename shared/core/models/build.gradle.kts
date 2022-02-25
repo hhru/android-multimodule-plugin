@@ -8,5 +8,4 @@ repositories {
 }
 
 dependencies {
-
 }

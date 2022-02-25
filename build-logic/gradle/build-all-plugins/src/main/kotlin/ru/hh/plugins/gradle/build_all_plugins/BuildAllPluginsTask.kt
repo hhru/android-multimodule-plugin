@@ -10,7 +10,6 @@ import org.gradle.api.tasks.TaskAction
 import java.nio.file.Files
 import javax.inject.Inject
 
-
 @Suppress("UnstableApiUsage")
 open class BuildAllPluginsTask @Inject constructor(
     objects: ObjectFactory
@@ -21,7 +20,6 @@ open class BuildAllPluginsTask @Inject constructor(
 
     @OutputDirectory
     val outputFiles: DirectoryProperty = objects.directoryProperty()
-
 
     @TaskAction
     fun buildAllPlugins() {
@@ -35,5 +33,4 @@ open class BuildAllPluginsTask @Inject constructor(
             }
         }
     }
-
 }

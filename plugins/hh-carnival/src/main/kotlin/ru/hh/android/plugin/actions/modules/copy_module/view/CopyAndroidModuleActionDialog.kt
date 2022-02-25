@@ -16,7 +16,6 @@ import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-
 class CopyAndroidModuleActionDialog(
     private val project: Project,
     private val moduleName: String
@@ -37,12 +36,10 @@ class CopyAndroidModuleActionDialog(
 
     private var appModuleComboBox: JComboBox<Module>? = null
 
-
     init {
         init()
         title = "Copy module"
     }
-
 
     override fun createCenterPanel(): JComponent? = JPanel(BorderLayout())
 
@@ -83,11 +80,9 @@ class CopyAndroidModuleActionDialog(
         }
     }
 
-
     fun getModuleName(): String = moduleNamePanel.getModuleName()
 
     fun getPackageName(): String = moduleNamePanel.getPackageName()
 
     fun getSelectedModule(): Module = appModuleComboBoxModel.selected!!
-
 }

@@ -2,7 +2,6 @@ package ru.hh.android.plugin.core.model.enums
 
 import com.android.SdkConstants
 
-
 private const val ANDROID_WIDGET_PKG = "android.widget"
 private const val ANDROIDX_APPCOMPAT_WIDGET_PKG = "${SdkConstants.ANDROIDX_APPCOMPAT_PKG}.widget"
 
@@ -70,7 +69,7 @@ enum class CodeStyleViewDeclaration(
     PROGRESS_BAR(
         idPrefix = "progress",
         androidWidgetsClasses = listOf(
-            "${ANDROID_WIDGET_PKG}.${SdkConstants.PROGRESS_BAR}"
+            "$ANDROID_WIDGET_PKG.${SdkConstants.PROGRESS_BAR}"
         )
     ),
 
@@ -127,5 +126,4 @@ enum class CodeStyleViewDeclaration(
             SdkConstants.CLASS_VIEW
         )
     )
-
 }

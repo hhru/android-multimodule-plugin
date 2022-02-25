@@ -2,7 +2,6 @@ package ru.hh.plugins.geminio.sdk.recipe.models.widgets
 
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 
-
 sealed class RecipeParameter {
 
     abstract val id: String
@@ -10,7 +9,6 @@ sealed class RecipeParameter {
     abstract val help: String
     abstract val visibilityExpression: RecipeExpression?
     abstract val availabilityExpression: RecipeExpression?
-
 
     data class StringParameter(
         override val id: String,
@@ -31,5 +29,4 @@ sealed class RecipeParameter {
         override val availabilityExpression: RecipeExpression?,
         val default: Boolean?
     ) : RecipeParameter()
-
 }

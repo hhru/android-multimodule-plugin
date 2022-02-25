@@ -4,11 +4,11 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import ru.hh.plugins.models.gradle.BuildGradleDependency
-import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
-import ru.hh.plugins.psi_utils.kotlin.createGradlePluginElement
 import ru.hh.plugins.psi_utils.kotlin.createBuildGradleDependencyElement
-import ru.hh.plugins.psi_utils.reformatWithCodeStyle
+import ru.hh.plugins.psi_utils.kotlin.createGradlePluginElement
+import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateGradlePluginsBlock
+import ru.hh.plugins.psi_utils.reformatWithCodeStyle
 
 class KtScriptsModificationService {
 
@@ -59,5 +59,4 @@ class KtScriptsModificationService {
 
         ktFile.reformatWithCodeStyle()
     }
-
 }

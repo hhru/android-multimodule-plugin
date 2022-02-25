@@ -7,11 +7,8 @@ import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParam
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
-
 private const val KEY_PREDEFINED_FEATURES_SECTION = "predefinedFeatures"
-
 private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePrefix"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection].
@@ -26,10 +23,14 @@ internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesS
             is String -> { // If feature is just string
                 mapOf(feature to emptyMap<String, Any>())
             }
+
             is Map<*, *> -> { // If feature is map
                 feature.filterKeys { it is String } as Map<String, Any?>
             }
-            else -> null
+
+            else -> {
+                null
+            }
         }
     }.filterNotNull()
 

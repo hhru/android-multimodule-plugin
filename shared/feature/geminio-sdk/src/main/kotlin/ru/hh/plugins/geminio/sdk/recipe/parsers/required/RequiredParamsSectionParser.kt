@@ -6,12 +6,10 @@ import ru.hh.plugins.geminio.sdk.recipe.models.required.RequiredParams
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.rootSectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
 
-
 private const val KEY_REQUIRED_PARAMS_SECTION = "requiredParams"
 
 private const val KEY_REQUIRED_PARAMS_NAME = "name"
 private const val KEY_REQUIRED_PARAMS_DESCRIPTION = "description"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.required.RequiredParams].

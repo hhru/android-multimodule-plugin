@@ -2,7 +2,6 @@ package ru.hh.plugins.geminio.config
 
 import ru.hh.plugins.extensions.EMPTY
 
-
 data class GeminioPluginConfig(
     var configFilePath: String = String.EMPTY,
     var templatesRootDirPath: String = String.EMPTY,
@@ -14,5 +13,4 @@ data class GeminioPluginConfig(
         var forNewGroup: String = String.EMPTY,
         var forNewModulesGroup: String = String.EMPTY
     )
-
 }

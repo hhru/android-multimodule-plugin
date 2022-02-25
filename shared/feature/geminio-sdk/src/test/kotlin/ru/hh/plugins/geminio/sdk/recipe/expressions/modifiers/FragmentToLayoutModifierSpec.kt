@@ -5,7 +5,6 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
-
 internal class FragmentToLayoutModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
@@ -14,7 +13,6 @@ internal class FragmentToLayoutModifierSpec : FreeSpec({
             modifier = RecipeExpressionModifier.FRAGMENT_TO_LAYOUT
         )
     }
-
 
     "Should return normal layout name with 'fragment_' prefix if there is 'Fragment' word" {
         getEvaluatedValue("MyFragment") shouldBe "fragment_my"
@@ -52,6 +50,4 @@ internal class FragmentToLayoutModifierSpec : FreeSpec({
         getEvaluatedValue("SomeFragment") shouldBe "fragment_some"
         getEvaluatedValue("FragmentNormal") shouldBe "fragment_normal"
     }
-
-
 })

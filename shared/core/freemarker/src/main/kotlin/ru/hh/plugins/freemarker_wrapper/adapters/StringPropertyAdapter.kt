@@ -3,7 +3,6 @@ package ru.hh.plugins.freemarker_wrapper.adapters
 import com.android.tools.idea.observable.core.StringValueProperty
 import freemarker.template.*
 
-
 class StringPropertyAdapter(
     objectWrapper: ObjectWrapper?,
     private val myStringProperty: StringValueProperty
@@ -17,5 +16,4 @@ class StringPropertyAdapter(
     override fun getAsString(): String {
         return myStringProperty.get()
     }
-
 }

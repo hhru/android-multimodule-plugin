@@ -18,7 +18,6 @@ import javax.swing.JEditorPane
 import javax.swing.JTextField
 import javax.swing.border.EmptyBorder
 
-
 /**
  * Wizard step selecting modules
  */
@@ -33,13 +32,11 @@ class ChooseModulesModelWizardStep(
         private const val TEXT_AREA_PADDING = 10
     }
 
-
     private lateinit var filterModulesJTextField: JTextField
     private lateinit var modulesJList: CheckBoxListView<ModuleDisplayableItem>
     private lateinit var readmeBlockTextArea: JEditorPane
 
     private val isReadmeAvailable: Boolean get() = isForAppModules.not()
-
 
     private val allModulesItems: List<ModuleDisplayableItem> by lazy {
         val modules = if (isForAppModules) {
@@ -58,9 +55,7 @@ class ChooseModulesModelWizardStep(
         }
     }
 
-
     private val selectedModulesItems = mutableListOf<ModuleDisplayableItem>()
-
 
     override fun getComponent(): JComponent {
         return panel {
@@ -171,5 +166,4 @@ class ChooseModulesModelWizardStep(
         }
         updateListView(newItems)
     }
-
 }

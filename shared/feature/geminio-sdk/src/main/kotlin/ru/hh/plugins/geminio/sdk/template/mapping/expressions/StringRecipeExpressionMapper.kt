@@ -17,8 +17,8 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ResOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
-import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.RootOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
@@ -30,7 +30,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModif
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringParameter
-
 
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression]
@@ -72,7 +71,6 @@ internal fun RecipeExpression.evaluateString(
 
     return result.toString().takeIf { it.isNotEmpty() }
 }
-
 
 private fun RecipeExpressionCommand.toStringValue(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>

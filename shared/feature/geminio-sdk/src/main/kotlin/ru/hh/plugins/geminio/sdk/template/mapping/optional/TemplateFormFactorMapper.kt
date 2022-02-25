@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.template.mapping.optional
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateFormFactor
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateFormFactor
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateFormFactor]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateFormFactor].

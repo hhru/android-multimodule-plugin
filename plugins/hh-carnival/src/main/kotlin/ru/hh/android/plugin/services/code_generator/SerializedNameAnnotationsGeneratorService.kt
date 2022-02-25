@@ -16,7 +16,6 @@ import ru.hh.android.plugin.utils.reformatWithCodeStyle
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 
-
 @Service
 class SerializedNameAnnotationsGeneratorService(
     private val project: Project
@@ -29,7 +28,6 @@ class SerializedNameAnnotationsGeneratorService(
 
         fun getInstance(project: Project): SerializedNameAnnotationsGeneratorService = project.service()
     }
-
 
     fun addSerializedNameAnnotationsIntoClass(ktClass: KtClass) {
         require(ktClass.isData())
@@ -59,7 +57,6 @@ class SerializedNameAnnotationsGeneratorService(
         }
     }
 
-
     private fun KtParameter.hasSerializedNameAnnotation(): Boolean {
         return findAnnotation(FqName(SERIALIZED_NAME_ANNOTATION_FQN)) != null
     }
@@ -68,5 +65,4 @@ class SerializedNameAnnotationsGeneratorService(
         val parameterNameInSnakeCase = (name ?: String.EMPTY).fromCamelCaseToUnderlines()
         return "@$SERIALIZED_NAME_ANNOTATION_FQN(\"${parameterNameInSnakeCase}\")"
     }
-
 }

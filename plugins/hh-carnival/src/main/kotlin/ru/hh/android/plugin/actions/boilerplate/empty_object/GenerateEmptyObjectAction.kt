@@ -11,7 +11,6 @@ import ru.hh.android.plugin.CodeGeneratorConstants
 import ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService
 import ru.hh.android.plugin.utils.notifyInfo
 
-
 /**
  * Action for generating EMPTY object in kotlin data classes.
  */
@@ -23,14 +22,14 @@ class GenerateEmptyObjectAction : KotlinGenerateActionBase() {
             EmptyObjectGeneratorService.getInstance(project).addEmptyObjectIntoKtClass(ktClass)
             project.notifyInfo("EMPTY object successfully generated!")
         }
-
     }
 
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
-        return targetClass is KtClass
-                && targetClass.isData()
-                && (targetClass.companionObjects.firstOrNull()
-            ?.findPropertyByName(CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME) == null)
+        return targetClass is KtClass &&
+            targetClass.isData() &&
+            (
+                targetClass.companionObjects.firstOrNull()
+                    ?.findPropertyByName(CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME) == null
+                )
     }
-
 }

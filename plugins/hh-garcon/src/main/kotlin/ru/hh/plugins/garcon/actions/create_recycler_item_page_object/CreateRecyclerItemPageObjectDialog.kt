@@ -22,7 +22,6 @@ import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
-
 class CreateRecyclerItemPageObjectDialog(
     private val xmlFile: XmlFile
 ) : DialogWrapper(xmlFile.project) {
@@ -36,12 +35,10 @@ class CreateRecyclerItemPageObjectDialog(
     var className = "${xmlFile.extractClassNameFromFileName()}RecyclerItem"
     private var targetClass: PsiElement? = null
 
-
     init {
         init()
         title = "Create <RecyclerItem> Page Object"
     }
-
 
     override fun doOKAction() {
         if (isFormValid()) {
@@ -55,7 +52,6 @@ class CreateRecyclerItemPageObjectDialog(
             super.doOKAction()
         }
     }
-
 
     override fun createCenterPanel(): JComponent {
         return panel {
@@ -97,7 +93,6 @@ class CreateRecyclerItemPageObjectDialog(
         }
     }
 
-
     fun getDialogResult(): CreateRecyclerItemPageObjectDialogResult {
         return CreateRecyclerItemPageObjectDialogResult(
             xmlFile = xmlFile,
@@ -106,7 +101,6 @@ class CreateRecyclerItemPageObjectDialog(
             openInEditor = getOpenInEditor()
         )
     }
-
 
     private fun getOpenInEditor(): Boolean {
         return openInEditorCheckBox.isSelected
@@ -155,5 +149,4 @@ class CreateRecyclerItemPageObjectDialog(
             }
         }
     }
-
 }

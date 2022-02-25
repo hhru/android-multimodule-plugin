@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.expressions
 
-
 enum class RecipeExpressionModifier(
     val yamlKey: String
 ) {
@@ -28,7 +27,6 @@ enum class RecipeExpressionModifier(
     UNDERSCORE_TO_CAMEL_CASE("underscoreToCamelCase"),
 
     ;
-
 
     companion object {
         fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }

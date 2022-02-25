@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.template.mapping.optional
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateCategory
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateCategory
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateCategory]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateCategory].

@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.jira
 
-
 enum class JiraIssueType(
     val id: Long
 ) {
@@ -10,5 +9,4 @@ enum class JiraIssueType(
     TASK(id = 3),
     IMPROVEMENT(id = 4),
     PROCESS_ORGANIZATION(id = 98)
-
 }

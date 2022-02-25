@@ -8,7 +8,6 @@ import javax.swing.JList
 import javax.swing.ListCellRenderer
 import javax.swing.border.EmptyBorder
 
-
 class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxListViewItem {
 
     companion object {
@@ -18,7 +17,6 @@ class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxLi
     private val itemCheckBox = JCheckBox().apply {
         border = EmptyBorder(PADDING_VALUE, PADDING_VALUE, PADDING_VALUE, PADDING_VALUE)
     }
-
 
     override fun getListCellRendererComponent(
         list: JList<out T>?,
@@ -41,5 +39,4 @@ class CheckBoxListViewItemRenderer<T> : ListCellRenderer<T> where T : CheckBoxLi
 
         return itemCheckBox
     }
-
 }

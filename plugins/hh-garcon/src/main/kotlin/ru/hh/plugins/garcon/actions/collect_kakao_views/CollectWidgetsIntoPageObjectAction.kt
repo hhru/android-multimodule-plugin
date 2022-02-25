@@ -19,7 +19,6 @@ import ru.hh.plugins.garcon.services.balloonInfo
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.psi_utils.openInEditor
 
-
 class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
 
     companion object {
@@ -27,7 +26,6 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
 
         private const val PRIVATE_MODIFIER_TOKEN = "private"
     }
-
 
     override fun handleAction(project: Project, editor: Editor, psiFile: PsiFile) {
         val dialog = CollectWidgetsIntoPageObjectDialog(psiFile as XmlFile).also { it.show() }
@@ -37,7 +35,6 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
             project.balloonError(message = "Collect widgets into Page object dialog dismissed")
         }
     }
-
 
     private fun handleDialogParams(params: CollectWidgetsIntoPageObjectDialogResult) {
         val project = params.xmlFile.project
@@ -69,10 +66,8 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
         }
     }
 
-
     private fun KtClassBody.findLastAcceptableAnchorProperty(): KtProperty? {
         return properties.lastOrNull { it.visibilityModifierType()?.value == PRIVATE_MODIFIER_TOKEN }
             ?: properties.lastOrNull()
     }
-
 }

@@ -14,7 +14,6 @@ import org.jetbrains.plugins.groovy.lang.resolve.processors.inference.type
 import org.jetbrains.uast.UCallExpression
 import kotlin.system.measureTimeMillis
 
-
 @Suppress("UnstableApiUsage")
 class PutSerializableDetector : Detector(), SourceCodeScanner {
 
@@ -24,7 +23,6 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
         private const val CORRECT_PUT_SERIALIZABLE_ARGUMENTS_COUNT = 2
         private const val CHECKED_METHOD_NAME = "putSerializable"
         private const val FQCN_SERIALIZABLE_INTERFACE = "java.io.Serializable"
-
 
         val ISSUE: Issue
             get() {
@@ -36,7 +34,7 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
                     explanation = """
                     Lint rule for checking is `Bundle.putSerializable` invoking with correct Serializable argument.
                     
-                    When you use current method you should be sure that every inner field in your argument, recursively, 
+                    When you use current method you should be sure that every inner field in your argument, recursively,
                     implements $FQCN_SERIALIZABLE_INTERFACE .
                     """,
                     category = Category.LINT,
@@ -51,9 +49,7 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
             }
     }
 
-
     private val logger = Logger.getInstance(PutSerializableDetector::class.java)
-
 
     override fun getApplicableMethodNames(): List<String>? {
         return listOf(CHECKED_METHOD_NAME)
@@ -93,15 +89,14 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
             return
         }
 
-
         var result: String? = null
         val checkTime = measureTimeMillis {
             result = ktUltraLightClass.allFields
                 .filter {
-                    it.type is PsiClassReferenceType
-                        && it.type.canonicalText.isNotBlank()
-                        && it.type.canonicalText.endsWith("Companion").not()
-                        && it.type.canonicalText.equals(ktUltraLightClass.type().canonicalText).not()
+                    it.type is PsiClassReferenceType &&
+                        it.type.canonicalText.isNotBlank() &&
+                        it.type.canonicalText.endsWith("Companion").not() &&
+                        it.type.canonicalText.equals(ktUltraLightClass.type().canonicalText).not()
                 }
                 .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedPsiClass, "${ktUltraLightClass.name}") }
                 .firstOrNull()
@@ -113,7 +108,6 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
             reportIssue(context, node, pathToFirstNotSerializableObject)
         }
     }
-
 
     private fun checkIsSerializable(
         psiClassReferenceType: PsiClassReferenceType,
@@ -138,10 +132,10 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
         logger.debug("\t\t\t this ref is Serializable --> check every ref field")
         return ktLightClassForSourceDeclaration.allFields
             .filter {
-                it.type is PsiClassReferenceType
-                    && it.type.canonicalText.isNotBlank()
-                    && it.type.canonicalText.endsWith("Companion").not()
-                    && it.type.canonicalText.equals(ktLightClassForSourceDeclaration.type().canonicalText).not()
+                it.type is PsiClassReferenceType &&
+                    it.type.canonicalText.isNotBlank() &&
+                    it.type.canonicalText.endsWith("Companion").not() &&
+                    it.type.canonicalText.equals(ktLightClassForSourceDeclaration.type().canonicalText).not()
             }
             .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedClass, "$objectPath.${ktLightClassForSourceDeclaration.name}") }
             .firstOrNull()
@@ -159,5 +153,4 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
                 "[First not serializable class name: $pathToFirstNotSerializableObject]"
         )
     }
-
 }

@@ -4,7 +4,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter].

@@ -11,7 +11,6 @@ include(":gradle:core-utils")
 include(":gradle:build-all-plugins")
 include(":gradle:collect-update-plugins")
 
-
 pluginManagement {
     repositories {
         gradlePluginPortal()

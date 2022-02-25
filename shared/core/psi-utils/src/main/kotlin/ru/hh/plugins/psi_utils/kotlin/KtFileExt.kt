@@ -7,10 +7,9 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
-import ru.hh.plugins.psi_utils.reformatWithCodeStyle
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_PLUGINS_BLOCK_NAME
-
+import ru.hh.plugins.psi_utils.reformatWithCodeStyle
 
 fun KtFile.shortReferencesAndReformatWithCodeStyle() {
     this.commitAndUnblockDocument()

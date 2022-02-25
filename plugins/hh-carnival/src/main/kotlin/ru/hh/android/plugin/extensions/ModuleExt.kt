@@ -10,7 +10,6 @@ import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 
-
 fun Module.findPsiFileByName(name: String): PsiFile? {
     return FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
 }

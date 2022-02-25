@@ -15,7 +15,6 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-
 @State(name = "ru.hh.android.plugins.antiroutine.JiraSettingsConfig")
 class JiraSettingsConfig : PersistentStateComponent<Credentials> {
 
@@ -24,7 +23,6 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
 
         fun getInstance(project: Project): JiraSettingsConfig = project.service()
     }
-
 
     private var credentials: Credentials? = null
 
@@ -54,7 +52,6 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
         }
     }
 
-
     override fun getState(): Credentials? {
         if (credentials == null) {
             val credentialAttributes = createCredentialAttributes()
@@ -82,5 +79,4 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
     private fun createCredentialAttributes(): CredentialAttributes {
         return CredentialAttributes(generateServiceName(PluginConstants.SUBSYSTEM_NAME, key!!))
     }
-
 }

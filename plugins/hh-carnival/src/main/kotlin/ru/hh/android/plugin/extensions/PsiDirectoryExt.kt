@@ -6,7 +6,6 @@ import ru.hh.android.plugin.actions.modules.copy_module.exceptions.CopyModuleAct
 import ru.hh.android.plugin.utils.logDebug
 import ru.hh.plugins.extensions.DOT
 
-
 fun PsiDirectory.canCreateSubdirectory(name: String): Boolean {
     return try {
         this.checkCreateSubdirectory(name)

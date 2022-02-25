@@ -11,15 +11,14 @@ import com.intellij.ui.layout.panel
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
 import org.jetbrains.kotlin.psi.KtClass
+import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.garcon.GarconConstants
 import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.garcon.services.ClassFiltersFactory
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
 import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
 import javax.swing.JCheckBox
 import javax.swing.JComponent
-
 
 class CollectWidgetsIntoPageObjectDialog(
     private val xmlFile: XmlFile
@@ -27,18 +26,15 @@ class CollectWidgetsIntoPageObjectDialog(
 
     private val project: Project get() = xmlFile.project
 
-
     private lateinit var openInEditorCheckBox: JCheckBox
     private lateinit var targetClassChooser: KotlinFileComboBoxWrapper
 
     private var targetClass: PsiElement? = null
 
-
     init {
         init()
         title = "Collect Widgets into Page Object"
     }
-
 
     override fun createCenterPanel(): JComponent {
         return panel {
@@ -88,7 +84,6 @@ class CollectWidgetsIntoPageObjectDialog(
         }
     }
 
-
     fun getDialogResult(): CollectWidgetsIntoPageObjectDialogResult {
         return CollectWidgetsIntoPageObjectDialogResult(
             xmlFile = xmlFile,
@@ -117,5 +112,4 @@ class CollectWidgetsIntoPageObjectDialog(
             true
         }
     }
-
 }

@@ -8,13 +8,11 @@ import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.garcon.model.AndroidViewTagInfo
 import ru.hh.plugins.psi_utils.androidManifestPackageName
 
-
 val XmlFile.rFilePackageName: String
     get() {
         val packageName = androidManifestPackageName
-        return if (packageName.isBlank()) SdkConstants.R_CLASS else "${packageName}.${SdkConstants.R_CLASS}"
+        return if (packageName.isBlank()) SdkConstants.R_CLASS else "$packageName.${SdkConstants.R_CLASS}"
     }
-
 
 fun XmlFile.collectAndroidViewsTagsInfo(): List<AndroidViewTagInfo> {
     val result = mutableListOf<AndroidViewTagInfo>()
@@ -28,7 +26,6 @@ fun XmlFile.collectAndroidViewsTagsInfo(): List<AndroidViewTagInfo> {
 
     return result
 }
-
 
 private fun XmlTag.toLayoutTagInfo(): AndroidViewTagInfo? {
     val idAttr = getAttribute("${SdkConstants.ANDROID_NS_NAME_PREFIX}${SdkConstants.ATTR_ID}")

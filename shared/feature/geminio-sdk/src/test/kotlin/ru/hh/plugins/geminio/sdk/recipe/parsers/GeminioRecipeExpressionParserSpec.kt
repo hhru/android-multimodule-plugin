@@ -16,16 +16,13 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModif
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
-
 private const val SECTION_NAME = "Test"
-
 
 internal class GeminioRecipeExpressionParserSpec : FreeSpec({
 
     fun List<RecipeExpressionCommand>.intoExpression(): RecipeExpression {
         return RecipeExpression(this)
     }
-
 
     "Should return empty object when convert empty string" {
         val givenExpressionString = ""
@@ -204,7 +201,4 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
 
         ex.message shouldStartWith "'$SECTION_NAME' section: Unknown parsing key [key: unknown"
     }
-
 })
-
-

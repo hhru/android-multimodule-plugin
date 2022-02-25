@@ -20,5 +20,4 @@ class BoolPropertyAdapter(
     override fun getAsBoolean(): Boolean {
         return myBoolProperty.get()
     }
-
 }

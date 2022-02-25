@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 
-
 /**
  * You can use this method for adding code without applying code style.
  * When you generate code with fully qualified class names your lines can be much more longer than max line length

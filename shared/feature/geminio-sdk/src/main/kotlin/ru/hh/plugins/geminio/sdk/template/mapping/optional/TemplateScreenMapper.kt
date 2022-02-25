@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.template.mapping.optional
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateScreen
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateScreen
 
-
 /**
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateScreen]
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateScreen].

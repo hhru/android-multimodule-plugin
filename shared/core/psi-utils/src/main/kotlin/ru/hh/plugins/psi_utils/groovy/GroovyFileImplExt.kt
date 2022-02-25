@@ -8,7 +8,6 @@ import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_PLUGINS_BLOCK_NAME
 
-
 /**
  * Invoke in write command only.
  */
@@ -34,7 +33,8 @@ private fun GroovyFileImpl.findBlockExpressionByName(blockName: String): GrClosa
 private fun GroovyFileImpl.createScriptBlock(blockName: String): GrClosableBlock {
     val factory = GroovyPsiElementFactory.getInstance(project)
 
-    val newBlockExpression = factory.createExpressionFromText("""
+    val newBlockExpression = factory.createExpressionFromText(
+        """
         $blockName {
         }    
         """

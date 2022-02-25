@@ -9,12 +9,10 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequ
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
-
 private const val KEY_GLOBALS_SECTION = "globals"
 
 private const val KEY_PARAMETER_ID = "id"
 private const val KEY_PARAMETER_VALUE = "value"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection].
@@ -27,7 +25,6 @@ internal fun Map<String, Any>.toGlobalsSection(): GlobalsSection {
         parameters = globalsSectionList.map { it.toGlobalsSectionParameter() }
     )
 }
-
 
 private fun Map<String, Any>.toGlobalsSectionParameter(): GlobalsSectionParameter {
     for (parameterType in GlobalsSectionParameterType.values()) {

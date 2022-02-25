@@ -13,7 +13,6 @@ import com.vladsch.flexmark.util.data.MutableDataSet
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 
-
 @Service
 class MarkdownParserService {
 
@@ -22,7 +21,6 @@ class MarkdownParserService {
 
         fun getInstance(project: Project): MarkdownParserService = project.service()
     }
-
 
     private val options: MutableDataSet by lazy {
         MutableDataSet().apply {
@@ -39,7 +37,6 @@ class MarkdownParserService {
         HtmlRenderer.builder(options).build()
     }
 
-
     fun parseReadmeFile(module: Module): String {
         val readmeFile = module.findPsiFileByName(README_FILE_NAME)?.virtualFile?.toIoFile()
             ?: return String.EMPTY
@@ -47,5 +44,4 @@ class MarkdownParserService {
         val document = parser.parseReader(readmeFile.reader())
         return htmlRenderer.render(document)
     }
-
 }

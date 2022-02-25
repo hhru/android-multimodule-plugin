@@ -4,7 +4,6 @@ import com.intellij.psi.JavaDirectoryService
 import com.intellij.psi.PsiDirectory
 import com.intellij.util.IncorrectOperationException
 
-
 fun PsiDirectory.checkFileCanBeCreated(fileName: String): Boolean {
     return try {
         checkCreateFile(fileName)

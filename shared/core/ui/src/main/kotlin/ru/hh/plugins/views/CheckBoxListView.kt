@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent
 import javax.swing.JCheckBox
 import javax.swing.JList
 
-
 /**
  * List view with checkboxes and force enabled items support.
  */
@@ -26,13 +25,11 @@ class CheckBoxListView<T>(
 
     private var items: List<T> = emptyList()
 
-
     init {
         setupOnSelectedListener()
         setupClickListenerOnCheckBoxes()
         setupKeyboardListenerForSpaceButton()
     }
-
 
     fun setItems(items: List<T>) {
         this.items = items
@@ -42,7 +39,6 @@ class CheckBoxListView<T>(
         selectedIndex = 0
     }
 
-
     private fun setupOnSelectedListener() {
         addListSelectionListener { getSelectedItem()?.let { item -> onItemSelectedListener?.invoke(item) } }
     }
@@ -51,15 +47,17 @@ class CheckBoxListView<T>(
         val emptyCheckbox = JCheckBox(String.EMPTY)
         val clickableArea = emptyCheckbox.minimumSize.width + CLICKABLE_AREA_WIDTH
         val clickableAreaY = emptyCheckbox.minimumSize.height + CheckBoxListViewItemRenderer.PADDING_VALUE
-        (object : ClickListener() {
-            override fun onClick(event: MouseEvent, clickCount: Int): Boolean {
-                if (event.x < clickableArea || event.y < clickableAreaY) {
-                    toggleSelection()
-                }
+        (
+            object : ClickListener() {
+                override fun onClick(event: MouseEvent, clickCount: Int): Boolean {
+                    if (event.x < clickableArea || event.y < clickableAreaY) {
+                        toggleSelection()
+                    }
 
-                return true
+                    return true
+                }
             }
-        }).installOn(this)
+            ).installOn(this)
     }
 
     private fun setupKeyboardListenerForSpaceButton() {
@@ -71,7 +69,6 @@ class CheckBoxListView<T>(
             }
         })
     }
-
 
     private fun toggleSelection() {
         for (selectedItem in selectedValuesList) {
@@ -93,5 +90,4 @@ class CheckBoxListView<T>(
         val leadSelectionIndex = selectionModel.leadSelectionIndex
         return if (leadSelectionIndex < 0) null else items[leadSelectionIndex]
     }
-
 }

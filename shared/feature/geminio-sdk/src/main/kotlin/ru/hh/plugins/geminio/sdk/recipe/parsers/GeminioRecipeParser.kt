@@ -10,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.widgets.toWidgetsSection
 import ru.hh.plugins.utils.yaml.YamlUtils
 import java.io.File
 
-
 /**
  * Parser from YAML file to [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe].
  */

@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.psi.KtTypeCodeFragment
 import ru.hh.plugins.extensions.EMPTY
 import java.awt.event.ActionListener
 
-
 /**
  * Very-very rough version of [org.jetbrains.kotlin.idea.refactoring.ui.KotlinTypeReferenceEditorComboWithBrowseButton]
  * without [com.intellij.openapi.editor.Document] stuff.
@@ -27,7 +26,8 @@ class KotlinFileComboBoxWrapper(
 ) : ComponentWithBrowseButton<EditorComboBox>(
     EditorComboBox(createDocument(text, project), project, KotlinFileType.INSTANCE),
     browseActionListener
-), TextAccessor {
+),
+    TextAccessor {
 
     companion object {
         private fun createDocument(text: String?, project: Project): Document? {
@@ -56,8 +56,6 @@ class KotlinFileComboBoxWrapper(
         childComponent.text = text
     }
 
-
     val codeFragment: KtTypeCodeFragment?
         get() = PsiDocumentManager.getInstance(project).getPsiFile(childComponent.document) as? KtTypeCodeFragment
-
 }

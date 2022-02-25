@@ -8,6 +8,8 @@ import com.intellij.psi.xml.XmlFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.getOrCreateBody
+import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
+import ru.hh.plugins.extensions.openapi.executeWithoutCodeStyle
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import ru.hh.plugins.garcon.extensions.psi.collectAndroidViewsTagsInfo
 import ru.hh.plugins.garcon.model.AndroidViewTagInfo
@@ -15,11 +17,8 @@ import ru.hh.plugins.garcon.services.FreeMarkerWrapper
 import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
 import ru.hh.plugins.garcon.services.balloonError
 import ru.hh.plugins.garcon.services.balloonInfo
-import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
-import ru.hh.plugins.extensions.openapi.executeWithoutCodeStyle
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.psi_utils.openInEditor
-
 
 class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
 
@@ -29,7 +28,6 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
 
     private val logger by lazy { Logger.getInstance(CreateRecyclerItemPageObjectAction::class.java) }
 
-
     override fun handleAction(project: Project, editor: Editor, psiFile: PsiFile) {
         val dialog = CreateRecyclerItemPageObjectDialog(psiFile as XmlFile).also { it.show() }
         if (dialog.isOK) {
@@ -38,7 +36,6 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
             project.balloonError(message = "RecyclerItem Page object dialog dismissed")
         }
     }
-
 
     private fun handleDialogResult(result: CreateRecyclerItemPageObjectDialogResult) {
         val project = result.xmlFile.project
@@ -85,7 +82,6 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
         }
     }
 
-
     private fun logActionData(
         params: CreateRecyclerItemPageObjectDialogResult,
         tags: List<AndroidViewTagInfo>,
@@ -112,5 +108,4 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
         """
         )
     }
-
 }

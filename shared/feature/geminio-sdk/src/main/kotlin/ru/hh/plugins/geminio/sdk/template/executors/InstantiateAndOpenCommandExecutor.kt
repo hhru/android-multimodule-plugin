@@ -4,7 +4,6 @@ import com.android.tools.idea.wizard.template.RecipeExecutor
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 
-
 internal fun RecipeExecutor.execute(
     command: RecipeCommand.InstantiateAndOpen,
     executorData: GeminioRecipeExecutorData

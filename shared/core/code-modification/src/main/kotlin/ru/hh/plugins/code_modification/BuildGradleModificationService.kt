@@ -10,7 +10,6 @@ import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 
-
 /**
  * Service for adding dependencies into build.gradle files.
  */
@@ -26,7 +25,6 @@ class BuildGradleModificationService(
 
         fun getInstance(project: Project) = BuildGradleModificationService(project)
     }
-
 
     fun addDepsIntoModule(
         module: Module,
@@ -125,5 +123,4 @@ class BuildGradleModificationService(
             }
         }
     }
-
 }

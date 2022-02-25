@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.widgets
 
-
 /**
  * Constraints that can be applied to a parameter which helps the UI add a validator etc for user input.
  * These are typically combined into a set of constraints via an EnumSet.
@@ -62,7 +61,6 @@ enum class StringParameterConstraint(
 
     /** The associated value should represent a package-level Kotlin function. */
     KOTLIN_FUNCTION("kotlin_function");
-
 
     companion object {
         fun fromYamlKey(yamlKey: String) = values().firstOrNull { it.yamlKey == yamlKey }

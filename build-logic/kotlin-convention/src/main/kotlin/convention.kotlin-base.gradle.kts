@@ -18,7 +18,6 @@ val compileAllTask: TaskProvider<Task> = tasks.register("compileAll") {
     dependsOn(tasks.withType<KotlinCompile>())
 }
 
-
 tasks.withType<JavaCompile> {
     sourceCompatibility = Libs.javaVersion.toString()
     targetCompatibility = Libs.javaVersion.toString()

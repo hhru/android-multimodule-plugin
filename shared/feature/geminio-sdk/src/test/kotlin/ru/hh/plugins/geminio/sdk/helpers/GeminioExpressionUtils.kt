@@ -18,7 +18,6 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 import java.io.File
 
-
 internal object GeminioExpressionUtils {
 
     fun List<RecipeExpressionCommand>.toExpression(): RecipeExpression {
@@ -85,7 +84,6 @@ internal object GeminioExpressionUtils {
         )
     }
 
-
     fun getEvaluatedValue(className: String, modifier: RecipeExpressionModifier): String? {
         val expression = listOf(
             RecipeExpressionCommand.Dynamic(
@@ -98,8 +96,4 @@ internal object GeminioExpressionUtils {
 
         return expression.evaluateString(createModuleTemplateData(), createParametersMap(className = className))
     }
-
 }
-
-
-

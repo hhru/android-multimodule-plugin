@@ -4,7 +4,6 @@ import com.android.SdkConstants
 import com.android.tools.lint.detector.api.*
 import org.w3c.dom.Attr
 
-
 @Suppress("UnstableApiUsage")
 class HardcodedDimensUsingDetector : LayoutDetector() {
 
@@ -32,9 +31,7 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
                     )
                 )
             }
-
     }
-
 
     override fun getApplicableAttributes(): Collection<String>? = listOf(
         SdkConstants.ATTR_LAYOUT_HEIGHT,
@@ -68,7 +65,6 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
         SdkConstants.ATTR_DRAWABLE_PADDING
     )
 
-
     override fun visitAttribute(context: XmlContext, attribute: Attr) {
         if (attribute.isAcceptable().not()) {
             context.report(
@@ -81,11 +77,10 @@ class HardcodedDimensUsingDetector : LayoutDetector() {
     }
 
     private fun Attr.isAcceptable(): Boolean {
-        return value.startsWith(SdkConstants.DIMEN_PREFIX)
-            || value.startsWith(SdkConstants.ATTR_REF_PREFIX)
-            || value == SdkConstants.VALUE_WRAP_CONTENT
-            || value == SdkConstants.VALUE_MATCH_PARENT
-            || value == "0dp"
+        return value.startsWith(SdkConstants.DIMEN_PREFIX) ||
+            value.startsWith(SdkConstants.ATTR_REF_PREFIX) ||
+            value == SdkConstants.VALUE_WRAP_CONTENT ||
+            value == SdkConstants.VALUE_MATCH_PARENT ||
+            value == "0dp"
     }
-
 }

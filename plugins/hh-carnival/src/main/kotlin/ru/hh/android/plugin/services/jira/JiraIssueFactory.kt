@@ -17,7 +17,6 @@ class JiraIssueFactory {
         fun getInstance(project: Project): JiraIssueFactory = project.service()
     }
 
-
     fun mergeDevelopToPortfolioIssue(
         portfolioKey: String,
         creatorName: String,
@@ -36,7 +35,6 @@ class JiraIssueFactory {
             labels = listOf(JiraIssueLabel.ANDROID, JiraIssueLabel.ANDROID_APP)
         )
     }
-
 
     private fun createJiraIssueInput(
         projectKey: JiraProjectKey,
@@ -72,5 +70,4 @@ class JiraIssueFactory {
             setFieldValue(JiraCustomField.EPIC_LINK.remoteKey, epicLink.value)
         }.build()
     }
-
 }

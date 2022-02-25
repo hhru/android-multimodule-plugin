@@ -10,7 +10,6 @@ import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JTextField
 
-
 class GarconPluginSettingsEditor(
     private val initialConfigFilePath: String,
     private val initialEnableDebugMode: Boolean,
@@ -30,14 +29,12 @@ class GarconPluginSettingsEditor(
                 )
             }
         }
-
     }
 
     private lateinit var configFilePathTextField: JTextField
     private lateinit var screenPageObjectTemplatePathTextField: JTextField
     private lateinit var rvItemPageObjectTemplatePathTextField: JTextField
     private lateinit var enableDebugModeCheckBox: JCheckBox
-
 
     // property-references doesn't work >_<
     fun createComponent(project: Project): JComponent {
@@ -84,10 +81,10 @@ class GarconPluginSettingsEditor(
 
     fun isModified(settings: GarconPluginSettings): Boolean {
         return with(settings) {
-            config.configFilePath != configFilePathTextField.text
-                    || config.templatesPaths.screenPageObjectTemplatePath != screenPageObjectTemplatePathTextField.text
-                    || config.templatesPaths.rvItemPageObjectTemplatePath != rvItemPageObjectTemplatePathTextField.text
-                    || config.enableDebugMode != enableDebugModeCheckBox.isSelected
+            config.configFilePath != configFilePathTextField.text ||
+                config.templatesPaths.screenPageObjectTemplatePath != screenPageObjectTemplatePathTextField.text ||
+                config.templatesPaths.rvItemPageObjectTemplatePath != rvItemPageObjectTemplatePathTextField.text ||
+                config.enableDebugMode != enableDebugModeCheckBox.isSelected
         }
     }
 
@@ -108,5 +105,4 @@ class GarconPluginSettingsEditor(
             )
         }
     }
-
 }

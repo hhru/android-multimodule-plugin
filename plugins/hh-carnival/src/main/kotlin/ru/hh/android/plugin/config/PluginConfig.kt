@@ -12,7 +12,6 @@ import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.plugins.extensions.EMPTY
 
-
 @State(name = "ru.hh.android.plugin.config.PluginConfig")
 class PluginConfig : PersistentStateComponent<PluginConfig> {
 
@@ -36,7 +35,6 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     @Attribute
     var jiraDevelopmentTeam: JiraDevelopmentTeam = JiraDevelopmentTeam.MOBILE_CORE
 
-
     override fun getState(): PluginConfig? {
         return this
     }
@@ -44,5 +42,4 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     override fun loadState(state: PluginConfig) {
         XmlSerializerUtil.copyBean(state, this)
     }
-
 }

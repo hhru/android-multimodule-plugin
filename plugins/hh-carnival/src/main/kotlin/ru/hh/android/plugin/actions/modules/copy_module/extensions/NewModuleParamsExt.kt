@@ -7,7 +7,6 @@ import ru.hh.android.plugin.CodeGeneratorConstants
 import ru.hh.android.plugin.actions.modules.copy_module.model.NewModuleParams
 import ru.hh.android.plugin.extensions.rootPsiDirectory
 
-
 val NewModuleParams.moduleToCopy: Module get() = moduleToCopyFacet.module
 
 val NewModuleParams.project: Project get() = moduleToCopy.project

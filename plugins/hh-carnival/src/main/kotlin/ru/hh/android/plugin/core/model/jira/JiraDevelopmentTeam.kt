@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.jira
 
-
 /**
  * Development teams for creating issues in JIRA
  */
@@ -13,11 +12,8 @@ enum class JiraDevelopmentTeam(
     MOBILE_PRODUCTS(value = "32682", comboBoxLabel = "Mobile Products"),
     M1(value = "33112", comboBoxLabel = "Mobile First (M1)");
 
-
     companion object {
 
         fun fromLabel(label: String): JiraDevelopmentTeam = values().firstOrNull { it.comboBoxLabel == label } ?: MOBILE_CORE
-
     }
-
 }

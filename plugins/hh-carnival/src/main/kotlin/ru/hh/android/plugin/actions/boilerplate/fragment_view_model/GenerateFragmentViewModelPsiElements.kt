@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtProperty
 
-
 class GenerateFragmentViewModelPsiElements(
     val singleEventClassPsiFile: KtFile,
     val uiStateClassPsiFile: KtFile,

@@ -1,5 +1,14 @@
 # Geminio
 
+## [1.1.10]
+### Added
+- Ability to change predefined package name for modules templates through 
+`enableModuleCreationParams.defaultPackageNamePrefix` property in `recipe.xml`.
+
+## [1.1.9]
+### Added
+- Support for Android Studio Bumblebee | 2021.1.1
+
 ## [1.1.8]
 ### Fixed
 - Fixed duplication of projects in dependencies after recipe execution

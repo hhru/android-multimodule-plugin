@@ -1,6 +1,5 @@
 package ru.hh.plugins.extensions
 
-
 val Char.Companion.SPACE: Char get() = ' '
 
 val Char.Companion.DOT: Char get() = '.'

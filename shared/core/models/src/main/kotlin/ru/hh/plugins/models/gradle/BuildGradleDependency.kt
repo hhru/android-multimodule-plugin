@@ -1,6 +1,5 @@
 package ru.hh.plugins.models.gradle
 
-
 /**
  * Dependency for build.gradle files
  */
@@ -8,7 +7,6 @@ sealed class BuildGradleDependency {
 
     abstract val value: String
     abstract val configuration: BuildGradleDependencyConfiguration
-
 
     /**
      * Dependency in Maven's notation, e.g. `org.company:artifact:123`
@@ -33,5 +31,4 @@ sealed class BuildGradleDependency {
         override val value: String,
         override val configuration: BuildGradleDependencyConfiguration
     ) : BuildGradleDependency()
-
 }

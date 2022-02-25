@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService
 import ru.hh.android.plugin.utils.notifyInfo
 
-
 class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
 
     override fun invoke(project: Project, editor: Editor, file: PsiFile) {
@@ -23,5 +22,4 @@ class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
         return targetClass is KtClass && targetClass.isData()
     }
-
 }

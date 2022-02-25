@@ -6,7 +6,6 @@ import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo
 import com.intellij.ui.layout.Row
 import org.jetbrains.kotlin.idea.refactoring.ui.KotlinDestinationFolderComboBox
 
-
 fun Row.kotlinDestinationFolderComboBox(
     project: Project,
     initialPsiDirectory: PsiDirectory,

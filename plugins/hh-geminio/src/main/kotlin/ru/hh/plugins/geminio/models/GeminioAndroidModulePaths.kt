@@ -4,7 +4,6 @@ import com.android.tools.idea.projectsystem.AndroidModulePaths
 import ru.hh.plugins.extensions.EMPTY
 import java.io.File
 
-
 /**
  * Implementation of [com.android.tools.idea.projectsystem.AndroidModulePaths] interface
  * for correct propagation of different folders paths.
@@ -26,7 +25,6 @@ class GeminioAndroidModulePaths(
     }
 
     private val moduleRootPath: String get() = "$basePath/$moduleName"
-
 
     override val manifestDirectory: File
         get() {
@@ -51,7 +49,6 @@ class GeminioAndroidModulePaths(
             log("getter for resDirectories | path: $resDirectoryPath")
             return listOf(File(resDirectoryPath))
         }
-
 
     override fun getAidlDirectory(packageName: String?): File {
         val aidlDirectoryPath = "$moduleRootPath/$AIDL_FOLDER_PATH" + slashedPackageName(packageName)
@@ -81,14 +78,12 @@ class GeminioAndroidModulePaths(
         return File(unitTestDirectoryPath)
     }
 
-
     // Don't really know what it is.
     override val mlModelsDirectories: List<File>
         get() {
             log("getter for mlModelsDirectories | I don't know WTF")
             return emptyList()
         }
-
 
     private fun slashedPackageName(packageName: String?): String {
         return packageName?.replace('.', '/')?.let { "/$it" } ?: String.EMPTY
@@ -97,5 +92,4 @@ class GeminioAndroidModulePaths(
     private fun log(message: String) {
         println("[$LOG_TAG]: $message")
     }
-
 }

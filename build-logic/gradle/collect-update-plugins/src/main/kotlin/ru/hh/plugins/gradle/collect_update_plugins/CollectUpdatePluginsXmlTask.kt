@@ -16,7 +16,6 @@ import org.gradle.api.tasks.options.Option
 import java.io.File
 import javax.inject.Inject
 
-
 @Suppress("UnstableApiUsage")
 abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     objects: ObjectFactory
@@ -37,10 +36,8 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     @InputFiles
     val inputFiles: ConfigurableFileCollection = objects.fileCollection()
 
-
     @OutputFile
     val outputFile: RegularFileProperty = objects.fileProperty()
-
 
     @Suppress("UNCHECKED_CAST")
     @TaskAction
@@ -53,7 +50,6 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
         val output = outputFile.get().asFile
         output.writeText(updatePluginsXmlFileText)
     }
-
 
     private fun getUpdatePluginsXmlFileText(
         patchFilesDirs: Set<FileCollectionAdapter>,
@@ -90,7 +86,6 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
         )
     }
 
-
     private fun File.parseIdeaPluginXml(): IdeaPluginData {
         val ideaPlugins = XmlParser().parse(this)
 
@@ -121,5 +116,4 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
         val ideaPluginData: IdeaPluginData,
         val zipArchiveName: String
     )
-
 }

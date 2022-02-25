@@ -1,6 +1,6 @@
+import org.gradle.kotlin.dsl.configure
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.IntelliJInstrumentCodeTask
-import org.gradle.kotlin.dsl.configure
 import ru.hh.plugins.ExternalLibrariesExtension
 
 plugins {

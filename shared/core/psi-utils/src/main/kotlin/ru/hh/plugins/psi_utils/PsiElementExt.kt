@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.idea.util.module
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.packageName
 
-
 val PsiElement.androidManifestPackageName: String
     get() = module?.androidFacet?.run { this.packageName } ?: String.EMPTY
 

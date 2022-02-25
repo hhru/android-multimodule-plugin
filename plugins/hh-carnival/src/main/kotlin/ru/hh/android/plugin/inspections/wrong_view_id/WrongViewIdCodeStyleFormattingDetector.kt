@@ -10,7 +10,6 @@ import ru.hh.android.plugin.core.model.enums.extensions.findClosestViewClassDecl
 import ru.hh.android.plugin.extensions.lint.androidFacet
 import ru.hh.android.plugin.extensions.lint.fileNameWithoutExtension
 
-
 /**
  * Detector for checking Views id's attribute for code style compliance.
  */
@@ -56,9 +55,7 @@ class WrongViewIdCodeStyleFormattingDetector : LayoutDetector() {
                     )
                 )
             }
-
     }
-
 
     override fun getApplicableAttributes(): Collection<String>? = listOf(SdkConstants.ATTR_ID)
 
@@ -82,12 +79,11 @@ class WrongViewIdCodeStyleFormattingDetector : LayoutDetector() {
                     .replace()
                     .name("Replace current id with `$expectedIdPrefix` prefix")
                     .text(attribute.value)
-                    .with("${attribute.getIdPrefix()}${expectedIdPrefix}")
+                    .with("${attribute.getIdPrefix()}$expectedIdPrefix")
                     .build()
             )
         }
     }
-
 
     private fun Attr.hasCorrectViewIdFormatting(expectedViewIdPrefix: String): Boolean {
         return stripIdPrefix(value).startsWith(expectedViewIdPrefix)
@@ -99,5 +95,4 @@ class WrongViewIdCodeStyleFormattingDetector : LayoutDetector() {
             else -> SdkConstants.ID_PREFIX
         }
     }
-
 }

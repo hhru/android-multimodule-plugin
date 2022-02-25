@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.jira
 
-
 enum class JiraStoryPoints(val value: Double) {
 
     HALF(0.5),
@@ -11,5 +10,4 @@ enum class JiraStoryPoints(val value: Double) {
     EIGHT(8.0),
     THIRTEEN(13.0),
     TWENTY_ONE(21.0)
-
 }

@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.plugins.garcon.GarconConstants
 
-
 @Service
 class ClassFiltersFactory {
 
@@ -17,13 +16,12 @@ class ClassFiltersFactory {
         fun getInstance(project: Project) = project.service<ClassFiltersFactory>()
     }
 
-
     fun createKakaoScreensClassFilter(): ClassFilter {
         return ClassFilter { aClass ->
             return@ClassFilter if (aClass is KtLightClassForSourceDeclaration) {
                 when (val classOrObject = aClass.kotlinOrigin) {
-                    is KtClass -> (classOrObject.isInner() || classOrObject.isAnnotation()).not()
-                            && InheritanceUtil.isInheritor(aClass, GarconConstants.AGODA_SCREEN_CLASS_FQN)
+                    is KtClass -> (classOrObject.isInner() || classOrObject.isAnnotation()).not() &&
+                        InheritanceUtil.isInheritor(aClass, GarconConstants.AGODA_SCREEN_CLASS_FQN)
                     else -> false
                 }
             } else {
@@ -31,5 +29,4 @@ class ClassFiltersFactory {
             }
         }
     }
-
 }

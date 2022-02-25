@@ -10,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnkn
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
 
-
 private const val KEY_PARAMETER_ID = "id"
 private const val KEY_PARAMETER_NAME = "name"
 private const val KEY_PARAMETER_HELP = "help"
@@ -19,7 +18,6 @@ private const val KEY_PARAMETER_DEFAULT = "default"
 private const val KEY_PARAMETER_SUGGEST = "suggest"
 private const val KEY_PARAMETER_VISIBILITY = "visibility"
 private const val KEY_PARAMETER_AVAILABILITY = "availability"
-
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter.StringParameter].

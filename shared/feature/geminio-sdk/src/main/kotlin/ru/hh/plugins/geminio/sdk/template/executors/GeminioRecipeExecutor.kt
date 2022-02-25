@@ -6,14 +6,12 @@ import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
 import ru.hh.plugins.utils.kotlin.exhaustive
 
-
 internal fun RecipeExecutor.executeGeminioRecipe(
     geminioRecipe: GeminioRecipe,
     executorData: GeminioRecipeExecutorData
 ) {
     executeCommands(geminioRecipe.recipeCommands.commands, executorData)
 }
-
 
 internal fun RecipeExecutor.executeCommands(
     commands: List<RecipeCommand>,

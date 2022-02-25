@@ -5,7 +5,6 @@ import io.kotest.matchers.shouldBe
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
-
 internal class CamelCaseToUnderlinesModifierSpec : FreeSpec({
 
     fun getEvaluatedValue(fragmentName: String): String? {
@@ -14,7 +13,6 @@ internal class CamelCaseToUnderlinesModifierSpec : FreeSpec({
             modifier = RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
         )
     }
-
 
     "Should be split to several words and joined with '_'" {
         getEvaluatedValue("superCase") shouldBe "super_case"
@@ -29,5 +27,4 @@ internal class CamelCaseToUnderlinesModifierSpec : FreeSpec({
         getEvaluatedValue("FAQActivity") shouldBe "f_a_q_activity"
         getEvaluatedValue("BlankFragment") shouldBe "blank_fragment"
     }
-
 })

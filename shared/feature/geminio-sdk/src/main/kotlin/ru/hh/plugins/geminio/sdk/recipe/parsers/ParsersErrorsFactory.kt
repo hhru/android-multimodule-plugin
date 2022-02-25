@@ -2,7 +2,6 @@ package ru.hh.plugins.geminio.sdk.recipe.parsers
 
 import ru.hh.plugins.extensions.EMPTY
 
-
 /**
  * Simple factory for validation errors messages.
  */
@@ -40,5 +39,4 @@ internal object ParsersErrorsFactory {
             message = "Unknown parsing key [key: $key, acceptable values: $acceptableValues] $info"
         )
     }
-
 }

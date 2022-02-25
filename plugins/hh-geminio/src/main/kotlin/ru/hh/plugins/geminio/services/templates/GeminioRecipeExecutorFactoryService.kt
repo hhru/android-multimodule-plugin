@@ -22,7 +22,6 @@ import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import java.io.File
 
-
 @Service
 class GeminioRecipeExecutorFactoryService {
 
@@ -35,10 +34,8 @@ class GeminioRecipeExecutorFactoryService {
         private const val STUB_API_VERSION_STRING = "30"
         private const val STUB_COMMAND_RENDERING_CONTEXT = "$STUB_PREFIX.rendering_context_command"
 
-
         fun getInstance(project: Project): GeminioRecipeExecutorFactoryService = project.service()
     }
-
 
     fun createRecipeExecutor(
         project: Project,
@@ -66,14 +63,12 @@ class GeminioRecipeExecutorFactoryService {
             showErrors = true
         )
 
-
         return GeminioRecipeExecutorModel(
             moduleName = moduleName,
             recipeExecutor = DefaultRecipeExecutor(renderingContext),
             moduleTemplateData = moduleTemplateData
         )
     }
-
 
     private fun createModuleTemplateData(
         project: Project,
@@ -106,8 +101,8 @@ class GeminioRecipeExecutorFactoryService {
             builder.formFactor = FormFactor.Mobile
             builder.baseFeature = BaseFeature(
                 STUB_BASE_FEATURE_NAME,
-                File("$directoryPath/${moduleName}/src/main/java"),
-                File("$directoryPath/${moduleName}/src/main/res"),
+                File("$directoryPath/$moduleName/src/main/java"),
+                File("$directoryPath/$moduleName/src/main/res"),
             )
             builder.themesData = ThemesData(
                 appName = STUB_APP_NAME,
@@ -127,7 +122,6 @@ class GeminioRecipeExecutorFactoryService {
         return ApiVersion(STUB_API_VERSION, STUB_API_VERSION_STRING)
     }
 
-
     private fun GeminioTemplateData.getModuleName(): String {
         return existingParametersMap[geminioIds.newModuleNameParameterId]!!.value as String
     }
@@ -135,5 +129,4 @@ class GeminioRecipeExecutorFactoryService {
     private fun GeminioTemplateData.getPackageName(): String {
         return existingParametersMap[geminioIds.newModulePackageNameParameterId]!!.value as String
     }
-
 }

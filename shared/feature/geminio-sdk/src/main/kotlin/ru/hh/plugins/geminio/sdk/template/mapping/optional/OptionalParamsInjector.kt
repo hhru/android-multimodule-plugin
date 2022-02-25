@@ -3,7 +3,6 @@ package ru.hh.plugins.geminio.sdk.template.mapping.optional
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBuilder
 
-
 /**
  * Injects parameters from [ru.hh.plugins.geminio.sdk.recipe.models.optional.OptionalParams] into
  * [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateBuilder]

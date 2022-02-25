@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk
 
-
 /**
  * Simple wrapper for map of objects.
  */

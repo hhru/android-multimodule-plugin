@@ -10,7 +10,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 
-
 /**
  * Annotator which can mark using of Android resource with deprecate highlighting,
  * if it has attribute `deprecated="true"` in its declaration.
@@ -34,7 +33,6 @@ class DeprecatedAndroidResourceAnnotator : Annotator {
 
     private val logger = Logger.getInstance(DeprecatedAndroidResourceAnnotator::class.java)
 
-
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         if (element is XmlAttribute) {
             val attrValueElement = element.valueElement ?: return
@@ -45,7 +43,6 @@ class DeprecatedAndroidResourceAnnotator : Annotator {
             }
         }
     }
-
 
     private fun markValueRefAsDeprecated(valueElement: XmlAttributeValue, holder: AnnotationHolder) {
         val annotation = holder.createWarningAnnotation(
@@ -73,5 +70,4 @@ class DeprecatedAndroidResourceAnnotator : Annotator {
 //        logger.debug("Checked if XML Android resource `${this.value}` is deprecated (result: $result) in $computationTime ms")
         return false
     }
-
 }

@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.psi.KtPsiFactory
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.extensions.toDependencyText
 
-
 fun KtPsiFactory.getIncludeModuleExpression(
     moduleName: String,
 ): PsiElement {

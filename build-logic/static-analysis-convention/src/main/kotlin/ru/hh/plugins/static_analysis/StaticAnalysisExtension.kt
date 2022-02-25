@@ -4,9 +4,7 @@ abstract class StaticAnalysisExtension {
 
     val detekt = DetektConfigExtension()
 
-
     fun detekt(configure: DetektConfigExtension.() -> Unit) {
         detekt.apply(configure)
     }
-
 }
