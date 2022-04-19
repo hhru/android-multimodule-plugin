@@ -63,4 +63,11 @@ sealed class RecipeCommand {
     data class AddGradlePlugins(
         val pluginsIds: List<String>
     ) : RecipeCommand()
+
+    /**
+     * Command for adding fragment in google navigation graph
+     */
+    data class AddNavigation(
+        val fileName: String
+    ): RecipeCommand()
 }
