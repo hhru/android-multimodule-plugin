@@ -1,11 +1,13 @@
 package ru.hh.plugins.code_modification
 
+import com.android.tools.build.jetifier.core.utils.Log
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.psi_utils.kotlin.createBuildGradleDependencyElement
 import ru.hh.plugins.psi_utils.kotlin.createGradlePluginElement
+import ru.hh.plugins.psi_utils.kotlin.createImport
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateGradlePluginsBlock
 import ru.hh.plugins.psi_utils.reformatWithCodeStyle
@@ -30,6 +32,16 @@ class KtScriptsModificationService {
             }
         }
 
+        ktFile.reformatWithCodeStyle()
+    }
+
+    fun addKoinModule(ktFile: KtFile, koinModule: String, koinModuleImport: String) {
+        val ktPsiFactory = KtPsiFactory(ktFile.project)
+
+        ktFile.importList?.add(ktPsiFactory.createNewLine())
+        ktFile.importList?.add(ktPsiFactory.createImport(koinModuleImport))
+
+        print("KoinModuleClass: $ktFile")
         ktFile.reformatWithCodeStyle()
     }
 

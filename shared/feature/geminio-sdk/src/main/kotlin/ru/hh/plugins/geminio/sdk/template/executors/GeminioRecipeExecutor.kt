@@ -22,6 +22,7 @@ internal fun RecipeExecutor.executeCommands(
             recipeExecutor = this,
             executorData = executorData
         )
+        println("Current command $command")
     }
 }
 
@@ -38,5 +39,6 @@ private fun RecipeCommand.execute(
         is RecipeCommand.MkDirs -> recipeExecutor.execute(this, executorData)
         is RecipeCommand.AddGradlePlugins -> recipeExecutor.execute(this, executorData)
         is RecipeCommand.AddNavigation -> recipeExecutor.execute(this, executorData)
+        is RecipeCommand.AddKoinModule -> recipeExecutor.execute(this, executorData)
     }.exhaustive
 }

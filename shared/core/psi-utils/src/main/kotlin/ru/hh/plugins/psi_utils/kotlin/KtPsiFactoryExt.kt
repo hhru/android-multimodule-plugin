@@ -26,6 +26,16 @@ fun KtPsiFactory.createBuildGradleDependencyElement(
     return createExpression("${buildGradleDependency.configuration.yamlKey}($dependencyText)")
 }
 
+fun KtPsiFactory.createImport(
+    importPath: String
+): PsiElement {
+    return createExpression("import $importPath")
+}
+
+fun KtPsiFactory.createKoinModulesLine(koinModuleName: String): PsiElement {
+    return createExpression("${koinModuleName}.module")
+}
+
 fun KtPsiFactory.createGradlePluginElement(pluginId: String): PsiElement {
     return createExpression("id(\"${pluginId}\")")
 }

@@ -69,5 +69,12 @@ sealed class RecipeCommand {
      */
     data class AddNavigation(
         val fileName: String
-    ): RecipeCommand()
+    ) : RecipeCommand()
+
+    /**
+     * Command for adding feature koin module to module list
+     */
+    data class AddKoinModule(
+        val fileNameExpression: RecipeExpression
+    ) : RecipeCommand()
 }

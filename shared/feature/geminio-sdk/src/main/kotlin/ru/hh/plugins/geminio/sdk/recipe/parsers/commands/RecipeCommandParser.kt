@@ -13,6 +13,7 @@ private const val KEY_COMMAND_ADD_DEPENDENCIES = "addDependencies"
 private const val KEY_MK_DIRS = "mkDirs"
 private const val KEY_COMMAND_ADD_GRADLE_PLUGINS = "addGradlePlugins"
 private const val KEY_COMMAND_ADD_NAVIGATION = "addNavigation"
+private const val KEY_COMMAND_ADD_KOIN_MODULE = "addKoinModule"
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand]
@@ -26,6 +27,7 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
     val mkDirsCommandList = this[KEY_MK_DIRS] as? List<Any>
     val addGradlePluginsCommandList = this[KEY_COMMAND_ADD_GRADLE_PLUGINS] as? List<String>
     val addNavigationCommandMap = this[KEY_COMMAND_ADD_NAVIGATION] as? Map<String, Any>
+    val addKoinModuleCommandMap = this[KEY_COMMAND_ADD_KOIN_MODULE] as? Map<String, Any>
 
     return when {
         instantiateCommandMap != null -> {
@@ -58,6 +60,9 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
         addNavigationCommandMap != null -> {
             addNavigationCommandMap.toAddNavigationCommand("$sectionName:$KEY_COMMAND_ADD_NAVIGATION")
         }
+        addKoinModuleCommandMap != null -> {
+            addKoinModuleCommandMap.toAddKoinModuleCommand("$sectionName:$KEY_COMMAND_ADD_KOIN_MODULE")
+        }
         else -> {
             throw IllegalArgumentException(
                 sectionUnknownEnumKeyErrorMessage(
@@ -71,7 +76,8 @@ internal fun Map<String, Any>.toRecipeCommand(sectionName: String): RecipeComman
                         KEY_COMMAND_ADD_DEPENDENCIES,
                         KEY_MK_DIRS,
                         KEY_COMMAND_ADD_GRADLE_PLUGINS,
-                        KEY_COMMAND_ADD_NAVIGATION
+                        KEY_COMMAND_ADD_NAVIGATION,
+                        KEY_COMMAND_ADD_KOIN_MODULE
                     ).joinToString { "'$it'" }
                 )
             )
