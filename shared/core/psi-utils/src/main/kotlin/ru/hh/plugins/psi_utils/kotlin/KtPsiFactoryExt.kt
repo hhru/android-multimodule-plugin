@@ -32,6 +32,10 @@ fun KtPsiFactory.createImport(
     return createExpression("import $importPath")
 }
 
+fun KtPsiFactory.createModuleField(moduleName:String): PsiElement {
+    return createExpression("$moduleName.module")
+}
+
 fun KtPsiFactory.createKoinModulesLine(koinModuleName: String): PsiElement {
     return createExpression("${koinModuleName}.module")
 }
