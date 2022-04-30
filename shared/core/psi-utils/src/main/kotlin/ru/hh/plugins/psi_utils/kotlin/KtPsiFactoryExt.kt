@@ -2,6 +2,7 @@ package ru.hh.plugins.psi_utils.kotlin
 
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtPsiFactory
+import org.jetbrains.kotlin.resolve.ImportPath
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.extensions.toDependencyText
 
@@ -29,15 +30,11 @@ fun KtPsiFactory.createBuildGradleDependencyElement(
 fun KtPsiFactory.createImport(
     importPath: String
 ): PsiElement {
-    return createExpression("import $importPath")
+    return createImportDirective(ImportPath.fromString(importPath))
 }
 
 fun KtPsiFactory.createModuleField(moduleName:String): PsiElement {
     return createExpression("$moduleName.module")
-}
-
-fun KtPsiFactory.createKoinModulesLine(koinModuleName: String): PsiElement {
-    return createExpression("${koinModuleName}.module")
 }
 
 fun KtPsiFactory.createGradlePluginElement(pluginId: String): PsiElement {
