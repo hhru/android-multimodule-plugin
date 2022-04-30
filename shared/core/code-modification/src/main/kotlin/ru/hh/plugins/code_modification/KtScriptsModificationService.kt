@@ -1,11 +1,15 @@
 package ru.hh.plugins.code_modification
 
+import com.android.tools.build.jetifier.core.utils.Log
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
+import ru.hh.plugins.extensions.kotlin.getProperty
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.psi_utils.kotlin.createBuildGradleDependencyElement
 import ru.hh.plugins.psi_utils.kotlin.createGradlePluginElement
+import ru.hh.plugins.psi_utils.kotlin.createImport
+import ru.hh.plugins.psi_utils.kotlin.createModuleField
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateBuildGradleDependenciesBlock
 import ru.hh.plugins.psi_utils.kotlin.getOrCreateGradlePluginsBlock
 import ru.hh.plugins.psi_utils.reformatWithCodeStyle
@@ -28,6 +32,27 @@ class KtScriptsModificationService {
                 pluginsBlock.addBefore(ktPsiFactory.createNewLine(), pluginsBlock.rBrace)
                 pluginsBlock.addBefore(element, pluginsBlock.rBrace)
             }
+        }
+
+        ktFile.reformatWithCodeStyle()
+    }
+
+    fun addKoinModule(ktFile: KtFile, koinModule: String, koinModuleImport: String) {
+        val ktPsiFactory = KtPsiFactory(ktFile.project)
+
+        ktFile.importList?.add(ktPsiFactory.createNewLine())
+        ktFile.importList?.add(ktPsiFactory.createImport(koinModuleImport))
+
+        val property = ktFile.getProperty()
+
+        val callExpression = property?.children?.find { it is KtCallExpression } as? KtCallExpression
+        val argumentList = callExpression?.valueArgumentList
+        val lastArgumentElement = argumentList?.lastChild
+
+        lastArgumentElement?.let {
+            argumentList.addBefore(ktPsiFactory.createComma(), it)
+            argumentList.addBefore(ktPsiFactory.createNewLine(), it)
+            argumentList.addBefore(ktPsiFactory.createModuleField(koinModule), it)
         }
 
         ktFile.reformatWithCodeStyle()
