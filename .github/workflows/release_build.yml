@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - port/support_2021_2_1
 
 env:
   # Link for Linux zip file from https://developer.android.com/studio/archive
