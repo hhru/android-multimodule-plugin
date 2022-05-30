@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.1.11]
+### Added
+- Support for Android Studio Chipmunk | 2022.2.1
+
 ## [1.1.10]
 ### Added
 - Ability to change predefined package name for modules templates through 

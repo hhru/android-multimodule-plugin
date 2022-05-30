@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.0.4]
+### Added
+- Support for Android Studio Chipmunk | 2022.2.1
+
 ## [1.0.3]
 ### Added
 - Support for Android Studio Bumblebee | 2021.1.1

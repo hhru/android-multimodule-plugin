@@ -1,5 +1,9 @@
 # Carnival
 
+## [1.1.7]
+### Added
+- Support for Android Studio Chipmunk | 2022.2.1
+
 ## [1.1.6]
 ### Added
 - Support for Android Studio Bumblebee | 2021.1.1
