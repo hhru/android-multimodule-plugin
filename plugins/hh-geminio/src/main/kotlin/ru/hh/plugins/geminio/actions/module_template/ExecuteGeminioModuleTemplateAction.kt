@@ -1,7 +1,6 @@
 package ru.hh.plugins.geminio.actions.module_template
 
 import com.android.tools.idea.gradle.actions.SyncProjectAction
-import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -21,6 +20,7 @@ import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.geminio.util.StudioWizardDialogFactory
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
@@ -95,9 +95,9 @@ class ExecuteGeminioModuleTemplateAction(
             .addStep(chooseAppsStep)
             .build()
 
-        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
-            .setProject(project)
-            .build()
+        val dialog =
+            StudioWizardDialogFactory(wizard, WIZARD_TITLE)
+                .create(project)
 
         wizard.addResultListener(object : ModelWizard.WizardListener {
             override fun onWizardFinished(result: ModelWizard.WizardResult) {

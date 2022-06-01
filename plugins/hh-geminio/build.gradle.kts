@@ -19,6 +19,9 @@ dependencies {
     // Feature modules
     implementation(project(":shared:feature:geminio-sdk"))
 
+    // Stubs
+    compileOnly(project(":shared:core:android-studio-stubs"))
+
     // Libraries
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))

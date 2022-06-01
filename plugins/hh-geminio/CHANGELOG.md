@@ -1,5 +1,10 @@
 # Geminio
 
+## [1.1.12]
+### Added
+- Plugin no longer restricted to run on single IDE version
+- Support for Android Studio Dolphin | 2022.3.1 Beta 1 
+
 ## [1.1.11]
 ### Added
 - Support for Android Studio Chipmunk | 2022.2.1

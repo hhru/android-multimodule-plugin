@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.0.5]
+### Added
+- Plugin no longer restricted to run on single IDE version
+
 ## [1.0.4]
 ### Added
 - Support for Android Studio Chipmunk | 2022.2.1

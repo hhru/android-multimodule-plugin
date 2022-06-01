@@ -1,7 +1,6 @@
 package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
-import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -17,6 +16,7 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
+import ru.hh.plugins.geminio.util.StudioWizardDialogFactory
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import kotlin.system.measureTimeMillis
 
@@ -103,9 +103,9 @@ class ExecuteGeminioTemplateAction(
             })
         }
 
-        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
-            .setProject(project)
-            .build()
+        val dialog =
+            StudioWizardDialogFactory(wizard, WIZARD_TITLE)
+                .create(project)
         dialog.show()
     }
 
