@@ -10,6 +10,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     val javaVersion = JavaVersion.VERSION_11
     val chosenIdeaVersion: Product = Product.LocalIde(
         pathToIde = systemProperty("androidStudioPath").get(),
+        pathToIdeForRun = systemProperty("runAndroidStudioPath").get(),
         compilerVersion = systemProperty("androidStudioCompilerVersion").get(),
         pluginsNames = systemProperty("androidStudioPluginsNames").get()
             .split(',')
@@ -63,8 +64,9 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         data class LocalIde(
             override val pluginsNames: List<String>,
             val pathToIde: String,
+            val pathToIdeForRun: String,
             // Для локальной версии Android Studio надо указывать версию компилятора для IntelliJInstrumentCodeTask
-            val compilerVersion: String
+            val compilerVersion: String,
         ) : Product()
 
         data class ICBasedIde(

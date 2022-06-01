@@ -1,6 +1,7 @@
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.IntelliJInstrumentCodeTask
+import org.jetbrains.intellij.tasks.RunIdeTask
 import ru.hh.plugins.ExternalLibrariesExtension
 
 plugins {
@@ -29,5 +30,12 @@ tasks.getByName<IntelliJInstrumentCodeTask>("instrumentCode") {
     val currentVersion = Libs.chosenIdeaVersion
     if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {
         compilerVersion.set(currentVersion.compilerVersion)
+    }
+}
+
+tasks.getByName<RunIdeTask>("runIde") {
+    val currentVersion = Libs.chosenIdeaVersion
+    if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {
+        ideDir.set(File(currentVersion.pathToIdeForRun))
     }
 }
