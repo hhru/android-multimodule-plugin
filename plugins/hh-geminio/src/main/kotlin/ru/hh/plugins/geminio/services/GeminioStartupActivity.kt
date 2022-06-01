@@ -63,6 +63,12 @@ class GeminioStartupActivity : StartupActivity {
         rootDirPath: String,
         isModulesTemplates: Boolean
     ) {
+        val bundle = getTemplateActionsBundle(pluginConfig, isModulesTemplates)
+
+        val actionManager = ActionManager.getInstance()
+        val hhNewGroup = actionManager.getAction(bundle.templatesNewGroupId) as DefaultActionGroup
+        hhNewGroup.templatePresentation.text = bundle.templatesNewGroupName
+
         val rootDirectory = File(rootDirPath)
         if (rootDirectory.exists().not() || rootDirectory.isDirectory.not()) {
             println("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
@@ -75,12 +81,6 @@ class GeminioStartupActivity : StartupActivity {
         println("\tTemplates count: ${templatesDirs.size}")
         println("============")
 
-        val actionManager = ActionManager.getInstance()
-
-        val bundle = getTemplateActionsBundle(pluginConfig, isModulesTemplates)
-
-        val hhNewGroup = actionManager.getAction(bundle.templatesNewGroupId) as DefaultActionGroup
-        hhNewGroup.templatePresentation.text = bundle.templatesNewGroupName
         val hhGenerateGroup = actionManager.getAction(bundle.templatesGenerateGroupId) as DefaultActionGroup
 
         templatesDirs.forEach { templateName ->
