@@ -1,13 +1,10 @@
 package ru.hh.plugins.geminio.actions.module_template
 
-import com.android.tools.idea.gradle.actions.SyncProjectAction
 import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDirectory
-import com.intellij.util.ui.UIUtil
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService

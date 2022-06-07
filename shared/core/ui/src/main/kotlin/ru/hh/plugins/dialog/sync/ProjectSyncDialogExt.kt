@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.util.ui.UIUtil
-import org.jetbrains.kotlin.lombok.utils.capitalize
 
 fun Project.showSyncQuestionDialog(syncPerformedActionEvent: AnActionEvent) {
     Messages.showOkCancelDialog(
