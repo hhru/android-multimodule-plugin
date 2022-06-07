@@ -5,10 +5,13 @@ import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDirectory
+import com.intellij.util.ui.UIUtil
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
+import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
@@ -131,8 +134,7 @@ class ExecuteGeminioModuleTemplateAction(
                         modifyBuildGradle(recipeExecutorModel)
                     }
 
-                    SyncProjectAction().actionPerformed(actionEvent)
-
+                    project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
                     project.balloonInfo(message = "Finished '$actionText' module template execution")
                 } catch (ex: Exception) {
                     ex.printStackTrace()
