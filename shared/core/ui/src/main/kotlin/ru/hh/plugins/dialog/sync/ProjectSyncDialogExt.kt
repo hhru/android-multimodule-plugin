@@ -12,7 +12,7 @@ fun Project.showSyncQuestionDialog(syncPerformedActionEvent: AnActionEvent) {
         "Sync Project with Gradle files?",
         "Sync Project",
         "Sync",
-        "Cancel",
+        "Cancel Without Sync",
         UIUtil.getQuestionIcon(),
     ).also { answer ->
         if (answer == Messages.OK) SyncProjectAction().actionPerformed(syncPerformedActionEvent)
