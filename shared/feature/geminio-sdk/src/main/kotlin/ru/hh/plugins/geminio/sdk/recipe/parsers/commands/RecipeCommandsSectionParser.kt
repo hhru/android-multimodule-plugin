@@ -2,6 +2,7 @@
 
 package ru.hh.plugins.geminio.sdk.recipe.parsers.commands
 
+import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommandsSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.rootSectionErrorMessage
 
@@ -16,6 +17,11 @@ internal fun Map<String, Any>.toRecipeCommandsSection(): RecipeCommandsSection {
     }
 
     return RecipeCommandsSection(
-        commands = commandsList.map { it.toRecipeCommand(KEY_RECIPE_SECTION) }
+        commands = commandsList
+            .map { it.toRecipeCommand(KEY_RECIPE_SECTION) }
+            .sortedByDescending { command ->
+                // instances must be created first so that you can use commands to add something to them
+                command is RecipeCommand.Instantiate || command is RecipeCommand.InstantiateAndOpen
+            }
     )
 }
