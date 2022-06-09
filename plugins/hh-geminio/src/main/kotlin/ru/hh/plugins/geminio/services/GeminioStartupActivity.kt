@@ -70,7 +70,10 @@ class GeminioStartupActivity : StartupActivity {
         }
 
         println("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
-        val templatesDirs = rootDirectory.list { file, _ -> file.isDirectory } ?: emptyArray()
+        val templatesDirs = rootDirectory.listFiles { file, _ -> file.isDirectory }
+            ?.filter { file -> file.listFiles { _, name -> name == "recipe.yaml" }.isNullOrEmpty().not() }
+            ?.map { it.name }
+            ?: emptyList()
 
         println("\tTemplates count: ${templatesDirs.size}")
         println("============")
