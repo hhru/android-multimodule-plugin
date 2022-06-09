@@ -35,8 +35,7 @@ internal fun Map<String, Any>.toWidgetsStringParameter(sectionName: String): Rec
             key = KEY_PARAMETER_NAME
         )
     }
-    val help = this[KEY_PARAMETER_HELP] as? String ?: String.EMPTY
-
+    val help = this[KEY_PARAMETER_HELP] as? String
     val visibilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
     val availabilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
 
