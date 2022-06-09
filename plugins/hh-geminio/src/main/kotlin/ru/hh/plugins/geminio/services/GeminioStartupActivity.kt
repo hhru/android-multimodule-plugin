@@ -86,6 +86,9 @@ class GeminioStartupActivity : StartupActivity {
         hhNewGroup.templatePresentation.text = bundle.templatesNewGroupName
         val hhGenerateGroup = actionManager.getAction(bundle.templatesGenerateGroupId) as DefaultActionGroup
 
+        hhNewGroup.removeAll()
+        hhGenerateGroup.removeAll()
+
         templatesDirs.forEach { templateName ->
             val newActionForNewGroup = createActionForTemplate(
                 templatesRootDirPath = rootDirPath,
@@ -131,7 +134,12 @@ class GeminioStartupActivity : StartupActivity {
                 )
             }
         }
-        actionManager.registerAction(actionId, action)
+
+        with(actionManager) {
+            getActionOrStub(actionId)
+                ?.also { replaceAction(actionId, action) }
+                ?: registerAction(actionId, action)
+        }
 
         return action
     }
