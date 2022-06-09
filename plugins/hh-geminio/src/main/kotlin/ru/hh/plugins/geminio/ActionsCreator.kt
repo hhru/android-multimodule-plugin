@@ -18,6 +18,8 @@ internal class ActionsCreator {
         const val BASE_ID = "ru.hh.plugins.geminio.actions."
         const val NEW_GROUP_ID_SUFFIX = "NewGroup."
         const val GENERATE_GROUP_ID_SUFFIX = "GenerateGroup."
+
+        const val LOG_DIVIDER = "============"
     }
 
 
@@ -30,8 +32,8 @@ internal class ActionsCreator {
         println("\tpathToConfig: $pathToConfig")
         println("\tpathToTemplates: $pathToTemplates")
         println("\tpathToModulesTemplates: $pathToModulesTemplates")
-        println("============")
-        println("============")
+        println(LOG_DIVIDER)
+        println(LOG_DIVIDER)
 
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
             println("\tGeminio's config is not valid (may be not configured at all) -> no need to create actions")
@@ -77,7 +79,7 @@ internal class ActionsCreator {
             ?: emptyList()
 
         println("\tTemplates count: ${templatesDirs.size}")
-        println("============")
+        println(LOG_DIVIDER)
 
         hhNewGroup.removeAll()
         hhGenerateGroup.removeAll()
@@ -89,7 +91,7 @@ internal class ActionsCreator {
                 isModulesTemplates = isModulesTemplates,
                 actionManager = actionManager,
                 actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also { hhNewGroup += it }
+            ).also(hhNewGroup::add)
 
             createActionForTemplate(
                 templatesRootDirPath = rootDirPath,
@@ -97,9 +99,17 @@ internal class ActionsCreator {
                 isModulesTemplates = isModulesTemplates,
                 actionManager = actionManager,
                 actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also { hhGenerateGroup += it }
+            ).also(hhGenerateGroup::add)
         }
 
+        addRescanActions(actionManager, hhNewGroup, hhGenerateGroup)
+    }
+
+    private fun addRescanActions(
+        actionManager: ActionManager,
+        hhNewGroup: DefaultActionGroup,
+        hhGenerateGroup: DefaultActionGroup,
+    ) {
         val actionId = BASE_ID + "RescanActionId"
         val rescanTemplatesAction = RescanTemplatesAction()
 
@@ -109,8 +119,8 @@ internal class ActionsCreator {
                 ?: registerAction(actionId, rescanTemplatesAction)
         }
 
-        hhNewGroup += rescanTemplatesAction
-        hhGenerateGroup += rescanTemplatesAction
+        hhNewGroup.add(rescanTemplatesAction)
+        hhGenerateGroup.add(rescanTemplatesAction)
     }
 
     private fun Project.isConfigNotValid(
@@ -185,7 +195,5 @@ internal class ActionsCreator {
         val templatesGenerateGroupId: String,
         val templatesNewGroupName: String,
     )
-
-    private operator fun DefaultActionGroup.plusAssign(action: AnAction) = add(action)
 
 }

@@ -1,5 +1,6 @@
 package ru.hh.plugins.geminio.actions
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiDirectory
@@ -11,7 +12,7 @@ class RescanTemplatesAction : AnAction() {
     init {
         with(templatePresentation) {
             text = "Rescan Templates"
-            icon =  com.intellij.icons.AllIcons.Actions.Refresh
+            icon = AllIcons.Actions.Refresh
             description = "Rescan folder with templates"
             isEnabledAndVisible = true
         }
