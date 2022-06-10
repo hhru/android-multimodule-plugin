@@ -85,61 +85,15 @@ internal class ActionsCreator {
         hhNewGroup.removeAll()
         hhGenerateGroup.removeAll()
 
-        addAndRegisterTemplatesActions(
+        actionManager.addTemplatesActions(
             templatesDirs = templatesDirs,
             rootDirPath = rootDirPath,
             isModulesTemplates = isModulesTemplates,
-            actionManager = actionManager,
             hhNewGroup = hhNewGroup,
             hhGenerateGroup = hhGenerateGroup,
         )
 
-        addRescanActions(actionManager, hhNewGroup, hhGenerateGroup)
-    }
-
-    private fun addAndRegisterTemplatesActions(
-        templatesDirs: List<String>,
-        rootDirPath: String,
-        isModulesTemplates: Boolean,
-        actionManager: ActionManager,
-        hhNewGroup: DefaultActionGroup,
-        hhGenerateGroup: DefaultActionGroup
-    ) {
-        templatesDirs.forEach { templateName ->
-            createActionForTemplate(
-                templatesRootDirPath = rootDirPath,
-                templateDirName = templateName,
-                isModulesTemplates = isModulesTemplates,
-                actionManager = actionManager,
-                actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also(hhNewGroup::add)
-
-            createActionForTemplate(
-                templatesRootDirPath = rootDirPath,
-                templateDirName = templateName,
-                isModulesTemplates = isModulesTemplates,
-                actionManager = actionManager,
-                actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also(hhGenerateGroup::add)
-        }
-    }
-
-    private fun addRescanActions(
-        actionManager: ActionManager,
-        hhNewGroup: DefaultActionGroup,
-        hhGenerateGroup: DefaultActionGroup,
-    ) {
-        val actionId = BASE_ID + "RescanActionId"
-        val rescanTemplatesAction = RescanTemplatesAction()
-
-        with(actionManager) {
-            getActionOrStub(actionId)
-                ?.also { replaceAction(actionId, rescanTemplatesAction) }
-                ?: registerAction(actionId, rescanTemplatesAction)
-        }
-
-        hhNewGroup.add(rescanTemplatesAction)
-        hhGenerateGroup.add(rescanTemplatesAction)
+        actionManager.addRescanActions(hhNewGroup, hhGenerateGroup)
     }
 
     private fun createActionForTemplate(
@@ -199,6 +153,47 @@ internal class ActionsCreator {
                 templatesNewGroupName = pluginConfig.groupsNames.forNewGroup,
             )
         }
+    }
+
+    private fun ActionManager.addTemplatesActions(
+        templatesDirs: List<String>,
+        rootDirPath: String,
+        isModulesTemplates: Boolean,
+        hhNewGroup: DefaultActionGroup,
+        hhGenerateGroup: DefaultActionGroup
+    ) {
+        templatesDirs.forEach { templateName ->
+            createActionForTemplate(
+                templatesRootDirPath = rootDirPath,
+                templateDirName = templateName,
+                isModulesTemplates = isModulesTemplates,
+                actionManager = this,
+                actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines(),
+            ).also(hhNewGroup::add)
+
+            createActionForTemplate(
+                templatesRootDirPath = rootDirPath,
+                templateDirName = templateName,
+                isModulesTemplates = isModulesTemplates,
+                actionManager = this,
+                actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines(),
+            ).also(hhGenerateGroup::add)
+        }
+    }
+
+    private fun ActionManager.addRescanActions(
+        hhNewGroup: DefaultActionGroup,
+        hhGenerateGroup: DefaultActionGroup,
+    ) {
+        val actionId = BASE_ID + "RescanActionId"
+        val rescanTemplatesAction = RescanTemplatesAction()
+
+        getActionOrStub(actionId)
+            ?.also { replaceAction(actionId, rescanTemplatesAction) }
+            ?: registerAction(actionId, rescanTemplatesAction)
+
+        hhNewGroup.add(rescanTemplatesAction)
+        hhGenerateGroup.add(rescanTemplatesAction)
     }
 
     private fun File.getSubfolderNamesWithRecipes(): List<String> {
