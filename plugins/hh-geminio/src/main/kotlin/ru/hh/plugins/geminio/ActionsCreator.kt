@@ -6,10 +6,12 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.extensions.toUnderlines
 import ru.hh.plugins.geminio.actions.RescanTemplatesAction
+import ru.hh.plugins.geminio.actions.SetupGeminioConfigAction
 import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction
 import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
+import ru.hh.plugins.geminio.services.balloonError
 import java.io.File
 
 internal class ActionsCreator {
@@ -36,7 +38,9 @@ internal class ActionsCreator {
         println(LOG_DIVIDER)
 
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
-            println("\tGeminio's config is not valid (may be not configured at all) -> no need to create actions")
+            val error = "Geminio's config is not valid (may be not configured at all) -> no need to create actions"
+            project.balloonError(message = error, action = SetupGeminioConfigAction())
+            println("\t$error")
             return
         }
 
@@ -73,10 +77,7 @@ internal class ActionsCreator {
         }
 
         println("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
-        val templatesDirs = rootDirectory.listFiles { file, _ -> file.isDirectory }
-            ?.filter { file -> file.listFiles { _, name -> name == "recipe.yaml" }.isNullOrEmpty().not() }
-            ?.map { it.name }
-            ?: emptyList()
+        val templatesDirs = rootDirectory.getSubfolderNamesWithRecipes()
 
         println("\tTemplates count: ${templatesDirs.size}")
         println(LOG_DIVIDER)
@@ -84,6 +85,26 @@ internal class ActionsCreator {
         hhNewGroup.removeAll()
         hhGenerateGroup.removeAll()
 
+        addAndRegisterTemplatesActions(
+            templatesDirs = templatesDirs,
+            rootDirPath = rootDirPath,
+            isModulesTemplates = isModulesTemplates,
+            actionManager = actionManager,
+            hhNewGroup = hhNewGroup,
+            hhGenerateGroup = hhGenerateGroup,
+        )
+
+        addRescanActions(actionManager, hhNewGroup, hhGenerateGroup)
+    }
+
+    private fun addAndRegisterTemplatesActions(
+        templatesDirs: List<String>,
+        rootDirPath: String,
+        isModulesTemplates: Boolean,
+        actionManager: ActionManager,
+        hhNewGroup: DefaultActionGroup,
+        hhGenerateGroup: DefaultActionGroup
+    ) {
         templatesDirs.forEach { templateName ->
             createActionForTemplate(
                 templatesRootDirPath = rootDirPath,
@@ -101,8 +122,6 @@ internal class ActionsCreator {
                 actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines(),
             ).also(hhGenerateGroup::add)
         }
-
-        addRescanActions(actionManager, hhNewGroup, hhGenerateGroup)
     }
 
     private fun addRescanActions(
@@ -121,14 +140,6 @@ internal class ActionsCreator {
 
         hhNewGroup.add(rescanTemplatesAction)
         hhGenerateGroup.add(rescanTemplatesAction)
-    }
-
-    private fun Project.isConfigNotValid(
-        pathToConfig: String,
-        pathToTemplates: String,
-        pathToModulesTemplates: String,
-    ): Boolean {
-        return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
     }
 
     private fun createActionForTemplate(
@@ -189,6 +200,22 @@ internal class ActionsCreator {
             )
         }
     }
+
+    private fun File.getSubfolderNamesWithRecipes(): List<String> {
+        return listFiles { file, _ -> file.isDirectory }
+            ?.filter { file -> file.listFiles { _, name -> name == "recipe.yaml" }.isNullOrEmpty().not() }
+            ?.map { it.name }
+            ?: emptyList()
+    }
+
+    private fun Project.isConfigNotValid(
+        pathToConfig: String,
+        pathToTemplates: String,
+        pathToModulesTemplates: String,
+    ): Boolean {
+        return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
+    }
+
 
     private data class TemplateActionsBundle(
         val templatesNewGroupId: String,
