@@ -2,6 +2,7 @@ package ru.hh.plugins.geminio.config.editor
 
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
+import ru.hh.plugins.geminio.ActionsCreator
 import javax.swing.JComponent
 
 class GeminioPluginSettingsSearchableConfigurable(
@@ -33,6 +34,7 @@ class GeminioPluginSettingsSearchableConfigurable(
 
     override fun apply() {
         pluginConfigPropertiesEditor?.applyNewConfiguration(pluginConfig)
+        ActionsCreator().create(project)
     }
 
     override fun createComponent(): JComponent? {
