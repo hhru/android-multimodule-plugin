@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.extensions.toUnderlines
+import ru.hh.plugins.geminio.GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME
 import ru.hh.plugins.geminio.actions.RescanTemplatesAction
 import ru.hh.plugins.geminio.actions.SetupGeminioConfigAction
 import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction
@@ -14,7 +15,7 @@ import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import ru.hh.plugins.geminio.services.balloonError
 import java.io.File
 
-internal class ActionsCreator {
+internal class ActionsHelper {
 
     private companion object {
         const val BASE_ID = "ru.hh.plugins.geminio.actions."
@@ -25,7 +26,7 @@ internal class ActionsCreator {
     }
 
 
-    fun create(project: Project) {
+    fun createGeminioActions(project: Project) {
         val pluginConfig = GeminioPluginSettings.getConfig(project)
         val pathToConfig = pluginConfig.configFilePath
         val pathToTemplates = project.basePath + pluginConfig.templatesRootDirPath
@@ -37,6 +38,8 @@ internal class ActionsCreator {
         println(LOG_DIVIDER)
         println(LOG_DIVIDER)
 
+        resetGeminioActions(project)
+
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
             val error = "Geminio's config is not valid (may be not configured at all) -> no need to create actions"
             project.balloonError(message = error, action = SetupGeminioConfigAction())
@@ -45,20 +48,30 @@ internal class ActionsCreator {
         }
 
         createActionsForTemplates(
+            project = project,
             pluginConfig = pluginConfig,
             rootDirPath = pathToTemplates,
             isModulesTemplates = false,
         )
 
         createActionsForTemplates(
+            project = project,
             pluginConfig = pluginConfig,
             rootDirPath = pathToModulesTemplates,
             isModulesTemplates = true,
         )
     }
 
+    fun resetGeminioActions(project: Project) {
+        val actionManager = ActionManager.getInstance()
+        val pluginConfig = GeminioPluginSettings.getConfig(project)
+        actionManager.removeAllActionsFromGroups(pluginConfig, isModulesTemplates = true)
+        actionManager.removeAllActionsFromGroups(pluginConfig, isModulesTemplates = false)
+    }
+
 
     private fun createActionsForTemplates(
+        project: Project,
         pluginConfig: GeminioPluginConfig,
         rootDirPath: String,
         isModulesTemplates: Boolean,
@@ -82,18 +95,30 @@ internal class ActionsCreator {
         println("\tTemplates count: ${templatesDirs.size}")
         println(LOG_DIVIDER)
 
-        hhNewGroup.removeAll()
-        hhGenerateGroup.removeAll()
-
         actionManager.addTemplatesActions(
+            projectName = project.name,
             templatesDirs = templatesDirs,
             rootDirPath = rootDirPath,
             isModulesTemplates = isModulesTemplates,
-            hhNewGroup = hhNewGroup,
-            hhGenerateGroup = hhGenerateGroup,
+            groups = Groups(hhNewGroup = hhNewGroup, hhGenerateGroup = hhGenerateGroup),
         )
 
-        actionManager.addRescanActions(hhNewGroup, hhGenerateGroup)
+        actionManager.addRescanActions(
+            projectName = project.name,
+            groups = Groups(hhNewGroup = hhNewGroup, hhGenerateGroup = hhGenerateGroup),
+        )
+    }
+
+    private fun ActionManager.removeAllActionsFromGroups(
+        pluginConfig: GeminioPluginConfig,
+        isModulesTemplates: Boolean,
+    ) {
+        val bundle = getTemplateActionsBundle(pluginConfig, isModulesTemplates)
+        val hhNewGroup = getAction(bundle.templatesNewGroupId) as DefaultActionGroup
+        val hhGenerateGroup = getAction(bundle.templatesGenerateGroupId) as DefaultActionGroup
+
+        hhNewGroup.removeAll()
+        hhGenerateGroup.removeAll()
     }
 
     private fun createActionForTemplate(
@@ -156,11 +181,11 @@ internal class ActionsCreator {
     }
 
     private fun ActionManager.addTemplatesActions(
+        projectName: String,
         templatesDirs: List<String>,
         rootDirPath: String,
         isModulesTemplates: Boolean,
-        hhNewGroup: DefaultActionGroup,
-        hhGenerateGroup: DefaultActionGroup
+        groups: Groups,
     ) {
         templatesDirs.forEach { templateName ->
             createActionForTemplate(
@@ -168,37 +193,39 @@ internal class ActionsCreator {
                 templateDirName = templateName,
                 isModulesTemplates = isModulesTemplates,
                 actionManager = this,
-                actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also(hhNewGroup::add)
+                actionId = BASE_ID + NEW_GROUP_ID_SUFFIX + "$projectName." + templateName.toUnderlines(),
+            ).also(groups.hhNewGroup::add)
 
             createActionForTemplate(
                 templatesRootDirPath = rootDirPath,
                 templateDirName = templateName,
                 isModulesTemplates = isModulesTemplates,
                 actionManager = this,
-                actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + templateName.toUnderlines(),
-            ).also(hhGenerateGroup::add)
+                actionId = BASE_ID + GENERATE_GROUP_ID_SUFFIX + "$projectName." + templateName.toUnderlines(),
+            ).also(groups.hhGenerateGroup::add)
         }
     }
 
     private fun ActionManager.addRescanActions(
-        hhNewGroup: DefaultActionGroup,
-        hhGenerateGroup: DefaultActionGroup,
+        projectName: String,
+        groups: Groups,
     ) {
-        val actionId = BASE_ID + "RescanActionId"
+        val actionId = "$BASE_ID$projectName.RescanActionId"
         val rescanTemplatesAction = RescanTemplatesAction()
 
         getActionOrStub(actionId)
             ?.also { replaceAction(actionId, rescanTemplatesAction) }
             ?: registerAction(actionId, rescanTemplatesAction)
 
-        hhNewGroup.add(rescanTemplatesAction)
-        hhGenerateGroup.add(rescanTemplatesAction)
+        groups.hhNewGroup.add(rescanTemplatesAction)
+        groups.hhGenerateGroup.add(rescanTemplatesAction)
     }
 
     private fun File.getSubfolderNamesWithRecipes(): List<String> {
         return listFiles { file, _ -> file.isDirectory }
-            ?.filter { file -> file.listFiles { _, name -> name == "recipe.yaml" }.isNullOrEmpty().not() }
+            ?.filter { file ->
+                file.listFiles { _, name -> name == GEMINIO_TEMPLATE_CONFIG_FILE_NAME }.isNullOrEmpty().not()
+            }
             ?.map { it.name }
             ?: emptyList()
     }
@@ -216,6 +243,11 @@ internal class ActionsCreator {
         val templatesNewGroupId: String,
         val templatesGenerateGroupId: String,
         val templatesNewGroupName: String,
+    )
+
+    private data class Groups(
+        val hhNewGroup: DefaultActionGroup,
+        val hhGenerateGroup: DefaultActionGroup,
     )
 
 }

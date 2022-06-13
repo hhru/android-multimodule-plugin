@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiDirectory
 import ru.hh.plugins.extensions.getSelectedPsiElement
-import ru.hh.plugins.geminio.ActionsCreator
+import ru.hh.plugins.geminio.ActionsHelper
 import ru.hh.plugins.geminio.services.balloonInfo
 
 class RescanTemplatesAction : AnAction() {
@@ -29,7 +29,7 @@ class RescanTemplatesAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         println("Start executing rescan templates")
-        e.project?.also(ActionsCreator()::create)
+        e.project?.also(ActionsHelper()::createGeminioActions)
         e.project?.balloonInfo(message = "Templates rescanned")
     }
 
