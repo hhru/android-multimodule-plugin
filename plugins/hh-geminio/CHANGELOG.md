@@ -1,5 +1,17 @@
 # Geminio
 
+## [1.1.12]
+### Added
+- Sync dialog after creating templates
+- Display templates folders with recipes only
+- Ability to rescan templates folders without restarting
+- 'help' filed for all widgets not required
+- Multi-window support with different projects
+
+### Fixed
+- Fixed duplication templates items after reopen project
+- Fixed 'addGradlePlugin' and other modification commands in files
+
 ## [1.1.11]
 ### Added
 - Support for Android Studio Chipmunk | 2022.2.1
