@@ -1,11 +1,11 @@
 # Geminio
 
-## [1.1.12]
+## [1.2.0]
 ### Added
 - Sync dialog after creating templates
 - Display templates folders with recipes only
 - Ability to rescan templates folders without restarting
-- 'help' filed for all widgets not required
+- `help` filed for all widgets not required
 - Multi-window support with different projects
 
 ### Fixed
