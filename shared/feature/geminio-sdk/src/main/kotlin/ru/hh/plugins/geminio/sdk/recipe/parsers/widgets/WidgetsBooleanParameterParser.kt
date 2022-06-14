@@ -28,12 +28,7 @@ internal fun Map<String, Any>.toWidgetsBooleanParameter(sectionName: String): Re
             key = KEY_PARAMETER_NAME
         )
     }
-    val help = requireNotNull(this[KEY_PARAMETER_HELP] as? String) {
-        sectionRequiredParameterErrorMessage(
-            sectionName = sectionName,
-            key = KEY_PARAMETER_HELP
-        )
-    }
+    val help = this[KEY_PARAMETER_HELP] as? String
     val visibilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_VISIBILITY)
     val availabilityExpressionString = this.getBooleanOrStringExpression(KEY_PARAMETER_AVAILABILITY)
 

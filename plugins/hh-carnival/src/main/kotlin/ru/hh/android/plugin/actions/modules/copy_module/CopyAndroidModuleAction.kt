@@ -36,6 +36,7 @@ import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
+import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.openapi.isAndroidLibraryModule
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
@@ -98,8 +99,7 @@ class CopyAndroidModuleAction : AnAction() {
                             )
                         )
 
-                    SyncProjectAction().actionPerformed(actionData.actionEvent)
-
+                    project.showSyncQuestionDialog(syncPerformedActionEvent = actionData.actionEvent)
                     project.notifyInfo("Module \"${newModuleParams.moduleToCopy.name}\" successfully copied!")
                 }
             }

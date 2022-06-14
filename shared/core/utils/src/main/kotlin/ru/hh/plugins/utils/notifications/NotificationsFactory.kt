@@ -4,6 +4,7 @@ import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.extensions.replaceLineBreaks
 import javax.swing.event.HyperlinkEvent
@@ -18,18 +19,20 @@ object NotificationsFactory : NotificationListener {
         project: Project,
         infoNotificationGroupId: String,
         title: String,
-        message: String
+        message: String,
+        action: AnAction? = null,
     ) {
-        showNotification(project, infoNotificationGroupId, NotificationType.INFORMATION, title, message)
+        showNotification(project, infoNotificationGroupId, NotificationType.INFORMATION, title, message, action)
     }
 
     fun balloonError(
         project: Project,
         errorNotificationGroupId: String,
         title: String,
-        message: String
+        message: String,
+        action: AnAction? = null,
     ) {
-        showNotification(project, errorNotificationGroupId, NotificationType.ERROR, title, message)
+        showNotification(project, errorNotificationGroupId, NotificationType.ERROR, title, message, action)
     }
 
     private fun showNotification(
@@ -37,7 +40,8 @@ object NotificationsFactory : NotificationListener {
         notificationGroupId: String,
         notificationType: NotificationType,
         title: String,
-        message: String
+        message: String,
+        action: AnAction?,
     ) {
         val notificationGroup = NotificationGroup.balloonGroup(notificationGroupId)
         notificationGroup.createNotification(
@@ -45,6 +49,9 @@ object NotificationsFactory : NotificationListener {
             message.replaceLineBreaks(),
             notificationType,
             this
-        ).notify(project)
+        ).apply {
+            action?.also(::addAction)
+            notify(project)
+        }
     }
 }
