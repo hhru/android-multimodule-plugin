@@ -14,7 +14,22 @@ fun Module.isAndroidLibraryModule(): Boolean {
 }
 
 fun Module.isAndroidAppModule(): Boolean {
-    return (androidFacet?.configuration?.isAppProject ?: false) && (this == androidFacet?.holderModule)
+    val isAppProject = androidFacet?.configuration?.isAppProject ?: false
+
+    /**
+     * Starting from `Android Studio Chipmunk 2021.2.1 Patch 2` in the list of
+     * application modules we see not only application modules but also "submodules" of these applications, e.g.:
+     *
+     * - 'headhunter-applicant.unitTests'
+     * - 'headhunter-applicant.androidTest'
+     *
+     * etc.
+     *
+     * To remove these submodules we add this condition.
+     */
+    val isHolderModule = this == androidFacet?.holderModule
+
+    return isAppProject && isHolderModule
 }
 
 fun Module.findPsiFileByName(name: String): PsiFile? {
