@@ -14,7 +14,7 @@ fun Module.isAndroidLibraryModule(): Boolean {
 }
 
 fun Module.isAndroidAppModule(): Boolean {
-    return androidFacet?.configuration?.isAppProject ?: false
+    return (androidFacet?.configuration?.isAppProject ?: false) && (this == androidFacet?.holderModule)
 }
 
 fun Module.findPsiFileByName(name: String): PsiFile? {
