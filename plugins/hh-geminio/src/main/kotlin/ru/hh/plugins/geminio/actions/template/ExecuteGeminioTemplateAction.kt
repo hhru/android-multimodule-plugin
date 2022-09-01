@@ -18,6 +18,7 @@ import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
+import ru.hh.plugins.utils.notifications.Debug
 import kotlin.system.measureTimeMillis
 
 /**
@@ -57,7 +58,7 @@ class ExecuteGeminioTemplateAction(
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        println("Start executing template [$actionText]")
+        Debug.info("Start executing template [$actionText]")
 
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
@@ -98,7 +99,7 @@ class ExecuteGeminioTemplateAction(
                                 psiFile?.shortReferencesAndReformatWithCodeStyle()
                             }
                         }
-                    }.also { println("Shorten references time: $it ms") }
+                    }.also { Debug.info("Shorten references time: $it ms") }
                 }
             })
         }

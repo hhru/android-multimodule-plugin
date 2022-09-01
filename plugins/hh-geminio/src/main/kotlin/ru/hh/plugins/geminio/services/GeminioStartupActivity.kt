@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import com.intellij.openapi.wm.WindowManager
 import ru.hh.plugins.geminio.ActionsHelper
+import ru.hh.plugins.utils.notifications.Debug
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import javax.swing.JFrame
@@ -18,12 +19,12 @@ class GeminioStartupActivity : StartupActivity {
 
     override fun runActivity(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
-            println("GeminioStartupActivity::")
+            Debug.info("GeminioStartupActivity::")
 
             ActionsHelper().createGeminioActions(project)
 
-            println("GeminioStartupActivity::END")
-            println("==============================================")
+            Debug.info("GeminioStartupActivity::END")
+            Debug.info("==============================================")
 
             windowListener = object : WindowListener {
                 override fun windowClosed(e: WindowEvent?) {

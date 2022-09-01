@@ -7,6 +7,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.config.PluginConfig
+import ru.hh.plugins.utils.notifications.Debug
 
 @Service
 class Logger(
@@ -22,7 +23,7 @@ class Logger(
     fun debug(message: String) {
         if (PluginConfig.getInstance(project).isDebugModeEnabled) {
             Notifications.Bus.notify(AntiroutineEventNotification(message))
-            println(message)
+            Debug.info(message)
         }
     }
 

@@ -23,6 +23,7 @@ import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepF
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
+import ru.hh.plugins.utils.notifications.Debug
 
 /**
  * Action for creating new module.
@@ -56,13 +57,13 @@ class ExecuteGeminioModuleTemplateAction(
     }
 
     override fun actionPerformed(actionEvent: AnActionEvent) {
-        println("Start executing template '$actionText'")
+        Debug.info("Start executing template '$actionText'")
 
         val project = actionEvent.project!!
         val selectedPsiElement = actionEvent.getSelectedPsiElement() as PsiDirectory
 
         val directoryPath = selectedPsiElement.virtualFile.path
-        println("Selected directory path: $directoryPath")
+        Debug.info("Selected directory path: $directoryPath")
 
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
@@ -71,7 +72,7 @@ class ExecuteGeminioModuleTemplateAction(
             "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
         }
 
-        println("Recipe successfully parsed!")
+        Debug.info("Recipe successfully parsed!")
 
         val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
 

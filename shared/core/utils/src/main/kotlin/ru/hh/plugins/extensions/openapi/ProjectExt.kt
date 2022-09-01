@@ -7,6 +7,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
+import ru.hh.plugins.utils.notifications.Debug
 
 /**
  * You can use this method for adding code without applying code style.
@@ -41,6 +42,29 @@ fun Project.getLibrariesModules(): List<Module> {
 }
 
 fun Project.getRootModule(): Module {
-    return ModuleManager.getInstance(this).modules.toList()
-        .first { it.name == this.name || it.name == this.name.replace(Char.SPACE, Char.UNDERSCORE) }
+    val moduleManager = ModuleManager.getInstance(this)
+    val modules = moduleManager.modules.toList()
+    Debug.info("""
+        Project.getRootModule
+        
+        this: $this
+        this.name: ${this.name}
+        this.projectFilePath: ${this.projectFilePath}
+        this.basePath: ${this.basePath}
+        this.isInitialized: ${this.isInitialized}
+        this.isOpen: ${this.isOpen}
+    """.trimIndent())
+
+    val modulesNames = modules.joinToString(separator = "\n") { it.name }
+
+    Debug.info("===== Modules names ===== ")
+    Debug.info(modulesNames)
+
+    val rootModule = modules.firstOrNull {
+        it.name == this.name || it.name == this.name.replace(Char.SPACE, Char.UNDERSCORE)
+    }
+
+    Debug.info("rootModule == $rootModule")
+
+    return rootModule!!
 }

@@ -13,6 +13,7 @@ import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import ru.hh.plugins.geminio.services.balloonError
+import ru.hh.plugins.utils.notifications.Debug
 import java.io.File
 
 internal class ActionsHelper {
@@ -32,18 +33,18 @@ internal class ActionsHelper {
         val pathToTemplates = project.basePath + pluginConfig.templatesRootDirPath
         val pathToModulesTemplates = project.basePath + pluginConfig.modulesTemplatesRootDirPath
 
-        println("\tpathToConfig: $pathToConfig")
-        println("\tpathToTemplates: $pathToTemplates")
-        println("\tpathToModulesTemplates: $pathToModulesTemplates")
-        println(LOG_DIVIDER)
-        println(LOG_DIVIDER)
+        Debug.info("\tpathToConfig: $pathToConfig")
+        Debug.info("\tpathToTemplates: $pathToTemplates")
+        Debug.info("\tpathToModulesTemplates: $pathToModulesTemplates")
+        Debug.info(LOG_DIVIDER)
+        Debug.info(LOG_DIVIDER)
 
         resetGeminioActions(project)
 
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
             val error = "Geminio's config is not valid (may be not configured at all) -> no need to create actions"
             project.balloonError(message = error, action = SetupGeminioConfigAction())
-            println("\t$error")
+            Debug.info("\t$error")
             return
         }
 
@@ -85,15 +86,15 @@ internal class ActionsHelper {
         val rootDirectory = File(rootDirPath)
 
         if (rootDirectory.exists().not() || rootDirectory.isDirectory.not()) {
-            println("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+            Debug.info("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
             return
         }
 
-        println("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+        Debug.info("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
         val templatesDirs = rootDirectory.getSubfolderNamesWithRecipes()
 
-        println("\tTemplates count: ${templatesDirs.size}")
-        println(LOG_DIVIDER)
+        Debug.info("\tTemplates count: ${templatesDirs.size}")
+        Debug.info(LOG_DIVIDER)
 
         actionManager.addTemplatesActions(
             projectName = project.name,
