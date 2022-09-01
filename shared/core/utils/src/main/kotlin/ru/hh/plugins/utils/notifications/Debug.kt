@@ -22,7 +22,7 @@ object Debug {
     }
 
     fun error(message: String) {
-        Debug.info("ERROR: $message")
+        println("ERROR: $message")
         Notifications.Bus.notify(
             Notification(
                 GROUP_ID,
