@@ -2,6 +2,8 @@ package ru.hh.plugins.code_modification
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
+import com.intellij.psi.search.FilenameIndex
+import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -41,6 +43,11 @@ class SettingsGradleModificationService(
         val rootModule = project.getRootModule()
         val settingsGradlePsiFile = rootModule.findPsiFileByName(SETTINGS_GRADLE_FILENAME)
             ?: rootModule.findPsiFileByName(SETTINGS_GRADLE_KTS_FILENAME)
+//            ?: FilenameIndex.getAllFilesByExt(rootModule.project, "gradle")
+//                .firstOrNull { it.path.endsWith("${rootModule.name}/settings.gradle") }
+            ?: FilenameIndex.getAllFilesByExt(rootModule.project, "kts")
+                .firstOrNull { it.path.endsWith("${rootModule.name}/settings.gradle.kts") }
+                ?.toPsiFile(project)
             ?: throw IllegalStateException("Can't find $SETTINGS_GRADLE_FILENAME / $SETTINGS_GRADLE_KTS_FILENAME file!")
 
         handleSettingsGradleFile(settingsGradlePsiFile, moduleName, moduleRelativePath)
