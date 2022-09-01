@@ -6,6 +6,7 @@ import com.android.tools.idea.npw.model.RenderTemplateModel
 import com.android.tools.idea.npw.project.getModuleTemplates
 import com.android.tools.idea.npw.project.getPackageForPath
 import com.android.tools.idea.npw.template.ConfigureTemplateParametersStep
+import com.android.tools.idea.projectsystem.AndroidModulePaths
 import com.android.tools.idea.projectsystem.NamedModuleTemplate
 import com.android.tools.idea.wizard.template.Category
 import com.android.tools.idea.wizard.template.FormFactor
@@ -16,8 +17,10 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
+import ru.hh.plugins.extensions.toSlashedFilePath
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioConfigureTemplateStepModel
+import java.io.File
 
 @Service
 class ConfigureTemplateParametersStepFactory {
@@ -38,9 +41,7 @@ class ConfigureTemplateParametersStepFactory {
         targetDirectory: VirtualFile,
         androidStudioTemplate: Template
     ): GeminioConfigureTemplateStepModel {
-        val moduleTemplates = facet.getModuleTemplates(targetDirectory)
-        assert(moduleTemplates.isNotEmpty())
-
+        val moduleTemplates = facet.getNamedModuleTemplate(targetDirectory)
         val renderTemplateModel = createRenderTemplateModelFromFacet(
             facet,
             targetDirectory = targetDirectory,
@@ -141,4 +142,61 @@ class ConfigureTemplateParametersStepFactory {
             newTemplate = androidStudioTemplate
         }
     }
+
+    private fun AndroidFacet.getNamedModuleTemplate(targetDirectory: VirtualFile): List<NamedModuleTemplate> {
+        val originalModuleTemplates = this.getModuleTemplates(targetDirectory)
+        assert(originalModuleTemplates.isNotEmpty())
+
+        val firstNamedModuleTemplate = originalModuleTemplates.first()
+        return if (firstNamedModuleTemplate.paths.getAidlDirectory("stub.package") != null) {
+            originalModuleTemplates
+        } else {
+            /**
+             * Sometimes after fetching module templates information from [org.jetbrains.android.facet.AndroidFacet]
+             * there is no information about AIDL sources directory.
+             *
+             * But this directory is necessary for [com.android.tools.idea.npw.template.ModuleTemplateDataBuilder] in
+             * `build` method (has line with `aidlDir!!`) which leads to NullPointerException crash -->
+             * not modules templates skip files generation.
+             *
+             * So, we need to manually fix this problem through simple wrapper over
+             * [com.android.tools.idea.projectsystem.AndroidModulePaths].
+             */
+            val fixedAidlNamedModuleTemplate = firstNamedModuleTemplate.copy(
+                paths = StubAndroidModulePaths(firstNamedModuleTemplate.paths)
+            )
+
+            return listOf(fixedAidlNamedModuleTemplate)
+        }
+    }
+
+    private class StubAndroidModulePaths(
+        private val original: AndroidModulePaths
+    ) : AndroidModulePaths {
+        override val manifestDirectory: File?
+            get() = original.manifestDirectory
+        override val moduleRoot: File?
+            get() = original.moduleRoot
+        override val resDirectories: List<File>
+            get() = original.resDirectories
+
+        override fun getAidlDirectory(packageName: String?): File? {
+            return original.moduleRoot
+                ?.resolve("src/main/aidl" + packageName?.toSlashedFilePath().orEmpty())
+        }
+
+        override fun getSrcDirectory(packageName: String?): File? {
+            return original.getSrcDirectory(packageName)
+        }
+
+        override fun getTestDirectory(packageName: String?): File? {
+            return original.getTestDirectory(packageName)
+        }
+
+        override fun getUnitTestDirectory(packageName: String?): File? {
+            return original.getUnitTestDirectory(packageName)
+        }
+
+    }
+
 }
