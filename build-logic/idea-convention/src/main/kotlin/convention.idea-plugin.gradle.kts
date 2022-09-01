@@ -3,6 +3,7 @@ import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
+import org.jetbrains.intellij.tasks.RunIdeTask
 
 plugins {
     id("convention.idea-plugin-base")
@@ -59,4 +60,8 @@ tasks.withType<PatchPluginXmlTask> {
 
 tasks.getByName<Zip>("buildPlugin") {
     archiveFileName.set("${properties("pluginName")}.zip")
+}
+
+tasks.getByName<RunIdeTask>("runIde") {
+    maxHeapSize = "4g"
 }
