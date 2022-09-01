@@ -10,7 +10,7 @@ object Debug {
     private const val TITLE = "Debug"
 
     fun info(message: String) {
-        Debug.info(message)
+        println(message)
         Notifications.Bus.notify(
             Notification(
                 GROUP_ID,
