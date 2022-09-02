@@ -68,6 +68,12 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
                 return moduleKtsFile
             }
 
+            /**
+             * IMPORTANT!
+             *
+             * From Android Studio Chipmunk Patch 2 sometimes searching in module content scope is not enough, so we
+             * expand searching through module's project - it can be time-consuming, so be patient.
+             */
             Debug.info("searchGradlePsiFile -> didn't find $filename in ${this.name} --> try to search in project")
             val projectKtsFile = this.findPsiFileInProjectScope(filename)
             if (projectKtsFile == null) {
