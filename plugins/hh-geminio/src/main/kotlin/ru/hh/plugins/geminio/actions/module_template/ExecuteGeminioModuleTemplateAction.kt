@@ -76,9 +76,8 @@ class ExecuteGeminioModuleTemplateAction(
 
         val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
 
-        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory(project)
         val stepModel = configureTemplateParametersStepFactory.createForNewModule(
-            project = project,
             stepTitle = "Create new $actionText",
             directoryPath = directoryPath,
             defaultPackageName = "ru.hh", // TODO - fetch from settings
@@ -109,9 +108,8 @@ class ExecuteGeminioModuleTemplateAction(
                     return
                 }
 
-                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService.getInstance(project)
+                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService(project)
                 val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
-                    project = project,
                     newModuleRootDirectoryPath = directoryPath,
                     geminioTemplateData = geminioTemplateData
                 )

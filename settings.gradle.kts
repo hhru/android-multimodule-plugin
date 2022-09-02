@@ -59,6 +59,7 @@ include(":shared:core:ui")
 include(":shared:core:code-modification")
 include(":shared:core:models")
 include(":shared:core:psi-utils")
+include(":shared:core:logger")
 // endregion
 
 // region Shared features

@@ -1,10 +1,7 @@
 package ru.hh.plugins.geminio.services
 
 import com.android.tools.idea.util.toIoFile
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.project.Project
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension
 import com.vladsch.flexmark.ext.tables.TablesExtension
 import com.vladsch.flexmark.html.HtmlRenderer
@@ -13,13 +10,10 @@ import com.vladsch.flexmark.util.data.MutableDataSet
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 
-@Service
 class MarkdownParserService {
 
-    companion object {
-        private const val README_FILE_NAME = "README.md"
-
-        fun getInstance(project: Project): MarkdownParserService = project.service()
+    private companion object {
+        const val README_FILE_NAME = "README.md"
     }
 
     private val options: MutableDataSet by lazy {

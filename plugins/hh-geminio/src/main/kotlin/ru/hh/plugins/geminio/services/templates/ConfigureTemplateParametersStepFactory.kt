@@ -11,8 +11,6 @@ import com.android.tools.idea.wizard.template.Category
 import com.android.tools.idea.wizard.template.FormFactor
 import com.android.tools.idea.wizard.template.Template
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
@@ -23,16 +21,15 @@ import ru.hh.plugins.geminio.services.StubProjectSyncInvoker
 import ru.hh.plugins.utils.notifications.Debug
 import java.io.File
 
-@Service
-class ConfigureTemplateParametersStepFactory {
+class ConfigureTemplateParametersStepFactory(
+    private val project: Project
+) {
 
-    companion object {
-        private const val NAMED_MODULE_TEMPLATE_NAME = "GeminioNamedModuleTemplate"
+    private companion object {
+        const val NAMED_MODULE_TEMPLATE_NAME = "GeminioNamedModuleTemplate"
 
-        private const val STUB_MODULE_NAME = "stub_module_name"
-        private const val STUB_PARENT_MODULE_NAME = "stub_parent_module_name"
-
-        fun getInstance(project: Project): ConfigureTemplateParametersStepFactory = project.service()
+        const val STUB_MODULE_NAME = "stub_module_name"
+        const val STUB_PARENT_MODULE_NAME = "stub_parent_module_name"
     }
 
     fun createFromAndroidFacet(
@@ -64,7 +61,6 @@ class ConfigureTemplateParametersStepFactory {
     }
 
     fun createForNewModule(
-        project: Project,
         stepTitle: String,
         directoryPath: String,
         defaultPackageName: String,

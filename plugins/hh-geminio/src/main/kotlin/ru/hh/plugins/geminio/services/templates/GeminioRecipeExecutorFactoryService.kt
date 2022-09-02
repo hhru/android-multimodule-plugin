@@ -14,31 +14,27 @@ import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.ThemeData
 import com.android.tools.idea.wizard.template.ThemesData
 import com.android.tools.idea.wizard.template.ViewBindingSupport
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import java.io.File
 
-@Service
-class GeminioRecipeExecutorFactoryService {
+class GeminioRecipeExecutorFactoryService(
+    private val project: Project
+) {
 
-    companion object {
-        private const val STUB_PREFIX = "geminio.stub"
-        private const val STUB_BASE_FEATURE_NAME = "$STUB_PREFIX.base_feature"
-        private const val STUB_APP_NAME = "$STUB_PREFIX.app_name"
-        private const val STUB_MAIN_THEME_DATA_NAME = "$STUB_PREFIX.main_theme_data"
-        private const val STUB_API_VERSION = 30
-        private const val STUB_API_VERSION_STRING = "30"
-        private const val STUB_COMMAND_RENDERING_CONTEXT = "$STUB_PREFIX.rendering_context_command"
-
-        fun getInstance(project: Project): GeminioRecipeExecutorFactoryService = project.service()
+    private companion object {
+        const val STUB_PREFIX = "geminio.stub"
+        const val STUB_BASE_FEATURE_NAME = "$STUB_PREFIX.base_feature"
+        const val STUB_APP_NAME = "$STUB_PREFIX.app_name"
+        const val STUB_MAIN_THEME_DATA_NAME = "$STUB_PREFIX.main_theme_data"
+        const val STUB_API_VERSION = 30
+        const val STUB_API_VERSION_STRING = "30"
+        const val STUB_COMMAND_RENDERING_CONTEXT = "$STUB_PREFIX.rendering_context_command"
     }
 
     fun createRecipeExecutor(
-        project: Project,
         newModuleRootDirectoryPath: String,
         geminioTemplateData: GeminioTemplateData
     ): GeminioRecipeExecutorModel {

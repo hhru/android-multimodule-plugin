@@ -68,7 +68,7 @@ class ExecuteGeminioTemplateAction(
 
         val targetDirectory = actionEvent.getTargetDirectory()
 
-        val stepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val stepFactory = ConfigureTemplateParametersStepFactory(project)
         val stepModel = stepFactory.createFromAndroidFacet(
             commandName = COMMAND_NAME,
             stepTitle = actionText,
