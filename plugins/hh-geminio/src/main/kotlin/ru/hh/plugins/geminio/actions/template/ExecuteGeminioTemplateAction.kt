@@ -13,6 +13,7 @@ import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
+import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.geminio.services.balloonInfo
@@ -57,15 +58,15 @@ class ExecuteGeminioTemplateAction(
             .isEnabledAndVisible = (e.project == null || facet == null || AndroidModel.get(facet) == null).not()
     }
 
-    override fun actionPerformed(e: AnActionEvent) {
+    override fun actionPerformed(actionEvent: AnActionEvent) {
         Debug.info("Start executing template [$actionText]")
 
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
 
-        val (project, facet) = e.fetchEventData()
+        val (project, facet) = actionEvent.fetchEventData()
 
-        val targetDirectory = e.getTargetDirectory()
+        val targetDirectory = actionEvent.getTargetDirectory()
 
         val stepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
         val stepModel = stepFactory.createFromAndroidFacet(
@@ -88,6 +89,7 @@ class ExecuteGeminioTemplateAction(
 
                     applyShortenReferencesAndCodeStyle()
 
+                    project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
                     project.balloonInfo(message = "Finished '$actionText' template execution")
                 }
 
