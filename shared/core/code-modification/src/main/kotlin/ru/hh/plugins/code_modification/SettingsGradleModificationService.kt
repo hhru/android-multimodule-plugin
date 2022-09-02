@@ -2,14 +2,14 @@ package ru.hh.plugins.code_modification
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
-import com.intellij.psi.search.FilenameIndex
-import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElementFactory
-import ru.hh.plugins.extensions.openapi.findPsiFileByName
+import ru.hh.plugins.code_modification.GradleConstants.SETTINGS_GRADLE_FILENAME
+import ru.hh.plugins.code_modification.GradleConstants.SETTINGS_GRADLE_KTS_FILENAME
+import ru.hh.plugins.code_modification.utils.searchGradlePsiFile
 import ru.hh.plugins.extensions.openapi.getRootModule
 import ru.hh.plugins.psi_utils.groovy.createNewLine
 import ru.hh.plugins.psi_utils.groovy.getIncludeModuleExpressionElement
@@ -23,33 +23,27 @@ class SettingsGradleModificationService(
 
     companion object {
         private const val COMMAND_NAME = "SettingsGradleModificationCommand"
-        private const val SETTINGS_GRADLE_FILENAME = "settings.gradle"
-        private const val SETTINGS_GRADLE_KTS_FILENAME = "settings.gradle.kts"
 
         fun getInstance(project: Project) = SettingsGradleModificationService(project)
     }
 
     /**
-     * Adds module description into settings.gradle / settings.gradle.kts file.
+     * Adds module description into ${SETTINGS_GRADLE_FILENAME} / ${SETTINGS_GRADLE_FILENAME}.kts file.
      * <code>
      * include(":moduleName")
      * project(":moduleName").projectDir = new File(settingsDir, "shared/core/moduleName")
      * </code>
      *
      * @param moduleName - module name without ':', e.g. "mylibrary"
-     * @param moduleRelativePath - relative path for module directory from settings.gradle, e.g. 'shared/core/mylibrary'
+     * @param moduleRelativePath - relative path for module directory from ${SETTINGS_GRADLE_FILENAME}, e.g. 'shared/core/mylibrary'
      */
     fun addGradleModuleDescription(moduleName: String, moduleRelativePath: String) {
         val rootModule = project.getRootModule()
-        val settingsGradlePsiFile = rootModule.findPsiFileByName(SETTINGS_GRADLE_FILENAME)
-            ?: rootModule.findPsiFileByName(SETTINGS_GRADLE_KTS_FILENAME)
-//            ?: FilenameIndex.getAllFilesByExt(rootModule.project, "gradle")
-//                .firstOrNull { it.path.endsWith("${rootModule.name}/settings.gradle") }
-            ?: FilenameIndex.getAllFilesByExt(rootModule.project, "kts")
-                .firstOrNull { it.path.endsWith("${rootModule.name}/settings.gradle.kts") }
-                ?.toPsiFile(project)
-            ?: throw IllegalStateException("Can't find $SETTINGS_GRADLE_FILENAME / $SETTINGS_GRADLE_KTS_FILENAME file!")
 
+        val settingsGradlePsiFile = rootModule.searchGradlePsiFile(SETTINGS_GRADLE_FILENAME)
+            ?: throw IllegalStateException(
+                "Can't find `${SETTINGS_GRADLE_FILENAME}` or `${SETTINGS_GRADLE_KTS_FILENAME}` file in root module"
+            )
         handleSettingsGradleFile(settingsGradlePsiFile, moduleName, moduleRelativePath)
     }
 
@@ -114,4 +108,5 @@ class SettingsGradleModificationService(
             }
         }
     }
+
 }

@@ -8,6 +8,8 @@ import com.intellij.psi.PsiMember
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
+import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
+import ru.hh.plugins.utils.notifications.Debug
 
 fun Module.isAndroidLibraryModule(): Boolean {
     return androidFacet?.configuration?.isLibraryProject ?: false
@@ -33,7 +35,12 @@ fun Module.isAndroidAppModule(): Boolean {
 }
 
 fun Module.findPsiFileByName(name: String): PsiFile? {
-    return FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
+    val (time, result) = measureTimeMillisWithResult {
+        FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
+    }
+    Debug.info("Searching for `$name` in ${this.name} content scope consumed $time ms")
+
+    return result
 }
 
 fun Module.findClassesAnnotatedWith(annotationFullQualifiedName: String): MutableCollection<PsiMember>? {
