@@ -79,7 +79,7 @@ class GeminioStartupActivity : StartupActivity {
     }
 
     private fun setupNotifications(project: Project) {
-        HHNotifications.plant(project)
+        HHNotifications.plant(project, "Geminio")
     }
 
 }

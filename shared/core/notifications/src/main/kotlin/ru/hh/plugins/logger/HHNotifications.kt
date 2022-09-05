@@ -46,36 +46,39 @@ class HHNotifications private constructor() {
 
         @Volatile
         private var project: Project? = null
+        @Volatile
+        private var title: String = ""
 
 
-        fun plant(project: Project) {
+        fun plant(project: Project, notificationsTitle: String) {
             this.project = project
+            this.title = notificationsTitle
         }
 
         fun info(message: String) {
-            println("[INFO] $message")
+            println("[$title] [INFO] $message")
             sendNotification(message, NotificationType.INFORMATION)
         }
 
         fun warning(message: String) {
-            println("[WARNING] $message")
+            println("[$title] [WARNING] $message")
             sendNotification(message, NotificationType.WARNING)
         }
 
         fun error(message: String) {
-            println("[ERROR] $message")
+            println("[$title] [ERROR] $message")
             sendNotification(message, NotificationType.ERROR)
         }
 
         fun error(message: String, action: AnAction) {
-            println("[ERROR (with action)] $message")
+            println("[$title] [ERROR (with action)] $message")
             sendNotification(message, NotificationType.ERROR, action)
         }
 
         private fun sendNotification(message: String, type: NotificationType, action: AnAction? = null) {
             val notification = NotificationGroupManager.getInstance()
                 .getNotificationGroup(GROUP_ID)
-                .createNotification(message, type)
+                .createNotification(title, message, type)
             action?.let { notification.addAction(action) }
 
             notification.notify(project)

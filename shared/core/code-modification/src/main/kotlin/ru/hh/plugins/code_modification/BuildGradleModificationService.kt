@@ -61,7 +61,7 @@ class BuildGradleModificationService(
                 ?: rootDir?.findFile(BUILD_GRADLE_KTS_FILENAME)
 
             if (buildGradlePsiFile == null) {
-                HHLogger.error(
+                HHLogger.e(
                     "Can't find `${BUILD_GRADLE_FILENAME}` or `${BUILD_GRADLE_KTS_FILENAME}` file in rootDir ($rootDir)"
                 )
                 return@wrapInCommand
