@@ -24,5 +24,4 @@ class CarnivalStartupActivity : StartupActivity {
     private fun setupNotifications(project: Project) {
         HHNotifications.plant(project, "Carnival")
     }
-
 }

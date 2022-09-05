@@ -42,7 +42,7 @@ class SettingsGradleModificationService(
 
         val settingsGradlePsiFile = rootModule.searchGradlePsiFile(SETTINGS_GRADLE_FILENAME)
             ?: throw IllegalStateException(
-                "Can't find `${SETTINGS_GRADLE_FILENAME}` or `${SETTINGS_GRADLE_KTS_FILENAME}` file in root module"
+                "Can't find `$SETTINGS_GRADLE_FILENAME` or `$SETTINGS_GRADLE_KTS_FILENAME` file in root module"
             )
         handleSettingsGradleFile(settingsGradlePsiFile, moduleName, moduleRelativePath)
     }
@@ -108,5 +108,4 @@ class SettingsGradleModificationService(
             }
         }
     }
-
 }

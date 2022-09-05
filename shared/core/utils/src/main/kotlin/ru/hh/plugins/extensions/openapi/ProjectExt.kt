@@ -54,7 +54,7 @@ fun Project.getRootModule(): Module {
         this.basePath: ${this.basePath}
         this.isInitialized: ${this.isInitialized}
         this.isOpen: ${this.isOpen}
-    """.trimIndent()
+        """.trimIndent()
     )
 
     val modulesNames = modules.joinToString(separator = "\n") { it.name }

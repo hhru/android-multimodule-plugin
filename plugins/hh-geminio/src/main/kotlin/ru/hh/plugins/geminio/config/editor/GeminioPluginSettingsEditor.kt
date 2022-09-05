@@ -98,7 +98,7 @@ class GeminioPluginSettingsEditor(
                 config.modulesTemplatesRootDirPath != modulesTemplatesRootDirPathTextField.text ||
                 config.groupsNames.forNewGroup != nameForNewGroupTextField.text ||
                 config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text ||
-                    config.isDebugEnabled != isDebugEnabledCheckbox.isSelected
+                config.isDebugEnabled != isDebugEnabledCheckbox.isSelected
         }
     }
 

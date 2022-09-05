@@ -8,7 +8,6 @@ internal object StudioWizardDialogFactory {
     private const val DOLPHIN_STUDIO_WIZARD_FQN = "com.android.tools.idea.wizard.ui.StudioWizardDialogBuilder"
     private const val CHIPMUNK_STUDIO_WIZARD_FQN = "com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder"
 
-
     fun getWizardBuilder(wizard: ModelWizard, title: String): WizardDialogBuilder {
         HHLogger.d("Try to find studio dialogs...")
         return when {
@@ -29,7 +28,6 @@ internal object StudioWizardDialogFactory {
         }
     }
 
-
     private fun isClassPresent(fullyQualifiedClasName: String): Boolean {
         return try {
             StudioWizardDialogFactory::class.java.classLoader.loadClass(fullyQualifiedClasName)
@@ -38,5 +36,4 @@ internal object StudioWizardDialogFactory {
             false
         }
     }
-
 }

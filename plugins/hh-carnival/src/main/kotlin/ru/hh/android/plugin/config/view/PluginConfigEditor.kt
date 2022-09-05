@@ -102,11 +102,11 @@ class PluginConfigEditor(
 
     fun isModified(): Boolean {
         return initialPluginFolderDirPath != pluginFolderDirPathTextField.text ||
-                initialEnableDebugMode != enableDebugModeCheckBox.isSelected ||
-                initialJiraHostName != jiraHostNameTextField.text ||
-                initialJiraUsername != jiraUsernameTextField.text ||
-                initialJiraPassword != jiraPasswordTextField.text ||
-                initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
+            initialEnableDebugMode != enableDebugModeCheckBox.isSelected ||
+            initialJiraHostName != jiraHostNameTextField.text ||
+            initialJiraUsername != jiraUsernameTextField.text ||
+            initialJiraPassword != jiraPasswordTextField.text ||
+            initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {

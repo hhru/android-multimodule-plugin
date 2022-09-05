@@ -9,7 +9,6 @@ import ru.hh.plugins.code_modification.GradleConstants
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
 import ru.hh.plugins.logger.HHLogger
 
-
 /**
  * Try to find Groovy or KTS variant of your file in the module content scope or in project scope.
  * Search gradle files in the following order:
@@ -26,7 +25,7 @@ import ru.hh.plugins.logger.HHLogger
 internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
     when (filename.split(".").lastOrNull()) {
         GradleConstants.GROOVY_EXTENSION -> {
-            val ktsFilename = "${filename}.${GradleConstants.KTS_EXTENSION}"
+            val ktsFilename = "$filename.${GradleConstants.KTS_EXTENSION}"
 
             val moduleGroovyFile = this.findPsiFileByName(filename)
             if (moduleGroovyFile != null) {
@@ -85,7 +84,7 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
         else -> {
             throw IllegalArgumentException(
                 "Wrong file extension for method `Module.searchGradlePsiFile`, " +
-                        "expected `${GradleConstants.GROOVY_EXTENSION}` or `${GradleConstants.KTS_EXTENSION}"
+                    "expected `${GradleConstants.GROOVY_EXTENSION}` or `${GradleConstants.KTS_EXTENSION}"
             )
         }
     }
@@ -100,14 +99,14 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
  */
 private fun Module.findPsiFileInProjectScope(filename: String): PsiFile? {
     val extension = filename.split(".").last()
-    val targetFilePath = "${this.name}/${filename}"
+    val targetFilePath = "${this.name}/$filename"
 
     val (time, result) = measureTimeMillisWithResult {
         FilenameIndex.getAllFilesByExt(project, extension)
             .firstOrNull { it.path.endsWith(targetFilePath) }
             ?.toPsiFile(project)
     }
-    HHLogger.d("Searching in project scope for `${targetFilePath}` consumed $time ms")
+    HHLogger.d("Searching in project scope for `$targetFilePath` consumed $time ms")
 
     return result
 }

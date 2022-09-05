@@ -10,5 +10,4 @@ internal interface WizardDialogBuilder {
     val title: String
 
     fun create(project: Project): ModelWizardDialog
-
 }

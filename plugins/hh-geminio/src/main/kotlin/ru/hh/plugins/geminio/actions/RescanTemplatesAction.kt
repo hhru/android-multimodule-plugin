@@ -33,5 +33,4 @@ class RescanTemplatesAction : AnAction() {
         e.project?.also(ActionsHelper()::createGeminioActions)
         HHNotifications.info("Templates rescanned")
     }
-
 }

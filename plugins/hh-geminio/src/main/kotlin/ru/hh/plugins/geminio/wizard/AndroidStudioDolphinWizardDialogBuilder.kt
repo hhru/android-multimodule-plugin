@@ -24,5 +24,4 @@ internal class AndroidStudioDolphinWizardDialogBuilder(
             .setProject(project)
             .build()
     }
-
 }

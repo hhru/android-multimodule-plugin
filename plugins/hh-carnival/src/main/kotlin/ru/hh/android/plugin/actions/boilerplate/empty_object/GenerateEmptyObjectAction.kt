@@ -26,12 +26,11 @@ class GenerateEmptyObjectAction : KotlinGenerateActionBase() {
 
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
         return targetClass is KtClass &&
-                targetClass.isData() && targetClass.hasNoEmptyObjectDeclaration()
+            targetClass.isData() && targetClass.hasNoEmptyObjectDeclaration()
     }
 
     private fun KtClass.hasNoEmptyObjectDeclaration(): Boolean {
         return companionObjects.firstOrNull()
             ?.findPropertyByName(CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME) == null
     }
-
 }

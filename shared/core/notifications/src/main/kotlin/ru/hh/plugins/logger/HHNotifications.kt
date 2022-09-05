@@ -41,7 +41,6 @@ class HHNotifications private constructor() {
         @Volatile
         private var title: String = ""
 
-
         fun plant(project: Project, notificationsTitle: String) {
             this.project = project
             this.title = notificationsTitle
@@ -75,7 +74,5 @@ class HHNotifications private constructor() {
 
             notification.notify(project)
         }
-
     }
-
 }

@@ -194,7 +194,5 @@ class ConfigureTemplateParametersStepFactory(
         override fun getUnitTestDirectory(packageName: String?): File? {
             return original.getUnitTestDirectory(packageName)
         }
-
     }
-
 }

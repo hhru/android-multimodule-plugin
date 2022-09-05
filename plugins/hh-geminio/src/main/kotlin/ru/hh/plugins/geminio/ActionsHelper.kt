@@ -26,7 +26,6 @@ internal class ActionsHelper {
         const val LOG_DIVIDER = "============"
     }
 
-
     fun createGeminioActions(project: Project) {
         val pluginConfig = GeminioPluginSettings.getConfig(project)
         val pathToConfig = pluginConfig.configFilePath
@@ -69,7 +68,6 @@ internal class ActionsHelper {
         actionManager.removeAllActionsFromGroups(pluginConfig, isModulesTemplates = true)
         actionManager.removeAllActionsFromGroups(pluginConfig, isModulesTemplates = false)
     }
-
 
     private fun createActionsForTemplates(
         project: Project,
@@ -239,7 +237,6 @@ internal class ActionsHelper {
         return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
     }
 
-
     private data class TemplateActionsBundle(
         val templatesNewGroupId: String,
         val templatesGenerateGroupId: String,
@@ -250,5 +247,4 @@ internal class ActionsHelper {
         val hhNewGroup: DefaultActionGroup,
         val hhGenerateGroup: DefaultActionGroup,
     )
-
 }

@@ -13,7 +13,8 @@ internal fun List<String>.toAddGradlePluginsCommand(sectionName: String): Recipe
             message = """
             |Illegal configuration for adding gradle plugin into plugins section, 
             |section should contain at least single value
-            |""".trimMargin()
+            |
+            """.trimMargin()
         )
     }
 

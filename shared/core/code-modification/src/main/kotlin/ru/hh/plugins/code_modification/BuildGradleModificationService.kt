@@ -34,7 +34,7 @@ class BuildGradleModificationService(
         wrapInCommand(isInWriteCommand) {
             val buildGradlePsiFile = module.searchGradlePsiFile(BUILD_GRADLE_FILENAME)
                 ?: throw IllegalStateException(
-                    "Can't find `${BUILD_GRADLE_FILENAME}` or `${BUILD_GRADLE_KTS_FILENAME}` file in ${module.name}"
+                    "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in ${module.name}"
                 )
 
             buildGradlePsiFile.addGradleDependencies(gradleDependencies)
@@ -62,7 +62,7 @@ class BuildGradleModificationService(
 
             if (buildGradlePsiFile == null) {
                 HHLogger.e(
-                    "Can't find `${BUILD_GRADLE_FILENAME}` or `${BUILD_GRADLE_KTS_FILENAME}` file in rootDir ($rootDir)"
+                    "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in rootDir ($rootDir)"
                 )
                 return@wrapInCommand
             }

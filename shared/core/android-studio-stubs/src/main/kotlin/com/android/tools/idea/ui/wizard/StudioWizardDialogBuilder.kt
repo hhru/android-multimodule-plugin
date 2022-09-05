@@ -29,5 +29,4 @@ class StudioWizardDialogBuilder(
     fun build(): ModelWizardDialog {
         throw NotImplementedError(ERROR)
     }
-
 }

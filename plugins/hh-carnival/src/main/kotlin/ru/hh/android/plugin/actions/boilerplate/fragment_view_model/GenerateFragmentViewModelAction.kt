@@ -57,7 +57,7 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
 
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {
         return targetClass is KtClass &&
-                targetClass.toLightClass()?.isInheritedFrom(BASE_FRAGMENT_FQCN) ?: false
+            targetClass.toLightClass()?.isInheritedFrom(BASE_FRAGMENT_FQCN) ?: false
     }
 
     private fun createPsiElements(

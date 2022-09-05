@@ -25,5 +25,4 @@ internal class AndroidStudioChipmunkWizardDialogBuilder(
             .setProject(project)
             .build()
     }
-
 }

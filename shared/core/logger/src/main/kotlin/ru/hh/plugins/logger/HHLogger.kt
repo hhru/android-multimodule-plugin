@@ -50,7 +50,6 @@ class HHLogger private constructor() {
         @Volatile
         private var prefix: String = ""
 
-
         fun plant(project: Project, prefix: String, isDebugEnabled: Boolean) {
             this.project = project
             this.prefix = prefix
@@ -91,7 +90,5 @@ class HHLogger private constructor() {
                 .createNotification(message, type)
                 .notify(project)
         }
-
     }
-
 }
