@@ -15,22 +15,13 @@ import com.intellij.openapi.project.Project
  * <code>
  *      <extensions defaultExtensionNs="com.intellij">
  *          <notificationGroup id="ru.hh.plugins.notifications"
- *              displayType="BALLOON"
- *              key="notifications.group.name"/>
+ *                             displayType="BALLOON" />
  *      <extensions/>
  * </code>
  *
- * 2) Declare messages bundle to use `key` in `notificationGroup` in `plugin.xml`:
+ * 2) Init `HHNotifications` with `Project` somewhere, e.g. in `postStartupActivity`.
  *
- * <code>
- *     <resource-bundle>messages.PluginBundle</resource-bundle>
- * </code>
- *
- * There you should declare `notifications.group.name` key to set up GroupId for event log's notifications.
- *
- * 3) Init `HHNotifications` with `Project` somewhere, e.g. in `postStartupActivity`.
- *
- * 4) Use `HHNotifications` every time you need to show balloon notifications:
+ * 3) Use `HHNotifications` every time you need to show balloon notifications:
  *
  * <code>
  *     HHNotifications.info("message info")
@@ -46,6 +37,7 @@ class HHNotifications private constructor() {
 
         @Volatile
         private var project: Project? = null
+
         @Volatile
         private var title: String = ""
 

@@ -33,16 +33,12 @@
 
         <!-- Notifications -->
         <notificationGroup id="ru.hh.plugins.notifications"
-                           displayType="BALLOON"
-                           key="notification.group.name"/>
+                           displayType="BALLOON"/>
 
         <!-- Logger -->
         <notificationGroup id="ru.hh.plugins.logger"
-                           displayType="BALLOON"
-                           key="notification.group.name"/>
+                           displayType="NONE"/>
     </extensions>
-
-    <resource-bundle>messages.PluginBundle</resource-bundle>
 
     <actions>
         <!-- Add your actions here -->

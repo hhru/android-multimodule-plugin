@@ -18,7 +18,7 @@ class CarnivalStartupActivity : StartupActivity {
 
     private fun setupLogger(project: Project) {
         val config = PluginConfig.getInstance(project)
-        HHLogger.plant(project, config.isDebugEnabled)
+        HHLogger.plant(project, "CarnivalLog", config.isDebugEnabled)
     }
 
     private fun setupNotifications(project: Project) {

@@ -18,7 +18,7 @@ class GarconStartupActivity : StartupActivity {
 
     private fun setupLogger(project: Project) {
         val garconConfig = GarconPluginSettings.getConfig(project)
-        HHLogger.plant(project, garconConfig.isDebugEnabled)
+        HHLogger.plant(project, "GarconLog", garconConfig.isDebugEnabled)
     }
 
     private fun setupNotifications(project: Project) {

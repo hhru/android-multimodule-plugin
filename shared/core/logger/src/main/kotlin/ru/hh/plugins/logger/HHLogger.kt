@@ -1,6 +1,5 @@
 package ru.hh.plugins.logger
 
-import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.diagnostic.Logger
@@ -22,22 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean
  * <code>
  *      <extensions defaultExtensionNs="com.intellij">
  *          <notificationGroup id="ru.hh.plugins.logger"
- *              displayType="BALLOON"
- *              key="logger.group.name"/>
+ *                             displayType="NONE" />
  *      <extensions/>
  * </code>
  *
- * 2) Declare messages bundle to use `key` in `notificationGroup` in `plugin.xml`:
+ * 2) Init `HHLogger` with `Project` somewhere, e.g. in `postStartupActivity`.
  *
- * <code>
- *     <resource-bundle>messages.PluginBundle</resource-bundle>
- * </code>
- *
- * There you should declare `logger.group.name` key to set up GroupId for event log's notifications.
- *
- * 3) Init `HHLogger` with `Project` somewhere, e.g. in `postStartupActivity`.
- *
- * 4) Use `HHLogger` every time you need to log something.
+ * 3) Use `HHLogger` every time you need to log something.
  *
  * <code>
  *     HHLogger.d("message debug")
@@ -57,9 +47,13 @@ class HHLogger private constructor() {
         @Volatile
         private var project: Project? = null
 
+        @Volatile
+        private var prefix: String = ""
 
-        fun plant(project: Project, isDebugEnabled: Boolean) {
+
+        fun plant(project: Project, prefix: String, isDebugEnabled: Boolean) {
             this.project = project
+            this.prefix = prefix
             this.isDebugEnabled.set(isDebugEnabled)
         }
 
@@ -68,45 +62,36 @@ class HHLogger private constructor() {
         }
 
         fun d(message: String) {
-            println(message)
+            println("$prefix [DEBUG] $message")
             ideaLogger.debug(message)
             if (isDebugEnabled.get()) {
-                val notification = getLoggerNotification(message, NotificationType.INFORMATION)
-                sendToEventLog(notification)
+                sendToEventLog(message, NotificationType.INFORMATION)
             }
         }
 
         fun i(message: String) {
-            println("[INFO] $message")
+            println("$prefix [INFO] $message")
             ideaLogger.info(message)
             if (isDebugEnabled.get()) {
-                val notification = getLoggerNotification(message, NotificationType.INFORMATION)
-                sendToEventLog(notification)
+                sendToEventLog(message, NotificationType.INFORMATION)
             }
         }
 
         fun e(message: String) {
-            println("[ERROR] $message")
+            println("$prefix [ERROR] $message")
             ideaLogger.error(message)
             if (isDebugEnabled.get()) {
-                val notification = getLoggerNotification(message, NotificationType.ERROR)
-                sendToEventLog(notification)
+                sendToEventLog(message, NotificationType.ERROR)
             }
         }
 
-
-        private fun sendToEventLog(notification: Notification) {
-            notification.notify(project)
-            notification.balloon?.hide()
-        }
-
-        private fun getLoggerNotification(message: String, type: NotificationType): Notification {
-            return NotificationGroupManager.getInstance()
+        private fun sendToEventLog(message: String, type: NotificationType) {
+            NotificationGroupManager.getInstance()
                 .getNotificationGroup(GROUP_ID)
                 .createNotification(message, type)
+                .notify(project)
         }
 
     }
-
 
 }

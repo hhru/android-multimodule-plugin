@@ -75,7 +75,7 @@ class GeminioStartupActivity : StartupActivity {
 
     private fun setupLogger(project: Project) {
         val garconConfig = GeminioPluginSettings.getConfig(project)
-        HHLogger.plant(project, garconConfig.isDebugEnabled)
+        HHLogger.plant(project, "GeminioLog", garconConfig.isDebugEnabled)
     }
 
     private fun setupNotifications(project: Project) {
