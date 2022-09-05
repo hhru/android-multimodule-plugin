@@ -63,7 +63,8 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         data class LocalIde(
             override val pluginsNames: List<String>,
             val pathToIde: String,
-            // Для локальной версии Android Studio надо указывать версию компилятора для IntelliJInstrumentCodeTask
+            // For the local version of Android Studio,
+            // you must specify the compiler version for IntelliJInstrumentCodeTask (look into `About` screen)
             val compilerVersion: String
         ) : Product()
 

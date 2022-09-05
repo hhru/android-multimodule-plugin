@@ -10,7 +10,7 @@ plugins {
     id("org.jetbrains.changelog")
 }
 
-fun properties(key: String) = project.findProperty(key).toString()
+fun properties(key: String): String = project.findProperty(key)?.toString().orEmpty()
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
@@ -33,7 +33,12 @@ configure<ChangelogPluginExtension> {
 tasks.withType<PatchPluginXmlTask> {
     version.set(properties("pluginVersion"))
     sinceBuild.set(properties("pluginSinceBuild"))
-    untilBuild.set(properties("pluginUntilBuild"))
+    val pluginUntilBuild = properties("pluginUntilBuild")
+    if (pluginUntilBuild.isNotBlank()) {
+        untilBuild.set(pluginUntilBuild)
+    } else {
+        println("Skip setup of `untilBuild` property")
+    }
 
     // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
     pluginDescription.set(
@@ -64,4 +69,5 @@ tasks.getByName<Zip>("buildPlugin") {
 
 tasks.getByName<RunIdeTask>("runIde") {
     maxHeapSize = "4g"
+    minHeapSize = "4g"
 }

@@ -60,6 +60,7 @@ include(":shared:core:models")
 include(":shared:core:psi-utils")
 include(":shared:core:logger")
 include(":shared:core:notifications")
+include(":shared:core:android-studio-stubs")
 // endregion
 
 // region Shared features

@@ -18,6 +18,14 @@ dependencies {
     implementation(project(":shared:core:logger"))
     implementation(project(":shared:core:notifications"))
 
+    /**
+     * IMPORTANT NOTE!
+     *
+     * Here added `compileOnly` with special purpose:
+     * we need to compile our plugin even if there is no some classes in runtime of Android Studio.
+     */
+    compileOnly(project(":shared:core:android-studio-stubs"))
+
     // Feature modules
     implementation(project(":shared:feature:geminio-sdk"))
 

@@ -1,7 +1,6 @@
 package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
-import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -16,6 +15,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
+import ru.hh.plugins.geminio.wizard.StudioWizardDialogFactory
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
@@ -105,9 +105,9 @@ class ExecuteGeminioTemplateAction(
             })
         }
 
-        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
-            .setProject(project)
-            .build()
+        val dialog = StudioWizardDialogFactory.getWizardBuilder(wizard, WIZARD_TITLE)
+            .create(project)
+
         dialog.show()
     }
 
