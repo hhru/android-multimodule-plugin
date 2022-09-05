@@ -12,8 +12,8 @@ import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplat
 import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
-import ru.hh.plugins.geminio.services.balloonError
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import java.io.File
 
 internal class ActionsHelper {
@@ -43,7 +43,7 @@ internal class ActionsHelper {
 
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
             val error = "Geminio's config is not valid (may be not configured at all) -> no need to create actions"
-            project.balloonError(message = error, action = SetupGeminioConfigAction())
+            HHNotifications.error(message = error, action = SetupGeminioConfigAction())
             HHLogger.d("\t$error")
             return
         }

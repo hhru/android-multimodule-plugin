@@ -5,7 +5,6 @@ pluginManagement {
         maven("https://packages.atlassian.com/maven/repository/public")
     }
 
-    @Suppress("UnstableApiUsage")
     fun systemProperty(name: String): Provider<String> {
         return providers.systemProperty(name).forUseAtConfigurationTime()
     }
@@ -60,6 +59,7 @@ include(":shared:core:code-modification")
 include(":shared:core:models")
 include(":shared:core:psi-utils")
 include(":shared:core:logger")
+include(":shared:core:notifications")
 // endregion
 
 // region Shared features

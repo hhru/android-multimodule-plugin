@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.idea.actions.generate.KotlinGenerateActionBase
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService
-import ru.hh.android.plugin.utils.notifyInfo
+import ru.hh.plugins.logger.HHNotifications
 
 class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
 
@@ -15,7 +15,7 @@ class GenerateSerializedNameAnnotationsAction : KotlinGenerateActionBase() {
         (getTargetClass(editor, file) as? KtClass)?.let { targetClass ->
             SerializedNameAnnotationsGeneratorService.getInstance(project)
                 .addSerializedNameAnnotationsIntoClass(targetClass)
-            project.notifyInfo("@SerializedName annotations successfully generated!")
+            HHNotifications.info("@SerializedName annotations successfully generated!")
         }
     }
 

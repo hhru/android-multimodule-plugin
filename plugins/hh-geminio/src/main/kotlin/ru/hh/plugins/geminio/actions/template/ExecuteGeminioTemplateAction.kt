@@ -15,10 +15,9 @@ import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
-import ru.hh.plugins.geminio.services.balloonError
-import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import kotlin.system.measureTimeMillis
 
@@ -83,14 +82,14 @@ class ExecuteGeminioTemplateAction(
                     super.onWizardFinished(result)
 
                     if (result.isFinished.not()) {
-                        project.balloonError(message = "User closed Geminio Template Wizard")
+                        HHNotifications.error(message = "User closed Geminio Template Wizard")
                         return
                     }
 
                     applyShortenReferencesAndCodeStyle()
 
                     project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
-                    project.balloonInfo(message = "Finished '$actionText' template execution")
+                    HHNotifications.info(message = "Finished '$actionText' template execution")
                 }
 
                 private fun applyShortenReferencesAndCodeStyle() {

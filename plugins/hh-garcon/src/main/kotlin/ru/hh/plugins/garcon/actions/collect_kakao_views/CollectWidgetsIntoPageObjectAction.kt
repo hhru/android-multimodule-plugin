@@ -14,8 +14,7 @@ import ru.hh.plugins.actions.XmlLayoutCodeInsightAction
 import ru.hh.plugins.extensions.openapi.executeWithoutCodeStyle
 import ru.hh.plugins.garcon.extensions.psi.collectAndroidViewsTagsInfo
 import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
-import ru.hh.plugins.garcon.services.balloonError
-import ru.hh.plugins.garcon.services.balloonInfo
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.psi_utils.openInEditor
 
@@ -32,7 +31,7 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
         if (dialog.isOK) {
             handleDialogParams(dialog.getDialogResult())
         } else {
-            project.balloonError(message = "Collect widgets into Page object dialog dismissed")
+            HHNotifications.error(message = "Collect widgets into Page object dialog dismissed")
         }
     }
 
@@ -62,7 +61,7 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
             if (params.openInEditor) {
                 params.targetClass.containingKtFile.openInEditor()
             }
-            project.balloonInfo(message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished")
+            HHNotifications.info(message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished")
         }
     }
 

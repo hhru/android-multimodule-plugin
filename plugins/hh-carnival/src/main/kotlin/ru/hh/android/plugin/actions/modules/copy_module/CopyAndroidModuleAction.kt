@@ -30,13 +30,12 @@ import ru.hh.android.plugin.extensions.moduleParentPsiDirectory
 import ru.hh.android.plugin.extensions.packageName
 import ru.hh.android.plugin.extensions.relativePathToParent
 import ru.hh.android.plugin.extensions.rootPsiDirectory
-import ru.hh.android.plugin.utils.notifyError
-import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.openapi.isAndroidLibraryModule
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import kotlin.system.measureTimeMillis
@@ -67,7 +66,7 @@ class CopyAndroidModuleAction : AnAction() {
         dialog.show()
 
         if (dialog.isOK.not()) {
-            project.notifyError("Module copying cancelled")
+            HHNotifications.error("Module copying cancelled")
             return
         }
 
@@ -99,7 +98,7 @@ class CopyAndroidModuleAction : AnAction() {
                         )
 
                     project.showSyncQuestionDialog(syncPerformedActionEvent = actionData.actionEvent)
-                    project.notifyInfo("Module \"${newModuleParams.moduleToCopy.name}\" successfully copied!")
+                    HHNotifications.info("Module \"${newModuleParams.moduleToCopy.name}\" successfully copied!")
                 }
             }
         }
@@ -242,12 +241,12 @@ class CopyAndroidModuleAction : AnAction() {
         val parentFolder = moduleToCopy.moduleParentPsiDirectory
         when {
             parentFolder == null -> {
-                project.notifyError("No parent folder for module \"${moduleToCopy.name}\" found")
+                HHNotifications.error("No parent folder for module \"${moduleToCopy.name}\" found")
                 return false
             }
 
             parentFolder.canCreateSubdirectory(newModuleName).not() -> {
-                project.notifyError("Can't create new module folder (with name: \"${newModuleName}\")")
+                HHNotifications.error("Can't create new module folder (with name: \"${newModuleName}\")")
                 return false
             }
         }

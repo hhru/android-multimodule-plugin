@@ -16,8 +16,7 @@ import ru.hh.plugins.garcon.extensions.psi.collectAndroidViewsTagsInfo
 import ru.hh.plugins.garcon.model.AndroidViewTagInfo
 import ru.hh.plugins.garcon.services.FreeMarkerWrapper
 import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
-import ru.hh.plugins.garcon.services.balloonError
-import ru.hh.plugins.garcon.services.balloonInfo
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.psi_utils.openInEditor
 
@@ -38,7 +37,7 @@ class CreateScreenPageObjectAction : XmlLayoutCodeInsightAction() {
         if (dialog.isOK) {
             handleDialogResult(dialog.getDialogResult())
         } else {
-            project.balloonError(message = "Screen Page object dialog dismissed")
+            HHNotifications.error(message = "Screen Page object dialog dismissed")
         }
     }
 
@@ -86,7 +85,7 @@ class CreateScreenPageObjectAction : XmlLayoutCodeInsightAction() {
             if (result.openInEditor) {
                 createdFile.openInEditor()
             }
-            project.balloonInfo(message = "Screen Page object '${result.className}' successfully created")
+            HHNotifications.info(message = "Screen Page object '${result.className}' successfully created")
         }
     }
 

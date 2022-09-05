@@ -7,6 +7,7 @@ import com.intellij.openapi.wm.WindowManager
 import ru.hh.plugins.geminio.ActionsHelper
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.util.concurrent.atomic.AtomicReference
@@ -23,6 +24,7 @@ class GeminioStartupActivity : StartupActivity {
     override fun runActivity(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
             setupLogger(project)
+            setupNotifications(project)
 
             HHLogger.d("Begin startup activity")
 
@@ -74,6 +76,10 @@ class GeminioStartupActivity : StartupActivity {
     private fun setupLogger(project: Project) {
         val garconConfig = GeminioPluginSettings.getConfig(project)
         HHLogger.plant(project, garconConfig.isDebugEnabled)
+    }
+
+    private fun setupNotifications(project: Project) {
+        HHNotifications.plant(project)
     }
 
 }

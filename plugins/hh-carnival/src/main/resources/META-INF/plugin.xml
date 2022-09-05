@@ -76,7 +76,6 @@
         <!-- endregion -->
 
         <!-- region Plugin services -->
-        <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService
@@ -131,6 +130,11 @@
                 order="first"
                 implementationClass="ru.hh.android.plugin.completions.XmlDeprecatedCompletionContributor"/>
         <!-- endregion -->
+
+        <!-- Notifications -->
+        <notificationGroup id="ru.hh.plugins.notifications"
+                           displayType="BALLOON"
+                           key="notification.group.name"/>
 
         <!-- Logger -->
         <notificationGroup id="ru.hh.plugins.logger"

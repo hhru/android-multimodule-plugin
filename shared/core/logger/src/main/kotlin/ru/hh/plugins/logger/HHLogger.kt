@@ -17,15 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * To use in plugins you need:
  *
- * 1) Declare notification group and logger service as extensions points in `plugin.xml`:
+ * 1) Declare notification group as extension in `plugin.xml`:
  *
  * <code>
  *      <extensions defaultExtensionNs="com.intellij">
  *          <notificationGroup id="ru.hh.plugins.logger"
  *              displayType="BALLOON"
  *              key="logger.group.name"/>
- *
- *          <projectService serviceImplementation="ru.hh.plugins.logger.HHLogger"/>
  *      <extensions/>
  * </code>
  *
@@ -35,9 +33,11 @@ import java.util.concurrent.atomic.AtomicBoolean
  *     <resource-bundle>messages.PluginBundle</resource-bundle>
  * </code>
  *
- * There you should declare `logger.group.name` key to setup GroupId for event log's notifications.
+ * There you should declare `logger.group.name` key to set up GroupId for event log's notifications.
  *
- * 3) Use `HHLogger` every time you need to log something.
+ * 3) Init `HHLogger` with `Project` somewhere, e.g. in `postStartupActivity`.
+ *
+ * 4) Use `HHLogger` every time you need to log something.
  *
  * <code>
  *     HHLogger.d("message debug")

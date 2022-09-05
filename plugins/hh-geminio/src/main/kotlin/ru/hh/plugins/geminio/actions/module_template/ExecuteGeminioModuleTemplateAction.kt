@@ -17,11 +17,10 @@ import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
-import ru.hh.plugins.geminio.services.balloonError
-import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
@@ -104,7 +103,7 @@ class ExecuteGeminioModuleTemplateAction(
                 super.onWizardFinished(result)
 
                 if (result.isFinished.not()) {
-                    project.balloonError(message = "User closed Geminio Module Template Wizard")
+                    HHNotifications.error(message = "User closed Geminio Module Template Wizard")
                     return
                 }
 
@@ -131,14 +130,14 @@ class ExecuteGeminioModuleTemplateAction(
                     }
 
                     project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
-                    project.balloonInfo(message = "Finished '$actionText' module template execution")
+                    HHNotifications.info(message = "Finished '$actionText' module template execution")
                 } catch (ex: Exception) {
                     ex.printStackTrace()
 
                     dialog.disposeIfNeeded()
                     dialog.close(1)
 
-                    project.balloonError(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
+                    HHNotifications.error(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
                     throw ex
                 }
             }

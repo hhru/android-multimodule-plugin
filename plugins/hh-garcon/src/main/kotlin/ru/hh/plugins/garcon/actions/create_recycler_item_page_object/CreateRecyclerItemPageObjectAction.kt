@@ -15,8 +15,7 @@ import ru.hh.plugins.garcon.extensions.psi.collectAndroidViewsTagsInfo
 import ru.hh.plugins.garcon.model.AndroidViewTagInfo
 import ru.hh.plugins.garcon.services.FreeMarkerWrapper
 import ru.hh.plugins.garcon.services.PageObjectPropertyConverter
-import ru.hh.plugins.garcon.services.balloonError
-import ru.hh.plugins.garcon.services.balloonInfo
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 import ru.hh.plugins.psi_utils.openInEditor
 
@@ -33,7 +32,7 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
         if (dialog.isOK) {
             handleDialogResult(dialog.getDialogResult())
         } else {
-            project.balloonError(message = "RecyclerItem Page object dialog dismissed")
+            HHNotifications.error(message = "RecyclerItem Page object dialog dismissed")
         }
     }
 
@@ -78,7 +77,7 @@ class CreateRecyclerItemPageObjectAction : XmlLayoutCodeInsightAction() {
             if (result.openInEditor) {
                 result.targetClass.containingKtFile.openInEditor()
             }
-            project.balloonInfo(message = "RecyclerItem Page object '${result.className}' successfully created")
+            HHNotifications.info(message = "RecyclerItem Page object '${result.className}' successfully created")
         }
     }
 
