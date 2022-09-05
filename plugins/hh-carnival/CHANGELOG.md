@@ -1,8 +1,12 @@
 # Carnival
 
+## [1.2.0]
+### Added
+- Support compilation for Android Studio Dolphin | 2021.3.1
+
 ## [1.1.7]
 ### Added
-- Support for Android Studio Chipmunk | 2022.2.1
+- Support for Android Studio Chipmunk | 2021.2.1
 
 ## [1.1.6]
 ### Added

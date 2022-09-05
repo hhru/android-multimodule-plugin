@@ -1,8 +1,12 @@
 # Garcon
 
+## [1.1.0]
+### Added
+- Support compilation for Android Studio Dolphin | 2021.3.1
+
 ## [1.0.4]
 ### Added
-- Support for Android Studio Chipmunk | 2022.2.1
+- Support for Android Studio Chipmunk | 2021.2.1
 
 ## [1.0.3]
 ### Added

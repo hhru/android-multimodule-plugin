@@ -1,5 +1,15 @@
 # Geminio
 
+## [1.3.0]
+### Added
+- Support for Android Studio Dolphin | 2021.3.1 (thanks to @IlyaGulya)
+- Added "Enable debug mode" checkbox in settings
+- Optional Gradle sync after creating files from templates
+
+### Fixed
+- Fixed some problems on Android Studio Chipmunk Patch 2 | 2021.2.1
+- Fixed too many templates rescan
+
 ## [1.2.0]
 ### Added
 - Sync dialog after creating templates
@@ -14,7 +24,7 @@
 
 ## [1.1.11]
 ### Added
-- Support for Android Studio Chipmunk | 2022.2.1
+- Support for Android Studio Chipmunk | 2021.2.1
 
 ## [1.1.10]
 ### Added
