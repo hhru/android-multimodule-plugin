@@ -9,6 +9,7 @@ import ru.hh.android.plugin.config.JiraSettingsConfig
 import ru.hh.android.plugin.config.PluginConfig
 import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.android.plugin.core.model.jira.JiraSettings
+import ru.hh.plugins.logger.HHLogger
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JPasswordField
@@ -31,7 +32,7 @@ class PluginConfigEditor(
         fun newInstance(pluginConfig: PluginConfig, jiraSettings: JiraSettings): PluginConfigEditor {
             return PluginConfigEditor(
                 initialPluginFolderDirPath = pluginConfig.pluginFolderDirPath,
-                initialEnableDebugMode = pluginConfig.isDebugModeEnabled,
+                initialEnableDebugMode = pluginConfig.isDebugEnabled,
                 initialJiraHostName = jiraSettings.hostName,
                 initialJiraUsername = jiraSettings.username,
                 initialJiraPassword = jiraSettings.password,
@@ -101,16 +102,16 @@ class PluginConfigEditor(
 
     fun isModified(): Boolean {
         return initialPluginFolderDirPath != pluginFolderDirPathTextField.text ||
-            initialEnableDebugMode != enableDebugModeCheckBox.isSelected ||
-            initialJiraHostName != jiraHostNameTextField.text ||
-            initialJiraUsername != jiraUsernameTextField.text ||
-            initialJiraPassword != jiraPasswordTextField.text ||
-            initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
+                initialEnableDebugMode != enableDebugModeCheckBox.isSelected ||
+                initialJiraHostName != jiraHostNameTextField.text ||
+                initialJiraUsername != jiraUsernameTextField.text ||
+                initialJiraPassword != jiraPasswordTextField.text ||
+                initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {
         pluginConfig.pluginFolderDirPath = pluginFolderDirPathTextField.text
-        pluginConfig.isDebugModeEnabled = enableDebugModeCheckBox.isSelected
+        pluginConfig.isDebugEnabled = enableDebugModeCheckBox.isSelected
         pluginConfig.jiraDevelopmentTeam =
             JiraDevelopmentTeam.fromLabel(jiraDevelopmentTeamComboBoxModel.selected.orEmpty())
 
@@ -118,5 +119,7 @@ class PluginConfigEditor(
             writeHostname(jiraHostNameTextField.text)
             loadState(Credentials(jiraUsernameTextField.text, jiraPasswordTextField.text))
         }
+
+        HHLogger.enableDebug(pluginConfig.isDebugEnabled)
     }
 }

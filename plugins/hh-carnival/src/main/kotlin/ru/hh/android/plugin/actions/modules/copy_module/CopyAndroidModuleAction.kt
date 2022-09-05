@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.actions.modules.copy_module
 
-import com.android.tools.idea.gradle.actions.SyncProjectAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
@@ -31,13 +30,13 @@ import ru.hh.android.plugin.extensions.moduleParentPsiDirectory
 import ru.hh.android.plugin.extensions.packageName
 import ru.hh.android.plugin.extensions.relativePathToParent
 import ru.hh.android.plugin.extensions.rootPsiDirectory
-import ru.hh.android.plugin.utils.logDebug
 import ru.hh.android.plugin.utils.notifyError
 import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.openapi.isAndroidLibraryModule
+import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import kotlin.system.measureTimeMillis
@@ -111,7 +110,7 @@ class CopyAndroidModuleAction : AnAction() {
 
         val moduleParentPsiDirectory = params.moduleToCopy.moduleParentPsiDirectory ?: return
         val newModuleRootPsiDirectory = moduleParentPsiDirectory.createSubdirectory(params.newModuleName)
-        project.logDebug("Parent directory for new module created [withName: ${params.newModuleName}]")
+        HHLogger.d("Parent directory for new module created [withName: ${params.newModuleName}]")
 
         copyFilesFromRootDirectory(params, newModuleRootPsiDirectory)
         val dirsStructure = createDirectoriesStructure(params, newModuleRootPsiDirectory)
@@ -123,17 +122,17 @@ class CopyAndroidModuleAction : AnAction() {
     private fun copyFilesFromRootDirectory(params: NewModuleParams, newModulePsiDirectory: PsiDirectory) {
         val project = params.project
 
-        project.logDebug("Start copying files from module from root directory")
+        HHLogger.d("Start copying files from module from root directory")
         val parentFilesCopyTime = measureTimeMillis {
             params.moduleToCopy
                 .rootPsiDirectory
                 ?.files
                 ?.filter { it !is PsiPlainTextFile }
                 ?.map { psiFile ->
-                    project.logDebug("\tFind ${psiFile.name}, start copying...")
+                    HHLogger.d("\tFind ${psiFile.name}, start copying...")
                     psiFile.copyFile().also { newPsiFile ->
                         if (newPsiFile.name == "build.gradle") {
-                            project.logDebug("\tFind build.gradle file, need modification of dependencies block")
+                            HHLogger.d("\tFind build.gradle file, need modification of dependencies block")
                             BuildGradleModificationService.getInstance(project)
                                 .addDepsIntoFile(
                                     psiFile = newPsiFile,
@@ -149,7 +148,7 @@ class CopyAndroidModuleAction : AnAction() {
                 }
                 ?.forEach { newModulePsiDirectory.add(it) }
         }
-        project.logDebug("Successfully copied root directory files [time: $parentFilesCopyTime ms]")
+        HHLogger.d("Successfully copied root directory files [time: $parentFilesCopyTime ms]")
     }
 
     private fun createDirectoriesStructure(
@@ -232,13 +231,13 @@ class CopyAndroidModuleAction : AnAction() {
             }
 
             val project = moduleToCopyMainPackagePsiDirectory.project
-            project.logDebug("Success copying [time: $copyMainPackageTime ms]")
+            HHLogger.d("Success copying [time: $copyMainPackageTime ms]")
         }
     }
 
     private fun NewModuleParams.isValid(): Boolean {
-        project.logDebug("New module name: $newModuleName, package name: $newPackageName")
-        project.logDebug("moduleParentPsiDirectory.path: ${moduleToCopy.moduleParentPsiDirectory?.virtualFile?.path}")
+        HHLogger.d("New module name: $newModuleName, package name: $newPackageName")
+        HHLogger.d("moduleParentPsiDirectory.path: ${moduleToCopy.moduleParentPsiDirectory?.virtualFile?.path}")
 
         val parentFolder = moduleToCopy.moduleParentPsiDirectory
         when {

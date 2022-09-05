@@ -30,7 +30,7 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     var pluginFolderDirPath: String = String.EMPTY
 
     @Attribute
-    var isDebugModeEnabled: Boolean = false
+    var isDebugEnabled: Boolean = false
 
     @Attribute
     var jiraDevelopmentTeam: JiraDevelopmentTeam = JiraDevelopmentTeam.MOBILE_CORE
