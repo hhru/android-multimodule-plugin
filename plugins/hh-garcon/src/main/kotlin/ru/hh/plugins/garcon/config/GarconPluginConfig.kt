@@ -4,7 +4,7 @@ import ru.hh.plugins.extensions.EMPTY
 
 data class GarconPluginConfig(
     var configFilePath: String = String.EMPTY,
-    var enableDebugMode: Boolean = false,
+    var isDebugEnabled: Boolean = false,
     var templatesPaths: TemplatesPaths = TemplatesPaths(),
     var widgetsClassesMap: MutableMap<String, WidgetDescription> = mutableMapOf()
 ) {

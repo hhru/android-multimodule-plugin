@@ -5,6 +5,7 @@ import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.garcon.config.GarconPluginConfig
+import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.views.layouts.fileChooserButton
 import javax.swing.JCheckBox
 import javax.swing.JComponent
@@ -23,7 +24,7 @@ class GarconPluginSettingsEditor(
             return with(settings) {
                 GarconPluginSettingsEditor(
                     initialConfigFilePath = config.configFilePath,
-                    initialEnableDebugMode = config.enableDebugMode,
+                    initialEnableDebugMode = config.isDebugEnabled,
                     initialScreenPageObjectTemplatePath = config.templatesPaths.screenPageObjectTemplatePath,
                     initialRvItemPageObjectTemplatePath = config.templatesPaths.rvItemPageObjectTemplatePath
                 )
@@ -84,7 +85,7 @@ class GarconPluginSettingsEditor(
             config.configFilePath != configFilePathTextField.text ||
                 config.templatesPaths.screenPageObjectTemplatePath != screenPageObjectTemplatePathTextField.text ||
                 config.templatesPaths.rvItemPageObjectTemplatePath != rvItemPageObjectTemplatePathTextField.text ||
-                config.enableDebugMode != enableDebugModeCheckBox.isSelected
+                config.isDebugEnabled != enableDebugModeCheckBox.isSelected
         }
     }
 
@@ -94,15 +95,16 @@ class GarconPluginSettingsEditor(
 
             screenPageObjectTemplatePathTextField.text = settings.config.templatesPaths.screenPageObjectTemplatePath
             rvItemPageObjectTemplatePathTextField.text = settings.config.templatesPaths.rvItemPageObjectTemplatePath
-            enableDebugModeCheckBox.isSelected = settings.config.enableDebugMode
+            enableDebugModeCheckBox.isSelected = settings.config.isDebugEnabled
         } else {
             settings.config = settings.config.copy(
-                enableDebugMode = enableDebugModeCheckBox.isSelected,
+                isDebugEnabled = enableDebugModeCheckBox.isSelected,
                 templatesPaths = GarconPluginConfig.TemplatesPaths(
                     screenPageObjectTemplatePath = screenPageObjectTemplatePathTextField.text,
                     rvItemPageObjectTemplatePath = rvItemPageObjectTemplatePathTextField.text
                 )
             )
+            HHLogger.enableDebug(settings.config.isDebugEnabled)
         }
     }
 }
