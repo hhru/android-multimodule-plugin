@@ -7,11 +7,11 @@ import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
-import ru.hh.plugins.code_modification.utils.searchGradlePsiFile
-import ru.hh.plugins.models.gradle.BuildGradleDependency
-import ru.hh.plugins.utils.notifications.Debug
 import ru.hh.plugins.code_modification.GradleConstants.BUILD_GRADLE_FILENAME
 import ru.hh.plugins.code_modification.GradleConstants.BUILD_GRADLE_KTS_FILENAME
+import ru.hh.plugins.code_modification.utils.searchGradlePsiFile
+import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.models.gradle.BuildGradleDependency
 
 /**
  * Service for adding dependencies into build.gradle files.
@@ -61,7 +61,7 @@ class BuildGradleModificationService(
                 ?: rootDir?.findFile(BUILD_GRADLE_KTS_FILENAME)
 
             if (buildGradlePsiFile == null) {
-                Debug.error(
+                HHLogger.error(
                     "Can't find `${BUILD_GRADLE_FILENAME}` or `${BUILD_GRADLE_KTS_FILENAME}` file in rootDir ($rootDir)"
                 )
                 return@wrapInCommand

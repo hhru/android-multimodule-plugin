@@ -9,7 +9,7 @@ import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 
 fun Module.isAndroidLibraryModule(): Boolean {
     return androidFacet?.configuration?.isLibraryProject ?: false
@@ -38,7 +38,7 @@ fun Module.findPsiFileByName(name: String): PsiFile? {
     val (time, result) = measureTimeMillisWithResult {
         FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
     }
-    Debug.info("Searching for `$name` in ${this.name} content scope consumed $time ms")
+    HHLogger.d("Searching for `$name` in ${this.name} content scope consumed $time ms")
 
     return result
 }

@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":shared:core:code-modification"))
     implementation(project(":shared:core:models"))
     implementation(project(":shared:core:psi-utils"))
+    implementation(project(":shared:core:logger"))
 
     // Feature modules
     implementation(project(":shared:feature:geminio-sdk"))

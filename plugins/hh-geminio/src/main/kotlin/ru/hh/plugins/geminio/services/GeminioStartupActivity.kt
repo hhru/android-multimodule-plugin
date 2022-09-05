@@ -5,7 +5,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import com.intellij.openapi.wm.WindowManager
 import ru.hh.plugins.geminio.ActionsHelper
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
+import ru.hh.plugins.logger.HHLogger
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.util.concurrent.atomic.AtomicReference
@@ -21,14 +22,16 @@ class GeminioStartupActivity : StartupActivity {
 
     override fun runActivity(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
-            Debug.info("Begin startup activity")
+            setupLogger(project)
+
+            HHLogger.d("Begin startup activity")
 
             rescanTemplateActions(project)
 
             windowListener = createWindowListener(project)
             getCurrentFrame(project)?.addWindowListener(windowListener)
 
-            Debug.info("End startup activity")
+            HHLogger.d("End startup activity")
         }
     }
 
@@ -53,10 +56,10 @@ class GeminioStartupActivity : StartupActivity {
             override fun windowActivated(e: WindowEvent?) {
                 val lastProject = lastViewedProject.get()
                 if (lastProject != project) {
-                    Debug.info("Project changed -> rescan Geminio's actions [old project name: `${lastProject.name}`, new project.name: `${project.name}`]")
+                    HHLogger.d("Project changed -> rescan Geminio's actions [old project name: `${lastProject.name}`, new project.name: `${project.name}`]")
                     rescanTemplateActions(project)
                 } else {
-                    Debug.info("Activated project is the same as previous -> no need to rescan Geminio's actions [project.name: `${project.name}`]")
+                    HHLogger.d("Activated project is the same as previous -> no need to rescan Geminio's actions [project.name: `${project.name}`]")
                 }
             }
 
@@ -66,6 +69,11 @@ class GeminioStartupActivity : StartupActivity {
             override fun windowOpened(e: WindowEvent?) = Unit
             override fun windowClosing(e: WindowEvent?) = Unit
         }
+    }
+
+    private fun setupLogger(project: Project) {
+        val garconConfig = GeminioPluginSettings.getConfig(project)
+        HHLogger.plant(project, garconConfig.isDebugEnabled)
     }
 
 }

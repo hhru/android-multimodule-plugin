@@ -17,7 +17,20 @@
                 groupId="appearance"
                 instance="ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"/>
         <!-- endregion -->
+
+        <!-- Notifications -->
+        <notificationGroup id="ru.hh.plugins.notifications"
+                           displayType="BALLOON"
+                           key="notification.group.name"/>
+
+        <!-- Logger -->
+        <notificationGroup id="ru.hh.plugins.logger"
+                           displayType="BALLOON"
+                           key="notification.group.name"/>
+
     </extensions>
+
+    <resource-bundle>messages.PluginBundle</resource-bundle>
 
     <actions>
         <!-- Templates -->

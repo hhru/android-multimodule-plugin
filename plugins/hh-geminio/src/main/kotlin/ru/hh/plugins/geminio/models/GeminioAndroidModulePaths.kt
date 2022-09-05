@@ -2,7 +2,7 @@ package ru.hh.plugins.geminio.models
 
 import com.android.tools.idea.projectsystem.AndroidModulePaths
 import ru.hh.plugins.extensions.toSlashedFilePath
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 /**
@@ -88,6 +88,6 @@ class GeminioAndroidModulePaths(
         }
 
     private fun log(message: String) {
-        Debug.info("[$LOG_TAG]: $message")
+        HHLogger.d("[$LOG_TAG]: $message")
     }
 }

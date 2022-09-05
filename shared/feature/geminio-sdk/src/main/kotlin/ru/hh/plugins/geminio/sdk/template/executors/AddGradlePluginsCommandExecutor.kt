@@ -5,15 +5,15 @@ import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 
 internal fun RecipeExecutor.execute(
     command: RecipeCommand.AddGradlePlugins,
     executorData: GeminioRecipeExecutorData
 ) {
-    Debug.info("AddGradlePlugins command [$command], isDryRun: ${executorData.isDryRun}")
+    HHLogger.d("AddGradlePlugins command [$command], isDryRun: ${executorData.isDryRun}")
     if (executorData.isDryRun) {
-        Debug.info("\tExecute only when isDryRun == true")
+        HHLogger.d("\tExecute only when isDryRun == true")
 
         val rootDir = executorData.moduleTemplateData.rootDir.toPsiDirectory(executorData.project)
 

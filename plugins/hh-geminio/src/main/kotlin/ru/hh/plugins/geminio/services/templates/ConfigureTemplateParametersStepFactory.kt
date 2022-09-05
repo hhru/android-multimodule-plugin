@@ -18,7 +18,7 @@ import ru.hh.plugins.extensions.toSlashedFilePath
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioConfigureTemplateStepModel
 import ru.hh.plugins.geminio.services.StubProjectSyncInvoker
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 class ConfigureTemplateParametersStepFactory(
@@ -148,7 +148,7 @@ class ConfigureTemplateParametersStepFactory(
         return if (firstNamedModuleTemplate.paths.getAidlDirectory("stub.package") != null) {
             originalModuleTemplates
         } else {
-            Debug.info("There is no AIDL directory in original module template -> create stub module path module")
+            HHLogger.d("There is no AIDL directory in original module template -> create stub module path module")
             /**
              * Sometimes after fetching module templates information from [org.jetbrains.android.facet.AndroidFacet]
              * there is no information about AIDL sources directory.

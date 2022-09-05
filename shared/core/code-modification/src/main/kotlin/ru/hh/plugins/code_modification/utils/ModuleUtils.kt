@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
 import ru.hh.plugins.code_modification.GradleConstants
 import ru.hh.plugins.extensions.openapi.findPsiFileByName
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 
 
 /**
@@ -33,7 +33,7 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
                 return moduleGroovyFile
             }
 
-            Debug.info("searchGradlePsiFile -> didn't find $filename in ${this.name} --> try to find KTS variant")
+            HHLogger.d("searchGradlePsiFile -> didn't find $filename in ${this.name} --> try to find KTS variant")
             val moduleKtsFile = this.findPsiFileByName(ktsFilename)
             if (moduleKtsFile != null) {
                 return moduleKtsFile
@@ -45,7 +45,7 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
              * From Android Studio Chipmunk Patch 2 sometimes searching in module content scope is not enough, so we
              * expand searching through module's project - it can be time-consuming, so be patient.
              */
-            Debug.info(
+            HHLogger.d(
                 "searchGradlePsiFile -> didn't find $ktsFilename in $${this.name} --> try to search in project scope"
             )
             val projectGroovyFile = this.findPsiFileInProjectScope(filename)
@@ -53,10 +53,10 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
                 return projectGroovyFile
             }
 
-            Debug.info("searchGradlePsiFile -> didn't find $filename in project --> try to find KTS variant")
+            HHLogger.d("searchGradlePsiFile -> didn't find $filename in project --> try to find KTS variant")
             val projectKtsFile = this.findPsiFileInProjectScope(ktsFilename)
             if (projectKtsFile == null) {
-                Debug.info("searchGradlePsiFile -> didn't find $ktsFilename in project")
+                HHLogger.d("searchGradlePsiFile -> didn't find $ktsFilename in project")
             }
 
             return projectKtsFile
@@ -74,10 +74,10 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
              * From Android Studio Chipmunk Patch 2 sometimes searching in module content scope is not enough, so we
              * expand searching through module's project - it can be time-consuming, so be patient.
              */
-            Debug.info("searchGradlePsiFile -> didn't find $filename in ${this.name} --> try to search in project")
+            HHLogger.d("searchGradlePsiFile -> didn't find $filename in ${this.name} --> try to search in project")
             val projectKtsFile = this.findPsiFileInProjectScope(filename)
             if (projectKtsFile == null) {
-                Debug.info("searchGradlePsiFile -> didn't find $filename in project")
+                HHLogger.d("searchGradlePsiFile -> didn't find $filename in project")
             }
             return projectKtsFile
         }
@@ -107,7 +107,7 @@ private fun Module.findPsiFileInProjectScope(filename: String): PsiFile? {
             .firstOrNull { it.path.endsWith(targetFilePath) }
             ?.toPsiFile(project)
     }
-    Debug.info("Searching in project scope for `${targetFilePath}` consumed $time ms")
+    HHLogger.d("Searching in project scope for `${targetFilePath}` consumed $time ms")
 
     return result
 }

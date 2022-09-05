@@ -7,7 +7,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager
 import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
-import ru.hh.plugins.utils.notifications.Debug
+import ru.hh.plugins.logger.HHLogger
 
 /**
  * You can use this method for adding code without applying code style.
@@ -44,7 +44,8 @@ fun Project.getLibrariesModules(): List<Module> {
 fun Project.getRootModule(): Module {
     val moduleManager = ModuleManager.getInstance(this)
     val modules = moduleManager.modules.toList()
-    Debug.info("""
+    HHLogger.d(
+        """
         Project.getRootModule
         
         this: $this
@@ -53,18 +54,19 @@ fun Project.getRootModule(): Module {
         this.basePath: ${this.basePath}
         this.isInitialized: ${this.isInitialized}
         this.isOpen: ${this.isOpen}
-    """.trimIndent())
+    """.trimIndent()
+    )
 
     val modulesNames = modules.joinToString(separator = "\n") { it.name }
 
-    Debug.info("===== Modules names ===== ")
-    Debug.info(modulesNames)
+    HHLogger.d("===== Modules names ===== ")
+    HHLogger.d(modulesNames)
 
     val rootModule = modules.firstOrNull {
         it.name == this.name || it.name == this.name.replace(Char.SPACE, Char.UNDERSCORE)
     }
 
-    Debug.info("rootModule == $rootModule")
+    HHLogger.d("rootModule == $rootModule")
 
     return rootModule!!
 }
