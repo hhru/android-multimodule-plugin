@@ -22,6 +22,7 @@ import ru.hh.plugins.logger.HHLogger
  *
  * @param filename - filename of your gradle file with extension (e.g. "build.gradle" / "settings.gradle.kts" / etc)
  */
+@Suppress("detekt.LongMethod", "detekt.LongMethod")
 internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
     when (filename.split(".").lastOrNull()) {
         GradleConstants.GROOVY_EXTENSION -> {
@@ -84,7 +85,7 @@ internal fun Module.searchGradlePsiFile(filename: String): PsiFile? {
         else -> {
             throw IllegalArgumentException(
                 "Wrong file extension for method `Module.searchGradlePsiFile`, " +
-                    "expected `${GradleConstants.GROOVY_EXTENSION}` or `${GradleConstants.KTS_EXTENSION}"
+                        "expected `${GradleConstants.GROOVY_EXTENSION}` or `${GradleConstants.KTS_EXTENSION}"
             )
         }
     }
