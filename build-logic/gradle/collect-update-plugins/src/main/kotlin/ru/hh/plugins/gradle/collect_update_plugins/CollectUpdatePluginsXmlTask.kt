@@ -42,7 +42,9 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     @Suppress("UNCHECKED_CAST")
     @TaskAction
     fun produceUpdatePluginsXmlFile() {
-        val patchFilesDirs = inputFiles.from as Set<FileCollectionAdapter>
+        val patchFilesDirs = (inputFiles.from as Set<FileCollectionAdapter>)
+            .filter { it.asPath.endsWith("plugin.xml").not() }
+            .toSet()
         val repositoryBaseUrl = customRepositoryUrl
 
         val updatePluginsXmlFileText = getUpdatePluginsXmlFileText(patchFilesDirs, repositoryBaseUrl)
@@ -75,7 +77,10 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     }
 
     private fun FileCollectionAdapter.toPluginDescription(): PluginDescription {
-        val pluginXmlFile = File("${this.asPath}/plugin.xml")
+        val pluginXmlDir = File(this.asPath.removeSuffix("plugin.xml"))
+        println("pluginXmlDir: $pluginXmlDir")
+        val pluginXmlFile = pluginXmlDir.resolve("plugin.xml")
+        println("pluginXmlFile: $pluginXmlFile")
         val pluginModuleDir = File(this.asPath).parentFile.parentFile
 
         val ideaPluginData = pluginXmlFile.parseIdeaPluginXml()
