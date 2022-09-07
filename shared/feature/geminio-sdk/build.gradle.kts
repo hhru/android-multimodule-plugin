@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":shared:core:code-modification"))
     implementation(project(":shared:core:utils"))
     implementation(project(":shared:core:models"))
+    implementation(project(":shared:core:logger"))
 
     // Libraries
     implementation(kotlin("stdlib-jdk8"))

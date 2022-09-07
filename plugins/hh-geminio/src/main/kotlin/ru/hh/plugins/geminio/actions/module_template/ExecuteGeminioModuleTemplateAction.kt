@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.actions.module_template
 
-import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -17,10 +16,11 @@ import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
-import ru.hh.plugins.geminio.services.balloonError
-import ru.hh.plugins.geminio.services.balloonInfo
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.geminio.wizard.StudioWizardDialogFactory
+import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 
@@ -56,13 +56,13 @@ class ExecuteGeminioModuleTemplateAction(
     }
 
     override fun actionPerformed(actionEvent: AnActionEvent) {
-        println("Start executing template '$actionText'")
+        HHLogger.d("Start executing template '$actionText'")
 
         val project = actionEvent.project!!
         val selectedPsiElement = actionEvent.getSelectedPsiElement() as PsiDirectory
 
         val directoryPath = selectedPsiElement.virtualFile.path
-        println("Selected directory path: $directoryPath")
+        HHLogger.d("Selected directory path: $directoryPath")
 
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
@@ -71,13 +71,12 @@ class ExecuteGeminioModuleTemplateAction(
             "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
         }
 
-        println("Recipe successfully parsed!")
+        HHLogger.d("Recipe successfully parsed!")
 
         val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
 
-        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory.getInstance(project)
+        val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory(project)
         val stepModel = configureTemplateParametersStepFactory.createForNewModule(
-            project = project,
             stepTitle = "Create new $actionText",
             directoryPath = directoryPath,
             defaultPackageName = "ru.hh", // TODO - fetch from settings
@@ -95,22 +94,20 @@ class ExecuteGeminioModuleTemplateAction(
             .addStep(chooseAppsStep)
             .build()
 
-        val dialog = StudioWizardDialogBuilder(wizard, WIZARD_TITLE)
-            .setProject(project)
-            .build()
+        val dialog = StudioWizardDialogFactory.getWizardBuilder(wizard, WIZARD_TITLE)
+            .create(project)
 
         wizard.addResultListener(object : ModelWizard.WizardListener {
             override fun onWizardFinished(result: ModelWizard.WizardResult) {
                 super.onWizardFinished(result)
 
                 if (result.isFinished.not()) {
-                    project.balloonError(message = "User closed Geminio Module Template Wizard")
+                    HHNotifications.error(message = "User closed Geminio Module Template Wizard")
                     return
                 }
 
-                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService.getInstance(project)
+                val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService(project)
                 val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
-                    project = project,
                     newModuleRootDirectoryPath = directoryPath,
                     geminioTemplateData = geminioTemplateData
                 )
@@ -132,14 +129,14 @@ class ExecuteGeminioModuleTemplateAction(
                     }
 
                     project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
-                    project.balloonInfo(message = "Finished '$actionText' module template execution")
+                    HHNotifications.info(message = "Finished '$actionText' module template execution")
                 } catch (ex: Exception) {
                     ex.printStackTrace()
 
                     dialog.disposeIfNeeded()
                     dialog.close(1)
 
-                    project.balloonError(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
+                    HHNotifications.error(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
                     throw ex
                 }
             }

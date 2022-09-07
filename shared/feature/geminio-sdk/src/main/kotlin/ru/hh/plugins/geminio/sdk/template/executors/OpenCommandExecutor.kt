@@ -4,6 +4,7 @@ import com.android.tools.idea.wizard.template.RecipeExecutor
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
 import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
+import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 internal fun RecipeExecutor.execute(
@@ -12,7 +13,7 @@ internal fun RecipeExecutor.execute(
 ) = with(executorData) {
     val filePath = command.file.evaluateString(moduleTemplateData, existingParametersMap)
 
-    println("Open command [filePath: $filePath]")
+    HHLogger.d("Open command [filePath: $filePath]")
     if (filePath == null) {
         throw IllegalArgumentException("Cannot find file for Open command [command: $command, evaluated path: $filePath]")
     }

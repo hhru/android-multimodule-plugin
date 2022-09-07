@@ -7,7 +7,10 @@ import com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.plugins.groovy.lang.psi.impl.GroovyFileImpl
-import ru.hh.plugins.extensions.openapi.findPsiFileByName
+import ru.hh.plugins.code_modification.GradleConstants.BUILD_GRADLE_FILENAME
+import ru.hh.plugins.code_modification.GradleConstants.BUILD_GRADLE_KTS_FILENAME
+import ru.hh.plugins.code_modification.utils.searchGradlePsiFile
+import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 
 /**
@@ -20,9 +23,6 @@ class BuildGradleModificationService(
     companion object {
         private const val COMMAND_NAME = "BuildGradleModificationCommand"
 
-        private const val BUILD_GRADLE_FILENAME = "build.gradle"
-        private const val BUILD_GRADLE_KTS_FILENAME = "build.gradle.kts"
-
         fun getInstance(project: Project) = BuildGradleModificationService(project)
     }
 
@@ -32,12 +32,9 @@ class BuildGradleModificationService(
         isInWriteCommand: Boolean = false
     ) {
         wrapInCommand(isInWriteCommand) {
-            val buildGradlePsiFile = module.findPsiFileByName(BUILD_GRADLE_FILENAME)
-                ?: module.findPsiFileByName(BUILD_GRADLE_KTS_FILENAME)
+            val buildGradlePsiFile = module.searchGradlePsiFile(BUILD_GRADLE_FILENAME)
                 ?: throw IllegalStateException(
-                    """
-                    Can't find "$BUILD_GRADLE_FILENAME" / "$BUILD_GRADLE_KTS_FILENAME" in "${module.name}
-                    """.trimIndent()
+                    "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in ${module.name}"
                 )
 
             buildGradlePsiFile.addGradleDependencies(gradleDependencies)
@@ -60,11 +57,17 @@ class BuildGradleModificationService(
         isInWriteCommand: Boolean = false
     ) {
         wrapInCommand(isInWriteCommand) {
-            val buildGradleFile = rootDir?.findFile(BUILD_GRADLE_FILENAME)
+            val buildGradlePsiFile = rootDir?.findFile(BUILD_GRADLE_FILENAME)
                 ?: rootDir?.findFile(BUILD_GRADLE_KTS_FILENAME)
-                ?: return@wrapInCommand
 
-            buildGradleFile.addGradleDependencies(gradleDependencies)
+            if (buildGradlePsiFile == null) {
+                HHLogger.e(
+                    "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in rootDir ($rootDir)"
+                )
+                return@wrapInCommand
+            }
+
+            buildGradlePsiFile.addGradleDependencies(gradleDependencies)
         }
     }
 

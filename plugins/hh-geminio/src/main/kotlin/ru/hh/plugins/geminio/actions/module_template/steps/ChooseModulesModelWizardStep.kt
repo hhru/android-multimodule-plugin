@@ -128,7 +128,7 @@ class ChooseModulesModelWizardStep(
 
     private fun changeReadmeBlockText(item: ModuleDisplayableItem) {
         if (isReadmeAvailable) {
-            val markdownService = MarkdownParserService.getInstance(project)
+            val markdownService = MarkdownParserService()
             val parsedMarkdown = markdownService.parseReadmeFile(item.gradleModule)
 
             changeReadmeText(parsedMarkdown)

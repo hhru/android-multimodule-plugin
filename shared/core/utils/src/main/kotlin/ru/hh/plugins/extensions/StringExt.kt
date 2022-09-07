@@ -29,6 +29,10 @@ fun String.replaceLineBreaks(): String {
     return this.replace("\n", "\n<br />", true)
 }
 
+fun String.toSlashedFilePath(): String {
+    return this.replace('.', '/').let { "/$it" }
+}
+
 fun String.toKotlinFileName() = "${this}$KOTLIN_FILE_EXTENSION"
 
 fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirectory? {

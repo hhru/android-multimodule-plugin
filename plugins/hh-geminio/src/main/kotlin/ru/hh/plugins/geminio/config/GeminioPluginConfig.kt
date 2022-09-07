@@ -7,6 +7,7 @@ data class GeminioPluginConfig(
     var templatesRootDirPath: String = String.EMPTY,
     var modulesTemplatesRootDirPath: String = String.EMPTY,
     var groupsNames: GroupsNames = GroupsNames(),
+    var isDebugEnabled: Boolean = false,
 ) {
 
     data class GroupsNames(

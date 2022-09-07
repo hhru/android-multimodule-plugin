@@ -2,7 +2,6 @@
 
 package ru.hh.plugins.geminio.sdk.recipe.parsers.widgets
 
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage

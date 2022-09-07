@@ -12,7 +12,8 @@ import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplat
 import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
-import ru.hh.plugins.geminio.services.balloonError
+import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.logger.HHNotifications
 import java.io.File
 
 internal class ActionsHelper {
@@ -25,25 +26,24 @@ internal class ActionsHelper {
         const val LOG_DIVIDER = "============"
     }
 
-
     fun createGeminioActions(project: Project) {
         val pluginConfig = GeminioPluginSettings.getConfig(project)
         val pathToConfig = pluginConfig.configFilePath
         val pathToTemplates = project.basePath + pluginConfig.templatesRootDirPath
         val pathToModulesTemplates = project.basePath + pluginConfig.modulesTemplatesRootDirPath
 
-        println("\tpathToConfig: $pathToConfig")
-        println("\tpathToTemplates: $pathToTemplates")
-        println("\tpathToModulesTemplates: $pathToModulesTemplates")
-        println(LOG_DIVIDER)
-        println(LOG_DIVIDER)
+        HHLogger.d("\tpathToConfig: $pathToConfig")
+        HHLogger.d("\tpathToTemplates: $pathToTemplates")
+        HHLogger.d("\tpathToModulesTemplates: $pathToModulesTemplates")
+        HHLogger.d(LOG_DIVIDER)
+        HHLogger.d(LOG_DIVIDER)
 
         resetGeminioActions(project)
 
         if (project.isConfigNotValid(pathToConfig, pathToTemplates, pathToModulesTemplates)) {
             val error = "Geminio's config is not valid (may be not configured at all) -> no need to create actions"
-            project.balloonError(message = error, action = SetupGeminioConfigAction())
-            println("\t$error")
+            HHNotifications.error(message = error, action = SetupGeminioConfigAction())
+            HHLogger.d("\t$error")
             return
         }
 
@@ -69,7 +69,6 @@ internal class ActionsHelper {
         actionManager.removeAllActionsFromGroups(pluginConfig, isModulesTemplates = false)
     }
 
-
     private fun createActionsForTemplates(
         project: Project,
         pluginConfig: GeminioPluginConfig,
@@ -85,15 +84,15 @@ internal class ActionsHelper {
         val rootDirectory = File(rootDirPath)
 
         if (rootDirectory.exists().not() || rootDirectory.isDirectory.not()) {
-            println("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+            HHLogger.d("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
             return
         }
 
-        println("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+        HHLogger.d("\tTemplates directory exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
         val templatesDirs = rootDirectory.getSubfolderNamesWithRecipes()
 
-        println("\tTemplates count: ${templatesDirs.size}")
-        println(LOG_DIVIDER)
+        HHLogger.d("\tTemplates count: ${templatesDirs.size}")
+        HHLogger.d(LOG_DIVIDER)
 
         actionManager.addTemplatesActions(
             projectName = project.name,
@@ -238,7 +237,6 @@ internal class ActionsHelper {
         return pathToConfig.isBlank() || pathToTemplates == basePath || pathToModulesTemplates == basePath
     }
 
-
     private data class TemplateActionsBundle(
         val templatesNewGroupId: String,
         val templatesGenerateGroupId: String,
@@ -249,5 +247,4 @@ internal class ActionsHelper {
         val hhNewGroup: DefaultActionGroup,
         val hhGenerateGroup: DefaultActionGroup,
     )
-
 }

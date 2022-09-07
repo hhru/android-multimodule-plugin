@@ -5,9 +5,9 @@
     <ID>CollapsibleIfStatements:XmlDeprecatedCompletionContributor.kt$XmlDeprecatedCompletionContributor$if (parent is XmlAttribute &amp;&amp; originalParent is XmlTag) { if (originalParent.localName in ACCEPTED_TAGS_FOR_DEPRECATING) { result.addElement(LookupElementBuilder.create(DEPRECATED_ATTRIBUTE_COMPLETION)) } }</ID>
     <ID>ComplexMethod:GeminioRecipeExt.kt$internal fun GeminioRecipe.toIndentString(): String</ID>
     <ID>ComplexMethod:PutSerializableDetector.kt$PutSerializableDetector$override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod)</ID>
-    <ID>ComplexMethod:RecipeExpressionParser.kt$ internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
+    <ID>ComplexMethod:RecipeExpressionParser.kt$internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
     <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var configFilePath: String = String.EMPTY</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var enableDebugMode: Boolean = false</ID>
+    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var isDebugEnabled: Boolean = false</ID>
     <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var templatesPaths: TemplatesPaths = TemplatesPaths()</ID>
     <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var widgetsClassesMap: MutableMap&lt;String, WidgetDescription&gt; = mutableMapOf()</ID>
     <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.TemplatesPaths$var rvItemPageObjectTemplatePath: String = String.EMPTY</ID>
@@ -16,28 +16,22 @@
     <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.WidgetDescription$var kakaoWidgetFQN: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var configFilePath: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var groupsNames: GroupsNames = GroupsNames()</ID>
+    <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var isDebugEnabled: Boolean = false</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var modulesTemplatesRootDirPath: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var templatesRootDirPath: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig.GroupsNames$var forNewGroup: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig.GroupsNames$var forNewModulesGroup: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:ModuleDisplayableItem.kt$ModuleDisplayableItem$override var isChecked: Boolean</ID>
     <ID>DestructuringDeclarationWithTooManyEntries:StringRecipeExpressionMapper.kt$val (_, srcOut, resOut, manifestOut, _, _, _, rootOut) = moduleTemplateData</ID>
-    <ID>FinalNewline:ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter.kt:1</ID>
-    <ID>FinalNewline:ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioPredefinedFeatureSectionParserSpec.kt:1</ID>
     <ID>ForbiddenComment:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$// TODO: Fix annotator, https://github.com/hhru/android-multimodule-plugin/issues/42</ID>
     <ID>ForbiddenComment:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction$// TODO - fetch from settings</ID>
     <ID>ForbiddenComment:GarconPluginSettings.kt$GarconPluginSettings$// todo</ID>
     <ID>ForbiddenComment:GeminioPluginSettings.kt$GeminioPluginSettings$// todo</ID>
     <ID>ForbiddenComment:build.gradle.kts$// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle</ID>
-    <ID>FunctionOnlyReturningConstant:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$// TODO: Fix annotator, https://github.com/hhru/android-multimodule-plugin/issues/42 private fun XmlAttributeValue.hasDeprecatedMark(): Boolean</ID>
+    <ID>FunctionOnlyReturningConstant:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$private fun XmlAttributeValue.hasDeprecatedMark(): Boolean</ID>
     <ID>FunctionParameterNaming:CodeStyleViewDeclarationExt.kt$ViewDeclaration: CodeStyleViewDeclaration</ID>
-    <ID>Indentation:ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioPredefinedFeatureSectionParserSpec.kt:21</ID>
-    <ID>Indentation:ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioPredefinedFeatureSectionParserSpec.kt:39</ID>
-    <ID>Indentation:ru.hh.plugins.geminio.sdk.recipe.parsers.GeminioPredefinedFeatureSectionParserSpec.kt:56</ID>
-    <ID>Indentation:ru.hh.plugins.geminio.sdk.template.mapping.widgets.WidgetsInjector.kt:60</ID>
     <ID>LabeledExpression:BuildGradleModificationService.kt$BuildGradleModificationService$return@wrapInCommand</ID>
     <ID>LabeledExpression:ClassFiltersFactory.kt$ClassFiltersFactory$return@ClassFilter if (aClass is KtLightClassForSourceDeclaration) { when (val classOrObject = aClass.kotlinOrigin) { is KtClass -&gt; (classOrObject.isInner() || classOrObject.isAnnotation()).not() &amp;&amp; InheritanceUtil.isInheritor(aClass, GarconConstants.AGODA_SCREEN_CLASS_FQN) else -&gt; false } } else { false }</ID>
-    <ID>LabeledExpression:GeminioStartupActivity.kt$GeminioStartupActivity$return@runWhenSmart</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var filterModulesJTextField: JTextField</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var modulesJList: CheckBoxListView&lt;ModuleDisplayableItem&gt;</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var readmeBlockTextArea: JEditorPane</ID>
@@ -53,6 +47,7 @@
     <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var rvItemPageObjectTemplatePathTextField: JTextField</ID>
     <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var screenPageObjectTemplatePathTextField: JTextField</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var configFilePathTextField: JTextField</ID>
+    <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var isDebugEnabledCheckbox: JCheckBox</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var modulesTemplatesRootDirPathTextField: JTextField</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var nameForNewGroupTextField: JTextField</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var nameForNewModulesGroupTextField: JTextField</ID>
@@ -70,15 +65,16 @@
     <ID>LateinitUsage:PluginConfigEditor.kt$PluginConfigEditor$private lateinit var pluginFolderDirPathTextField: JTextField</ID>
     <ID>LongMethod:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$override fun getComponent(): JComponent</ID>
     <ID>LongMethod:CreateScreenPageObjectDialog.kt$CreateScreenPageObjectDialog$override fun createCenterPanel(): JComponent</ID>
-    <ID>LongMethod:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$// property-references doesn't work &gt;_&lt; fun createComponent(project: Project): JComponent</ID>
+    <ID>LongMethod:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$fun createComponent(project: Project): JComponent</ID>
     <ID>LongMethod:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$fun createComponent(project: Project): JComponent</ID>
     <ID>LongMethod:GeminioRecipeExecutorFactoryService.kt$GeminioRecipeExecutorFactoryService$private fun createModuleTemplateData( project: Project, directoryPath: String, moduleName: String, packageName: String ): ModuleTemplateData</ID>
-    <ID>LongMethod:GeminioRecipeMapper.kt$ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTemplateData</ID>
+    <ID>LongMethod:GeminioRecipeMapper.kt$internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTemplateData</ID>
     <ID>LongMethod:GenerateFragmentViewModelNames.kt$GenerateFragmentViewModelNames.Companion$fun from(featurePrefix: String, packageName: String): GenerateFragmentViewModelNames</ID>
+    <ID>LongMethod:ModuleUtils.kt$internal fun Module.searchGradlePsiFile(filename: String): PsiFile?</ID>
     <ID>LongMethod:PluginConfigEditor.kt$PluginConfigEditor$@Suppress("UnstableApiUsage") fun createComponent(): JComponent?</ID>
     <ID>LongMethod:PutSerializableDetector.kt$PutSerializableDetector$override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod)</ID>
-    <ID>LongMethod:RecipeCommandParser.kt$ internal fun Map&lt;String, Any&gt;.toRecipeCommand(sectionName: String): RecipeCommand</ID>
-    <ID>LongMethod:RecipeExpressionParser.kt$ internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
+    <ID>LongMethod:RecipeCommandParser.kt$internal fun Map&lt;String, Any&gt;.toRecipeCommand(sectionName: String): RecipeCommand</ID>
+    <ID>LongMethod:RecipeExpressionParser.kt$internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
     <ID>LongMethod:WidgetsInjector.kt$private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData</ID>
     <ID>LongParameterList:FileChooserButton.kt$( project: Project, buttonText: String, filterText: String, fileChooserButtonText: String, vararg filterFilesExtensions: String, approveAction: (File) -&gt; Unit )</ID>
     <ID>LongParameterList:GenerateFragmentViewModelPsiElements.kt$GenerateFragmentViewModelPsiElements$( val singleEventClassPsiFile: KtFile, val uiStateClassPsiFile: KtFile, val uiStateClassConverterPsiFile: KtFile, val viewModelClassPsiFile: KtFile, val viewModelKtProperty: KtProperty, val handleEventKtFunction: KtFunction, val renderStateKtFunction: KtFunction, )</ID>
@@ -91,25 +87,24 @@
     <ID>MagicNumber:JiraStoryPoints.kt$JiraStoryPoints.THREE$3.0</ID>
     <ID>MagicNumber:JiraStoryPoints.kt$JiraStoryPoints.TWENTY_ONE$21.0</ID>
     <ID>MandatoryBracesIfStatements:JiraSettingsConfig.kt$JiraSettingsConfig$keyFile.createNewFile()</ID>
+    <ID>MaxLineLength:ActionsHelper.kt$ActionsHelper$HHLogger.d("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")</ID>
     <ID>MaxLineLength:AddDependenciesCommandParser.kt$message = "Illegal configuration for adding build.gradle dependency - each list item should be single map entry, e.g. `- kapt: Libs.toothpick`"</ID>
     <ID>MaxLineLength:BooleanRecipeExpressionMapper.kt$else -&gt; throw IllegalArgumentException("Unexpected commands for boolean parameter evaluation [$expressionCommands]")</ID>
     <ID>MaxLineLength:CollectUpdatePluginsXmlTask.kt$CollectUpdatePluginsXmlTask$ &lt;plugin id=</ID>
-    <ID>MaxLineLength:CollectWidgetsIntoPageObjectAction.kt$CollectWidgetsIntoPageObjectAction$project.balloonInfo(message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished")</ID>
+    <ID>MaxLineLength:CollectWidgetsIntoPageObjectAction.kt$CollectWidgetsIntoPageObjectAction$HHNotifications.info(message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished")</ID>
     <ID>MaxLineLength:CopyAndroidModuleAction.kt$CopyAndroidModuleAction$"Can't find java sources directories (/java or /kotlin) in copying module \"${params.moduleToCopy.name}\"! Make sure it exists."</ID>
     <ID>MaxLineLength:CopyAndroidModuleAction.kt$CopyAndroidModuleAction$"Can't find main source set directory (/main) in copying module \"${params.moduleToCopy.name}\"! Make sure it exists."</ID>
     <ID>MaxLineLength:CopyAndroidModuleAction.kt$CopyAndroidModuleAction$moduleRelativePath = "${newModuleParams.moduleToCopy.relativePathToParent}/${newModuleParams.newModuleName}"</ID>
     <ID>MaxLineLength:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$// logger.debug("Checked if XML Android resource `${this.value}` is deprecated (result: $result) in $computationTime ms")</ID>
     <ID>MaxLineLength:EmptyObjectGeneratorService.kt$EmptyObjectGeneratorService$KotlinBuiltIns.isInt(parameterType) || KotlinBuiltIns.isShort(parameterType) || KotlinBuiltIns.isByte(parameterType) -&gt; "0"</ID>
     <ID>MaxLineLength:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction$"Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"</ID>
-    <ID>MaxLineLength:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction.&lt;no name provided&gt;$project.balloonError(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")</ID>
+    <ID>MaxLineLength:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction.&lt;no name provided&gt;$HHNotifications.error(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")</ID>
     <ID>MaxLineLength:FreemarkerConfiguration.kt$FreemarkerConfiguration$"Can't resolve template [configuredPath: $configuredPath, templateRelativePath: $templateRelativePath, templateParams: $templateParams]"</ID>
     <ID>MaxLineLength:GeminioRecipeBooleanExpressionSpec.kt$GeminioRecipeBooleanExpressionSpec$ex.message shouldStartWith "Unknown parameter or not boolean parameter for boolean expression [id: ${command.parameterId}]"</ID>
     <ID>MaxLineLength:GeminioRecipeStringExpressionSpec.kt$GeminioRecipeStringExpressionSpec$ex.message shouldStartWith "Unknown parameter or not string parameter for string expression [${command.parameterId}]"</ID>
+    <ID>MaxLineLength:GeminioStartupActivity.kt$GeminioStartupActivity.&lt;no name provided&gt;$HHLogger.d("Activated project is the same as previous -&gt; no need to rescan Geminio's actions [project.name: `${project.name}`]")</ID>
+    <ID>MaxLineLength:GeminioStartupActivity.kt$GeminioStartupActivity.&lt;no name provided&gt;$HHLogger.d("Project changed -&gt; rescan Geminio's actions [old project name: `${lastProject.name}`, new project.name: `${project.name}`]")</ID>
     <ID>MaxLineLength:GenerateFragmentViewModelNames.kt$GenerateFragmentViewModelNames.Companion$val</ID>
-    <ID>MaxLineLength:GenerateFragmentViewModelTextFactory.kt$GenerateFragmentViewModelTextFactory$ ): </ID>
-    <ID>MaxLineLength:GenerateFragmentViewModelTextFactory.kt$GenerateFragmentViewModelTextFactory$ override val featureNewsObservable: </ID>
-    <ID>MaxLineLength:GenerateFragmentViewModelTextFactory.kt$GenerateFragmentViewModelTextFactory$ override val featureStateObservable: </ID>
-    <ID>MaxLineLength:GenerateFragmentViewModelTextFactory.kt$GenerateFragmentViewModelTextFactory$ override val uiStateConverter: (</ID>
     <ID>MaxLineLength:GlobalsSectionMapper.kt$"You cannot have template parameter with id='$showHiddenValuesId' with 'globals' section in your recipe.yaml. "</ID>
     <ID>MaxLineLength:InstantiateCommandExecutor.kt$throw IllegalArgumentException("Cannot evaluate 'from' or 'to' expressions [command: $command, from: $from, to: $to]")</ID>
     <ID>MaxLineLength:JiraDevelopmentTeam.kt$JiraDevelopmentTeam.Companion$fun fromLabel(label: String): JiraDevelopmentTeam</ID>
@@ -124,26 +119,24 @@
     <ID>MaxLineLength:PutSerializableDetector.kt$PutSerializableDetector$logger.debug("\tChecked all inner fields for inheritance, is fully serializable: is serializable ${result == null} [time: $checkTime ms]")</ID>
     <ID>MaxLineLength:PutSerializableDetector.kt$PutSerializableDetector$val isInheritor = ktLightClassForSourceDeclaration.isEnum || ktLightClassForSourceDeclaration.isInheritor(checkedClass, false)</ID>
     <ID>MaxLineLength:PutSerializableDetector.kt$PutSerializableDetector$val serializableArgumentReference = node.valueArguments[1].getExpressionType() as? PsiClassReferenceType ?: return</ID>
-    <ID>MaxLineLength:PutSerializableDetector.kt$PutSerializableDetector.Companion$ When you use current method you should be sure that every inner field in your argument, recursively, </ID>
     <ID>MaxLineLength:RecipeExpressionModifier.kt$RecipeExpressionModifier.CLASS_TO_RESOURCE$/** Similar to [CAMEL_CASE_TO_UNDERLINES], but strips off common class suffixes such as "Activity", "Fragment", etc. */</ID>
+    <ID>MaxLineLength:SettingsGradleModificationService.kt$SettingsGradleModificationService$*</ID>
     <ID>MaxLineLength:StringParameterConstraint.kt$StringParameterConstraint.EXISTS$*</ID>
     <ID>MaxLineLength:StringParameterConstraint.kt$StringParameterConstraint.UNIQUE$*</ID>
     <ID>MaxLineLength:StringRecipeExpressionMapper.kt$?:</ID>
+    <ID>MaxLineLength:StudioWizardDialogBuilder.kt$StudioWizardDialogBuilder.Companion$"This is stub for com.android.tools.idea.wizard.ui.StudioWizardDialogBuilder from Android Studio &lt;= Chipmunk"</ID>
     <ID>MaxLineLength:WidgetsStringParameterConstraintMapper.kt$internal</ID>
     <ID>MaxLineLength:build.gradle.kts$// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle</ID>
     <ID>MaxLineLength:build.gradle.kts$baselinePath = file(project.rootDir.resolve("build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml"))</ID>
     <ID>MaxLineLength:build.gradle.kts$configPath = files(project.rootDir.resolve("build-logic/static-analysis-convention/rules/detekt/detekt-config.yaml"))</ID>
-    <ID>MayBeConst:NotificationsFactory.kt$NotificationsFactory.Companion$private val NOTIFICATIONS_TITLE = "Geminio"</ID>
     <ID>MultiLineIfElse:ru.hh.android.plugin.config.JiraSettingsConfig.kt:34</ID>
-    <ID>NoEmptyFirstLineInMethodBlock:ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction.kt:122</ID>
-    <ID>NoUnusedImports:ru.hh.plugins.geminio.sdk.recipe.models.extensions.PredefinedFeaturesSectionExt.kt:4</ID>
-    <ID>NoUnusedImports:ru.hh.plugins.geminio.sdk.template.mapping.widgets.WidgetsInjector.kt:15</ID>
-    <ID>NoUnusedImports:ru.hh.plugins.geminio.sdk.template.mapping.widgets.WidgetsInjector.kt:9</ID>
+    <ID>NoEmptyFirstLineInMethodBlock:ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction.kt:119</ID>
     <ID>PrintStackTrace:FreemarkerConfiguration.kt$FreemarkerConfiguration$ex</ID>
     <ID>ReturnCount:CopyAndroidModuleAction.kt$CopyAndroidModuleAction$private fun NewModuleParams.isValid(): Boolean</ID>
     <ID>ReturnCount:KotlinClassChooserComboBox.kt$&lt;no name provided&gt;$override fun getSelectedFromTreeUserObject(node: DefaultMutableTreeNode): PsiClass?</ID>
+    <ID>ReturnCount:ModuleUtils.kt$internal fun Module.searchGradlePsiFile(filename: String): PsiFile?</ID>
     <ID>ReturnCount:PageObjectPropertyConverter.kt$PageObjectPropertyConverter$private fun AndroidViewTagInfo.toWidgetDescription( pluginConfig: GarconPluginConfig ): GarconPluginConfig.WidgetDescription</ID>
-    <ID>ReturnCount:PredefinedFeaturesSectionParser.kt$ internal fun Map&lt;String, Any&gt;.toPredefinedFeaturesSection(): PredefinedFeaturesSection</ID>
+    <ID>ReturnCount:PredefinedFeaturesSectionParser.kt$internal fun Map&lt;String, Any&gt;.toPredefinedFeaturesSection(): PredefinedFeaturesSection</ID>
     <ID>ReturnCount:PutSerializableDetector.kt$PutSerializableDetector$override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod)</ID>
     <ID>ReturnCount:PutSerializableDetector.kt$PutSerializableDetector$private fun checkIsSerializable( psiClassReferenceType: PsiClassReferenceType, checkedClass: PsiClass, objectPath: String ): String?</ID>
     <ID>ReturnCount:YamlUtils.kt$YamlUtils$fun loadFromConfigFile(filePath: String, onError: (Throwable) -&gt; Unit): LinkedHashMap&lt;String, Any&gt;?</ID>
@@ -151,25 +144,26 @@
     <ID>StringLiteralDuplication:ExternalLibrariesExtension.kt$ExternalLibrariesExtension.PredefinedIdeProducts.ANDROID_STUDIO_ARCTIC_FOX$"Kotlin"</ID>
     <ID>StringLiteralDuplication:ExternalLibrariesExtension.kt$ExternalLibrariesExtension.PredefinedIdeProducts.ANDROID_STUDIO_ARCTIC_FOX$"android"</ID>
     <ID>StringLiteralDuplication:ExternalLibrariesExtension.kt$ExternalLibrariesExtension.PredefinedIdeProducts.ANDROID_STUDIO_ARCTIC_FOX$"git4idea"</ID>
-    <ID>StringLiteralDuplication:GeminioStartupActivity.kt$GeminioStartupActivity$"============"</ID>
     <ID>StringLiteralDuplication:RecipeCommandParser.kt$"$sectionName:$KEY_COMMAND_INSTANTIATE"</ID>
     <ID>SwallowedException:PsiDirectoryExt.kt$ex: IncorrectOperationException</ID>
+    <ID>SwallowedException:StudioWizardDialogFactory.kt$StudioWizardDialogFactory$ex: ClassNotFoundException</ID>
     <ID>TooGenericExceptionCaught:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction.&lt;no name provided&gt;$ex: Exception</ID>
     <ID>TooGenericExceptionCaught:FreemarkerConfiguration.kt$FreemarkerConfiguration$ex: Exception</ID>
     <ID>TooGenericExceptionCaught:YamlUtils.kt$YamlUtils$ex: Exception</ID>
     <ID>TooGenericExceptionThrown:ProjectExt.kt$throw RuntimeException("Parameter: $name is blank but required")</ID>
     <ID>TooGenericExceptionThrown:ProjectExt.kt$throw RuntimeException("Parameter: $name is missing but required")</ID>
-    <ID>UnnecessaryAbstractClass:ExternalLibrariesExtension.kt$ExternalLibrariesExtension</ID>
-    <ID>UnnecessaryAbstractClass:StaticAnalysisExtension.kt$StaticAnalysisExtension</ID>
+    <ID>UnnecessaryAbstractClass:AutoRegisterAndroidLintInspection.kt$AutoRegisterAndroidLintInspection$AutoRegisterAndroidLintInspection</ID>
+    <ID>UnnecessaryAbstractClass:ExternalLibrariesExtension.kt$ExternalLibrariesExtension$ExternalLibrariesExtension</ID>
+    <ID>UnnecessaryAbstractClass:StaticAnalysisExtension.kt$StaticAnalysisExtension$StaticAnalysisExtension</ID>
     <ID>UnnecessaryParentheses:CheckBoxListView.kt$CheckBoxListView$( object : ClickListener() { override fun onClick(event: MouseEvent, clickCount: Int): Boolean { if (event.x &lt; clickableArea || event.y &lt; clickableAreaY) { toggleSelection() } return true } } )</ID>
-    <ID>UnnecessaryParentheses:GenerateEmptyObjectAction.kt$GenerateEmptyObjectAction$( targetClass.companionObjects.firstOrNull() ?.findPropertyByName(CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME) == null )</ID>
     <ID>UnusedPrivateMember:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator.Companion$private const val DEPRECATED_ATTRIBUTE_NAME = "deprecated"</ID>
     <ID>UnusedPrivateMember:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator.Companion$private const val DEPRECATED_TRUE_VALUE = "true"</ID>
-    <ID>UnusedPrivateMember:GeminioStartupActivity.kt$GeminioStartupActivity$private operator fun DefaultActionGroup.plusAssign(action: AnAction)</ID>
     <ID>UnusedPrivateMember:XmlDeprecatedCompletionContributor.kt$XmlDeprecatedCompletionContributor$private val logger = Logger.getInstance(XmlDeprecatedCompletionContributor::class.java)</ID>
+    <ID>UseCheckOrError:BuildGradleModificationService.kt$BuildGradleModificationService$throw IllegalStateException( "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in ${module.name}" )</ID>
     <ID>UseCheckOrError:ExecuteGeminioTemplateAction.kt$ExecuteGeminioTemplateAction$throw IllegalStateException("You should select some file for code generation")</ID>
     <ID>UseCheckOrError:GitService.kt$GitService$throw IllegalStateException("Can't find $MAIN_REPOSITORY_NAME repository in Git")</ID>
-    <ID>UseCheckOrError:SettingsGradleModificationService.kt$SettingsGradleModificationService$throw IllegalStateException("Can't find $SETTINGS_GRADLE_FILENAME / $SETTINGS_GRADLE_KTS_FILENAME file!")</ID>
+    <ID>UseCheckOrError:SettingsGradleModificationService.kt$SettingsGradleModificationService$throw IllegalStateException( "Can't find `$SETTINGS_GRADLE_FILENAME` or `$SETTINGS_GRADLE_KTS_FILENAME` file in root module" )</ID>
+    <ID>UseCheckOrError:StudioWizardDialogFactory.kt$StudioWizardDialogFactory$throw IllegalStateException("There is no wizard builders classes")</ID>
     <ID>WildcardImport:HardcodedDimensUsingDetector.kt$import com.android.tools.lint.detector.api.*</ID>
     <ID>WildcardImport:IntPropertyAdapter.kt$import freemarker.template.*</ID>
     <ID>WildcardImport:JiraIssueFactory.kt$import ru.hh.android.plugin.core.model.jira.*</ID>

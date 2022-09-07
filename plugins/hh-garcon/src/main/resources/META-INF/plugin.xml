@@ -9,6 +9,8 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="ru.hh.plugins.garcon.services.GarconStartupActivity"/>
+
         <!-- region Live templates -->
         <defaultLiveTemplatesProvider
                 implementation="ru.hh.plugins.garcon.live_templates.GarconTemplateProvider"/>
@@ -28,6 +30,14 @@
         <projectService serviceImplementation="ru.hh.plugins.garcon.services.FreeMarkerWrapper"/>
         <projectService serviceImplementation="ru.hh.plugins.garcon.services.ClassFiltersFactory"/>
         <!-- endregion -->
+
+        <!-- Notifications -->
+        <notificationGroup id="ru.hh.plugins.notifications"
+                           displayType="BALLOON"/>
+
+        <!-- Logger -->
+        <notificationGroup id="ru.hh.plugins.logger"
+                           displayType="NONE"/>
     </extensions>
 
     <actions>

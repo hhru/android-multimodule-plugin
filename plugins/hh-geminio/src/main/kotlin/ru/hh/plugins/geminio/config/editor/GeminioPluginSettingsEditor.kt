@@ -5,7 +5,9 @@ import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
+import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.views.layouts.fileChooserButton
+import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JTextField
 
@@ -15,6 +17,7 @@ class GeminioPluginSettingsEditor(
     private val initialModulesTemplatesRootDirPath: String,
     private val initialNameForNewGroup: String,
     private val initialNameForNewModulesGroup: String,
+    private val initialIsDebugEnabled: Boolean,
 ) {
 
     companion object {
@@ -27,6 +30,7 @@ class GeminioPluginSettingsEditor(
                     initialModulesTemplatesRootDirPath = config.modulesTemplatesRootDirPath,
                     initialNameForNewGroup = config.groupsNames.forNewGroup,
                     initialNameForNewModulesGroup = config.groupsNames.forNewModulesGroup,
+                    initialIsDebugEnabled = config.isDebugEnabled,
                 )
             }
         }
@@ -37,6 +41,7 @@ class GeminioPluginSettingsEditor(
     private lateinit var modulesTemplatesRootDirPathTextField: JTextField
     private lateinit var nameForNewGroupTextField: JTextField
     private lateinit var nameForNewModulesGroupTextField: JTextField
+    private lateinit var isDebugEnabledCheckbox: JCheckBox
 
     fun createComponent(project: Project): JComponent {
         return panel {
@@ -77,6 +82,12 @@ class GeminioPluginSettingsEditor(
                     nameForNewModulesGroupTextField(CCFlags.growX)
                 }
             }
+            titledRow("Debug") {
+                row {
+                    isDebugEnabledCheckbox = JCheckBox("Is debug mode enabled", initialIsDebugEnabled)
+                    isDebugEnabledCheckbox(CCFlags.growX)
+                }
+            }
         }
     }
 
@@ -86,7 +97,8 @@ class GeminioPluginSettingsEditor(
                 config.templatesRootDirPath != templatesRootDirPathTextField.text ||
                 config.modulesTemplatesRootDirPath != modulesTemplatesRootDirPathTextField.text ||
                 config.groupsNames.forNewGroup != nameForNewGroupTextField.text ||
-                config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text
+                config.groupsNames.forNewModulesGroup != nameForNewModulesGroupTextField.text ||
+                config.isDebugEnabled != isDebugEnabledCheckbox.isSelected
         }
     }
 
@@ -98,6 +110,7 @@ class GeminioPluginSettingsEditor(
             modulesTemplatesRootDirPathTextField.text = settings.config.modulesTemplatesRootDirPath
             nameForNewGroupTextField.text = settings.config.groupsNames.forNewGroup
             nameForNewModulesGroupTextField.text = settings.config.groupsNames.forNewModulesGroup
+            isDebugEnabledCheckbox.isSelected = settings.config.isDebugEnabled
         } else {
             settings.config = settings.config.copy(
                 templatesRootDirPath = templatesRootDirPathTextField.text,
@@ -106,7 +119,9 @@ class GeminioPluginSettingsEditor(
                     forNewGroup = nameForNewGroupTextField.text,
                     forNewModulesGroup = nameForNewModulesGroupTextField.text
                 ),
+                isDebugEnabled = isDebugEnabledCheckbox.isSelected,
             )
+            HHLogger.enableDebug(settings.config.isDebugEnabled)
         }
     }
 }

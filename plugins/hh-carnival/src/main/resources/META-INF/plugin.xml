@@ -63,6 +63,8 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="ru.hh.android.plugin.services.CarnivalStartupActivity"/>
+
         <!-- region Plugin config -->
         <projectConfigurable
                 id="ru.hh.android.plugin.config.PluginConfigConfigurable"
@@ -74,8 +76,6 @@
         <!-- endregion -->
 
         <!-- region Plugin services -->
-        <projectService serviceImplementation="ru.hh.android.plugin.services.NotificationsFactory"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.Logger"/>
         <projectService
                 serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
         <projectService
@@ -130,6 +130,14 @@
                 order="first"
                 implementationClass="ru.hh.android.plugin.completions.XmlDeprecatedCompletionContributor"/>
         <!-- endregion -->
+
+        <!-- Notifications -->
+        <notificationGroup id="ru.hh.plugins.notifications"
+                           displayType="BALLOON"/>
+
+        <!-- Logger -->
+        <notificationGroup id="ru.hh.plugins.logger"
+                           displayType="NONE"/>
     </extensions>
 
 </idea-plugin>

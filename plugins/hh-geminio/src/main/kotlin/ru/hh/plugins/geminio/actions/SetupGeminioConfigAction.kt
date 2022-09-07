@@ -19,5 +19,4 @@ class SetupGeminioConfigAction : AnAction() {
         ShowSettingsUtil.getInstance()
             .editConfigurable(project, GeminioPluginSettingsSearchableConfigurable(project))
     }
-
 }

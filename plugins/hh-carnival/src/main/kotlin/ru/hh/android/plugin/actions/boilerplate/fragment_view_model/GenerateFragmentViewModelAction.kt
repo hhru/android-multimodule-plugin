@@ -13,10 +13,9 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.getOrCreateBody
 import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
-import ru.hh.android.plugin.utils.notifyError
-import ru.hh.android.plugin.utils.notifyInfo
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.toKotlinFileName
+import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.isInheritedFrom
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
 
@@ -42,7 +41,7 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
         )
 
         if (featurePrefix.isNullOrBlank()) {
-            project.notifyError("You should enter feature prefix! E.g. 'SearchFilter'")
+            HHNotifications.error("You should enter feature prefix! E.g. 'SearchFilter'")
             return
         }
 
@@ -53,7 +52,7 @@ class GenerateFragmentViewModelAction : KotlinGenerateActionBase() {
         val psiElements = createPsiElements(project, names)
 
         modifyCode(project, psiFile, psiElements, fragmentKtClass)
-        project.notifyInfo("${names.viewModelClassName} successfully created!")
+        HHNotifications.info("${names.viewModelClassName} successfully created!")
     }
 
     override fun isValidForClass(targetClass: KtClassOrObject): Boolean {

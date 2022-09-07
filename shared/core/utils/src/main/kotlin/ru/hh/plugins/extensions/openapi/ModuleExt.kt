@@ -8,17 +8,39 @@ import com.intellij.psi.PsiMember
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
+import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
+import ru.hh.plugins.logger.HHLogger
 
 fun Module.isAndroidLibraryModule(): Boolean {
     return androidFacet?.configuration?.isLibraryProject ?: false
 }
 
 fun Module.isAndroidAppModule(): Boolean {
-    return androidFacet?.configuration?.isAppProject ?: false
+    val isAppProject = androidFacet?.configuration?.isAppProject ?: false
+
+    /**
+     * Starting from `Android Studio Chipmunk 2021.2.1 Patch 2` in the list of
+     * application modules we see not only application modules but also "submodules" of these applications, e.g.:
+     *
+     * - 'headhunter-applicant.unitTests'
+     * - 'headhunter-applicant.androidTest'
+     *
+     * etc.
+     *
+     * To remove these submodules we add this condition.
+     */
+    val isHolderModule = this == androidFacet?.holderModule
+
+    return isAppProject && isHolderModule
 }
 
 fun Module.findPsiFileByName(name: String): PsiFile? {
-    return FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
+    val (time, result) = measureTimeMillisWithResult {
+        FilenameIndex.getFilesByName(project, name, moduleContentScope).firstOrNull()
+    }
+    HHLogger.d("Searching for `$name` in ${this.name} content scope consumed $time ms")
+
+    return result
 }
 
 fun Module.findClassesAnnotatedWith(annotationFullQualifiedName: String): MutableCollection<PsiMember>? {
