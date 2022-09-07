@@ -16,10 +16,13 @@ import org.gradle.api.tasks.options.Option
 import java.io.File
 import javax.inject.Inject
 
-@Suppress("UnstableApiUsage")
 abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     objects: ObjectFactory
 ) : DefaultTask() {
+
+    private companion object {
+        const val FILE_NAME = "plugin.xml"
+    }
 
     private var customRepositoryUrl: String = ""
 
@@ -43,7 +46,7 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     @TaskAction
     fun produceUpdatePluginsXmlFile() {
         val patchFilesDirs = (inputFiles.from as Set<FileCollectionAdapter>)
-            .filter { it.asPath.endsWith("plugin.xml").not() }
+            .filter { it.asPath.endsWith(FILE_NAME).not() }
             .toSet()
         val repositoryBaseUrl = customRepositoryUrl
 
@@ -77,10 +80,8 @@ abstract class CollectUpdatePluginsXmlTask @Inject constructor(
     }
 
     private fun FileCollectionAdapter.toPluginDescription(): PluginDescription {
-        val pluginXmlDir = File(this.asPath.removeSuffix("plugin.xml"))
-        println("pluginXmlDir: $pluginXmlDir")
-        val pluginXmlFile = pluginXmlDir.resolve("plugin.xml")
-        println("pluginXmlFile: $pluginXmlFile")
+        val pluginXmlDir = File(this.asPath.removeSuffix(FILE_NAME))
+        val pluginXmlFile = pluginXmlDir.resolve(FILE_NAME)
         val pluginModuleDir = File(this.asPath).parentFile.parentFile
 
         val ideaPluginData = pluginXmlFile.parseIdeaPluginXml()
