@@ -19,7 +19,7 @@ internal fun PredefinedFeaturesSection.Companion.createModuleNameParameter(): Ge
                 AndroidStudioTemplateStringParameterConstraint.MODULE,
                 AndroidStudioTemplateStringParameterConstraint.UNIQUE,
             )
-            default = "mymodule"
+            default = "feature_my_module"
             visible = { true }
             enabled = { true }
         }
