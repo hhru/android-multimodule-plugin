@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.actions.module_template
 
 import com.android.tools.idea.gradle.actions.SyncProjectAction
-import com.android.tools.idea.ui.wizard.StudioWizardDialogBuilder
+import com.android.tools.idea.wizard.ui.StudioWizardDialogBuilder
 import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
