@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project
 import ru.hh.plugins.logger.HHLogger
 
 /**
- * [ModelWizardDialog] builder for Android Studio Dolphin (version = 213.7172.25).
+ * [ModelWizardDialog] builder for Android Studio Dolphin (version = 221.6008.13).
  *
  * In Dolphin [ModelWizardDialog] creates through [com.android.tools.idea.wizard.ui.StudioWizardDialogBuilder] --
  * package name was changed in comparison with Chipmunk
