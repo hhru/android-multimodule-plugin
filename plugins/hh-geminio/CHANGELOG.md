@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.4.0]
+### Added
+- Support for Android Studio Electric Eel | 2022.1.1 
+
 ## [1.3.0]
 ### Added
 - Support for Android Studio Dolphin | 2021.3.1 (thanks to @IlyaGulya)

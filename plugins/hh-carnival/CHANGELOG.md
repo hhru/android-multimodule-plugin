@@ -1,5 +1,9 @@
 # Carnival
 
+## [1.3.0]
+### Added
+- Support for Android Studio Electric Eel | 2022.1.1
+
 ## [1.2.0]
 ### Added
 - Support compilation for Android Studio Dolphin | 2021.3.1
