@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.sdk
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.toIndentString
@@ -26,7 +27,11 @@ internal class GeminioSdkImpl : GeminioSdk {
         }
     }
 
-    override fun createGeminioTemplateData(project: Project, geminioRecipe: GeminioRecipe): GeminioTemplateData {
-        return geminioRecipe.toGeminioTemplateData(project)
+    override fun createGeminioTemplateData(
+        project: Project,
+        geminioRecipe: GeminioRecipe,
+        targetDirectory: VirtualFile
+    ): GeminioTemplateData {
+        return geminioRecipe.toGeminioTemplateData(project, targetDirectory)
     }
 }

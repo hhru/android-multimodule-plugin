@@ -8,6 +8,7 @@ import com.android.tools.idea.wizard.template.fragmentToLayout
 import com.android.tools.idea.wizard.template.layoutToActivity
 import com.android.tools.idea.wizard.template.layoutToFragment
 import com.android.tools.idea.wizard.template.underscoreToCamelCase
+import com.intellij.openapi.vfs.VirtualFile
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
@@ -19,6 +20,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.RootOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.CurrentDirOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.ACTIVITY_TO_LAYOUT
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES
@@ -58,6 +60,7 @@ internal fun RecipeExpression.evaluateString(
  * into [ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameterStringLambda].
  */
 internal fun RecipeExpression.evaluateString(
+    targetDirectory: VirtualFile,
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String? {
@@ -66,7 +69,13 @@ internal fun RecipeExpression.evaluateString(
     val result = StringBuilder()
 
     for (command in commands) {
-        result.append(command.toStringValue(moduleTemplateData, existingParametersMap))
+        result.append(
+            command.toStringValue(
+                targetDirectory = targetDirectory,
+                moduleTemplateData = moduleTemplateData,
+                existingParametersMap = existingParametersMap
+            )
+        )
     }
 
     return result.toString().takeIf { it.isNotEmpty() }
@@ -83,6 +92,7 @@ private fun RecipeExpressionCommand.toStringValue(
         ResOut,
         ManifestOut,
         RootOut,
+        CurrentDirOut,
 
         ReturnTrue,
         ReturnFalse -> throw IllegalArgumentException("Unexpected command for string parameter [$this]")
@@ -90,6 +100,7 @@ private fun RecipeExpressionCommand.toStringValue(
 }
 
 private fun RecipeExpressionCommand.toStringValue(
+    targetDirectory: VirtualFile,
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): String {
@@ -103,6 +114,13 @@ private fun RecipeExpressionCommand.toStringValue(
         ResOut -> "${resOut.absolutePath}/"
         ManifestOut -> "${manifestOut.absolutePath}/"
         RootOut -> "${rootOut.absolutePath}/"
+        CurrentDirOut -> {
+            if (targetDirectory.isDirectory) {
+                targetDirectory.path
+            } else {
+                targetDirectory.parent.path
+            }
+        }
 
         ReturnTrue,
         ReturnFalse -> throw IllegalArgumentException("Unexpected command for string value [$this]")

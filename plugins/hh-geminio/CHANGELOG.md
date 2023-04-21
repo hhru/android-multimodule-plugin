@@ -1,5 +1,10 @@
 # Geminio
 
+## [1.4.2]
+### Added
+- New `currentDirPackageName` - add package name from current module and folder
+- New `currentDir` - path to currentDir to output template
+
 ## [1.4.0]
 ### Added
 - Support for Android Studio Electric Eel | 2022.1.1 

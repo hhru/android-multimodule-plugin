@@ -19,6 +19,8 @@ sealed class RecipeExpressionCommand {
 
     object RootOut : RecipeExpressionCommand()
 
+    object CurrentDirOut : RecipeExpressionCommand()
+
     object ReturnTrue : RecipeExpressionCommand()
 
     object ReturnFalse : RecipeExpressionCommand()

@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
+import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.wizard.StudioWizardDialogFactory
@@ -73,7 +74,11 @@ class ExecuteGeminioTemplateAction(
             stepTitle = actionText,
             facet = facet,
             targetDirectory = targetDirectory,
-            androidStudioTemplate = geminioSdk.createGeminioTemplateData(project, geminioRecipe).androidStudioTemplate
+            androidStudioTemplate = geminioSdk.createGeminioTemplateData(
+                project = project,
+                geminioRecipe = geminioRecipe,
+                targetDirectory = targetDirectory
+            ).androidStudioTemplate
         )
 
         val wizard = ModelWizard.Builder().addStep(stepModel.configureTemplateParametersStep).build().apply {
@@ -121,25 +126,6 @@ class ExecuteGeminioTemplateAction(
             project = requireNotNull(project),
             androidFacet = requireNotNull(facet)
         )
-    }
-
-    private fun AnActionEvent.getTargetDirectory(): VirtualFile {
-        val currentVirtualFile = CommonDataKeys.VIRTUAL_FILE.getData(dataContext)
-
-        return when {
-            currentVirtualFile == null -> {
-                throw IllegalStateException("You should select some file for code generation")
-            }
-
-            currentVirtualFile.isDirectory.not() -> {
-                // If the user selected a simulated folder entry (eg "Manifests"), there will be no target directory
-                currentVirtualFile.parent
-            }
-
-            else -> {
-                currentVirtualFile
-            }
-        }
     }
 
     private data class EventData(

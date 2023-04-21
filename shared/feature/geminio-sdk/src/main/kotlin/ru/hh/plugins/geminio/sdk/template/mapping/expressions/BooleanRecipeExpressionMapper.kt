@@ -55,6 +55,7 @@ private fun RecipeExpressionCommand.resolveBooleanValue(
         RecipeExpressionCommand.SrcOut,
         RecipeExpressionCommand.ResOut,
         RecipeExpressionCommand.ManifestOut,
+        RecipeExpressionCommand.CurrentDirOut,
         RecipeExpressionCommand.RootOut -> {
             throw IllegalArgumentException("Unexpected command for boolean parameter [$this]")
         }
