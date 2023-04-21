@@ -27,4 +27,4 @@ you will need to reload the project for Android Studio could parse the new templ
 
 ---
 
-[Return to MoC](/plugins/hh-geminio/README_EN.md)
+[Return to MoC](../../README_EN.md)

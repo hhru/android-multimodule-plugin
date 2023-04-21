@@ -1,6 +1,6 @@
 # Geminio
 
-![Geminio](/plugins/hh-geminio/img/Geminio.png)
+![Geminio](./img/Geminio.png)
 
 <!-- Plugin description -->
 **Geminio** -- Android Studio Plugin for generating code from templates.
@@ -21,8 +21,8 @@
 
 ## Содержание
 
-- [Как работает плагин](/plugins/hh-geminio/docs/ru/HOW_IT_WORKS.md)
-- [Конфигурация плагина](/plugins/hh-geminio/docs/ru/PLUGIN_CONFIG.md)
-- [Выражения](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md)
-- [Устройство "рецепта"](/plugins/hh-geminio/docs/ru/RECIPE_CONTENT.md)
-- [Шаблоны модулей](/plugins/hh-geminio/docs/ru/MODULES_TEMPLATES.md)
+- [Как работает плагин](./docs/ru/HOW_IT_WORKS.md)
+- [Конфигурация плагина](./docs/ru/PLUGIN_CONFIG.md)
+- [Выражения](./docs/ru/EXPRESSIONS.md)
+- [Устройство "рецепта"](./docs/ru/RECIPE_CONTENT.md)
+- [Шаблоны модулей](./docs/ru/MODULES_TEMPLATES.md)

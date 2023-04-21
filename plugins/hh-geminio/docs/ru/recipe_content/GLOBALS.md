@@ -29,8 +29,8 @@ globals:
 Каждый виджет имеет всего два параметра:
 
 - `id` - уникальный идентификатор виджета;
-- `value` - [выражение](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md) для вычисления значения. 
+- `value` - [выражение](../EXPRESSIONS.md) для вычисления значения. 
 
 ---
 
-[Обратно к устройству "рецептов"](/plugins/hh-geminio/docs/ru/RECIPE_CONTENT.md)
+[Обратно к устройству "рецептов"](../RECIPE_CONTENT.md)
