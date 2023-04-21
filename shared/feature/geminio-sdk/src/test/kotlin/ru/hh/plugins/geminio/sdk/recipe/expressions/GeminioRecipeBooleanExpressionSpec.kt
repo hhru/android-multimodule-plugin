@@ -91,6 +91,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
         val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(createParametersMap()) }
 
-        ex.message shouldStartWith "Unknown parameter or not boolean parameter for boolean expression [id: ${command.parameterId}]"
+        ex.message shouldStartWith
+                "Unknown parameter or not boolean parameter for boolean expression [id: ${command.parameterId}]"
     }
 })

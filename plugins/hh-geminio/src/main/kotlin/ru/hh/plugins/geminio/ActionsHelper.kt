@@ -84,7 +84,9 @@ internal class ActionsHelper {
         val rootDirectory = File(rootDirPath)
 
         if (rootDirectory.exists().not() || rootDirectory.isDirectory.not()) {
-            HHLogger.d("Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]")
+            HHLogger.d(
+                "Templates directory doesn't exists [path: $rootDirPath, isModulesTemplates: $isModulesTemplates]"
+            )
             return
         }
 

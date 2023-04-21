@@ -37,7 +37,9 @@ private fun RecipeExecutor.makeDirectories(
             existingParametersMap = executorData.existingParametersMap
         )
     ) {
-        "Recipe execution, 'mkDirs' command: Error with directory name evaluation [mkDirItem: $mkDirItem, combinedPath: $combinedPath, executorData: $executorData]"
+        """Recipe execution, 'mkDirs' command: Error with directory name evaluation 
+            |[mkDirItem: $mkDirItem, combinedPath: $combinedPath, executorData: $executorData]"""
+            .trimMargin()
     }
     createDirectory(File(filePath))
 

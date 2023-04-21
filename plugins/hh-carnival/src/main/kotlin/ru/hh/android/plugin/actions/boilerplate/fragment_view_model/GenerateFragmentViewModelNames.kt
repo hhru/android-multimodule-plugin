@@ -21,22 +21,23 @@ data class GenerateFragmentViewModelNames(
     companion object {
 
         fun from(featurePrefix: String, packageName: String): GenerateFragmentViewModelNames {
-            val (modelsPackageName, mviFeaturePackageName, mviFeatureElementPackageName) = if (packageName.isNotBlank()) {
-                val splitted = packageName.split(".")
-                val previous = if (splitted.isNotEmpty()) {
-                    packageName.removeSuffix(".${splitted.last()}")
-                } else {
-                    packageName
-                }
+            val (modelsPackageName, mviFeaturePackageName, mviFeatureElementPackageName) =
+                if (packageName.isNotBlank()) {
+                    val splitted = packageName.split(".")
+                    val previous = if (splitted.isNotEmpty()) {
+                        packageName.removeSuffix(".${splitted.last()}")
+                    } else {
+                        packageName
+                    }
 
-                Triple(
-                    "$packageName.model.",
-                    "$previous.feature.",
-                    "$previous.feature.element."
-                )
-            } else {
-                Triple(String.EMPTY, String.EMPTY, String.EMPTY)
-            }
+                    Triple(
+                        "$packageName.model.",
+                        "$previous.feature.",
+                        "$previous.feature.element."
+                    )
+                } else {
+                    Triple(String.EMPTY, String.EMPTY, String.EMPTY)
+                }
 
             val viewModelClassName = "${featurePrefix}ViewModel"
             val singleEventClassName = "${featurePrefix}Event"

@@ -1,6 +1,5 @@
 package ru.hh.android.plugin.core.model.enums
 
-
 private const val ANDROID_WIDGET_PKG = "android.widget"
 private const val ANDROIDX_APPCOMPAT_WIDGET_PKG = "androidx.appcompat.widget"
 

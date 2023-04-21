@@ -22,6 +22,7 @@ import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe]
  * into [ru.hh.plugins.geminio.sdk.models.GeminioTemplateData].
  */
+@Suppress("detekt.LongMethod")
 internal fun GeminioRecipe.toGeminioTemplateData(project: Project, targetDirectory: VirtualFile): GeminioTemplateData {
     val geminioRecipe = this
 
@@ -76,7 +77,7 @@ private fun getHardcodedParamsMap(
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): Map<String, Any?> {
     val packageNameParameter = existingParametersMap[GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID]
-            as? AndroidStudioTemplateStringParameter
+        as? AndroidStudioTemplateStringParameter
 
     val (packageName, applicationPackage) = when {
         packageNameParameter != null -> {
@@ -115,5 +116,4 @@ private object HardcodedParams {
      * Package name from current gradle module.
      */
     const val CURRENT_DIR_PACKAGE_NAME = "currentDirPackageName"
-
 }

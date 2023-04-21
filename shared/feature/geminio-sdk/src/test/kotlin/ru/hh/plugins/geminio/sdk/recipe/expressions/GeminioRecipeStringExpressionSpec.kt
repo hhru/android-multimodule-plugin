@@ -86,6 +86,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
             given.evaluateString(createModuleTemplateData(), createParametersMap())
         }
 
-        ex.message shouldStartWith "Unknown parameter or not string parameter for string expression [${command.parameterId}]"
+        ex.message shouldStartWith
+                "Unknown parameter or not string parameter for string expression [${command.parameterId}]"
     }
 })

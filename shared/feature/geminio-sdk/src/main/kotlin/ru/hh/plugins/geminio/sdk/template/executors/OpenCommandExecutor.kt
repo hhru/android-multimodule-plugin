@@ -17,7 +17,9 @@ internal fun RecipeExecutor.execute(
 
     HHLogger.d("Open command [filePath: $filePath]")
     if (filePath == null) {
-        throw IllegalArgumentException("Cannot find file for Open command [command: $command, evaluated path: $filePath]")
+        throw IllegalArgumentException(
+            "Cannot find file for Open command [command: $command, evaluated path: $filePath]"
+        )
     }
 
     open(File(filePath))

@@ -16,5 +16,6 @@ interface GeminioSdk {
         project: Project,
         geminioRecipe: GeminioRecipe,
         targetDirectory: VirtualFile,
-        ): GeminioTemplateData
+    ): GeminioTemplateData
+
 }
