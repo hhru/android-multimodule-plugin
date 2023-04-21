@@ -13,4 +13,4 @@ Here:
 
 --- 
 
-[Back to the commands list](/plugins/hh-geminio/docs/en/recipe_content/RECIPE.md)
+[Back to the commands list](../RECIPE.md)

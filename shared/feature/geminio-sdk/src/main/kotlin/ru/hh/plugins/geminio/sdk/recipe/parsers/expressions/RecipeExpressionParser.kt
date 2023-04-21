@@ -9,6 +9,7 @@ private const val SRC_OUT_FOLDER_NAME = "srcOut"
 private const val RES_OUT_FOLDER_NAME = "resOut"
 private const val MANIFEST_OUT_FOLDER_NAME = "manifestOut"
 private const val ROOT_OUT_FOLDER_NAME = "rootOut"
+private const val CURRENT_DIR_OUT_FOLDER_NAME = "currentDirOut"
 
 private const val FIXED_TRUE_VALUE = "true"
 private const val FIXED_FALSE_VALUE = "false"
@@ -83,6 +84,10 @@ internal fun String.toRecipeExpression(sectionName: String): RecipeExpression {
 
                     ROOT_OUT_FOLDER_NAME -> {
                         RecipeExpressionCommand.RootOut
+                    }
+
+                    CURRENT_DIR_OUT_FOLDER_NAME -> {
+                        RecipeExpressionCommand.CurrentDirOut
                     }
 
                     else -> {

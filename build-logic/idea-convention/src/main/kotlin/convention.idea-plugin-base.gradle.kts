@@ -24,7 +24,6 @@ configure<IntelliJPluginExtension> {
     plugins.set(currentVersion.pluginsNames)
 }
 
-@Suppress("UnstableApiUsage")
 tasks.getByName<IntelliJInstrumentCodeTask>("instrumentCode") {
     val currentVersion = Libs.chosenIdeaVersion
     if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {

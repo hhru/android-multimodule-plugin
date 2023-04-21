@@ -20,8 +20,8 @@ mkDirs:
       - values
 ```
 
-Each list item can be [expression](/plugins/hh-geminio/docs/en/EXPRESSIONS.md).
+Each list item can be [expression](../../EXPRESSIONS.md).
 
 --- 
 
-[Back to the commands list](/plugins/hh-geminio/docs/en/recipe_content/RECIPE.md)
+[Back to the commands list](../RECIPE.md)
