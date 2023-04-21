@@ -3,7 +3,7 @@
 ## [1.4.2]
 ### Added
 - New `currentDirPackageName` - add package name from current module and folder
-- New `currentDir` - path to currentDir to output template
+- New `currentDirOut` - path to currentDir to output template
 
 ## [1.4.0]
 ### Added
