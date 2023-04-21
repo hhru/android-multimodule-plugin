@@ -89,15 +89,15 @@ private fun getHardcodedParamsMap(
         }
     }
 
-    var uiTestPackageName = targetDirectory.path.replace("/", ".")
-    uiTestPackageName = uiTestPackageName.substring(
-        uiTestPackageName.indexOf(packageName)
+    var currentDirPackageName = targetDirectory.path.replace("/", ".")
+    currentDirPackageName = currentDirPackageName.substring(
+        currentDirPackageName.indexOf(packageName)
     )
 
     return mapOf(
         HardcodedParams.PACKAGE_NAME to packageName,
         HardcodedParams.APPLICATION_PACKAGE to applicationPackage,
-        HardcodedParams.CURRENT_DIR_PACKAGE_NAME to uiTestPackageName
+        HardcodedParams.CURRENT_DIR_PACKAGE_NAME to currentDirPackageName
     )
 }
 
@@ -113,7 +113,7 @@ private object HardcodedParams {
     const val APPLICATION_PACKAGE = "applicationPackage"
 
     /**
-     * Package name from current gradle module.
+     * Package name from current directory.
      */
     const val CURRENT_DIR_PACKAGE_NAME = "currentDirPackageName"
 }
