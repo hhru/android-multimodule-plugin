@@ -90,9 +90,13 @@ private fun getHardcodedParamsMap(
     }
 
     var currentDirPackageName = targetDirectory.path.replace("/", ".")
-    currentDirPackageName = currentDirPackageName.substring(
-        currentDirPackageName.indexOf(packageName)
-    )
+    val packageNameIndex = currentDirPackageName.indexOf(packageName)
+    if (packageNameIndex != -1) {
+        currentDirPackageName = currentDirPackageName.substring(
+            packageNameIndex
+        )
+    }
+
 
     return mapOf(
         HardcodedParams.PACKAGE_NAME to packageName,
