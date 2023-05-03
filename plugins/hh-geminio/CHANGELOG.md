@@ -1,5 +1,11 @@
 # Geminio
 
+## [1.5.0]
+
+### Added
+
+- Support for Android Studio Flamingo | 2022.2.1
+
 ## [1.4.2]
 
 ### Added

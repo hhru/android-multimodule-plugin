@@ -168,7 +168,6 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         )
     }
 
-    @Suppress("UnstableApiUsage")
     private fun systemProperty(name: String): Provider<String> {
         return providers.systemProperty(name).forUseAtConfigurationTime()
     }

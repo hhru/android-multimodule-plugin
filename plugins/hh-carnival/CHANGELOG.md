@@ -1,5 +1,9 @@
 # Carnival
 
+## [1.4.0]
+### Added
+- Support for Android Studio Flamingo | 2022.2.1
+
 ## [1.3.0]
 ### Added
 - Support for Android Studio Electric Eel | 2022.1.1
