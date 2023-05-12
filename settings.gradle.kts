@@ -5,9 +5,7 @@ pluginManagement {
         maven("https://packages.atlassian.com/maven/repository/public")
     }
 
-    fun systemProperty(name: String): Provider<String> {
-        return providers.systemProperty(name).forUseAtConfigurationTime()
-    }
+    fun systemProperty(name: String): Provider<String> = providers.systemProperty(name)
 
     val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion")
     val gradleChangelogPluginVersion = systemProperty("gradleChangelogPluginVersion")

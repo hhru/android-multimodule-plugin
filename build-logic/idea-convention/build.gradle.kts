@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl`
-    id("convention.libraries")
+    id("convention.build.logic.plugin")
 }
 
 group = "ru.hh.plugins.build_logic"
