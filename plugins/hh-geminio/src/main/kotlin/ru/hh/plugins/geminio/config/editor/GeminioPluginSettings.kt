@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.extensions.isNotFullyInitialized
-import ru.hh.plugins.utils.yaml.YamlUtils
+import ru.hh.plugins.geminio.config.extensions.tryLoadFromConfigFile
 
 @State(
     name = "ru.hh.plugins.geminio.config.editor.GeminioPluginConfig",
@@ -23,9 +23,10 @@ class GeminioPluginSettings : PersistentStateComponent<GeminioPluginSettings> {
         fun getInstance(project: Project): GeminioPluginSettings {
             return project.service<GeminioPluginSettings>().let { settings ->
                 if (project.isDefault.not() && settings.config.isNotFullyInitialized()) {
-                    settings.tryLoadFromConfigFile(DEFAULT_PATH_TO_CONFIG_FILE)
+                    tryLoadFromConfigFile(DEFAULT_PATH_TO_CONFIG_FILE).onSuccess {
+                        settings.config = it
+                    }
                 }
-
                 settings
             }
         }
@@ -43,18 +44,5 @@ class GeminioPluginSettings : PersistentStateComponent<GeminioPluginSettings> {
 
     override fun loadState(state: GeminioPluginSettings) {
         XmlSerializerUtil.copyBean(state, this)
-    }
-
-    fun tryLoadFromConfigFile(configFilePath: String) {
-        YamlUtils.loadFromConfigFile<GeminioPluginConfig>(
-            configFilePath = configFilePath,
-            onError = {
-                // todo
-            }
-        )?.let { configFromYaml ->
-            this.config = configFromYaml.copy(
-                configFilePath = configFilePath,
-            )
-        }
     }
 }
