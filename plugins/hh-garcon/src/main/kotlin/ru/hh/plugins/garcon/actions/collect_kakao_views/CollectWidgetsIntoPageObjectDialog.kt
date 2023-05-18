@@ -6,8 +6,9 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.ui.RecentsManager
-import com.intellij.ui.layout.CCFlags
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.bindSelected
+import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
 import org.jetbrains.kotlin.psi.KtClass
@@ -17,7 +18,6 @@ import ru.hh.plugins.garcon.extensions.showErrorDialog
 import ru.hh.plugins.garcon.services.ClassFiltersFactory
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
 import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
-import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class CollectWidgetsIntoPageObjectDialog(
@@ -26,9 +26,9 @@ class CollectWidgetsIntoPageObjectDialog(
 
     private val project: Project get() = xmlFile.project
 
-    private lateinit var openInEditorCheckBox: JCheckBox
     private lateinit var targetClassChooser: KotlinFileComboBoxWrapper
 
+    private var openInEditor: Boolean = false
     private var targetClass: PsiElement? = null
 
     init {
@@ -37,8 +37,10 @@ class CollectWidgetsIntoPageObjectDialog(
     }
 
     override fun createCenterPanel(): JComponent {
+        openInEditor = PropertiesComponent.getInstance()
+            .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)
         return panel {
-            titledRow("Choose target <Screen> Page Object class") {
+            group("Page Object Class") {
                 row {
                     targetClassChooser = createKotlinClassChooserComboBox(
                         project = project,
@@ -56,48 +58,43 @@ class CollectWidgetsIntoPageObjectDialog(
                                 targetClass = aClass
                             }
                         }
-                    )
-                    targetClassChooser()
+                    ).apply {
+                        @Suppress("MagicNumber")
+                        setTextFieldPreferredWidth(50)
+                    }
+
+                    cell(targetClassChooser)
+                        .comment("Choose target &lt;Screen&gt; Page Object class")
+                        .resizableColumn()
+                        .horizontalAlign(HorizontalAlign.FILL)
                 }
             }
             row {
-                openInEditorCheckBox = checkBox(
-                    text = "Open in editor",
-                    isSelected = PropertiesComponent.getInstance()
-                        .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)
-                ).component
-                openInEditorCheckBox(CCFlags.pushX)
+                checkBox("Open in editor")
+                    .bindSelected(::openInEditor)
             }
         }
     }
 
     override fun doOKAction() {
         if (isFormValid()) {
+            super.doOKAction()
             targetClass?.let { aClass ->
                 RecentsManager.getInstance(project).registerRecentEntry(
                     GarconConstants.RecentsKeys.TARGET_SCREEN_CLASS, aClass.getKotlinFqName().toString()
                 )
             }
             PropertiesComponent.getInstance()
-                .setValue(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, getOpenInEditor().toString())
-            super.doOKAction()
+                .setValue(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, openInEditor.toString())
         }
     }
 
     fun getDialogResult(): CollectWidgetsIntoPageObjectDialogResult {
         return CollectWidgetsIntoPageObjectDialogResult(
             xmlFile = xmlFile,
-            targetClass = getTargetPsiElement() as KtClass,
-            openInEditor = getOpenInEditor()
+            targetClass = targetClass as KtClass,
+            openInEditor = openInEditor
         )
-    }
-
-    private fun getOpenInEditor(): Boolean {
-        return openInEditorCheckBox.isSelected
-    }
-
-    private fun getTargetPsiElement(): PsiElement? {
-        return targetClass
     }
 
     private fun isFormValid(): Boolean {
