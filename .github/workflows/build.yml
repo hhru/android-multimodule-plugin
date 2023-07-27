@@ -27,4 +27,4 @@ jobs:
           ./gradlew buildAllPlugins \
             -DandroidStudioPath="$(pwd)/android-studio" \
             -DandroidStudioCompilerVersion="$COMPILER_VERSION" \
-            -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,IntelliLang"
+            -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,Git4Idea,platform-langInjection"
