@@ -1,5 +1,11 @@
 # Geminio
 
+
+## [1.6.0]
+### Added
+- Support for Android Studio Giraffe | 2022.3.1
+
+
 ## [1.5.0]
 
 ### Added
