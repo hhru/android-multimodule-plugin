@@ -18,8 +18,8 @@ fun XmlFile.collectAndroidViewsTagsInfo(): List<AndroidViewTagInfo> {
     val result = mutableListOf<AndroidViewTagInfo>()
 
     this.accept(object : XmlRecursiveElementVisitor() {
-        override fun visitXmlTag(tag: XmlTag?) {
-            tag?.toLayoutTagInfo()?.let { result += it }
+        override fun visitXmlTag(tag: XmlTag) {
+            tag.toLayoutTagInfo()?.let { result += it }
             super.visitXmlTag(tag)
         }
     })
