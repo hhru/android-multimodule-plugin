@@ -10,12 +10,12 @@ import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
 import com.intellij.ui.layout.Row
 import org.jetbrains.kotlin.asJava.toLightClass
+import org.jetbrains.kotlin.idea.base.util.projectScope
+import org.jetbrains.kotlin.idea.base.util.restrictToKotlinSources
 import org.jetbrains.kotlin.idea.completion.extraCompletionFilter
 import org.jetbrains.kotlin.idea.core.completion.DeclarationLookupObject
 import org.jetbrains.kotlin.idea.core.completion.PackageLookupObject
 import org.jetbrains.kotlin.idea.projectView.KtClassOrObjectTreeNode
-import org.jetbrains.kotlin.idea.search.projectScope
-import org.jetbrains.kotlin.idea.search.restrictToKotlinSources
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
 import java.awt.event.ActionListener

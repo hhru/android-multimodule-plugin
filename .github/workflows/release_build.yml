@@ -17,11 +17,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Set up JDK 1.11
+      - name: Set up JDK 1.17
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
       - name: Download Android Studio
         run: |
           wget -O android-studio.tar.gz -q $ANDROID_STUDIO_URL
