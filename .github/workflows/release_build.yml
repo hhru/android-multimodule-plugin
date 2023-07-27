@@ -31,7 +31,7 @@ jobs:
           ./gradlew buildAllPlugins \
             -DandroidStudioPath="$(pwd)/android-studio" \
             -DandroidStudioCompilerVersion="$COMPILER_VERSION" \
-            -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,git4idea,IntelliLang"
+            -DandroidStudioPluginsNames="android,Kotlin,java,Groovy,IntelliLang"
       - name: Publish plugins
         uses: softprops/action-gh-release@v1
         env:
