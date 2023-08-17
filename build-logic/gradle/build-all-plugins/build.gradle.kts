@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl`
-    id("convention.build.logic.plugin")
+    id("convention.libraries")
 }
 
 group = "ru.hh.plugins.gradle"
