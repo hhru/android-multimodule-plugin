@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.4.0]
+### Added
+- Support for Android Studio Giraffe | 2022.3.1
+
 ## [1.3.0]
 ### Added
 - Support for Android Studio Flamingo | 2022.2.1
