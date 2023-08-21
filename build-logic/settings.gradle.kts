@@ -7,9 +7,9 @@ include("testing-convention")
 include("static-analysis-convention")
 include("idea-convention")
 
-include(":gradle:core-utils")
-include(":gradle:build-all-plugins")
-include(":gradle:collect-update-plugins")
+include(":gradle-ext:core-utils")
+include(":gradle-ext:build-all-plugins")
+include(":gradle-ext:collect-update-plugins")
 
 pluginManagement {
     repositories {
