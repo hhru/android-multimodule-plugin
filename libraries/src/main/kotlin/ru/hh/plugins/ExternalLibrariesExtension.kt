@@ -169,6 +169,6 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     }
 
     private fun systemProperty(name: String): Provider<String> {
-        return providers.systemProperty(name).forUseAtConfigurationTime()
+        return providers.systemProperty(name)
     }
 }
