@@ -36,6 +36,7 @@ internal fun Map<String, Any>.toOptionalParams(): OptionalParams {
     val default = DEFAULT_OPTIONAL_PARAMS
     val optionalParamsMap = this[KEY_OPTIONAL_PARAMS_SECTION] as? Map<String, Any>
         ?: return default
+
     return default.copy(
         revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int
             ?: default.revision,
