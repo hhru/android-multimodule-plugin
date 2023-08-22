@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 abstract class ExternalLibrariesExtension @Inject constructor(private val providers: ProviderFactory) {
 
-    val javaVersion = JavaVersion.VERSION_11
+    val javaVersion = JavaVersion.VERSION_17
     val chosenIdeaVersion: Product = Product.LocalIde(
         pathToIde = systemProperty("androidStudioPath").get(),
         compilerVersion = systemProperty("androidStudioCompilerVersion").get(),
@@ -169,6 +169,6 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     }
 
     private fun systemProperty(name: String): Provider<String> {
-        return providers.systemProperty(name).forUseAtConfigurationTime()
+        return providers.systemProperty(name)
     }
 }

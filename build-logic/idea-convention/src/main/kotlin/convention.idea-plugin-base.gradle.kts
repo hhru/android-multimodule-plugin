@@ -1,5 +1,6 @@
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.intellij.tasks.BuildSearchableOptionsTask
 import org.jetbrains.intellij.tasks.InstrumentCodeTask
 import ru.hh.plugins.ExternalLibrariesExtension
 
@@ -29,4 +30,10 @@ tasks.getByName<InstrumentCodeTask>("instrumentCode") {
     if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {
         compilerVersion.set(currentVersion.compilerVersion)
     }
+}
+
+// Hack for removing errors "call to AnalyticsSettings before initialization"
+// https://issuetracker.google.com/issues/224810684?pli=1
+tasks.getByName<BuildSearchableOptionsTask>("buildSearchableOptions") {
+    enabled = false
 }

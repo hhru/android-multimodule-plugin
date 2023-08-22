@@ -7,8 +7,8 @@ import com.android.tools.idea.util.androidFacet
 import com.android.tools.lint.detector.api.XmlContext
 import com.intellij.openapi.project.Project
 import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.kotlin.idea.base.util.module
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
-import org.jetbrains.kotlin.idea.util.module
 
 val XmlContext.ideaProject: Project get() = this.project.ideaProject
 
