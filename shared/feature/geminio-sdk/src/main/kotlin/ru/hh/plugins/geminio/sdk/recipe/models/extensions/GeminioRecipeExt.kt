@@ -7,7 +7,7 @@ internal fun GeminioRecipe.toIndentString(): String {
     return buildString(notFancy.length) {
         var indent = 0
         fun StringBuilder.line() {
-            appendln()
+            appendLine()
             repeat(2 * indent) { append(' ') }
         }
 

@@ -11,6 +11,7 @@ import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
+import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.geminio.actions.module_template.steps.ChooseModulesModelWizardStep
 import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
@@ -73,7 +74,9 @@ class ExecuteGeminioModuleTemplateAction(
 
         HHLogger.d("Recipe successfully parsed!")
 
-        val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe)
+        val targetDirectory = actionEvent.getTargetDirectory()
+
+        val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe, targetDirectory)
 
         val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory(project)
         val stepModel = configureTemplateParametersStepFactory.createForNewModule(

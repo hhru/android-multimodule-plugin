@@ -105,6 +105,9 @@ recipe:
   - instantiate:
       from: root/res/layout/fragment_blank.xml.ftl
       to: ${resOut}/layout/${fragmentName}.xml
+  - instantiate:
+      from: root/src/app_package/BlankViewModel.kt.ftl
+      to: ${currentDirOut}/presentation/${className}ViewModel.kt
   - open:
       file: ${resOut}/layout/${fragmentName}.xml
   - predicate:
@@ -122,6 +125,7 @@ recipe:
   - addDependencies:
       - implementation: Libs.jetpack.compose
       - kapt: Libs.di.toothpick
+      - ksp: Libs.jetpack.room
       - compileOnly: com.github.stephanenicolas.toothpick:toothpick:3.1.0
       - testImplementation: :shared-core-test
       - androidTestImplementation: Libs.uiTests.kaspresso
@@ -134,8 +138,8 @@ The recipe consists of 6 sections:
 
 - `requiredParams` — required parameters for your template;
 - `optionalParams` — optional parameters;
-- `predefinedFeatures` - a set of predefined features in Geminio, which 
-  can add new widgets to the template, supplement the functionality.
+- `predefinedFeatures` - a set of predefined features in Geminio, which can add new widgets to the template, supplement
+  the functionality.
 - `widgets` — description of template parameters; only string and boolean parameters are available for use;
 - `globals` - description of invisible parameters for templates, some "global" variables.
 - `recipe` — a set of instructions that should be executed.
@@ -145,17 +149,17 @@ but only combined into a single file, — you are absolutely right.
 
 ### Recipe's sections
 
-- [requiredParams](/plugins/hh-geminio/docs/en/recipe_content/REQURED_PARAMS.md)
-- [optionalParams](/plugins/hh-geminio/docs/en/recipe_content/OPTIONAL_PARAMS.md)
-- [predefinedFeatures](/plugins/hh-geminio/docs/en/recipe_content/PREDEFINED_FEATURES.md)
-- [widgets](/plugins/hh-geminio/docs/en/recipe_content/WIDGETS.md)
-- [globals](/plugins/hh-geminio/docs/en/recipe_content/GLOBALS.md)
-- [recipe](/plugins/hh-geminio/docs/en/recipe_content/RECIPE.md)
+- [requiredParams](./recipe_content/REQURED_PARAMS.md)
+- [optionalParams](./recipe_content/OPTIONAL_PARAMS.md)
+- [predefinedFeatures](./recipe_content/PREDEFINED_FEATURES.md)
+- [widgets](./recipe_content/WIDGETS.md)
+- [globals](./recipe_content/GLOBALS.md)
+- [recipe](./recipe_content/RECIPE.md)
 
 ### Additional info
 
-- [Expressions](/plugins/hh-geminio/docs/en/EXPRESSIONS.md)
+- [Expressions](./EXPRESSIONS.md)
 
 ---
 
-[Return to MoC](/plugins/hh-geminio/README_EN.md)
+[Return to MoC](../../README_EN.md)

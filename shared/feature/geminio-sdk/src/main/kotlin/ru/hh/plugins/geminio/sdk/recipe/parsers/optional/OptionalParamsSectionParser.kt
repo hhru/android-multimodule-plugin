@@ -2,7 +2,6 @@
 
 package ru.hh.plugins.geminio.sdk.recipe.parsers.optional
 
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.OptionalParams
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateCategory
 import ru.hh.plugins.geminio.sdk.recipe.models.optional.TemplateConstraint
@@ -20,46 +19,43 @@ private const val KEY_OPTIONAL_PARAMS_SCREENS = "screens"
 private const val KEY_OPTIONAL_PARAMS_MIN_API = "minApi"
 private const val KEY_OPTIONAL_PARAMS_MIN_BUILD_API = "minBuildApi"
 
-private const val DEFAULT_REVISION_VALUE = 1
-private const val DEFAULT_MIN_API_VALUE = 1
-private const val DEFAULT_MIN_BUILD_API_VALUE = 1
+private val DEFAULT_OPTIONAL_PARAMS = OptionalParams(
+    revision = 1,
+    category = TemplateCategory.OTHER,
+    formFactor = TemplateFormFactor.GENERIC,
+    constraints = emptyList(),
+    screens = emptyList(),
+    minApi = 1,
+    minBuildApi = 1
+)
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.optional.OptionalParams].
  */
 internal fun Map<String, Any>.toOptionalParams(): OptionalParams {
+    val default = DEFAULT_OPTIONAL_PARAMS
     val optionalParamsMap = this[KEY_OPTIONAL_PARAMS_SECTION] as? Map<String, Any>
-        ?: return OptionalParams.default()
+        ?: return default
 
-    val revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int ?: DEFAULT_REVISION_VALUE
-    val categoryYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_CATEGORY] as? String ?: String.EMPTY
-    val formFactorYamlKey = optionalParamsMap[KEY_OPTIONAL_PARAMS_FORM_FACTOR] as? String ?: String.EMPTY
-    val constraintsYamlKeys = optionalParamsMap[KEY_OPTIONAL_PARAMS_CONSTRAINTS] as? List<String>
-        ?: emptyList()
-    val screensYamlKeys = optionalParamsMap[KEY_OPTIONAL_PARAMS_SCREENS] as? List<String> ?: emptyList()
-    val minApiValue = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_API] as? Int ?: DEFAULT_MIN_API_VALUE
-    val minBuildApiValue = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_BUILD_API] as? Int ?: DEFAULT_MIN_BUILD_API_VALUE
-
-    return OptionalParams(
-        revision = revision,
-        category = categoryYamlKey.toTemplateCategory(),
-        formFactor = formFactorYamlKey.toTemplateFormFactor(),
-        constraints = constraintsYamlKeys.map { it.toTemplateConstraint() },
-        screens = screensYamlKeys.map { it.toTemplateScreen() },
-        minApi = minApiValue,
-        minBuildApi = minBuildApiValue,
-    )
-}
-
-private fun OptionalParams.Companion.default(): OptionalParams {
-    return OptionalParams(
-        revision = DEFAULT_REVISION_VALUE,
-        category = TemplateCategory.OTHER,
-        formFactor = TemplateFormFactor.GENERIC,
-        constraints = emptyList(),
-        screens = emptyList(),
-        minApi = DEFAULT_MIN_API_VALUE,
-        minBuildApi = DEFAULT_MIN_BUILD_API_VALUE
+    return default.copy(
+        revision = optionalParamsMap[KEY_OPTIONAL_PARAMS_REVISION] as? Int
+            ?: default.revision,
+        category = (optionalParamsMap[KEY_OPTIONAL_PARAMS_CATEGORY] as? String)
+            ?.toTemplateCategory()
+            ?: default.category,
+        formFactor = (optionalParamsMap[KEY_OPTIONAL_PARAMS_FORM_FACTOR] as? String)
+            ?.toTemplateFormFactor()
+            ?: default.formFactor,
+        constraints = (optionalParamsMap[KEY_OPTIONAL_PARAMS_CONSTRAINTS] as? List<String>)
+            ?.map { it.toTemplateConstraint() }
+            ?: default.constraints,
+        screens = (optionalParamsMap[KEY_OPTIONAL_PARAMS_SCREENS] as? List<String>)
+            ?.map { it.toTemplateScreen() }
+            ?: default.screens,
+        minApi = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_API] as? Int
+            ?: default.minApi,
+        minBuildApi = optionalParamsMap[KEY_OPTIONAL_PARAMS_MIN_BUILD_API] as? Int
+            ?: default.minBuildApi,
     )
 }
 

@@ -21,7 +21,10 @@ fun PsiDirectory.findSubdirectoryByPackageName(moduleName: String, packageName: 
     for (item in directoriesNames) {
         result = result.findSubdirectory(item)
             ?: throw CopyModuleActionException(
-                "Can't find main package directory in copying module. Please, check AndroidManifest.xml in \"${moduleName}\" module and make sure that main package name is \"${packageName}\""
+                """Can't find main package directory in copying module. 
+                    |Please, check AndroidManifest.xml in \"$moduleName\" 
+                    |module and make sure that main package name is \"$packageName\"""
+                    .trimMargin()
             )
     }
     return result

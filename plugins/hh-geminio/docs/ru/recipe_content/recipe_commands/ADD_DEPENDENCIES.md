@@ -16,6 +16,7 @@
     * `testImplementation`
     * `androidTestImplementation`
     * `kapt`
+    * `ksp`
 
 - `<dependencyNotation>` - нотация объявления зависимости. Имеет три поддерживаемых формата:
     * Нотация Maven-артефакта, например, `org.company:artifact:version`
@@ -24,4 +25,4 @@
 
 --- 
 
-[Обратно к списку команд](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)
+[Обратно к списку команд](../RECIPE.md)

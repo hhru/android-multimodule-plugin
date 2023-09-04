@@ -14,6 +14,7 @@ enum class JiraDevelopmentTeam(
 
     companion object {
 
-        fun fromLabel(label: String): JiraDevelopmentTeam = values().firstOrNull { it.comboBoxLabel == label } ?: MOBILE_CORE
+        fun fromLabel(label: String): JiraDevelopmentTeam = values().firstOrNull { it.comboBoxLabel == label }
+            ?: MOBILE_CORE
     }
 }

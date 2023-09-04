@@ -6,7 +6,7 @@ pluginManagement {
     }
 
     fun systemProperty(name: String): Provider<String> {
-        return providers.systemProperty(name).forUseAtConfigurationTime()
+        return providers.systemProperty(name)
     }
 
     val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion")
@@ -35,8 +35,8 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
     repositories {
         mavenCentral()
         gradlePluginPortal()

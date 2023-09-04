@@ -53,4 +53,4 @@
 
 ---
 
-[Обратно к устройству "рецептов"](/plugins/hh-geminio/docs/ru/RECIPE_CONTENT.md)
+[Обратно к устройству "рецептов"](../RECIPE_CONTENT.md)

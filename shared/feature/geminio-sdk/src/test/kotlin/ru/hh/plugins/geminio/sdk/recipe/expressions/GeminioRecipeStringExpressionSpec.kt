@@ -1,3 +1,5 @@
+@file:Suppress("detekt.Indentation")
+
 package ru.hh.plugins.geminio.sdk.recipe.expressions
 
 import io.kotest.assertions.throwables.shouldThrow

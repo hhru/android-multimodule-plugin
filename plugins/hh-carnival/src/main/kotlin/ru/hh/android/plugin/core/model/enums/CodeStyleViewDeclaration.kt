@@ -1,9 +1,7 @@
 package ru.hh.android.plugin.core.model.enums
 
-import com.android.SdkConstants
-
 private const val ANDROID_WIDGET_PKG = "android.widget"
-private const val ANDROIDX_APPCOMPAT_WIDGET_PKG = "${SdkConstants.ANDROIDX_APPCOMPAT_PKG}.widget"
+private const val ANDROIDX_APPCOMPAT_WIDGET_PKG = "androidx.appcompat.widget"
 
 /**
  * Enum for holding hh.ru code style for XML views identifiers.
@@ -18,28 +16,28 @@ enum class CodeStyleViewDeclaration(
     COLLAPSING_TOOLBAR_LAYOUT(
         idPrefix = "collapsing_toolbar",
         androidWidgetsClasses = listOf(
-            SdkConstants.COLLAPSING_TOOLBAR_LAYOUT.newName()
+            "com.google.android.material.appbar.CollapsingToolbarLayout"
         )
     ),
 
     APP_BAR_LAYOUT(
         idPrefix = "app_bar",
         androidWidgetsClasses = listOf(
-            SdkConstants.APP_BAR_LAYOUT.newName()
+            "com.google.android.material.appbar.AppBarLayout"
         )
     ),
 
     TOOLBAR(
         idPrefix = "toolbar",
         androidWidgetsClasses = listOf(
-            SdkConstants.TOOLBAR_V7.newName()
+            "androidx.appcompat.widget.Toolbar"
         )
     ),
 
     RECYCLER_VIEW(
         idPrefix = "recycler",
         androidWidgetsClasses = listOf(
-            SdkConstants.RECYCLER_VIEW.newName()
+            "androidx.recyclerview.widget.RecyclerView"
         )
     ),
 
@@ -69,14 +67,14 @@ enum class CodeStyleViewDeclaration(
     PROGRESS_BAR(
         idPrefix = "progress",
         androidWidgetsClasses = listOf(
-            "$ANDROID_WIDGET_PKG.${SdkConstants.PROGRESS_BAR}"
+            "$ANDROID_WIDGET_PKG.ProgressBar"
         )
     ),
 
     IMAGE_VIEW(
         idPrefix = "image",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_IMAGE_VIEW,
+            "android.widget.ImageView",
             "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatImageView"
         )
     ),
@@ -84,7 +82,7 @@ enum class CodeStyleViewDeclaration(
     CHECKBOX(
         idPrefix = "checkbox",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_CHECK_BOX,
+            "android.widget.CheckBox",
             "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatCheckBox"
         )
     ),
@@ -92,7 +90,7 @@ enum class CodeStyleViewDeclaration(
     BUTTON(
         idPrefix = "button",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_BUTTON,
+            "android.widget.Button",
             "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatButton"
         )
     ),
@@ -100,7 +98,7 @@ enum class CodeStyleViewDeclaration(
     EDIT_TEXT(
         idPrefix = "edit_text",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_EDIT_TEXT,
+            "android.widget.EditText",
             "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatEditText"
         )
     ),
@@ -108,7 +106,7 @@ enum class CodeStyleViewDeclaration(
     TEXT_VIEW(
         idPrefix = "text_view",
         androidWidgetsClasses = listOf(
-            SdkConstants.FQCN_TEXT_VIEW,
+            "android.widget.TextView",
             "$ANDROIDX_APPCOMPAT_WIDGET_PKG.AppCompatTextView"
         )
     ),
@@ -123,7 +121,7 @@ enum class CodeStyleViewDeclaration(
     VIEW(
         idPrefix = "view",
         androidWidgetsClasses = listOf(
-            SdkConstants.CLASS_VIEW
+            "android.view.View"
         )
     )
 }

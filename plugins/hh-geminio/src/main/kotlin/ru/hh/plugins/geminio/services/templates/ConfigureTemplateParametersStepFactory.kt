@@ -144,32 +144,44 @@ class ConfigureTemplateParametersStepFactory(
         val originalModuleTemplates = this.getModuleTemplates(targetDirectory)
         assert(originalModuleTemplates.isNotEmpty())
 
-        val firstNamedModuleTemplate = originalModuleTemplates.first()
-        return if (firstNamedModuleTemplate.paths.getAidlDirectory("stub.package") != null) {
-            originalModuleTemplates
-        } else {
-            HHLogger.d("There is no AIDL directory in original module template -> create stub module path module")
-            /**
-             * Sometimes after fetching module templates information from [org.jetbrains.android.facet.AndroidFacet]
-             * there is no information about AIDL sources directory.
-             *
-             * But this directory is necessary for [com.android.tools.idea.npw.template.ModuleTemplateDataBuilder] in
-             * `build` method (has line with `aidlDir!!`) which leads to NullPointerException crash -->
-             * not modules templates skip files generation.
-             *
-             * So, we need to manually fix this problem through simple wrapper over
-             * [com.android.tools.idea.projectsystem.AndroidModulePaths].
-             */
-            val fixedAidlNamedModuleTemplate = firstNamedModuleTemplate.copy(
-                paths = StubAndroidModulePaths(firstNamedModuleTemplate.paths)
-            )
+        val moduleTemplate = originalModuleTemplates.first()
 
-            return listOf(fixedAidlNamedModuleTemplate)
-        }
+        /**
+         * Sometimes after fetching module templates information from [org.jetbrains.android.facet.AndroidFacet]
+         * there is no information about AIDL and SRC sources directory.
+         *
+         * But AIDL directory is necessary for [com.android.tools.idea.npw.template.ModuleTemplateDataBuilder] in
+         * `build` method (has line with `aidlDir!!`) which leads to NullPointerException crash -->
+         * not modules templates skip files generation.
+         *
+         * And SRC directory is necessary for files creation, without specifing this directory
+         * [com.android.tools.idea.npw.model.RenderTemplateModel] will not start files creation.
+         *
+         * So, we need to manually fix this problem through simple wrapper over
+         * [com.android.tools.idea.projectsystem.AndroidModulePaths].
+         */
+        val shouldReplaceAidlDirectory = moduleTemplate.paths.getAidlDirectory("stub.package") == null
+        val shouldReplaceSrcDirectory = moduleTemplate.paths.getSrcDirectory("stub.package") == null
+
+        HHLogger.d("Should replace AIDL directory: $shouldReplaceAidlDirectory")
+        HHLogger.d("Should replace SRC directory: $shouldReplaceSrcDirectory")
+        return listOf(
+            moduleTemplate.copy(
+                paths = StubAndroidModulePaths(
+                    original = moduleTemplate.paths,
+                    baseModuleName = moduleTemplate.name,
+                    shouldReplaceAidlDirectory = shouldReplaceAidlDirectory,
+                    shouldReplaceSrcDirectory = shouldReplaceSrcDirectory,
+                ),
+            )
+        )
     }
 
     private class StubAndroidModulePaths(
-        private val original: AndroidModulePaths
+        private val original: AndroidModulePaths,
+        private val baseModuleName: String,
+        private val shouldReplaceAidlDirectory: Boolean,
+        private val shouldReplaceSrcDirectory: Boolean,
     ) : AndroidModulePaths {
         override val manifestDirectory: File?
             get() = original.manifestDirectory
@@ -179,12 +191,21 @@ class ConfigureTemplateParametersStepFactory(
             get() = original.resDirectories
 
         override fun getAidlDirectory(packageName: String?): File? {
-            return original.moduleRoot
-                ?.resolve("src/main/aidl" + packageName?.toSlashedFilePath().orEmpty())
+            return if (shouldReplaceAidlDirectory) {
+                original.moduleRoot
+                    ?.resolve("src/$baseModuleName/aidl" + packageName?.toSlashedFilePath().orEmpty())
+            } else {
+                original.getAidlDirectory(packageName)
+            }
         }
 
         override fun getSrcDirectory(packageName: String?): File? {
-            return original.getSrcDirectory(packageName)
+            return if (shouldReplaceSrcDirectory) {
+                original.moduleRoot
+                    ?.resolve("src/$baseModuleName/java" + packageName?.toSlashedFilePath().orEmpty())
+            } else {
+                original.getSrcDirectory(packageName)
+            }
         }
 
         override fun getTestDirectory(packageName: String?): File? {

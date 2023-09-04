@@ -1,7 +1,6 @@
 package ru.hh.plugins.garcon.services
 
 import android.databinding.tool.ext.toCamelCase
-import com.android.SdkConstants
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -86,7 +85,7 @@ class PageObjectPropertyConverter(
 
         return when {
             secondCheckDeclaration != null -> secondCheckDeclaration.value
-            else -> requireNotNull(configMap[SdkConstants.CLASS_VIEW])
+            else -> requireNotNull(configMap["android.view.View"])
         }.also { classesMap[tagPsiClass] = it }
     }
 
@@ -104,10 +103,10 @@ class PageObjectPropertyConverter(
                 result
             }
 
-        return "${purifiedViewId}_${idSuffixes.first()}".toCamelCase().decapitalize()
+        return "${purifiedViewId}_${idSuffixes.first()}".toCamelCase().replaceFirstChar { it.uppercaseChar() }
     }
 
     private fun AndroidViewTagInfo.isRecyclerViewWidget(): Boolean {
-        return tagPsiClass.qualifiedName == SdkConstants.RECYCLER_VIEW.newName()
+        return tagPsiClass.qualifiedName == "androidx.recyclerview.widget.RecyclerView"
     }
 }

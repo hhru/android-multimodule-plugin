@@ -3,6 +3,7 @@ package ru.hh.plugins.geminio.sdk.template.mapping
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.template
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.GeminioAdditionalParamsStore
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants
@@ -21,7 +22,8 @@ import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
  * Mapping from [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe]
  * into [ru.hh.plugins.geminio.sdk.models.GeminioTemplateData].
  */
-internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTemplateData {
+@Suppress("detekt.LongMethod")
+internal fun GeminioRecipe.toGeminioTemplateData(project: Project, targetDirectory: VirtualFile): GeminioTemplateData {
     val geminioRecipe = this
 
     val existingParametersMap = mutableMapOf<String, AndroidStudioTemplateParameter>()
@@ -36,6 +38,7 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
         recipe = { templateData ->
             val moduleTemplateData = templateData as ModuleTemplateData
             executeGeminioRecipe(
+                targetDirectory = targetDirectory,
                 geminioRecipe = geminioRecipe,
                 executorData = GeminioRecipeExecutorData(
                     project = project,
@@ -45,7 +48,7 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
                     resolvedParamsMap = existingParametersMap.asIterable().associate { entry ->
                         entry.key to entry.value.value
                     }.plus(
-                        getHardcodedParamsMap(moduleTemplateData, existingParametersMap)
+                        getHardcodedParamsMap(targetDirectory, moduleTemplateData, existingParametersMap)
                     ).plus(
                         paramsStore
                     ),
@@ -69,6 +72,7 @@ internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTempl
 }
 
 private fun getHardcodedParamsMap(
+    targetDirectory: VirtualFile,
     moduleTemplateData: ModuleTemplateData,
     existingParametersMap: Map<String, AndroidStudioTemplateParameter>
 ): Map<String, Any?> {
@@ -85,9 +89,19 @@ private fun getHardcodedParamsMap(
         }
     }
 
+    var currentDirPackageName = targetDirectory.path.replace("/", ".")
+    val packageNameIndex = currentDirPackageName.indexOf(packageName)
+    if (packageNameIndex != -1) {
+        currentDirPackageName = currentDirPackageName.substring(
+            packageNameIndex
+        )
+    }
+
+
     return mapOf(
         HardcodedParams.PACKAGE_NAME to packageName,
         HardcodedParams.APPLICATION_PACKAGE to applicationPackage,
+        HardcodedParams.CURRENT_DIR_PACKAGE_NAME to currentDirPackageName
     )
 }
 
@@ -101,4 +115,9 @@ private object HardcodedParams {
      * Package name from current gradle module.
      */
     const val APPLICATION_PACKAGE = "applicationPackage"
+
+    /**
+     * Package name from current directory.
+     */
+    const val CURRENT_DIR_PACKAGE_NAME = "currentDirPackageName"
 }

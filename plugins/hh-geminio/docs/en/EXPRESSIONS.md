@@ -15,7 +15,8 @@ availability: true
 
 The text inside `${}` is considered the «dynamic» part of the expression, which needs to be
 calculated depending on the content. Text outside the curly braces is the fixed part.
-Inside `${}` you can use only those parameters that have already been declared ABOVE in the `widgets` (or `globals`) section text.
+Inside `${}` you can use only those parameters that have already been declared ABOVE in the `widgets` (or `globals`)
+section text.
 
 Additional extension functions can be used for text parameters:
 
@@ -28,6 +29,7 @@ Additional extension functions can be used for text parameters:
 - `underscoreToCamelCase`.
 
 There are special values for boolean expressions - `true` / `false`
+
 + you can use only boolean-parameters inside ${} for them
 
 Examples of expressions for the recipe section:
@@ -35,7 +37,7 @@ Examples of expressions for the recipe section:
 ```yaml
 - open:
     file: ${srcOut}/di/${moduleName}.kt
-    
+
 - instantiate:
     from: root/build.gradle.ftl
     to: ${rootOut}/build.gradle
@@ -43,7 +45,7 @@ Examples of expressions for the recipe section:
 - instantiateAndOpen:
     from: root/res/layout/fragment_container.xml.ftl
     to: ${resOut}/layout/${fragmentName}.xml
-    
+
 - instantiateAndOpen:
     from: root/main/AndroidManifest.xml
     to: ${manifestOut}/AndroidManifest.xml
@@ -55,7 +57,9 @@ In the `recipe` section, we add several additional parameters for string values:
 - `manifestOut` - path to the `src/main` folder inside module
 - `resOut` — path to the res folder inside the module where the template is running;
 - `srcOut` — path to the src / main / <source-set> / <current-dir> folder in the module where the template is running.
+- `currentDirOut` - path to the folder that was selected in the `Project View` to launch the `Action` of the Geminio
+  plugin.
 
 ---
 
-[Return to MoC](/plugins/hh-geminio/README_EN.md)
+[Return to MoC](../../README_EN.md)

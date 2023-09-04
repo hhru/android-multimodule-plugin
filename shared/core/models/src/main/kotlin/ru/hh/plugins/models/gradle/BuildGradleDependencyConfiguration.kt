@@ -7,6 +7,7 @@ enum class BuildGradleDependencyConfiguration(
     val yamlKey: String
 ) {
     KAPT("kapt"),
+    KSP("ksp"),
     COMPILE_ONLY("compileOnly"),
     IMPLEMENTATION("implementation"),
     API("api"),

@@ -105,6 +105,9 @@ recipe:
   - instantiate:
       from: root/res/layout/fragment_blank.xml.ftl
       to: ${resOut}/layout/${fragmentName}.xml
+  - instantiate:
+      from: root/src/app_package/BlankViewModel.kt.ftl
+      to: ${currentDirOut}/presentation/${className}ViewModel.kt
   - open:
       file: ${resOut}/layout/${fragmentName}.xml
   - predicate:
@@ -122,6 +125,7 @@ recipe:
   - addDependencies:
       - implementation: Libs.jetpack.compose
       - kapt: Libs.di.toothpick
+      - ksp: Libs.jetpack.room
       - compileOnly: com.github.stephanenicolas.toothpick:toothpick:3.1.0
       - testImplementation: :shared-core-test
       - androidTestImplementation: Libs.uiTests.kaspresso
@@ -144,17 +148,17 @@ recipe:
 
 ### Секции "рецептов"
 
-- [requiredParams](/plugins/hh-geminio/docs/ru/recipe_content/REQURED_PARAMS.md)
-- [optionalParams](/plugins/hh-geminio/docs/ru/recipe_content/OPTIONAL_PARAMS.md)
-- [predefinedFeatures](/plugins/hh-geminio/docs/ru/recipe_content/PREDEFINED_FEATURES.md)
-- [widgets](/plugins/hh-geminio/docs/ru/recipe_content/WIDGETS.md)
-- [globals](/plugins/hh-geminio/docs/ru/recipe_content/GLOBALS.md)
-- [recipe](/plugins/hh-geminio/docs/ru/recipe_content/RECIPE.md)
+- [requiredParams](./recipe_content/REQURED_PARAMS.md)
+- [optionalParams](./recipe_content/OPTIONAL_PARAMS.md)
+- [predefinedFeatures](./recipe_content/PREDEFINED_FEATURES.md)
+- [widgets](./recipe_content/WIDGETS.md)
+- [globals](./recipe_content/GLOBALS.md)
+- [recipe](./recipe_content/RECIPE.md)
 
 ### Дополнительно
 
-- [Выражения](/plugins/hh-geminio/docs/ru/EXPRESSIONS.md)
+- [Выражения](./EXPRESSIONS.md)
 
 ---
 
-[Обратно к содержанию](/plugins/hh-geminio/README.md#Содержание)
+[Обратно к содержанию](../../README.md#Содержание)
