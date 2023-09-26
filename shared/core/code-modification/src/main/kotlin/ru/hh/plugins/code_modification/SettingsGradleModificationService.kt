@@ -54,11 +54,13 @@ class SettingsGradleModificationService(
     ) {
         when (settingsGradlePsiFile) {
             is KtFile -> {
-                settingsGradlePsiFile.addModuleDescription(moduleName, moduleRelativePath)
+                // settingsGradlePsiFile.addModuleDescription(moduleName, moduleRelativePath)
+                settingsGradlePsiFile.addModuleDescriptionItRocket(moduleName)
             }
 
             is GroovyFile -> {
-                settingsGradlePsiFile.addModuleDescription(moduleName, moduleRelativePath)
+                // settingsGradlePsiFile.addModuleDescription(moduleName, moduleRelativePath)
+                settingsGradlePsiFile.addModuleDescriptionItRocket(moduleName)
             }
 
             else -> {
@@ -92,6 +94,18 @@ class SettingsGradleModificationService(
         }
     }
 
+    private fun KtFile.addModuleDescriptionItRocket(
+        moduleName: String
+    ) {
+        val factory = KtPsiFactory(project)
+
+        project.executeWriteCommand(COMMAND_NAME) {
+            with(this) {
+                add(factory.getIncludeModuleExpression(moduleName))
+            }
+        }
+    }
+
     private fun GroovyFile.addModuleDescription(
         moduleName: String,
         moduleRelativePath: String
@@ -105,6 +119,18 @@ class SettingsGradleModificationService(
                 add(factory.createNewLine())
                 add(factory.getIncludeModuleRelativePathSetupElement(moduleName, moduleRelativePath))
                 add(factory.createNewLine())
+            }
+        }
+    }
+
+    private fun GroovyFile.addModuleDescriptionItRocket(
+        moduleName: String
+    ) {
+        val factory = GroovyPsiElementFactory.getInstance(project)
+
+        project.executeWriteCommand(COMMAND_NAME) {
+            with(this) {
+                add(factory.getIncludeModuleExpressionElement(moduleName))
             }
         }
     }
