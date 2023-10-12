@@ -33,6 +33,12 @@ sealed class RecipeCommand {
         val to: RecipeExpression
     ) : RecipeCommand()
 
+    data class AddDaggerModule(
+        val daggerAppModulePath: RecipeExpression,
+        val appComponentName: RecipeExpression,
+        val featureModuleName: RecipeExpression
+    ) : RecipeCommand()
+
     /**
      * Command which will be executed only if [validIf] predicate returns true.
      * If [validIf] returns false, try to execute [elseCommands].
