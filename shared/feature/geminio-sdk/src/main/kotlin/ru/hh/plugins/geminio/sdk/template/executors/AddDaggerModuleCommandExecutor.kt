@@ -62,9 +62,7 @@ internal fun RecipeExecutor.execute(
 
     argument.addBefore(modulePsiFactory.createComma(), argument.lastChild)
     argument.addBefore(modulePsiFactory.createNewLine(), argument.lastChild)
-    argument.children.forEach {
-        println("SOSI ${it.text}")
-    }
+
     argument.addBefore(
         modulePsiFactory.createArgument("${featureModuleName}::class"),
         argument.lastChild
