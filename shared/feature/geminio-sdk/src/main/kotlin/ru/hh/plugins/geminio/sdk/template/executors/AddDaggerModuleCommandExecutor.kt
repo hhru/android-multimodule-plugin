@@ -1,17 +1,12 @@
 package ru.hh.plugins.geminio.sdk.template.executors
 
 import com.android.tools.idea.kotlin.findValueArgument
-import com.android.tools.idea.lint.common.findAnnotation
 import com.android.tools.idea.lint.common.isAnnotationTarget
 import com.android.tools.idea.wizard.template.RecipeExecutor
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiElement
 import com.intellij.psi.codeStyle.CodeStyleManager
-import org.jetbrains.kotlin.idea.completion.argList
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
-import org.jetbrains.kotlin.idea.gradleTooling.get
 import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -62,11 +57,13 @@ internal fun RecipeExecutor.execute(
 
     argument.addBefore(modulePsiFactory.createComma(), argument.lastChild)
     argument.addBefore(modulePsiFactory.createNewLine(), argument.lastChild)
-
     argument.addBefore(
-        modulePsiFactory.createArgument("${featureModuleName}::class"),
+        modulePsiFactory.createArgument("${featureModuleName}::class\n"),
         argument.lastChild
     )
+    argument.addBefore(modulePsiFactory.createNewLine(), argument.lastChild)
+
+    println("ADD_DAGGER_LOG finish")
 
     CodeStyleManager.getInstance(project).reformat(appComponentPsi)
 }
