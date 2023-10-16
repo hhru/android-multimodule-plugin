@@ -68,6 +68,9 @@ fun String.toFormattedModuleName(): String {
 
     return with(StringBuilder()) {
         moduleName
+            .replace("_api", "")
+            .replace("_impl", "")
+            .replace("feature_","")
             .replaceWordsBreakers()
             .split(' ')
             .map { it.capitalize() }
