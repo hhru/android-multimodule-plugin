@@ -160,7 +160,7 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
             LAYOUT_TO_ACTIVITY -> layoutToActivity(result)
             LAYOUT_TO_FRAGMENT -> layoutToFragment(result)
             UNDERSCORE_TO_CAMEL_CASE -> underscoreToCamelCase(result)
-            RecipeExpressionModifier.UNCAP_FIRST -> replaceFirstChar { it.lowercase() }
+            RecipeExpressionModifier.UNCAP_FIRST -> result.replaceFirstChar { it.lowercase() }
         }
     }
     return result
