@@ -20,6 +20,11 @@ enum class RecipeExpressionModifier(
     LAYOUT_TO_FRAGMENT("layoutToFragment"),
 
     /**
+     * Make string uncapped first
+     */
+    UNCAP_FIRST("uncapFirst"),
+
+    /**
      * Converts an underscore into a CamelCase word
      *
      * @return the CamelCase version of the word
