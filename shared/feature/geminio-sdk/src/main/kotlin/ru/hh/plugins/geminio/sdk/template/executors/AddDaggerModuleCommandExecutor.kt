@@ -63,7 +63,5 @@ internal fun RecipeExecutor.execute(
     )
     argument.addBefore(modulePsiFactory.createNewLine(), argument.lastChild)
 
-    println("ADD_DAGGER_LOG finish")
-
     CodeStyleManager.getInstance(project).reformat(appComponentPsi)
 }
