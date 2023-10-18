@@ -52,8 +52,11 @@ class KtScriptsModificationService {
         gradleDependencies.forEach { dependency ->
             if (existingDependencies.contains(dependency.value).not()) {
                 val element = ktPsiFactory.createBuildGradleDependencyElement(dependency)
-                dependenciesBodyBlock.addBefore(ktPsiFactory.createNewLine(), dependenciesBodyBlock.rBrace)
-                dependenciesBodyBlock.addBefore(element, dependenciesBodyBlock.rBrace)
+                dependenciesBodyBlock.addBefore(element, dependenciesBodyBlock.firstChild)
+                dependenciesBodyBlock.addAfter(
+                    ktPsiFactory.createNewLine(),
+                    dependenciesBodyBlock.children.first()
+                )
             }
         }
 
