@@ -1,21 +1,22 @@
 package ru.hh.plugins.extensions.layout
 
-import com.intellij.ui.layout.Row
-import ru.hh.plugins.UiConstants.BIG_LABEL_FONT_SIZE
+import com.intellij.ui.components.JBPasswordField
+import com.intellij.ui.dsl.builder.COLUMNS_SHORT
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.Row
+import com.intellij.ui.dsl.builder.columns
 import ru.hh.plugins.extensions.EMPTY
 import java.awt.Font
 import javax.swing.JLabel
+import com.intellij.ui.layout.Row as DslV1Row
 
-fun Row.titleLabel(text: String = String.EMPTY, fontSize: Float = BIG_LABEL_FONT_SIZE, isBold: Boolean = true) {
-    JLabel(text).apply {
-        font = font.deriveFont(fontSize)
-        if (isBold) {
-            font = font.deriveFont(Font.BOLD)
-        }
-    }()
-}
+/**
+ * Backported version of [Row.passwordField] available in IntelliJ Platform since 2023.1
+ */
+fun Row.passwordFieldCompat(): Cell<JBPasswordField> = cell(JBPasswordField())
+    .columns(COLUMNS_SHORT)
 
-fun Row.boldLabel(text: String = String.EMPTY) {
+fun DslV1Row.boldLabel(text: String = String.EMPTY) {
     JLabel(text).apply {
         font = font.deriveFont(Font.BOLD)
     }()
