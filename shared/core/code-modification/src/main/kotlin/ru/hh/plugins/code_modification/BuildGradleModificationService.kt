@@ -64,6 +64,7 @@ class BuildGradleModificationService(
                 HHLogger.e(
                     "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in rootDir ($rootDir)"
                 )
+                @Suppress("detekt.LabeledExpression")
                 return@wrapInCommand
             }
 
@@ -77,6 +78,7 @@ class BuildGradleModificationService(
         isInWriteCommand: Boolean = false
     ) {
         wrapInCommand(isInWriteCommand) {
+            @Suppress("detekt.LabeledExpression")
             val buildGradleFile = rootDir?.findFile(BUILD_GRADLE_FILENAME)
                 ?: rootDir?.findFile(BUILD_GRADLE_KTS_FILENAME)
                 ?: return@wrapInCommand

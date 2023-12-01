@@ -7,6 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 
 fun AnActionEvent.getSelectedPsiElement(): PsiElement? = getData(PlatformDataKeys.PSI_ELEMENT)
+
 @Suppress("detekt.UseCheckOrError")
 fun AnActionEvent.getTargetDirectory(): VirtualFile {
     val currentVirtualFile = CommonDataKeys.VIRTUAL_FILE.getData(dataContext)

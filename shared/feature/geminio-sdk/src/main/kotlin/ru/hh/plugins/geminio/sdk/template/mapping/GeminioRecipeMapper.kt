@@ -97,7 +97,6 @@ private fun getHardcodedParamsMap(
         )
     }
 
-
     return mapOf(
         HardcodedParams.PACKAGE_NAME to packageName,
         HardcodedParams.APPLICATION_PACKAGE to applicationPackage,

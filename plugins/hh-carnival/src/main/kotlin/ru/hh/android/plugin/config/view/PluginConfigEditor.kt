@@ -107,8 +107,8 @@ class PluginConfigEditor(
             initialJiraUsername != jiraUsernameTextField.text ||
             initialJiraPassword != jiraPasswordTextField.text ||
             initialJiraDevelopmentTeam != JiraDevelopmentTeam.fromLabel(
-            jiraDevelopmentTeamComboBoxModel.selected.orEmpty()
-        )
+                jiraDevelopmentTeamComboBoxModel.selected.orEmpty()
+            )
     }
 
     fun applyNewConfiguration(project: Project, pluginConfig: PluginConfig) {

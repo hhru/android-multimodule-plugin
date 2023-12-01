@@ -26,7 +26,9 @@ internal fun RecipeExpression.evaluateBoolean(
     return when (expressionCommands.size) {
         0 -> true
         1 -> expressionCommands[0].resolveBooleanValue(existingParametersMap)
-        else -> throw IllegalArgumentException("Unexpected commands for boolean parameter evaluation [$expressionCommands]")
+        else -> throw IllegalArgumentException(
+            "Unexpected commands for boolean parameter evaluation [$expressionCommands]"
+        )
     }
 }
 
