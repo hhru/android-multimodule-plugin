@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.5.0]
+### Added
+- Support for Android Studio Hedgehog | 2023.1.1
+
 ## [1.4.0]
 ### Added
 - Support for Android Studio Giraffe | 2022.3.1
