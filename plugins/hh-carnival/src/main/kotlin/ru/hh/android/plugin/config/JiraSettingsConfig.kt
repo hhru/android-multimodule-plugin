@@ -30,8 +30,9 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
         get() {
             val keyFile = File(KEY_FILE_NAME)
 
-            if (!keyFile.exists())
+            if (!keyFile.exists()) {
                 keyFile.createNewFile()
+            }
 
             val reader = FileReader(KEY_FILE_NAME)
             val hostname = reader.readText()

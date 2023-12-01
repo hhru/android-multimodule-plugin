@@ -58,7 +58,9 @@ class EmptyObjectGeneratorService(
 
     private fun KtClass.getEmptyObjectPropertyDeclaration(): String {
         val emptyProperties = primaryConstructorParameters.joinToString(
-            prefix = "\n", postfix = "\n", separator = ",\n"
+            prefix = "\n",
+            postfix = "\n",
+            separator = ",\n"
         ) { parameter ->
             "${parameter.name} = ${parameter.getEmptyObjectValue()}"
         }

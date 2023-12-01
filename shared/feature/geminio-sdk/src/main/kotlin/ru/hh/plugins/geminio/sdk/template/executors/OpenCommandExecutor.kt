@@ -16,10 +16,8 @@ internal fun RecipeExecutor.execute(
     val filePath = command.file.evaluateString(targetDirectory, moduleTemplateData, existingParametersMap)
 
     HHLogger.d("Open command [filePath: $filePath]")
-    if (filePath == null) {
-        throw IllegalArgumentException(
-            "Cannot find file for Open command [command: $command, evaluated path: $filePath]"
-        )
+    require(filePath != null) {
+        "Cannot find file for Open command [command: $command, evaluated path: $filePath]"
     }
 
     open(File(filePath))

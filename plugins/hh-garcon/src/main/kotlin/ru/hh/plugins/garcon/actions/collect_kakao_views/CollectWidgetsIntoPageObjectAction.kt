@@ -61,7 +61,9 @@ class CollectWidgetsIntoPageObjectAction : XmlLayoutCodeInsightAction() {
             if (params.openInEditor) {
                 params.targetClass.containingKtFile.openInEditor()
             }
-            HHNotifications.info(message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished")
+            HHNotifications.info(
+                message = "Collecting Kakao widgets for '${params.targetClass.name}' successfully finished"
+            )
         }
     }
 

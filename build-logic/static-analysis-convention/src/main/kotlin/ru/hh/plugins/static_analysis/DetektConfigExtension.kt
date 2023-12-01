@@ -4,6 +4,5 @@ import java.io.File
 
 class DetektConfigExtension(
     var configPath: Iterable<*>? = null,
-    var formatPath: Iterable<*>? = null,
     var baselinePath: File? = null
 )

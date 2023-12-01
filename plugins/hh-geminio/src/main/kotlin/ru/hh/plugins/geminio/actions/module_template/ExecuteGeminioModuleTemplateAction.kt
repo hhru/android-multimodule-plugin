@@ -119,7 +119,6 @@ class ExecuteGeminioModuleTemplateAction(
 
                 try {
                     project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-
                         with(recipeExecutorModel) {
                             geminioTemplateData.androidStudioTemplate.recipe.invoke(
                                 recipeExecutor,
@@ -139,7 +138,10 @@ class ExecuteGeminioModuleTemplateAction(
                     dialog.disposeIfNeeded()
                     dialog.close(1)
 
-                    HHNotifications.error(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
+                    HHNotifications.error(
+                        message = "Some error occurred when '$actionText' executed. " +
+                            "Check warnings at the bottom right corner."
+                    )
                     throw ex
                 }
             }

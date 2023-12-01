@@ -44,7 +44,8 @@ class CreateRecyclerItemPageObjectDialog(
         if (isFormValid()) {
             targetClass?.let { aClass ->
                 RecentsManager.getInstance(project).registerRecentEntry(
-                    GarconConstants.RecentsKeys.TARGET_SCREEN_CLASS, aClass.getKotlinFqName().toString()
+                    GarconConstants.RecentsKeys.TARGET_SCREEN_CLASS,
+                    aClass.getKotlinFqName().toString()
                 )
             }
             PropertiesComponent.getInstance()
