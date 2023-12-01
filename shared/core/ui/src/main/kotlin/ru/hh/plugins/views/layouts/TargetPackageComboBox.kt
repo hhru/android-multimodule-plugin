@@ -2,7 +2,7 @@ package ru.hh.plugins.views.layouts
 
 import com.intellij.openapi.project.Project
 import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo
-import com.intellij.ui.layout.Row
+import com.intellij.ui.dsl.builder.Row
 
 private const val MINIMUM_GAP_FOR_COMBO_BOX_IN_PX = 5
 private const val MIN_COMBO_BOX_WIDTH_IN_PX = 40
