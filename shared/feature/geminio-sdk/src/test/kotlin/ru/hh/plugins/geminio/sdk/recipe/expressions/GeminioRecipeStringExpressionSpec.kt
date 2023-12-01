@@ -8,9 +8,9 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createModuleTemplateData
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.evaluateString
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
-import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
 
 internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
