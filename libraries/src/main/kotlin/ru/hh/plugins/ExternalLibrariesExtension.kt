@@ -74,6 +74,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         ) : Product()
     }
 
+    @Suppress("detekt.StringLiteralDuplication")
     enum class PredefinedIdeProducts(val product: Product) {
         ANDROID_STUDIO_IGUANA(
             Product.ICBasedIde(
