@@ -1,7 +1,10 @@
 package ru.hh.plugins.geminio.services.templates
 
+import com.android.ide.common.repository.AgpVersion
+import com.android.tools.idea.gradle.plugin.AgpVersions
 import com.android.tools.idea.npw.template.ModuleTemplateDataBuilder
 import com.android.tools.idea.npw.template.ProjectTemplateDataBuilder
+import com.android.tools.idea.projectsystem.getAndroidFacets
 import com.android.tools.idea.templates.recipe.DefaultRecipeExecutor
 import com.android.tools.idea.templates.recipe.RenderingContext
 import com.android.tools.idea.wizard.template.ApiTemplateData
@@ -76,6 +79,10 @@ class GeminioRecipeExecutorFactoryService(
             .also { builder ->
                 builder.applicationPackage = packageName
                 builder.language = Language.Kotlin
+
+                // Starting from Android Studio Iguana this property is required
+                builder.agpVersion = AgpVersions.latestKnown
+
                 builder.setProjectDefaults(project)
             }
 
