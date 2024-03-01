@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.8.0]
+### Added
+- Support for Android Studio Iguana | 2023.2.1
+
 ## [1.7.0]
 ### Added
 - Support for Android Studio Hedgehog | 2023.1.1

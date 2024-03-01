@@ -1,5 +1,9 @@
 # Garcon
 
+## [1.6.0]
+### Added
+- Support for Android Studio Iguana | 2023.2.1
+
 ## [1.5.0]
 ### Added
 - Support for Android Studio Hedgehog | 2023.1.1
