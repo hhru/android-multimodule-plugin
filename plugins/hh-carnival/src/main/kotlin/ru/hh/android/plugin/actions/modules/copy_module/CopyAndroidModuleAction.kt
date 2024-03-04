@@ -1,5 +1,6 @@
 package ru.hh.android.plugin.actions.modules.copy_module
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.executeCommand
@@ -44,6 +45,8 @@ import kotlin.system.measureTimeMillis
  * Action for copy module.
  */
 class CopyAndroidModuleAction : AnAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         super.update(e)
