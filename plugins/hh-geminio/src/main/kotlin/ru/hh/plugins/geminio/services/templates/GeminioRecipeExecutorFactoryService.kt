@@ -41,12 +41,16 @@ class GeminioRecipeExecutorFactoryService(
     ): GeminioRecipeExecutorModel {
         val moduleName = geminioTemplateData.getModuleName()
         val packageName = geminioTemplateData.getPackageName()
+        val sourceSet = geminioTemplateData.getSourceSet()
+        val sourceCodeFolderName = geminioTemplateData.getSourceCodeFolderName()
 
         val moduleTemplateData = createModuleTemplateData(
             project = project,
             directoryPath = newModuleRootDirectoryPath,
             moduleName = moduleName,
-            packageName = packageName
+            packageName = packageName,
+            sourceSet = sourceSet,
+            sourceCodeFolderName = sourceCodeFolderName
         )
 
         val renderingContext = RenderingContext(
@@ -71,7 +75,9 @@ class GeminioRecipeExecutorFactoryService(
         project: Project,
         directoryPath: String,
         moduleName: String,
-        packageName: String
+        packageName: String,
+        sourceSet : String,
+        sourceCodeFolderName : String,
     ): ModuleTemplateData {
         val projectTemplateDataBuilder = ProjectTemplateDataBuilder(isNewProject = false)
             .also { builder ->
@@ -92,7 +98,9 @@ class GeminioRecipeExecutorFactoryService(
             builder.setModuleRoots(
                 paths = GeminioAndroidModulePaths(
                     basePath = directoryPath,
-                    moduleName = moduleName
+                    moduleName = moduleName,
+                    sourceSet = sourceSet,
+                    sourceCodeFolderName = sourceCodeFolderName,
                 ),
                 projectPath = project.basePath!!,
                 moduleName = ":$moduleName",
@@ -129,5 +137,13 @@ class GeminioRecipeExecutorFactoryService(
 
     private fun GeminioTemplateData.getPackageName(): String {
         return existingParametersMap[geminioIds.newModulePackageNameParameterId]!!.value as String
+    }
+
+    private fun GeminioTemplateData.getSourceCodeFolderName(): String {
+        return existingParametersMap[geminioIds.newModuleSourceCodeFolderParameterId]!!.value as String
+    }
+
+    private fun GeminioTemplateData.getSourceSet(): String {
+        return existingParametersMap[geminioIds.newModuleSourceSetParameterId]!!.value as String
     }
 }

@@ -7,8 +7,10 @@ import com.android.tools.idea.wizard.template.EnumWidget
 import com.android.tools.idea.wizard.template.StringParameter
 import com.android.tools.idea.wizard.template.TextFieldWidget
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
@@ -21,8 +23,10 @@ import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toGeminioTempl
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.globals.toShowHiddenGlobalsParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.parameters.toGeminioTemplateParameterData
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createFormattedModuleNameParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createSourceCodeFolderName
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createModuleNameParameter
 import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createPackageNameParameter
+import ru.hh.plugins.geminio.sdk.template.mapping.widgets.predefined.createSourceSetParameter
 import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeParametersData
 import ru.hh.plugins.geminio.sdk.template.models.GeminioTemplateParameterData
 
@@ -66,14 +70,24 @@ private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData {
             defaultPackageNamePrefix = moduleCreationParams.defaultPackageNamePrefix,
             moduleNameParameter = moduleNameStringParameter
         )
+        val sourceSetParameterData = PredefinedFeaturesSection.createSourceSetParameter(
+            defaultSourceSet = moduleCreationParams.defaultSourceSet,
+        )
+        val codeSourceSetFolderData = PredefinedFeaturesSection.createSourceCodeFolderName(
+            defaultSourceCodeFolderName = moduleCreationParams.defaultSourceCodeFolderName,
+        )
 
         allParameters += moduleNameParameterData
         allParameters += formattedModuleNameParameterData
         allParameters += packageNameParameterData
+        allParameters += sourceSetParameterData
+        allParameters += codeSourceSetFolderData
 
         existingParametersMap[FEATURE_MODULE_NAME_PARAMETER_ID] = moduleNameParameterData.parameter
         existingParametersMap[FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID] = formattedModuleNameParameterData.parameter
         existingParametersMap[FEATURE_PACKAGE_NAME_PARAMETER_ID] = packageNameParameterData.parameter
+        existingParametersMap[FEATURE_SOURCE_SET_PARAMETER_ID] = sourceSetParameterData.parameter
+        existingParametersMap[FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID] = codeSourceSetFolderData.parameter
     }
 
     allParameters += widgetsSection.parameters.map { widgetParameter ->

@@ -22,6 +22,16 @@ predefinedFeatures:
 
 Here, `ru.hh.test` - new value of your custom package name.
 
+Similarly, you can set the `sourceSet` and the folder name (usually kotlin/java) inside the sourceSet:
+
+```yaml
+predefinedFeatures:
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: ru.hh.test
+      defaultSourceCodeFolderName: java
+      defaultSourceSetName: main
+```
+
 ---
 
 [Back to `recipe.yaml` content](../RECIPE_CONTENT.md)

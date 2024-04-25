@@ -23,6 +23,16 @@ predefinedFeatures:
 
 Здесь `ru.hh.test` - значение нужного вам custom-пакета.
 
+Аналогично можно задать `sourceSet` и имя папки ( обычно kotlin/java ) внутри sourceSet:
+
+```yaml
+predefinedFeatures:
+  - enableModuleCreationParams:
+      defaultPackageNamePrefix: ru.hh.test
+      defaultSourceSetName: main
+      defaultSourceCodeFolderName: java
+```
+
 ---
 
 [Обратно к устройству "рецептов"](../RECIPE_CONTENT.md)
