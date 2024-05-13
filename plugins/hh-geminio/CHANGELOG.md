@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.9.0]
+### Added
+- Support for Android Studio Jellyfish | 2023.3.1
+
 ## [1.8.0]
 ### Added
 - Support for Android Studio Iguana | 2023.2.1
