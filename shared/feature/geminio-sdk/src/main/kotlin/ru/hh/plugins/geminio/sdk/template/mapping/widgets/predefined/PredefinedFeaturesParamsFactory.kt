@@ -62,3 +62,39 @@ internal fun PredefinedFeaturesSection.Companion.createPackageNameParameter(
         }
     )
 }
+
+internal fun PredefinedFeaturesSection.Companion.createSourceSetParameter(
+    defaultSourceSet: String,
+): GeminioTemplateParameterData {
+    return GeminioTemplateParameterData(
+        parameterId = GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETER_ID,
+        parameter = stringParameter {
+            name = "Source set"
+            help = "Source set of classes"
+            constraints = listOf(
+                AndroidStudioTemplateStringParameterConstraint.SOURCE_SET_FOLDER,
+                AndroidStudioTemplateStringParameterConstraint.UNIQUE,
+            )
+            default = defaultSourceSet
+            suggest = { defaultSourceSet }
+            visible = { true }
+            enabled = { true }
+        }
+    )
+}
+
+internal fun PredefinedFeaturesSection.Companion.createSourceCodeFolderName(
+    defaultSourceCodeFolderName: String,
+): GeminioTemplateParameterData {
+    return GeminioTemplateParameterData(
+        parameterId = GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID,
+        parameter = stringParameter {
+            name = "Code src folder name"
+            help = "Code src folder name (kotlin/java)"
+            default = defaultSourceCodeFolderName
+            visible = { true }
+            enabled = { true }
+        }
+    )
+}
+
