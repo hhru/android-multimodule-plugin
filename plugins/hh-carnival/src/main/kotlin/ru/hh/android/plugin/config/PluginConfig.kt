@@ -35,7 +35,7 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     @Attribute
     var jiraDevelopmentTeam: JiraDevelopmentTeam = JiraDevelopmentTeam.MOBILE_CORE
 
-    override fun getState(): PluginConfig? {
+    override fun getState(): PluginConfig {
         return this
     }
 

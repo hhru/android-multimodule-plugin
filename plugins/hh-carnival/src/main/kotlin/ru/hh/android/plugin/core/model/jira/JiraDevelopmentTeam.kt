@@ -10,11 +10,6 @@ enum class JiraDevelopmentTeam(
 
     MOBILE_CORE(value = "34193", comboBoxLabel = "Mobile Core"),
     MOBILE_PRODUCTS(value = "32682", comboBoxLabel = "Mobile Products"),
-    M1(value = "33112", comboBoxLabel = "Mobile First (M1)");
+    M1(value = "33112", comboBoxLabel = "Mobile First (M1)")
 
-    companion object {
-
-        fun fromLabel(label: String): JiraDevelopmentTeam = values().firstOrNull { it.comboBoxLabel == label }
-            ?: MOBILE_CORE
-    }
 }
