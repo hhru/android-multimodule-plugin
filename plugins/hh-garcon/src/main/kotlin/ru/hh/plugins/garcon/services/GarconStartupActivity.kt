@@ -24,4 +24,5 @@ class GarconStartupActivity : StartupActivity {
     private fun setupNotifications(project: Project) {
         HHNotifications.plant(project, "Garcon")
     }
+
 }

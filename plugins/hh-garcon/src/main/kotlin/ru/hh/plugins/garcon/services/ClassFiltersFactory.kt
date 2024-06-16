@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.plugins.garcon.GarconConstants
 
-@Service
+@Service(Service.Level.PROJECT)
 class ClassFiltersFactory {
 
     companion object {

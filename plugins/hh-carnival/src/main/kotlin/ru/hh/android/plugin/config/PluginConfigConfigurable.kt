@@ -39,7 +39,7 @@ class PluginConfigConfigurable(
     }
 
     private val pluginConfig by lazy {
-        PluginConfig.getInstance(project)
+        CarnivalPluginConfig.getInstance(project)
     }
     private val jiraConfig
         get() = JiraSettingsConfig.getInstance(project)

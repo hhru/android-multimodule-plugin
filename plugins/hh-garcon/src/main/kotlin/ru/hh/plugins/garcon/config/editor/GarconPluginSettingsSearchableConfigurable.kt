@@ -24,9 +24,9 @@ class GarconPluginSettingsSearchableConfigurable(
     _id = ID
 ) {
 
-    companion object {
-        private const val ID = "ru.hh.plugins.garcon.config.GarconPluginSettingsSearchableConfigurable"
-        private const val DISPLAY_NAME = "Garcon plugin"
+    private companion object {
+        const val ID = "ru.hh.plugins.garcon.config.GarconPluginSettingsSearchableConfigurable"
+        const val DISPLAY_NAME = "Garcon Plugin"
     }
 
     private val pluginConfig by lazy {

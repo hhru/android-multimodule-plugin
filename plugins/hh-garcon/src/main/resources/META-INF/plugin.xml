@@ -12,23 +12,21 @@
         <postStartupActivity implementation="ru.hh.plugins.garcon.services.GarconStartupActivity"/>
 
         <!-- region Live templates -->
-        <defaultLiveTemplatesProvider
-                implementation="ru.hh.plugins.garcon.live_templates.GarconTemplateProvider"/>
-        <liveTemplateContext implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateStepContext"/>
-        <liveTemplateContext implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateItemContext"/>
+        <defaultLiveTemplates file="liveTemplates/Garcon.xml"/>
+        
+        <liveTemplateContext
+                contextId="ru.hh.android.plugins.garcon.live_templates.step"
+                implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateStepContext"/>
+        <liveTemplateContext
+                contextId="ru.hh.android.plugins.garcon.live_templates.item"
+                implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateItemContext"/>
         <!-- endregion -->
 
         <!-- region Plugin config -->
-        <projectService serviceImplementation="ru.hh.plugins.garcon.config.editor.GarconPluginSettings"/>
         <projectConfigurable
                 groupId="appearance"
+                displayName="Garcon Plugin"
                 instance="ru.hh.plugins.garcon.config.editor.GarconPluginSettingsSearchableConfigurable"/>
-        <!-- endregion -->
-
-        <!-- region Project services -->
-        <projectService serviceImplementation="ru.hh.plugins.garcon.services.PageObjectPropertyConverter"/>
-        <projectService serviceImplementation="ru.hh.plugins.garcon.services.FreeMarkerWrapper"/>
-        <projectService serviceImplementation="ru.hh.plugins.garcon.services.ClassFiltersFactory"/>
         <!-- endregion -->
 
         <!-- Notifications -->

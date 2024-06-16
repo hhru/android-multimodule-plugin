@@ -26,7 +26,7 @@ class GeminioPluginSettingsSearchableConfigurable(
 ) {
     private companion object {
         const val ID = "ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"
-        const val DISPLAY_NAME = "Geminio plugin"
+        const val DISPLAY_NAME = "Geminio Plugin"
     }
 
     private val pluginConfig by lazy {

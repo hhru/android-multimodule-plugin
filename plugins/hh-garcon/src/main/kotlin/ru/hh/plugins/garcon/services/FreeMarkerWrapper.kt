@@ -7,7 +7,7 @@ import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.garcon.config.editor.GarconPluginSettings
 import java.io.File
 
-@Service
+@Service(Service.Level.PROJECT)
 class FreeMarkerWrapper(
     private val project: Project
 ) {

@@ -1,6 +1,7 @@
 package ru.hh.plugins.garcon.config.editor
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.components.service
@@ -10,6 +11,7 @@ import ru.hh.plugins.garcon.config.GarconPluginConfig
 import ru.hh.plugins.garcon.config.extensions.isNotFullyInitialized
 import ru.hh.plugins.utils.yaml.YamlUtils
 
+@Service(Service.Level.PROJECT)
 @State(
     name = "ru.hh.plugins.garcon.config.editor.GarconPluginSettings",
     storages = [Storage("garcon_plugin_settings.xml")]

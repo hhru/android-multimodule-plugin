@@ -14,7 +14,7 @@ internal class CarnivalSettingsFormState(
 ) {
 
     constructor(
-        pluginConfig: PluginConfig,
+        pluginConfig: CarnivalPluginConfig,
         jiraSettings: JiraSettings
     ) : this(
         pluginFolderDirPath = pluginConfig.pluginFolderDirPath,
