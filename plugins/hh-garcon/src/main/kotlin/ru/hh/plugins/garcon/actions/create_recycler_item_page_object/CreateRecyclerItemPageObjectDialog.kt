@@ -12,10 +12,8 @@ import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.base.psi.kotlinFqName
-import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.isValidIdentifier
@@ -57,7 +55,7 @@ class CreateRecyclerItemPageObjectDialog(
         }
     }
 
-    @Suppress("LongMethod")
+    @Suppress("detekt.LongMethod")
     override fun createCenterPanel(): JComponent {
         openInEditor = PropertiesComponent.getInstance()
             .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)

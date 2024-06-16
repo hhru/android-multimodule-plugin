@@ -24,10 +24,12 @@ internal class GarconSettingsFormState(
     }
 
     fun isModified(originalConfig: GarconPluginConfig): Boolean {
-        return !(originalConfig.configFilePath == this.configFilePath.get() &&
+        return !(
+            originalConfig.configFilePath == this.configFilePath.get() &&
                 originalConfig.isDebugEnabled == enableDebugMode.get() &&
                 originalConfig.templatesPaths.screenPageObjectTemplatePath == this.screenPageObjectTemplatePath.get() &&
-                originalConfig.templatesPaths.rvItemPageObjectTemplatePath == this.rvItemPageObjectTemplatePath.get())
+                originalConfig.templatesPaths.rvItemPageObjectTemplatePath == this.rvItemPageObjectTemplatePath.get()
+            )
     }
 
 }
