@@ -31,9 +31,12 @@ class ExecuteGeminioTemplateAction(
     private val actionText: String,
     private val geminioRecipePath: String
 ) : AnAction(
-    /* text = */ actionText,
-    /* description = */ actionDescription,
-    /* icon = */ null
+    /* text = */
+    actionText,
+    /* description = */
+    actionDescription,
+    /* icon = */
+    null
 ) {
 
     private companion object {

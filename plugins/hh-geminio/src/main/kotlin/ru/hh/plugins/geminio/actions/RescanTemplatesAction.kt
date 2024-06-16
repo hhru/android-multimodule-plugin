@@ -11,9 +11,12 @@ import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
 
 class RescanTemplatesAction : AnAction(
-    /* text = */ "Rescan Templates",
-    /* description = */ "Rescan folder with templates",
-    /* icon = */ AllIcons.Actions.Refresh,
+    /* text = */
+    "Rescan Templates",
+    /* description = */
+    "Rescan folder with templates",
+    /* icon = */
+    AllIcons.Actions.Refresh,
 ) {
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT

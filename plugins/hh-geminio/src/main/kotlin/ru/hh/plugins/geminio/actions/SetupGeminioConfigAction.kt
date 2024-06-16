@@ -6,7 +6,8 @@ import com.intellij.openapi.options.ShowSettingsUtil
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable
 
 class SetupGeminioConfigAction : AnAction(
-    /* text = */ "Setup Config"
+    /* text = */
+    "Setup Config"
 ) {
 
     override fun actionPerformed(e: AnActionEvent) {

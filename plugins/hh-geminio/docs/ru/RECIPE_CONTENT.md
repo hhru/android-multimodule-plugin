@@ -28,6 +28,10 @@ optionalParams:
 predefinedFeatures:
   - enableModuleCreationParams:
       defaultPackageNamePrefix: ru.hh.test
+      # optional
+      defaultSourceCodeFolderName: java
+      # optional
+      defaultSourceSetName: main
 
 widgets:
   - stringParameter:
