@@ -1,4 +1,5 @@
 package ru.hh.plugins.geminio.sdk.helpers
+
 import com.android.ide.common.repository.AgpVersion
 import com.android.tools.idea.wizard.template.ApiTemplateData
 import com.android.tools.idea.wizard.template.ApiVersion
