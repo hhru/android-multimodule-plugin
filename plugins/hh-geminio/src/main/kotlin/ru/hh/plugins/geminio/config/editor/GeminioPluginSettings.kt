@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.extensions.isNotFullyInitialized
+import ru.hh.plugins.utils.yaml.YamlUtils
 
 @State(
     name = "ru.hh.plugins.geminio.config.editor.GeminioPluginConfig",
@@ -22,7 +23,7 @@ class GeminioPluginSettings : PersistentStateComponent<GeminioPluginSettings> {
         fun getInstance(project: Project): GeminioPluginSettings {
             return project.service<GeminioPluginSettings>().let { settings ->
                 if (project.isDefault.not() && settings.config.isNotFullyInitialized()) {
-                    GeminioPluginConfig.tryLoadFromConfigFile(DEFAULT_PATH_TO_CONFIG_FILE).onSuccess {
+                    YamlUtils.tryLoadFromConfigFile<GeminioPluginConfig>(DEFAULT_PATH_TO_CONFIG_FILE).onSuccess {
                         settings.config = it
                     }
                 }

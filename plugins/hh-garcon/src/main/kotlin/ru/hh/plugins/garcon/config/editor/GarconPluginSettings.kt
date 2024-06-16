@@ -23,7 +23,9 @@ class GarconPluginSettings : PersistentStateComponent<GarconPluginSettings> {
         fun getInstance(project: Project): GarconPluginSettings {
             return project.service<GarconPluginSettings>().let { settings ->
                 if (project.isDefault.not() && settings.config.isNotFullyInitialized()) {
-                    settings.tryLoadFromConfigFile(DEFAULT_PATH_TO_CONFIG_FILE)
+                    YamlUtils.tryLoadFromConfigFile<GarconPluginConfig>(DEFAULT_PATH_TO_CONFIG_FILE).onSuccess {
+                        settings.config = it
+                    }
                 }
 
                 settings
@@ -37,24 +39,11 @@ class GarconPluginSettings : PersistentStateComponent<GarconPluginSettings> {
 
     var config: GarconPluginConfig = GarconPluginConfig()
 
-    override fun getState(): GarconPluginSettings? {
+    override fun getState(): GarconPluginSettings {
         return this
     }
 
     override fun loadState(state: GarconPluginSettings) {
         XmlSerializerUtil.copyBean(state, this)
-    }
-
-    fun tryLoadFromConfigFile(configFilePath: String) {
-        YamlUtils.loadFromConfigFile<GarconPluginConfig>(
-            configFilePath = configFilePath,
-            onError = {
-                // todo
-            }
-        )?.let { configFromYaml ->
-            this.config = configFromYaml.copy(
-                configFilePath = configFilePath
-            )
-        }
     }
 }

@@ -15,6 +15,7 @@ import ru.hh.plugins.geminio.ActionsHelper
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.extensions.copyFromFormState
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.utils.yaml.YamlUtils
 
 class GeminioPluginSettingsSearchableConfigurable(
     private val project: Project
@@ -117,7 +118,7 @@ class GeminioPluginSettingsSearchableConfigurable(
     }
 
     private fun applyConfigurationFromFile(filePath: String) {
-        val newConfig = GeminioPluginConfig.tryLoadFromConfigFile(filePath).getOrNull() ?: return
+        val newConfig = YamlUtils.tryLoadFromConfigFile<GeminioPluginConfig>(filePath).getOrNull() ?: return
         formState?.set(newConfig)
     }
 

@@ -8,8 +8,13 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.refactoring.MoveDestination
 import com.intellij.refactoring.PackageWrapper
 import com.intellij.refactoring.ui.PackageNameReferenceEditorCombo
-import com.intellij.ui.layout.CCFlags
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.Align
+import com.intellij.ui.dsl.builder.BottomGap
+import com.intellij.ui.dsl.builder.COLUMNS_LARGE
+import com.intellij.ui.dsl.builder.bindSelected
+import com.intellij.ui.dsl.builder.bindText
+import com.intellij.ui.dsl.builder.columns
+import com.intellij.ui.dsl.builder.panel
 import org.jetbrains.kotlin.idea.refactoring.ui.KotlinDestinationFolderComboBox
 import ru.hh.plugins.extensions.isQualifiedPackageName
 import ru.hh.plugins.extensions.isValidIdentifier
@@ -22,7 +27,6 @@ import ru.hh.plugins.psi_utils.xml.extractClassNameFromFileName
 import ru.hh.plugins.utils.recents_manager.RecentsUtils
 import ru.hh.plugins.views.layouts.kotlinDestinationFolderComboBox
 import ru.hh.plugins.views.layouts.targetPackageComboBox
-import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class CreateScreenPageObjectDialog(
@@ -31,11 +35,11 @@ class CreateScreenPageObjectDialog(
 
     private val project: Project get() = xmlFile.project
 
-    var className = xmlFile.extractClassNameFromFileName()
+    private var className = xmlFile.extractClassNameFromFileName()
+    private var openInEditor: Boolean = false
 
     private lateinit var packageNameChooserComboBox: PackageNameReferenceEditorCombo
     private lateinit var destinationFolderComboBox: KotlinDestinationFolderComboBox
-    private lateinit var openInEditorCheckBox: JCheckBox
 
     init {
         init()
@@ -43,13 +47,20 @@ class CreateScreenPageObjectDialog(
     }
 
     override fun createCenterPanel(): JComponent {
+        openInEditor = RecentsUtils.getBooleanFromProperties(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG)
         return panel {
-            titledRow("Enter <Screen> page object class name:") {
+            group(title = "Page Object Class Name") {
                 row {
-                    textField(this@CreateScreenPageObjectDialog::className)
+                    textField()
+                        .bindText(::className)
+                        .comment("Enter &lt;Screen&gt; page object class name")
+                        .columns(COLUMNS_LARGE)
                 }
             }
-            titledRow("Choose destination package:") {
+            group("Destination Package") {
+                row {
+                    label("Choose destination package name")
+                }
                 row {
                     val initialPackageName = xmlFile.androidFacet?.packageName
                         ?: GarconConstants.DEFAULT_PACKAGE_NAME
@@ -60,8 +71,11 @@ class CreateScreenPageObjectDialog(
                         recentPackageKey = GarconConstants.RecentsKeys.TARGET_PACKAGE_NAME,
                         labelText = "Choose package name"
                     )
-                    packageNameChooserComboBox()
-                }
+                    cell(packageNameChooserComboBox)
+                        .resizableColumn()
+                        .align(Align.FILL)
+                }.bottomGap(BottomGap.MEDIUM)
+
                 row {
                     val initialPsiDirectory = xmlFile.containingDirectory
 
@@ -70,25 +84,22 @@ class CreateScreenPageObjectDialog(
                         initialPsiDirectory = initialPsiDirectory,
                         packageNameChooserComboBox = packageNameChooserComboBox
                     )
-                    destinationFolderComboBox()
+                    cell(destinationFolderComboBox)
+                        .resizableColumn()
+                        .align(Align.FILL)
                 }
-                row {
-                    openInEditorCheckBox = checkBox(
-                        text = "Open in editor",
-                        isSelected = RecentsUtils.getBooleanFromProperties(
-                            GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG
-                        )
-                    ).component
-                    openInEditorCheckBox(CCFlags.pushX)
-                }
+            }
+            row {
+                checkBox("Open in editor")
+                    .bindSelected(::openInEditor)
             }
         }
     }
 
     override fun doOKAction() {
         if (isFormValid()) {
-            saveRecentsValues()
             super.doOKAction()
+            saveRecentsValues()
         }
     }
 
@@ -98,7 +109,7 @@ class CreateScreenPageObjectDialog(
             className = className,
             packageName = getTargetPackageName(),
             targetMoveDestination = requireNotNull(getTargetMoveDestination()),
-            openInEditor = getOpenInEditor()
+            openInEditor = openInEditor
         )
     }
 
@@ -111,10 +122,6 @@ class CreateScreenPageObjectDialog(
         val targetPackageWrapper = PackageWrapper(psiManager, getTargetPackageName())
 
         return destinationFolderComboBox.selectDirectory(targetPackageWrapper, false)
-    }
-
-    private fun getOpenInEditor(): Boolean {
-        return openInEditorCheckBox.isSelected
     }
 
     private fun isFormValid(): Boolean {
@@ -194,7 +201,7 @@ class CreateScreenPageObjectDialog(
             key = GarconConstants.RecentsKeys.TARGET_PACKAGE_NAME,
             value = getTargetPackageName()
         )
-        saveOpenInEditorFlag(getOpenInEditor())
+        saveOpenInEditorFlag(openInEditor)
     }
 
     private fun saveOpenInEditorFlag(isOpenInEditor: Boolean) {
