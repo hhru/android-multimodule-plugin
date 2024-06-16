@@ -10,7 +10,7 @@ import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createModuleTemp
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
-import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateString
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.evaluateString
 
 internal class GeminioRecipeStringExpressionSpec : FreeSpec({
 
