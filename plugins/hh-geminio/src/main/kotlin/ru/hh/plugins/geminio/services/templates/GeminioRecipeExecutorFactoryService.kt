@@ -18,6 +18,7 @@ import com.android.tools.idea.wizard.template.ViewBindingSupport
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
+import ru.hh.plugins.geminio.models.GeminioSourceSetConfig
 import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
 import java.io.File
 
@@ -41,12 +42,18 @@ class GeminioRecipeExecutorFactoryService(
     ): GeminioRecipeExecutorModel {
         val moduleName = geminioTemplateData.getModuleName()
         val packageName = geminioTemplateData.getPackageName()
+        val sourceSet = geminioTemplateData.getSourceSet()
+        val sourceCodeFolderName = geminioTemplateData.getSourceCodeFolderName()
 
         val moduleTemplateData = createModuleTemplateData(
             project = project,
             directoryPath = newModuleRootDirectoryPath,
             moduleName = moduleName,
-            packageName = packageName
+            packageName = packageName,
+            sourceSetConfig = GeminioSourceSetConfig(
+                sourceSet = sourceSet,
+                sourceCodeFolderName = sourceCodeFolderName,
+            ),
         )
 
         val renderingContext = RenderingContext(
@@ -71,28 +78,22 @@ class GeminioRecipeExecutorFactoryService(
         project: Project,
         directoryPath: String,
         moduleName: String,
-        packageName: String
+        packageName: String,
+        sourceSetConfig: GeminioSourceSetConfig,
     ): ModuleTemplateData {
-        val projectTemplateDataBuilder = ProjectTemplateDataBuilder(isNewProject = false)
-            .also { builder ->
-                builder.applicationPackage = packageName
-                builder.language = Language.Kotlin
-
-                // Starting from Android Studio Iguana this property is required
-                builder.agpVersion = AgpVersions.latestKnown
-
-                builder.setProjectDefaults(project)
-            }
-
         return ModuleTemplateDataBuilder(
-            projectTemplateDataBuilder = projectTemplateDataBuilder,
+            projectTemplateDataBuilder = newProjectTemplateDataBuilder(
+                project,
+                packageName
+            ),
             isNewModule = true,
             viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED
         ).also { builder ->
             builder.setModuleRoots(
                 paths = GeminioAndroidModulePaths(
                     basePath = directoryPath,
-                    moduleName = moduleName
+                    moduleName = moduleName,
+                    sourceSetConfig = sourceSetConfig,
                 ),
                 projectPath = project.basePath!!,
                 moduleName = ":$moduleName",
@@ -119,6 +120,20 @@ class GeminioRecipeExecutorFactoryService(
         }.build()
     }
 
+    private fun newProjectTemplateDataBuilder(
+        project: Project,
+        packageName: String
+    ): ProjectTemplateDataBuilder = ProjectTemplateDataBuilder(isNewProject = false)
+        .also { builder ->
+            builder.applicationPackage = packageName
+            builder.language = Language.Kotlin
+
+            // Starting from Android Studio Iguana this property is required
+            builder.agpVersion = AgpVersions.latestKnown
+
+            builder.setProjectDefaults(project)
+        }
+
     private fun createStubApiVersion(): ApiVersion {
         return ApiVersion(STUB_API_VERSION, STUB_API_VERSION_STRING)
     }
@@ -129,5 +144,13 @@ class GeminioRecipeExecutorFactoryService(
 
     private fun GeminioTemplateData.getPackageName(): String {
         return existingParametersMap[geminioIds.newModulePackageNameParameterId]!!.value as String
+    }
+
+    private fun GeminioTemplateData.getSourceCodeFolderName(): String {
+        return existingParametersMap[geminioIds.newModuleSourceCodeFolderParameterId]!!.value as String
+    }
+
+    private fun GeminioTemplateData.getSourceSet(): String {
+        return existingParametersMap[geminioIds.newModuleSourceSetParameterId]!!.value as String
     }
 }

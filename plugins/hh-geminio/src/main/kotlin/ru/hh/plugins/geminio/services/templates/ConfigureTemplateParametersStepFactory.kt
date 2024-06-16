@@ -17,6 +17,7 @@ import org.jetbrains.android.facet.AndroidFacet
 import ru.hh.plugins.extensions.toSlashedFilePath
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioConfigureTemplateStepModel
+import ru.hh.plugins.geminio.models.GeminioSourceSetConfig
 import ru.hh.plugins.geminio.services.StubProjectSyncInvoker
 import ru.hh.plugins.logger.HHLogger
 import java.io.File
@@ -30,6 +31,8 @@ class ConfigureTemplateParametersStepFactory(
 
         const val STUB_MODULE_NAME = "stub_module_name"
         const val STUB_PARENT_MODULE_NAME = "stub_parent_module_name"
+        const val STUB_SOURCE_SET = "stub_source_set"
+        const val STUB_SOURCE_CODE_FOLDER_NAME = "stub_source_code_folder_name"
     }
 
     fun createFromAndroidFacet(
@@ -90,7 +93,11 @@ class ConfigureTemplateParametersStepFactory(
             name = NAMED_MODULE_TEMPLATE_NAME,
             paths = GeminioAndroidModulePaths(
                 basePath = directoryPath,
-                moduleName = STUB_MODULE_NAME
+                moduleName = STUB_MODULE_NAME,
+                sourceSetConfig = GeminioSourceSetConfig(
+                    sourceSet = STUB_SOURCE_SET,
+                    sourceCodeFolderName = STUB_SOURCE_CODE_FOLDER_NAME,
+                ),
             )
         )
     }
