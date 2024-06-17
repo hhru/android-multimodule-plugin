@@ -23,7 +23,7 @@ predefinedFeatures:
 
 Здесь `ru.hh.test` - значение нужного вам custom-пакета.
 
-Аналогично можно задать `sourceSet` и имя папки ( обычно kotlin/java ) внутри sourceSet:
+Аналогично можно задать `sourceSet` и имя папки (обычно `kotlin`/ `java`) внутри `sourceSet`:
 
 ```yaml
 predefinedFeatures:

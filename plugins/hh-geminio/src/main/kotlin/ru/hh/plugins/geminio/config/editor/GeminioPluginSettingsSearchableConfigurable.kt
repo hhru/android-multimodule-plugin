@@ -12,11 +12,10 @@ import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
 import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.geminio.ActionsHelper
-import ru.hh.plugins.geminio.config.editor.GeminioSettingsFormState.Companion.copyWithValuesFrom
-import ru.hh.plugins.geminio.config.editor.GeminioSettingsFormState.Companion.isModified
-import ru.hh.plugins.geminio.config.editor.GeminioSettingsFormState.Companion.set
-import ru.hh.plugins.geminio.config.extensions.tryLoadFromConfigFile
+import ru.hh.plugins.geminio.config.GeminioPluginConfig
+import ru.hh.plugins.geminio.config.extensions.copyFromFormState
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.utils.yaml.YamlUtils
 
 class GeminioPluginSettingsSearchableConfigurable(
     private val project: Project
@@ -26,8 +25,8 @@ class GeminioPluginSettingsSearchableConfigurable(
     _id = ID
 ) {
     private companion object {
-        private const val ID = "ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"
-        private const val DISPLAY_NAME = "Geminio plugin"
+        const val ID = "ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"
+        const val DISPLAY_NAME = "Geminio Plugin"
     }
 
     private val pluginConfig by lazy {
@@ -35,10 +34,11 @@ class GeminioPluginSettingsSearchableConfigurable(
     }
     private var formState: GeminioSettingsFormState? = null
 
-    @Suppress("LongMethod")
+    @Suppress("detekt.LongMethod")
     override fun createPanel(): DialogPanel {
         val formState = GeminioSettingsFormState(pluginConfig.config)
         this.formState = formState
+
         return panel {
             row("Config File:") {
                 textFieldWithBrowseButton(
@@ -114,11 +114,12 @@ class GeminioPluginSettingsSearchableConfigurable(
         if (pluginConfig.config.configFilePath != newConfigPath) {
             applyConfigurationFromFile(newConfigPath)
         }
-        pluginConfig.config = pluginConfig.config.copyWithValuesFrom(formState)
+        pluginConfig.config = pluginConfig.config.copyFromFormState(formState)
     }
 
     private fun applyConfigurationFromFile(filePath: String) {
-        val newConfig = tryLoadFromConfigFile(filePath).getOrNull() ?: return
+        val newConfig = YamlUtils.tryLoadFromConfigFile<GeminioPluginConfig>(filePath).getOrNull() ?: return
         formState?.set(newConfig)
     }
+
 }

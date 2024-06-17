@@ -16,7 +16,7 @@ import ru.hh.android.plugin.utils.reformatWithCodeStyle
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 
-@Service
+@Service(Service.Level.PROJECT)
 class SerializedNameAnnotationsGeneratorService(
     private val project: Project
 ) {

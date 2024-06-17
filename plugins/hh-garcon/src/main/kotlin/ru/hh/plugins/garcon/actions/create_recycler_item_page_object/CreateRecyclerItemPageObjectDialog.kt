@@ -6,10 +6,14 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.ui.RecentsManager
-import com.intellij.ui.layout.CCFlags
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.Align
+import com.intellij.ui.dsl.builder.COLUMNS_LARGE
+import com.intellij.ui.dsl.builder.bindSelected
+import com.intellij.ui.dsl.builder.bindText
+import com.intellij.ui.dsl.builder.columns
+import com.intellij.ui.dsl.builder.panel
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
-import org.jetbrains.kotlin.idea.refactoring.fqName.getKotlinFqName
+import org.jetbrains.kotlin.idea.base.psi.kotlinFqName
 import org.jetbrains.kotlin.psi.KtClass
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.isValidIdentifier
@@ -19,7 +23,6 @@ import ru.hh.plugins.garcon.services.ClassFiltersFactory
 import ru.hh.plugins.layout.KotlinFileComboBoxWrapper
 import ru.hh.plugins.psi_utils.xml.extractClassNameFromFileName
 import ru.hh.plugins.views.layouts.createKotlinClassChooserComboBox
-import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class CreateRecyclerItemPageObjectDialog(
@@ -28,11 +31,10 @@ class CreateRecyclerItemPageObjectDialog(
 
     private val project: Project get() = xmlFile.project
 
-    private lateinit var openInEditorCheckBox: JCheckBox
     private lateinit var targetClassChooser: KotlinFileComboBoxWrapper
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    var className = "${xmlFile.extractClassNameFromFileName()}RecyclerItem"
+    private var className = "${xmlFile.extractClassNameFromFileName()}RecyclerItem"
+    private var openInEditor: Boolean = false
     private var targetClass: PsiElement? = null
 
     init {
@@ -42,26 +44,31 @@ class CreateRecyclerItemPageObjectDialog(
 
     override fun doOKAction() {
         if (isFormValid()) {
+            super.doOKAction()
             targetClass?.let { aClass ->
                 RecentsManager.getInstance(project).registerRecentEntry(
-                    GarconConstants.RecentsKeys.TARGET_SCREEN_CLASS,
-                    aClass.getKotlinFqName().toString()
+                    GarconConstants.RecentsKeys.TARGET_SCREEN_CLASS, aClass.kotlinFqName.toString()
                 )
             }
             PropertiesComponent.getInstance()
-                .setValue(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, getOpenInEditor().toString())
-            super.doOKAction()
+                .setValue(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, openInEditor.toString())
         }
     }
 
+    @Suppress("detekt.LongMethod")
     override fun createCenterPanel(): JComponent {
+        openInEditor = PropertiesComponent.getInstance()
+            .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)
         return panel {
-            titledRow(title = "Enter page object class name:") {
+            group(title = "Page Object Class Name") {
                 row {
-                    textField(this@CreateRecyclerItemPageObjectDialog::className)
+                    textField()
+                        .bindText(::className)
+                        .comment("Enter page object class name")
+                        .columns(COLUMNS_LARGE)
                 }
             }
-            titledRow("Choose target <Screen> Page Object class") {
+            group("Page Object Class") {
                 row {
                     targetClassChooser = createKotlinClassChooserComboBox(
                         project = project,
@@ -80,16 +87,15 @@ class CreateRecyclerItemPageObjectDialog(
                             }
                         }
                     )
-                    targetClassChooser()
+                    cell(targetClassChooser)
+                        .comment("Choose target &lt;Screen&gt; Page Object class")
+                        .resizableColumn()
+                        .align(Align.FILL)
                 }
             }
             row {
-                openInEditorCheckBox = checkBox(
-                    text = "Open in editor",
-                    isSelected = PropertiesComponent.getInstance()
-                        .getBoolean(GarconConstants.RecentsKeys.OPEN_IN_EDITOR_FLAG, true)
-                ).component
-                openInEditorCheckBox(CCFlags.pushX)
+                checkBox("Open in editor")
+                    .bindSelected(::openInEditor)
             }
         }
     }
@@ -97,22 +103,10 @@ class CreateRecyclerItemPageObjectDialog(
     fun getDialogResult(): CreateRecyclerItemPageObjectDialogResult {
         return CreateRecyclerItemPageObjectDialogResult(
             xmlFile = xmlFile,
-            className = getCurrentClassName(),
-            targetClass = getTargetPsiElement() as KtClass,
-            openInEditor = getOpenInEditor()
+            className = className,
+            targetClass = targetClass as KtClass,
+            openInEditor = openInEditor
         )
-    }
-
-    private fun getOpenInEditor(): Boolean {
-        return openInEditorCheckBox.isSelected
-    }
-
-    private fun getTargetPsiElement(): PsiElement? {
-        return targetClass
-    }
-
-    private fun getCurrentClassName(): String {
-        return className
     }
 
     private fun isFormValid(): Boolean {
@@ -120,7 +114,7 @@ class CreateRecyclerItemPageObjectDialog(
     }
 
     private fun isClassNameValid(): Boolean {
-        val className = getCurrentClassName()
+        val className = className
 
         return when {
             className.isEmpty() -> {

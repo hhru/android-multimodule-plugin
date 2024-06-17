@@ -1,5 +1,25 @@
 # Garcon
 
+## [1.8.0]
+
+### Added
+
+- Support for Android Studio Koala | 2024.1.1
+
+### Changed
+
+- New versions of Garcon could be installed **only since Android Studio Koala**.
+  Previous versions support **was dropped**.
+- Changed Garcon setup dialog UI internal implementation (thanks, @illarionov !) --
+  from https://github.com/hhru/android-multimodule-plugin/pull/88 .
+
+### Fixed
+
+- Fixes several IDE-warnings about project level services.
+- Fixes several IDE-warnings about live templates.
+- Fixes several IDE-warnings about AnAction (thanks, @illarionov !) --
+  from https://github.com/hhru/android-multimodule-plugin/pull/95 .
+
 ## [1.7.0]
 ### Added
 - Support for Android Studio Jellyfish | 2023.3.1

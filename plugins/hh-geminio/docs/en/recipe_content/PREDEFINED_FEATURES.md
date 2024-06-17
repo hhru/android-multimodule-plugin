@@ -22,7 +22,7 @@ predefinedFeatures:
 
 Here, `ru.hh.test` - new value of your custom package name.
 
-Similarly, you can set the `sourceSet` and the folder name (usually kotlin/java) inside the sourceSet:
+Similarly, you can set the `sourceSet` and the folder name (usually `kotlin`/`java`) inside the `sourceSet`:
 
 ```yaml
 predefinedFeatures:

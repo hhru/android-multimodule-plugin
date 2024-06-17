@@ -71,21 +71,6 @@
                 groupId="appearance"
                 displayName="HeadHunter Plugin"
                 instance="ru.hh.android.plugin.config.PluginConfigConfigurable"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.config.PluginConfig"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.config.JiraSettingsConfig"/>
-        <!-- endregion -->
-
-        <!-- region Plugin services -->
-        <projectService
-                serviceImplementation="ru.hh.android.plugin.services.code_generator.EmptyObjectGeneratorService"/>
-        <projectService
-                serviceImplementation="ru.hh.android.plugin.services.code_generator.SerializedNameAnnotationsGeneratorService"/>
-        <projectService
-                serviceImplementation="ru.hh.android.plugin.actions.boilerplate.fragment_view_model.GenerateFragmentViewModelTextFactory"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraIssueFactory"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraLinkFactory"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.jira.JiraRestClientService"/>
-        <projectService serviceImplementation="ru.hh.android.plugin.services.git.GitService"/>
         <!-- endregion -->
 
         <!-- region Inspections -->
@@ -96,6 +81,7 @@
                 displayName="Wrong View's id"
                 enabledByDefault="true"
                 level="WARNING"
+                language="XML"
                 implementationClass="ru.hh.android.plugin.inspections.wrong_view_id.WrongViewIdCodeStyleFormattingInspection"/>
 
         <globalInspection
@@ -105,6 +91,7 @@
                 displayName="Hardcoded dimens using"
                 enabledByDefault="true"
                 level="WARNING"
+                language="XML"
                 implementationClass="ru.hh.android.plugin.inspections.hardcoded_dimen.HardcodedDimensUsingInspection"/>
 
         <globalInspection
@@ -114,6 +101,7 @@
                 displayName="Wrong putSerializable using"
                 enabledByDefault="true"
                 level="ERROR"
+                language="kotlin"
                 implementationClass="ru.hh.android.plugin.inspections.PutSerializableInspection"/>
         <!-- endregion -->
 

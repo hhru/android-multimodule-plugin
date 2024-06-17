@@ -4,10 +4,9 @@ import com.android.tools.idea.npw.model.RenderTemplateModel
 import com.android.tools.idea.wizard.model.ModelWizardStep
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.LabelPosition
 import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.dsl.gridLayout.HorizontalAlign
-import com.intellij.ui.dsl.gridLayout.VerticalAlign
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.layout.onTextChange
@@ -42,12 +41,15 @@ class ChooseModulesModelWizardStep(
 
     override fun getComponent(): JComponent {
         return panel {
-            row { label("Choose modules as dependencies for new feature module").bold() }
+            row {
+                label("Choose application modules that should add new feature module as dependency")
+                    .bold()
+            }
 
             row {
                 textField()
                     .resizableColumn()
-                    .horizontalAlign(HorizontalAlign.FILL)
+                    .align(Align.FILL)
                     .label("Filter:", LabelPosition.TOP)
                     .comment("You can filter modules by names")
                     .applyToComponent {
@@ -63,8 +65,7 @@ class ChooseModulesModelWizardStep(
                 )
                 scrollCell(modulesJList)
                     .label("Choose app-modules:", LabelPosition.TOP)
-                    .horizontalAlign(HorizontalAlign.FILL)
-                    .verticalAlign(VerticalAlign.FILL)
+                    .align(Align.FILL)
             }.resizableRow()
 
             row {
@@ -86,7 +87,7 @@ class ChooseModulesModelWizardStep(
 
     private fun filterItems(query: String) {
         val filteredList = if (query.isNotBlank()) {
-            allModulesItems.filter { it.text.startsWith(query) }
+            allModulesItems.filter { it.text.contains(query) }
         } else {
             allModulesItems
         }

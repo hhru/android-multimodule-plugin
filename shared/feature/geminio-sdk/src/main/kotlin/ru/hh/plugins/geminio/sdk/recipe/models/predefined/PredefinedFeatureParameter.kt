@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.sdk.recipe.models.predefined
 
 sealed class PredefinedFeatureParameter {
+
     data class ModuleCreationParameter(
         val defaultPackageNamePrefix: String = DEFAULT_PACKAGE_NAME_PREFIX,
         val defaultSourceSet: String = DEFAULT_SOURCE_SET_NAME,
@@ -12,4 +13,5 @@ sealed class PredefinedFeatureParameter {
             const val DEFAULT_SOURCE_CODE_FOLDER_NAME = "java"
         }
     }
+
 }

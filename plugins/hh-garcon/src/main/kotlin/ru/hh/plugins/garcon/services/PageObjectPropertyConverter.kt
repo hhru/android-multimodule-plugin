@@ -16,7 +16,7 @@ import ru.hh.plugins.garcon.model.extensions.rFilePackageName
 import ru.hh.plugins.garcon.model.extensions.xmlFileName
 import ru.hh.plugins.psi_utils.isInheritedFrom
 
-@Service
+@Service(Service.Level.PROJECT)
 class PageObjectPropertyConverter(
     private val project: Project
 ) {

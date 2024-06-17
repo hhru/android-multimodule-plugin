@@ -97,4 +97,3 @@ internal fun PredefinedFeaturesSection.Companion.createSourceCodeFolderName(
         }
     )
 }
-

@@ -13,38 +13,29 @@ internal class GeminioSettingsFormState(
     val nameForNewModulesGroup: ObservableMutableProperty<String> = propertyGraph.property(""),
     val isDebugEnabled: ObservableMutableProperty<Boolean> = propertyGraph.property(false),
 ) {
-    internal companion object {
-        operator fun invoke(
-            config: GeminioPluginConfig,
-        ): GeminioSettingsFormState = GeminioSettingsFormState().also { it.set(config) }
 
-        fun GeminioSettingsFormState.set(config: GeminioPluginConfig) {
-            configFilePath.set(config.configFilePath)
-            templatesRootDirPath.set(config.templatesRootDirPath)
-            modulesTemplatesRootDirPath.set(config.modulesTemplatesRootDirPath)
-            nameForNewGroup.set(config.groupsNames.forNewGroup)
-            nameForNewModulesGroup.set(config.groupsNames.forNewModulesGroup)
-            isDebugEnabled.set(config.isDebugEnabled)
-        }
+    constructor(config: GeminioPluginConfig) : this() {
+        this.set(config)
+    }
 
-        fun GeminioSettingsFormState.isModified(originalConfig: GeminioPluginConfig): Boolean {
-            return !(originalConfig.configFilePath == this.configFilePath.get() &&
+    fun set(config: GeminioPluginConfig) {
+        configFilePath.set(config.configFilePath)
+        templatesRootDirPath.set(config.templatesRootDirPath)
+        modulesTemplatesRootDirPath.set(config.modulesTemplatesRootDirPath)
+        nameForNewGroup.set(config.groupsNames.forNewGroup)
+        nameForNewModulesGroup.set(config.groupsNames.forNewModulesGroup)
+        isDebugEnabled.set(config.isDebugEnabled)
+    }
+
+    fun isModified(originalConfig: GeminioPluginConfig): Boolean {
+        return !(
+            originalConfig.configFilePath == this.configFilePath.get() &&
                 originalConfig.templatesRootDirPath == this.templatesRootDirPath.get() &&
                 originalConfig.modulesTemplatesRootDirPath == this.modulesTemplatesRootDirPath.get() &&
                 originalConfig.groupsNames.forNewGroup == nameForNewGroup.get() &&
                 originalConfig.groupsNames.forNewModulesGroup == nameForNewModulesGroup.get() &&
-                originalConfig.isDebugEnabled == isDebugEnabled.get())
-        }
-
-        fun GeminioPluginConfig.copyWithValuesFrom(state: GeminioSettingsFormState) = this.copy(
-            configFilePath = state.configFilePath.get(),
-            templatesRootDirPath = state.templatesRootDirPath.get(),
-            modulesTemplatesRootDirPath = state.modulesTemplatesRootDirPath.get(),
-            groupsNames = this.groupsNames.copy(
-                forNewGroup = state.nameForNewGroup.get(),
-                forNewModulesGroup = state.nameForNewModulesGroup.get(),
-            ),
-            isDebugEnabled = state.isDebugEnabled.get()
-        )
+                originalConfig.isDebugEnabled == isDebugEnabled.get()
+            )
     }
+
 }

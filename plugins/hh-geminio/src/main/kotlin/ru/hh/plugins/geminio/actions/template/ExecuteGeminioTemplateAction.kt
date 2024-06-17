@@ -2,6 +2,7 @@ package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
 import com.android.tools.idea.wizard.model.ModelWizard
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -26,25 +27,26 @@ import kotlin.system.measureTimeMillis
  * This action not registered in plugin.xml, because we create it in runtime.
  */
 class ExecuteGeminioTemplateAction(
+    actionDescription: String,
     private val actionText: String,
-    private val actionDescription: String,
     private val geminioRecipePath: String
-) : AnAction() {
+) : AnAction(
+    /* text = */
+    actionText,
+    /* description = */
+    actionDescription,
+    /* icon = */
+    null
+) {
 
-    companion object {
-        private const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
-        private const val COMMAND_AFTER_WIZARD_NAME = "ExecuteGeminioTemplateActionCommandAfterWizard"
+    private companion object {
+        const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
+        const val COMMAND_AFTER_WIZARD_NAME = "ExecuteGeminioTemplateActionCommandAfterWizard"
 
-        private const val WIZARD_TITLE = "Geminio wizard"
+        const val WIZARD_TITLE = "Geminio wizard"
     }
 
-    init {
-        with(templatePresentation) {
-            text = actionText
-            description = actionDescription
-            isEnabledAndVisible = true
-        }
-    }
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         val dataContext = e.dataContext

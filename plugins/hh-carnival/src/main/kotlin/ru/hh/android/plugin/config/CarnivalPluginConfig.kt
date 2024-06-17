@@ -2,6 +2,7 @@ package ru.hh.android.plugin.config
 
 import com.android.tools.idea.util.toIoFile
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -12,12 +13,13 @@ import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
 import ru.hh.plugins.extensions.EMPTY
 
+@Service(Service.Level.PROJECT)
 @State(name = "ru.hh.android.plugin.config.PluginConfig")
-class PluginConfig : PersistentStateComponent<PluginConfig> {
+class CarnivalPluginConfig : PersistentStateComponent<CarnivalPluginConfig> {
 
     companion object {
-        fun getInstance(project: Project): PluginConfig {
-            return project.service<PluginConfig>().apply {
+        fun getInstance(project: Project): CarnivalPluginConfig {
+            return project.service<CarnivalPluginConfig>().apply {
                 if (project.isDefault.not() && pluginFolderDirPath.isBlank()) {
                     val projectPath = project.guessProjectDir()!!.toIoFile().absolutePath
                     pluginFolderDirPath = "$projectPath/${PluginConstants.DEFAULT_PLUGIN_CONFIG_FOLDER_NAME}"
@@ -35,11 +37,11 @@ class PluginConfig : PersistentStateComponent<PluginConfig> {
     @Attribute
     var jiraDevelopmentTeam: JiraDevelopmentTeam = JiraDevelopmentTeam.MOBILE_CORE
 
-    override fun getState(): PluginConfig? {
+    override fun getState(): CarnivalPluginConfig {
         return this
     }
 
-    override fun loadState(state: PluginConfig) {
+    override fun loadState(state: CarnivalPluginConfig) {
         XmlSerializerUtil.copyBean(state, this)
     }
 }

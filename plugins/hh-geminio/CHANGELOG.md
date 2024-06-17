@@ -1,15 +1,45 @@
 # Geminio
 
-## [1.9.0]
+## [1.10.0]
+
 ### Added
+
+- Support for Android Studio Koala | 2024.1.1
+- Support for changing source sets and source set code folder name with new module creation (thanks,
+  @ussernamenikita !) -- from https://github.com/hhru/android-multimodule-plugin/pull/110 .
+
+### Changed
+
+- New versions of Geminio could be installed **only since Android Studio Koala**.
+  Previous versions support **was dropped**.
+- Changed Geminio setup dialog UI internal implementation (thanks, @illarionov !) --
+  from https://github.com/hhru/android-multimodule-plugin/pull/87 .
+
+### Fixed
+
+- Application modules search in the selecting application modules wizard step.
+- Geminio unit tests compilation (thanks, @illarionov !) --
+  from https://github.com/hhru/android-multimodule-plugin/pull/96 .
+- Fixes several IDE-warnings about project level services.
+- Fixes several IDE-warnings about AnAction (thanks, @illarionov !) --
+  from https://github.com/hhru/android-multimodule-plugin/pull/95 .
+
+## [1.9.0]
+
+### Added
+
 - Support for Android Studio Jellyfish | 2023.3.1
 
 ## [1.8.0]
+
 ### Added
+
 - Support for Android Studio Iguana | 2023.2.1
 
 ## [1.7.0]
+
 ### Added
+
 - Support for Android Studio Hedgehog | 2023.1.1
 
 ## [1.6.1]

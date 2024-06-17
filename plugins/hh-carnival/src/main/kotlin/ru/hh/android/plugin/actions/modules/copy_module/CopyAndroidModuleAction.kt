@@ -1,11 +1,12 @@
 package ru.hh.android.plugin.actions.modules.copy_module
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.command.executeCommand
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiPlainTextFile
-import org.jetbrains.kotlin.idea.util.application.runWriteAction
 import ru.hh.android.plugin.CodeGeneratorConstants.ANDROID_MANIFEST_XML_FILE_NAME
 import ru.hh.android.plugin.CodeGeneratorConstants.JAVA_SOURCE_FOLDER_NAME
 import ru.hh.android.plugin.CodeGeneratorConstants.KOTLIN_SOURCE_FOLDER_NAME
@@ -44,6 +45,8 @@ import kotlin.system.measureTimeMillis
  * Action for copy module.
  */
 class CopyAndroidModuleAction : AnAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         super.update(e)
@@ -105,8 +108,6 @@ class CopyAndroidModuleAction : AnAction() {
     }
 
     private fun copyModule(params: NewModuleParams) {
-        val project = params.project
-
         val moduleParentPsiDirectory = params.moduleToCopy.moduleParentPsiDirectory ?: return
         val newModuleRootPsiDirectory = moduleParentPsiDirectory.createSubdirectory(params.newModuleName)
         HHLogger.d("Parent directory for new module created [withName: ${params.newModuleName}]")
@@ -229,7 +230,6 @@ class CopyAndroidModuleAction : AnAction() {
                 )
             }
 
-            val project = moduleToCopyMainPackagePsiDirectory.project
             HHLogger.d("Success copying [time: $copyMainPackageTime ms]")
         }
     }

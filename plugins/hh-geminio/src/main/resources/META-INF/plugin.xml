@@ -12,8 +12,8 @@
         <postStartupActivity implementation="ru.hh.plugins.geminio.services.GeminioStartupActivity"/>
 
         <!-- region Plugin config -->
-        <projectService serviceImplementation="ru.hh.plugins.geminio.config.editor.GeminioPluginSettings"/>
         <projectConfigurable
+                displayName="Geminio Plugin"
                 groupId="appearance"
                 instance="ru.hh.plugins.geminio.config.editor.GeminioPluginSettingsSearchableConfigurable"/>
         <!-- endregion -->

@@ -45,7 +45,7 @@ internal fun Map<String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesS
 }
 
 private fun Map<String, Any?>.toPredefinedFeatureParameter(): Pair<PredefinedFeature, PredefinedFeatureParameter> {
-    for (feature in PredefinedFeature.values()) {
+    for (feature in PredefinedFeature.entries) {
         val parameterMap = this[feature.yamlKey] as? Map<String, Any>
         if (parameterMap != null) {
             return feature to parameterMap.parseParameter(feature)
