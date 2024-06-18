@@ -2,7 +2,7 @@ package ru.hh.plugins.geminio.services
 
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.StartupActivity
+import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.wm.WindowManager
 import ru.hh.plugins.geminio.ActionsHelper
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
@@ -16,12 +16,12 @@ import javax.swing.JFrame
 /**
  * This code will be executed on project's startup.
  */
-class GeminioStartupActivity : StartupActivity {
+class GeminioStartupActivity : ProjectActivity {
 
     private var windowListener: WindowListener? = null
     private val lastViewedProject = AtomicReference<Project>(null)
 
-    override fun runActivity(project: Project) {
+    override suspend fun execute(project: Project) {
         DumbService.getInstance(project).runWhenSmart {
             setupLogger(project)
             setupNotifications(project)
@@ -58,10 +58,16 @@ class GeminioStartupActivity : StartupActivity {
             override fun windowActivated(e: WindowEvent?) {
                 val lastProject = lastViewedProject.get()
                 if (lastProject != project) {
-                    HHLogger.d("Project changed -> rescan Geminio's actions [old project name: `${lastProject.name}`, new project.name: `${project.name}`]")
+                    HHLogger.d(
+                        "Project changed -> rescan Geminio's actions " +
+                            "[old project name: `${lastProject.name}`, new project.name: `${project.name}`]"
+                    )
                     rescanTemplateActions(project)
                 } else {
-                    HHLogger.d("Activated project is the same as previous -> no need to rescan Geminio's actions [project.name: `${project.name}`]")
+                    HHLogger.d(
+                        "Activated project is the same as previous -> " +
+                            "no need to rescan Geminio's actions [project.name: `${project.name}`]"
+                    )
                 }
             }
 
@@ -81,4 +87,6 @@ class GeminioStartupActivity : StartupActivity {
     private fun setupNotifications(project: Project) {
         HHNotifications.plant(project, "Geminio")
     }
+
+
 }

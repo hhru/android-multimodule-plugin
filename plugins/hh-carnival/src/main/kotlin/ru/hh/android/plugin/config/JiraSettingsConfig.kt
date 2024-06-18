@@ -5,6 +5,7 @@ import com.intellij.credentialStore.Credentials
 import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -15,6 +16,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
+@Service(Service.Level.PROJECT)
 @State(name = "ru.hh.android.plugins.antiroutine.JiraSettingsConfig")
 class JiraSettingsConfig : PersistentStateComponent<Credentials> {
 
@@ -30,8 +32,9 @@ class JiraSettingsConfig : PersistentStateComponent<Credentials> {
         get() {
             val keyFile = File(KEY_FILE_NAME)
 
-            if (!keyFile.exists())
+            if (!keyFile.exists()) {
                 keyFile.createNewFile()
+            }
 
             val reader = FileReader(KEY_FILE_NAME)
             val hostname = reader.readText()

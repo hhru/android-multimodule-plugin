@@ -53,7 +53,7 @@ val detektFormat by tasks.register<Detekt>("detektFormat") {
 
     // Configuration
     val staticAnalysisExtension = project.extensions.getByName<StaticAnalysisExtension>("staticAnalysis")
-    config.setFrom(staticAnalysisExtension.detekt.formatPath)
+    config.setFrom(staticAnalysisExtension.detekt.configPath)
 }
 
 val detektProjectBaseline by tasks.register<DetektCreateBaselineTask>("detektProjectBaseline") {

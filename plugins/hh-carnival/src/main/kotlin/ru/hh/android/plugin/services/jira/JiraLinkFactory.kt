@@ -6,7 +6,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import ru.hh.android.plugin.core.model.jira.JiraLinkType
 
-@Service
+@Service(Service.Level.PROJECT)
 class JiraLinkFactory {
 
     companion object {

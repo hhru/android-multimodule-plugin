@@ -6,9 +6,15 @@ import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import ru.hh.android.plugin.core.model.jira.*
+import ru.hh.android.plugin.core.model.jira.JiraCustomField
+import ru.hh.android.plugin.core.model.jira.JiraDevelopmentTeam
+import ru.hh.android.plugin.core.model.jira.JiraEpicLink
+import ru.hh.android.plugin.core.model.jira.JiraIssueLabel
+import ru.hh.android.plugin.core.model.jira.JiraIssueType
+import ru.hh.android.plugin.core.model.jira.JiraProjectKey
+import ru.hh.android.plugin.core.model.jira.JiraStoryPoints
 
-@Service
+@Service(Service.Level.PROJECT)
 class JiraIssueFactory {
 
     companion object {

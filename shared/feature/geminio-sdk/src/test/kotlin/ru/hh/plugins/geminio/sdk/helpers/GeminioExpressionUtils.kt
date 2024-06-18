@@ -1,5 +1,6 @@
 package ru.hh.plugins.geminio.sdk.helpers
 
+import com.android.ide.common.repository.AgpVersion
 import com.android.tools.idea.wizard.template.ApiTemplateData
 import com.android.tools.idea.wizard.template.ApiVersion
 import com.android.tools.idea.wizard.template.Category
@@ -11,6 +12,7 @@ import com.android.tools.idea.wizard.template.ThemesData
 import com.android.tools.idea.wizard.template.ViewBindingSupport
 import com.android.tools.idea.wizard.template.booleanParameter
 import com.android.tools.idea.wizard.template.stringParameter
+import com.intellij.mock.MockVirtualFile
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
@@ -23,6 +25,11 @@ internal object GeminioExpressionUtils {
     fun List<RecipeExpressionCommand>.toExpression(): RecipeExpression {
         return RecipeExpression(this)
     }
+
+    fun RecipeExpression.evaluateString(
+        moduleTemplateData: ModuleTemplateData,
+        existingParametersMap: Map<String, AndroidStudioTemplateParameter>,
+    ): String? = evaluateString(MockVirtualFile(""), moduleTemplateData, existingParametersMap)
 
     fun createParametersMap(
         includeModule: Boolean = true,
@@ -44,7 +51,7 @@ internal object GeminioExpressionUtils {
         return ModuleTemplateData(
             projectTemplateData = ProjectTemplateData(
                 androidXSupport = true,
-                gradlePluginVersion = "6.3",
+                agpVersion = AgpVersion.parse("6.3"),
                 sdkDir = File("/AndroidSdk"),
                 language = Language.Kotlin,
                 kotlinVersion = "1.4.10",
@@ -80,7 +87,11 @@ internal object GeminioExpressionUtils {
                 appCompatVersion = 21,
             ),
             viewBindingSupport = ViewBindingSupport.NOT_SUPPORTED,
-            category = Category.Other
+            category = Category.Other,
+            isMaterial3 = false,
+            useGenericLocalTests = true,
+            useGenericInstrumentedTests = true,
+            isCompose = false,
         )
     }
 

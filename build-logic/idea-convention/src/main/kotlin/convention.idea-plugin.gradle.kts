@@ -68,6 +68,6 @@ tasks.getByName<Zip>("buildPlugin") {
 }
 
 tasks.getByName<RunIdeTask>("runIde") {
-    maxHeapSize = "4g"
+    maxHeapSize = "8g"
     minHeapSize = "4g"
 }

@@ -17,10 +17,8 @@ internal fun RecipeExecutor.execute(
     val to = command.to.evaluateString(targetDirectory, moduleTemplateData, existingParametersMap)
 
     HHLogger.d("Instantiate command [command: $command, from: $from, to: $to]")
-    if (from == null || to == null) {
-        throw IllegalArgumentException(
-            "Cannot evaluate 'from' or 'to' expressions [command: $command, from: $from, to: $to]"
-        )
+    require(from != null && to != null) {
+        "Cannot evaluate 'from' or 'to' expressions [command: $command, from: $from, to: $to]"
     }
     val fileText = freemarkerConfiguration.resolveTemplate(from, resolvedParamsMap)
     save(fileText, File(to))

@@ -1,17 +1,27 @@
 package ru.hh.android.plugin.core.framework_ui.view
 
-import com.intellij.ui.layout.LayoutBuilder
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.observable.properties.ObservableMutableProperty
+import com.intellij.openapi.observable.properties.ObservableProperty
+import com.intellij.openapi.observable.properties.PropertyGraph
+import com.intellij.openapi.observable.util.operation
+import com.intellij.openapi.observable.util.transform
+import com.intellij.ui.components.JBTextField
+import com.intellij.ui.dsl.builder.Align
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.LabelPosition
+import com.intellij.ui.dsl.builder.Panel
+import com.intellij.ui.dsl.builder.Row
+import com.intellij.ui.dsl.builder.bindText
 import ru.hh.android.plugin.PluginConstants
 import ru.hh.android.plugin.core.framework_ui.UiConstants
 import ru.hh.android.plugin.extensions.isCorrectPackageName
 import ru.hh.android.plugin.extensions.toPackageNameFromModuleName
-import ru.hh.plugins.extensions.layout.onTextChange
+import ru.hh.plugins.extensions.layout.enabledIfCompat
+import ru.hh.plugins.extensions.layout.visibleIfCompat
 import java.awt.Color
+import javax.swing.AbstractButton
 import javax.swing.BorderFactory
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JTextField
-import javax.swing.border.Border
 
 /**
  * Wrapper for two text fields:
@@ -23,140 +33,121 @@ import javax.swing.border.Border
 class ModuleNamePanel(
     private val moduleNameSectionLabel: String = "Module name",
     private val packageNameSectionLabel: String = "Package name",
-    private val defaultModuleName: String = PluginConstants.DEFAULT_MODULE_NAME,
-    private val defaultPackageName: String = PluginConstants.DEFAULT_PACKAGE_NAME,
+    defaultModuleName: String = PluginConstants.DEFAULT_MODULE_NAME,
+    defaultPackageName: String = PluginConstants.DEFAULT_PACKAGE_NAME,
+    private val dialogDisposable: Disposable? = null,
     private val onErrorAction: (Boolean) -> Unit = {}
 ) {
+    private val propertyGraph = PropertyGraph()
+    private val moduleNameProperty = propertyGraph.property(defaultModuleName)
+    private val packageNameProperty = propertyGraph.property(defaultPackageName)
+    private val isPackageNameInEditModeProperty = propertyGraph.property(false)
+    private val isPackageNameFieldHasErrorProperty = propertyGraph.property(false)
 
-    private val errorColor = Color.decode(UiConstants.DARK_THEME_ERROR_COLOR)
+    val moduleName: String by moduleNameProperty
+    val packageName: String by packageNameProperty
 
-    private lateinit var moduleNameJTextField: JTextField
-
-    private lateinit var packageNameJTextField: JTextField
-    private lateinit var editPackageNameButton: JButton
-    private lateinit var packageNameErrorLabel: JLabel
-
-    private lateinit var normalTextFieldBorder: Border
-
-    private var isPackageNameTextFieldEnabled: Boolean = false
-        set(value) {
-            field = value
-            packageNameJTextField.isEnabled = value
-        }
-
-    private var isPackageNameTextFieldHasError: Boolean = false
-        set(value) {
-            field = value
-
-            if (value) {
-                packageNameJTextField.border = BorderFactory.createLineBorder(errorColor, 1, true)
-                if (isPackageNameTextFieldEnabled) {
-                    editPackageNameButton.isEnabled = false
-                }
-                packageNameErrorLabel.isVisible = true
-            } else {
-                packageNameJTextField.border = normalTextFieldBorder
-                if (isPackageNameTextFieldEnabled) {
-                    editPackageNameButton.isEnabled = true
-                }
-                packageNameErrorLabel.isVisible = false
-            }
-        }
-
-    private var isPackageNameInEditMode = false
-    private var isPackageNameWasChangedByUser = false
-    private var wantTriggerPackageNameChanged = false
-
-    fun create(layoutBuilder: LayoutBuilder) {
-        with(layoutBuilder) {
+    fun create(panel: Panel) {
+        with(panel) {
             createModuleNameSection()
             createPackageNameSection()
         }
+        isPackageNameFieldHasErrorProperty.afterChange(dialogDisposable, onErrorAction)
+        packageNameProperty.dependsOn(moduleNameProperty, ::suggestPackageName)
+        packageNameProperty.afterChange(dialogDisposable, ::onPackageNameChanged)
     }
 
-    fun getModuleName(): String = moduleNameJTextField.text
-
-    fun getPackageName(): String = packageNameJTextField.text
-
-    private fun onModuleNameChanged(newModuleName: String) {
-        if (isPackageNameWasChangedByUser) {
-            return
+    private fun Panel.createModuleNameSection() {
+        row {
+            textField()
+                .bindText(moduleNameProperty)
+                .label(moduleNameSectionLabel, LabelPosition.TOP)
+                .resizableColumn()
+                .align(Align.FILL)
         }
+    }
 
-        wantTriggerPackageNameChanged = true
-        packageNameJTextField.text = newModuleName.toPackageNameFromModuleName()
+    private fun Panel.createPackageNameSection() {
+        row {
+            packageNameTextField(
+                packageNameProperty = packageNameProperty,
+                packageNameSectionLabel = packageNameSectionLabel,
+                isInEditModeObservable = isPackageNameInEditModeProperty,
+                hasErrorObservable = isPackageNameFieldHasErrorProperty,
+            )
+            editButton(
+                isInEditModeProperty = isPackageNameInEditModeProperty,
+                hasErrorObservable = isPackageNameFieldHasErrorProperty,
+            )
+        }
+        row {
+            label("Invalid target package name specified")
+                .visibleIfCompat(isPackageNameFieldHasErrorProperty)
+                .applyToComponent {
+                    foreground = errorColor
+                }
+        }
     }
 
     private fun onPackageNameChanged(newPackageName: String) {
         if (newPackageName.isNotBlank()) {
-            if (wantTriggerPackageNameChanged) {
-                wantTriggerPackageNameChanged = false
-            } else {
-                isPackageNameWasChangedByUser = true
-            }
-
-            isPackageNameTextFieldHasError = newPackageName.isCorrectPackageName().not()
-            onErrorAction.invoke(isPackageNameTextFieldHasError)
+            isPackageNameFieldHasErrorProperty.set(newPackageName.isCorrectPackageName().not())
         }
     }
 
-    private fun onEditPackageNameButtonClicked() {
-        editPackageNameButton.text = if (isPackageNameInEditMode) {
-            "Edit"
-        } else {
-            "Done"
+    private fun suggestPackageName(): String = moduleNameProperty.get().toPackageNameFromModuleName()
+
+    private companion object {
+        private val errorColor = Color.decode(UiConstants.DARK_THEME_ERROR_COLOR)
+
+        fun Row.packageNameTextField(
+            packageNameProperty: ObservableMutableProperty<String>,
+            packageNameSectionLabel: String,
+            isInEditModeObservable: ObservableProperty<Boolean>,
+            hasErrorObservable: ObservableProperty<Boolean>,
+        ): Cell<JBTextField> {
+            val cell = textField()
+                .bindText(packageNameProperty)
+                .label(packageNameSectionLabel, LabelPosition.TOP)
+                .resizableColumn()
+                .align(Align.FILL)
+                .enabledIfCompat(isInEditModeObservable)
+
+            val normalBorder = cell.component.border
+            val errorBorder = BorderFactory.createLineBorder(errorColor, 1, true)
+
+            val observableBorder = hasErrorObservable.transform {
+                if (it) errorBorder else normalBorder
+            }
+
+            cell.component.border = observableBorder.get()
+            observableBorder.afterChange { hasError ->
+                cell.component.border = hasError
+            }
+
+            return cell
         }
 
-        isPackageNameTextFieldEnabled = isPackageNameInEditMode.not()
-        isPackageNameInEditMode = !isPackageNameInEditMode
-    }
-
-    @Suppress("UnstableApiUsage")
-    private fun LayoutBuilder.createModuleNameSection() {
-        titledRow(moduleNameSectionLabel) {
-            row {
-                cell {
-                    moduleNameJTextField = JTextField(defaultModuleName).apply {
-                        onTextChange { onModuleNameChanged(moduleNameJTextField.text) }
-                    }
-                    moduleNameJTextField(growX)
-
-                    moduleNameJTextField()
-                }
+        fun Row.editButton(
+            isInEditModeProperty: ObservableMutableProperty<Boolean>,
+            hasErrorObservable: ObservableProperty<Boolean>,
+        ): Cell<AbstractButton> {
+            val observableTitle = isInEditModeProperty.transform {
+                if (it) "Done" else "Edit"
             }
-        }
-    }
-
-    @Suppress("UnstableApiUsage")
-    private fun LayoutBuilder.createPackageNameSection() {
-        titledRow(packageNameSectionLabel) {
-            row {
-                cell {
-                    packageNameJTextField = JTextField(defaultPackageName).apply {
-                        onTextChange { onPackageNameChanged(packageNameJTextField.text) }
-                        isEnabled = false
-                    }
-                    packageNameJTextField(growX)
-
-                    normalTextFieldBorder = packageNameJTextField.border
-                    packageNameJTextField()
-                }
-
-                cell {
-                    editPackageNameButton = JButton("Edit").apply {
-                        addActionListener { onEditPackageNameButtonClicked() }
-                    }
-
-                    editPackageNameButton()
-                }
+            val enabledObservable = operation(isInEditModeProperty, hasErrorObservable) { isInEditMode, hasErrors ->
+                if (isInEditMode) !hasErrors else true
             }
-            row {
-                packageNameErrorLabel = JLabel("Invalid target package name specified").apply {
-                    foreground = errorColor
-                    isVisible = false
-                }
-                packageNameErrorLabel()
+
+            val button = button(observableTitle.get()) {
+                isInEditModeProperty.set(!isInEditModeProperty.get())
+            }.enabledIfCompat(enabledObservable)
+
+            observableTitle.afterChange { newTitle ->
+                button.component.text = newTitle
             }
+
+            return button
         }
     }
 }

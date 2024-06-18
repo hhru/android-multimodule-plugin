@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.actions.module_template
 
 import com.android.tools.idea.wizard.model.ModelWizard
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiDirectory
@@ -29,24 +30,25 @@ import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
  * Action for creating new module.
  */
 class ExecuteGeminioModuleTemplateAction(
+    actionDescription: String,
     private val actionText: String,
-    private val actionDescription: String,
-    private val geminioRecipePath: String
-) : AnAction() {
+    private val geminioRecipePath: String,
+) : AnAction(
+    /* text = */
+    actionText,
+    /* description = */
+    actionDescription,
+    /* icon = */
+    null,
+) {
 
-    companion object {
-        private const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
+    private companion object {
+        const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
 
-        private const val WIZARD_TITLE = "Geminio Module wizard"
+        const val WIZARD_TITLE = "Geminio Module wizard"
     }
 
-    init {
-        with(templatePresentation) {
-            text = actionText
-            description = actionDescription
-            isEnabledAndVisible = true
-        }
-    }
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         super.update(e)
@@ -88,8 +90,7 @@ class ExecuteGeminioModuleTemplateAction(
         val chooseAppsStep = ChooseModulesModelWizardStep(
             renderTemplateModel = stepModel.renderTemplateModel,
             stepTitle = "Choose app-modules",
-            project = project,
-            isForAppModules = true
+            project = project
         )
 
         val wizard = ModelWizard.Builder()
@@ -119,7 +120,6 @@ class ExecuteGeminioModuleTemplateAction(
 
                 try {
                     project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-
                         with(recipeExecutorModel) {
                             geminioTemplateData.androidStudioTemplate.recipe.invoke(
                                 recipeExecutor,
@@ -139,7 +139,10 @@ class ExecuteGeminioModuleTemplateAction(
                     dialog.disposeIfNeeded()
                     dialog.close(1)
 
-                    HHNotifications.error(message = "Some error occurred when '$actionText' executed. Check warnings at the bottom right corner.")
+                    HHNotifications.error(
+                        message = "Some error occurred when '$actionText' executed. " +
+                            "Check warnings at the bottom right corner."
+                    )
                     throw ex
                 }
             }

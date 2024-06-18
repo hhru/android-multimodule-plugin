@@ -101,7 +101,10 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
                 .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedPsiClass, "${ktUltraLightClass.name}") }
                 .firstOrNull()
         }
-        logger.debug("\tChecked all inner fields for inheritance, is fully serializable: is serializable ${result == null} [time: $checkTime ms]")
+        logger.debug(
+            "\tChecked all inner fields for inheritance, is fully serializable: " +
+                "is serializable ${result == null} [time: $checkTime ms]"
+        )
 
         result?.let { pathToFirstNotSerializableObject ->
             logger.debug("----- END need report issue -----")
@@ -137,7 +140,13 @@ class PutSerializableDetector : Detector(), SourceCodeScanner {
                     it.type.canonicalText.endsWith("Companion").not() &&
                     it.type.canonicalText.equals(ktLightClassForSourceDeclaration.type().canonicalText).not()
             }
-            .mapNotNull { checkIsSerializable(it.type as PsiClassReferenceType, checkedClass, "$objectPath.${ktLightClassForSourceDeclaration.name}") }
+            .mapNotNull {
+                checkIsSerializable(
+                    it.type as PsiClassReferenceType,
+                    checkedClass,
+                    "$objectPath.${ktLightClassForSourceDeclaration.name}"
+                )
+            }
             .firstOrNull()
     }
 

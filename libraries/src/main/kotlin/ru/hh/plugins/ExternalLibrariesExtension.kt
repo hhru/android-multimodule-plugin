@@ -74,7 +74,20 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
         ) : Product()
     }
 
-    enum class PredefinedIdeProducts(val product: Product.ICBasedIde) {
+    @Suppress("detekt.StringLiteralDuplication")
+    enum class PredefinedIdeProducts(val product: Product) {
+        ANDROID_STUDIO_IGUANA(
+            Product.ICBasedIde(
+                ideVersion = "232.10227.8",
+                pluginsNames = listOf(
+                    "android",
+                    "Kotlin",
+                    "java",
+                    "Groovy",
+                )
+            )
+        ),
+
         ANDROID_STUDIO_ARCTIC_FOX(
             Product.ICBasedIde(
                 ideVersion = "202.7660.26",

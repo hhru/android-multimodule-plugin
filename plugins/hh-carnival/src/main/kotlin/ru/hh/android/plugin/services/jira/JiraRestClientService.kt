@@ -5,11 +5,11 @@ import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientF
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import ru.hh.android.plugin.config.CarnivalPluginConfig
 import ru.hh.android.plugin.config.JiraSettingsConfig
-import ru.hh.android.plugin.config.PluginConfig
 import java.net.URI
 
-@Service
+@Service(Service.Level.PROJECT)
 class JiraRestClientService(
     private val project: Project
 ) {
@@ -34,7 +34,7 @@ class JiraRestClientService(
 
     @Suppress("UnstableApiUsage")
     fun createMergeDevelopToPortfolioIssue(portfolioKey: String): String {
-        val pluginConfig = PluginConfig.getInstance(project)
+        val pluginConfig = CarnivalPluginConfig.getInstance(project)
         val issueClient = jiraRestClient.issueClient
         val issueKey = issueClient.createIssue(
             jiraIssueFactory.mergeDevelopToPortfolioIssue(

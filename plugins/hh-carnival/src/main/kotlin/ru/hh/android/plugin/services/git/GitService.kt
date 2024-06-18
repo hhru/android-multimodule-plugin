@@ -9,7 +9,7 @@ import ru.hh.android.plugin.PluginConstants.MAIN_REPOSITORY_NAME
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.logger.HHLogger
 
-@Service
+@Service(Service.Level.PROJECT)
 class GitService(
     private val project: Project
 ) {

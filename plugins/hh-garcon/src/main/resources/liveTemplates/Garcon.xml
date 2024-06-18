@@ -6,7 +6,7 @@
         <variable name="STEP_DESCRIPTION" expression="" defaultValue="&quot;step_description&quot;"
                   alwaysStopAt="true"/>
         <context>
-            <option name="ru.hh.plugins.garcon.live_templates.step" value="true"/>
+            <option name="ru.hh.android.plugins.garcon.live_templates.step" value="true"/>
         </context>
     </template>
     <template name="item" value="itemType($CLASS_NAME$::$RECYCLER_ITEM_CLASS_NAME$)"
@@ -15,7 +15,7 @@
         <variable name="RECYCLER_ITEM_CLASS_NAME" expression="completeSmart()" defaultValue="recycler_item_class_name"
                   alwaysStopAt="true"/>
         <context>
-            <option name="ru.hh.plugins.garcon.live_templates.item" value="true"/>
+            <option name="ru.hh.android.plugins.garcon.live_templates.item" value="true"/>
         </context>
     </template>
 </templateSet>

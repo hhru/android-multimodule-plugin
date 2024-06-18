@@ -8,7 +8,14 @@
 - [hh-garcon](./plugins/hh-garcon) - плагин для быстрого создания Page Object-ов из XML-вёрстки
 - [hh-geminio](./plugins/hh-geminio) - плагин, добавляющий возможность создавать свои шаблоны кода на основе FreeMarker-а
 
-### Чтобы собрать любой из плагинов, нужно 
+Готовые дистрибутивы плагинов можно скачать 
+[на страничке релизов в Github](https://github.com/hhru/android-multimodule-plugin/releases/).
+
+Чтобы установить готовый дистрибутив, открываем Android Studio и идём по пути: 
+`Preferences -> Plugins -> иконка шестерёнки -> Install Plugin from disk`, выбираем скачанный zip-архив, дожидаемся 
+установки, по необходимости перезагружаем Android Studio.
+
+### Чтобы собрать любой из плагинов, нужно
 
 1. Убедитесь, что у вас есть Intellij IDEA (минимум CE) с подключенным Plugin Dev Kit
 2. Склонировать проект

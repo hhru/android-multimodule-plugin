@@ -16,7 +16,7 @@ import ru.hh.android.plugin.CodeGeneratorConstants.EMPTY_OBJECT_PROPERTY_NAME
 import ru.hh.android.plugin.extensions.psi.kotlin.addImportPackages
 import ru.hh.android.plugin.utils.reformatWithCodeStyle
 
-@Service
+@Service(Service.Level.PROJECT)
 class EmptyObjectGeneratorService(
     private val project: Project
 ) {
@@ -58,7 +58,9 @@ class EmptyObjectGeneratorService(
 
     private fun KtClass.getEmptyObjectPropertyDeclaration(): String {
         val emptyProperties = primaryConstructorParameters.joinToString(
-            prefix = "\n", postfix = "\n", separator = ",\n"
+            prefix = "\n",
+            postfix = "\n",
+            separator = ",\n"
         ) { parameter ->
             "${parameter.name} = ${parameter.getEmptyObjectValue()}"
         }
