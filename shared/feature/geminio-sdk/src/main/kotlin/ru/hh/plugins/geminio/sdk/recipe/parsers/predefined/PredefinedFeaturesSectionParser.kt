@@ -7,6 +7,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParam
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter.ModuleCreationParameter.Companion.DEFAULT_PACKAGE_NAME_PREFIX
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter.ModuleCreationParameter.Companion.DEFAULT_SOURCE_CODE_FOLDER_NAME
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter.ModuleCreationParameter.Companion.DEFAULT_SOURCE_SET_NAME
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter.ModuleCreationParameter.Companion.DEFAULT_VALUE_CHOOSE_MODULES_STEP_ENABLED
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 
@@ -14,6 +15,7 @@ private const val KEY_PREDEFINED_FEATURES_SECTION = "predefinedFeatures"
 private const val KEY_PARAMETER_PREDEFINE_PACKAGE_NAME = "defaultPackageNamePrefix"
 private const val KEY_PARAMETER_SOURCE_NAME = "defaultSourceSetName"
 private const val KEY_PARAMETER_SOURCE_CODE_FOLDER_NAME = "defaultSourceCodeFolderName"
+private const val KEY_PARAMETER_ENABLE_CHOOSE_MODULE_STEP = "enableChooseModulesStep"
 
 /**
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeaturesSection].
@@ -69,10 +71,12 @@ private fun Map<String, Any>.parseParameter(
             val defaultPackageNamePrefix = this[KEY_PARAMETER_PREDEFINE_PACKAGE_NAME] as? String
             val defaultSourceSet = this[KEY_PARAMETER_SOURCE_NAME] as? String
             val codeFolderName = this[KEY_PARAMETER_SOURCE_CODE_FOLDER_NAME] as? String
+            val enableChooseModulesStep = this[KEY_PARAMETER_ENABLE_CHOOSE_MODULE_STEP] as? Boolean
             PredefinedFeatureParameter.ModuleCreationParameter(
                 defaultPackageNamePrefix = defaultPackageNamePrefix ?: DEFAULT_PACKAGE_NAME_PREFIX,
                 defaultSourceSet = defaultSourceSet ?: DEFAULT_SOURCE_SET_NAME,
                 defaultSourceCodeFolderName = codeFolderName ?: DEFAULT_SOURCE_CODE_FOLDER_NAME,
+                enableChooseModulesStep = enableChooseModulesStep ?: DEFAULT_VALUE_CHOOSE_MODULES_STEP_ENABLED,
             )
         }
     }

@@ -6,11 +6,13 @@ sealed class PredefinedFeatureParameter {
         val defaultPackageNamePrefix: String = DEFAULT_PACKAGE_NAME_PREFIX,
         val defaultSourceSet: String = DEFAULT_SOURCE_SET_NAME,
         val defaultSourceCodeFolderName: String = DEFAULT_SOURCE_CODE_FOLDER_NAME,
+        val enableChooseModulesStep: Boolean = DEFAULT_VALUE_CHOOSE_MODULES_STEP_ENABLED,
     ) : PredefinedFeatureParameter() {
         companion object {
             const val DEFAULT_PACKAGE_NAME_PREFIX = "ru.hh"
             const val DEFAULT_SOURCE_SET_NAME = "main"
             const val DEFAULT_SOURCE_CODE_FOLDER_NAME = "java"
+            const val DEFAULT_VALUE_CHOOSE_MODULES_STEP_ENABLED = true
         }
     }
 

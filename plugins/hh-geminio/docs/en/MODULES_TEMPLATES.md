@@ -17,7 +17,8 @@ and adds a dependency on the created module to the selected application modules.
 
 - Additional parameters are available in FTL-templates of new modules:
     * `__applicationsModules` - a list of names of application-modules to which
-      the created module will need to be connected.
+      the created module will need to be connected. To disable this step set `enableChooseModulesStep` to `false`
+  (default value is `true`)
 
 ---
 
