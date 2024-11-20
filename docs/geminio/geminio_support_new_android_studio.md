@@ -52,7 +52,7 @@
 
 6. Если API никак не поменялось, то запуск пройдёт успешно, все шаблоны будут работать корректно.
 
-### Частые проблемы
+### Известные проблемы
 
 #### Cannot find builtin plugin 'org.jetbrains.kotlin'
 
@@ -60,7 +60,12 @@
 `Cannot find builtin plugin 'org.jetbrains.kotlin' for IDE: /Users/i.karenkov/Applications/Android Studio.app/Contents`
 указывает на то, что в плагинах установленной Android Studio ну удалось найти Kotlin plugin.
 
-**Скорее всего это баг**
+Это происходит из-за того, что мы всё ещё
+используем [Gradle IntelliJ Plugin (1.x)](https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html),
+при этом актуальный плагин для работы с Android Studio начиная с Ladybug -
+это [IntelliJ Platform Gradle Plugin (2.x)](https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html)
+
+**Как это хакнуть локально**
 
 1. Проверьте, есть ли в вашей Android Studio папка plugins/Kotlin. Итоговый путь
    `path_to_as/plugins/Kotlin`.
