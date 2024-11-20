@@ -31,7 +31,7 @@ abstract class ExternalLibrariesExtension @Inject constructor(private val provid
     val kotlinStdlibJdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    val kotlinHtml = "org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2"
+    val kotlinHtml = "org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.3"
     val kotlinCompilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion"
 
     val freemarker = "org.freemarker:freemarker:2.3.30"

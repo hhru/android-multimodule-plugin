@@ -29,7 +29,7 @@ fun Module.isAndroidAppModule(): Boolean {
      *
      * To remove these submodules we add this condition.
      */
-    val isHolderModule = this == androidFacet?.holderModule
+    val isHolderModule = this == androidFacet?.module
 
     return isAppProject && isHolderModule
 }
