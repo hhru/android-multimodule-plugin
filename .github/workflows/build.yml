@@ -3,8 +3,7 @@ on: [pull_request, workflow_call]
 
 env:
   # Link for Linux zip file from https://developer.android.com/studio/archive
-  ANDROID_STUDIO_URL: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.11/android-studio-2024.1.1.11-linux.tar.gz
-  COMPILER_VERSION: 241.15989.15
+  ANDROID_STUDIO_URL: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.3.1.2/android-studio-2024.3.1.2-linux.tar.gz
 
 jobs:
   build:
@@ -25,6 +24,4 @@ jobs:
       - name: Build plugins
         run: |
           ./gradlew buildAllPlugins \
-            -DandroidStudioPath="$(pwd)/android-studio" \
-            -DandroidStudioCompilerVersion="$COMPILER_VERSION" \
-            -DandroidStudioPluginsNames="org.jetbrains.android,org.jetbrains.kotlin,com.intellij.java,org.intellij.groovy,Git4Idea,org.intellij.intelliLang"
+            -DandroidStudioPath="$(pwd)/android-studio"

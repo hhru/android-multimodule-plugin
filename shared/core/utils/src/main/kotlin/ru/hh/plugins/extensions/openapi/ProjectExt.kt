@@ -3,8 +3,8 @@ package ru.hh.plugins.extensions.openapi
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.modules
 import com.intellij.psi.codeStyle.CodeStyleManager
-import org.jetbrains.kotlin.idea.util.projectStructure.allModules
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.logger.HHLogger
@@ -29,7 +29,7 @@ fun Project.executeWithoutCodeStyle(action: () -> Unit) {
  * Application module - module with applied `com.android.application` gradle plugin.
  */
 fun Project.getAndroidApplicationsModules(): List<Module> {
-    return allModules().filter { it.isAndroidAppModule() }
+    return modules.asList().filter { it.isAndroidAppModule() }
 }
 
 /**
@@ -38,7 +38,7 @@ fun Project.getAndroidApplicationsModules(): List<Module> {
  * Library module - module with applied `com.android.library` or `java-library` gradle plugins.
  */
 fun Project.getLibrariesModules(): List<Module> {
-    return allModules().filter { it.isAndroidLibraryModule() }
+    return modules.asList().filter { it.isAndroidLibraryModule() }
 }
 
 fun Project.getRootModule(): Module {

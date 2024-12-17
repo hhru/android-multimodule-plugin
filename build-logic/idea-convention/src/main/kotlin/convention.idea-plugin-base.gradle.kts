@@ -10,7 +10,7 @@ plugins {
 }
 
 configure<IntelliJPluginExtension> {
-    type.set("IC")
+    type.set("AI")
 
     val currentVersion = Libs.chosenIdeaVersion
     when (currentVersion) {

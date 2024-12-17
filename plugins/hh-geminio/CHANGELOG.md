@@ -1,5 +1,9 @@
 # Geminio
 
+## [1.11.0]
+
+Support for Android Studio Ladybug | 2024.2.1 Patch 2. Older versions are not supported.
+
 ## [1.10.0]
 
 ### Added
@@ -64,8 +68,10 @@
 
 ### Added
 
-- New `currentDirPackageName` parameter in FTL - add package name from selected folder in specified module.
-- New `currentDirOut` parameter in recipes - path to selected directory that launched Geminio's action.
+- New `currentDirPackageName` parameter in FTL - add package name from selected folder in specified
+  module.
+- New `currentDirOut` parameter in recipes - path to selected directory that launched Geminio's
+  action.
 - Improvements for docs.
 
 ## [1.4.1]
@@ -209,7 +215,8 @@
 ### Added
 
 - Add new command for recipe: `addDependencies` for adding dependencies into build.gradle file;
-- New hardcoded parameter in FTL-files: `applicationPackage` - it is package name from AndroidManifest.xml file.
+- New hardcoded parameter in FTL-files: `applicationPackage` - it is package name from
+  AndroidManifest.xml file.
 
 ## [1.0.0]
 
