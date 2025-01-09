@@ -58,7 +58,7 @@
 
 Ошибка вида
 `Cannot find builtin plugin 'org.jetbrains.kotlin' for IDE: /Users/i.karenkov/Applications/Android Studio.app/Contents`
-указывает на то, что в плагинах установленной Android Studio ну удалось найти Kotlin plugin.
+указывает на то, что в плагинах установленной Android Studio не удалось найти Kotlin plugin.
 
 Это происходит из-за того, что мы всё ещё
 используем [Gradle IntelliJ Plugin (1.x)](https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html),
@@ -74,7 +74,7 @@
    Суть проблемы в том, что в файле `builtinRegistry-1.xml` отсутствует объявление
    `org.jetbrains.kotlin`. Это можно
    легко исправить, добавив в него
-   ```kotlin
+   ```xml
      <plugin directoryName="Kotlin" id="org.jetbrains.kotlin">
        <dependencies>
          <dependency>com.intellij.modules.platform</dependency>
