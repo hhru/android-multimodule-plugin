@@ -2,9 +2,11 @@ plugins {
     id("convention.idea-plugin")
 }
 
-// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle
-repositories {
-    mavenCentral()
+intellijPlatform {
+    pluginConfiguration {
+        id = "ru.hh.plugins.Garcon"
+        name = "Garcon"
+    }
 }
 
 dependencies {
@@ -15,8 +17,5 @@ dependencies {
     implementation(project(":shared:core:psi-utils"))
     implementation(project(":shared:core:logger"))
     implementation(project(":shared:core:notifications"))
-
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
     implementation(Libs.freemarker)
 }

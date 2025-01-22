@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.hasPlugin
 import org.gradle.kotlin.dsl.register
-import org.jetbrains.intellij.tasks.PatchPluginXmlTask
+import org.jetbrains.intellij.platform.gradle.tasks.PatchPluginXmlTask
 import ru.hh.plugins.core_utils.Constants
 import ru.hh.plugins.core_utils.isRoot
 

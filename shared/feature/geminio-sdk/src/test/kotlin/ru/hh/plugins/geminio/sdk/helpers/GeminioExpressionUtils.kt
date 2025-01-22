@@ -51,7 +51,7 @@ internal object GeminioExpressionUtils {
         return ModuleTemplateData(
             projectTemplateData = ProjectTemplateData(
                 androidXSupport = true,
-                agpVersion = AgpVersion.parse("6.3"),
+                agpVersion = AgpVersion(8, 0),
                 sdkDir = File("/AndroidSdk"),
                 language = Language.Kotlin,
                 kotlinVersion = "1.4.10",
@@ -62,7 +62,8 @@ internal object GeminioExpressionUtils {
                 ),
                 debugKeystoreSha1 = null,
                 overridePathCheck = false,
-                isNewProject = false
+                isNewProject = false,
+                additionalMavenRepos = listOf(),
             ),
             srcDir = File("/Project/src/main/kotlin/com/example/mylibrary/"),
             resDir = File("/Project/src/main/res/"),
