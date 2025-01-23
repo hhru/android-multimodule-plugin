@@ -15,7 +15,7 @@ object YamlUtils {
             onError = {
                 return Result.failure(it)
             }
-        )?.setConfigFilePath<T>(configFilePath = configFilePath)
+        )?.withConfigFilePath<T>(configFilePath = configFilePath)
 
         return if (configFromYaml != null) {
             Result.success(configFromYaml)
