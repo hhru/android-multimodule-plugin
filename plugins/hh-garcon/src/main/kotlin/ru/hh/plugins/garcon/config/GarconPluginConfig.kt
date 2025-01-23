@@ -11,7 +11,7 @@ class GarconPluginConfig(
 ) : YamlConfigModel {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : YamlConfigModel> setConfigFilePath(configFilePath: String): T {
+    override fun <T : YamlConfigModel> withConfigFilePath(configFilePath: String): T {
         return this.copy(configFilePath = configFilePath) as T
     }
 
@@ -38,5 +38,4 @@ class GarconPluginConfig(
         var kakaoWidgetFQN: String = String.EMPTY,
         var idSuffixes: MutableList<String> = mutableListOf()
     )
-
 }

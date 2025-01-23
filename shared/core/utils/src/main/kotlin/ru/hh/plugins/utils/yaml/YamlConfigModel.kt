@@ -4,6 +4,6 @@ interface YamlConfigModel {
 
     var configFilePath: String
 
-    fun <T : YamlConfigModel> setConfigFilePath(configFilePath: String): T
+    fun <T : YamlConfigModel> withConfigFilePath(configFilePath: String): T
 
 }
