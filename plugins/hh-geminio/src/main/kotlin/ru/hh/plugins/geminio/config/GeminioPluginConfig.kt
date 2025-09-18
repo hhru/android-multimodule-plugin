@@ -12,7 +12,7 @@ class GeminioPluginConfig(
 ) : YamlConfigModel {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : YamlConfigModel> setConfigFilePath(configFilePath: String): T {
+    override fun <T : YamlConfigModel> withConfigFilePath(configFilePath: String): T {
         return this.copy(configFilePath = configFilePath) as T
     }
 
@@ -36,5 +36,4 @@ class GeminioPluginConfig(
         var forNewGroup: String = String.EMPTY,
         var forNewModulesGroup: String = String.EMPTY
     )
-
 }
