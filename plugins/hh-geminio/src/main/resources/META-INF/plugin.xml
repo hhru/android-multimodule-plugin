@@ -24,6 +24,10 @@
 
     </extensions>
 
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true" />
+    </extensions>
+
     <actions>
         <!-- Templates -->
         <group id="ru.hh.plugins.geminio.New.HHTemplatesGroup" text="HH Templates" popup="true">
