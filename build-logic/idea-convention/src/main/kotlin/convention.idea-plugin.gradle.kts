@@ -30,13 +30,7 @@ intellijPlatform {
         }
         ideaVersion {
             sinceBuild = properties("pluginSinceBuild")
-            properties("pluginUntilBuild").let {
-                if (it.isNotBlank()) {
-                    untilBuild = it
-                } else {
-                    // keep default untilBuild
-                }
-            }
+            untilBuild = properties("pluginUntilBuild")
         }
         vendor {
             name = "hh.ru"
