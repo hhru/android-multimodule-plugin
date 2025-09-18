@@ -1,5 +1,14 @@
 # Garcon
 
+## [1.13.0]
+
+### Added
+
+- Support for Android Studio Narwhal 3 Feature Drop | 2025.1.1 (build 251.*). Older versions are not supported.
+- Support all news AS versions
+- Support K2 mode
+- Fix crash in Geminio Wizard dialog
+- 
 ## [1.8.0]
 
 ### Added
