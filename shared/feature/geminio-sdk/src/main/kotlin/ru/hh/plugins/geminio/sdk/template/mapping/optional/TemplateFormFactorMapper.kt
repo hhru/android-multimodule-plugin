@@ -12,7 +12,8 @@ internal fun TemplateFormFactor.toAndroidStudioTemplateFormFactor(): AndroidStud
         TemplateFormFactor.MOBILE -> AndroidStudioTemplateFormFactor.Mobile
         TemplateFormFactor.WEAR -> AndroidStudioTemplateFormFactor.Wear
         TemplateFormFactor.TV -> AndroidStudioTemplateFormFactor.Tv
-        TemplateFormFactor.AUTOMOTIVE -> AndroidStudioTemplateFormFactor.Automotive
+        TemplateFormFactor.CAR -> AndroidStudioTemplateFormFactor.Car
+        TemplateFormFactor.XR -> AndroidStudioTemplateFormFactor.XR
         TemplateFormFactor.GENERIC -> AndroidStudioTemplateFormFactor.Generic
     }
 }

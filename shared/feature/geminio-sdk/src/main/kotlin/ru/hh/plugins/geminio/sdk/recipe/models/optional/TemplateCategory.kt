@@ -12,13 +12,16 @@ enum class TemplateCategory(
     APPLICATION("application"),
     FOLDER("folder"),
     UI_COMPONENT("ui_component"),
-    AUTOMOTIVE("automotive"),
     XML("xml"),
     WEAR("wear"),
     AIDL("aidl"),
     WIDGET("widget"),
     GOOGLE("google"),
     COMPOSE("compose"),
+    SERVICE("service"),
+    CAR("car"),
+    TV("tv"),
+    TEST("test"),
     OTHER("other");
 
     companion object {

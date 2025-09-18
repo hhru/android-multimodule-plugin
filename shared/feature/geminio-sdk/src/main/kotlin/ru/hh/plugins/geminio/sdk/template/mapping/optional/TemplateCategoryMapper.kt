@@ -14,7 +14,7 @@ internal fun TemplateCategory.toAndroidStudioTemplateCategory(): AndroidStudioTe
         TemplateCategory.APPLICATION -> AndroidStudioTemplateCategory.Application
         TemplateCategory.FOLDER -> AndroidStudioTemplateCategory.Folder
         TemplateCategory.UI_COMPONENT -> AndroidStudioTemplateCategory.UiComponent
-        TemplateCategory.AUTOMOTIVE -> AndroidStudioTemplateCategory.Automotive
+        TemplateCategory.CAR -> AndroidStudioTemplateCategory.Car
         TemplateCategory.XML -> AndroidStudioTemplateCategory.XML
         TemplateCategory.WEAR -> AndroidStudioTemplateCategory.Wear
         TemplateCategory.AIDL -> AndroidStudioTemplateCategory.AIDL
@@ -22,5 +22,8 @@ internal fun TemplateCategory.toAndroidStudioTemplateCategory(): AndroidStudioTe
         TemplateCategory.GOOGLE -> AndroidStudioTemplateCategory.Google
         TemplateCategory.COMPOSE -> AndroidStudioTemplateCategory.Compose
         TemplateCategory.OTHER -> AndroidStudioTemplateCategory.Other
+        TemplateCategory.TV -> AndroidStudioTemplateCategory.TV
+        TemplateCategory.SERVICE -> AndroidStudioTemplateCategory.Service
+        TemplateCategory.TEST -> AndroidStudioTemplateCategory.Test
     }
 }

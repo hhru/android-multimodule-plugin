@@ -51,11 +51,10 @@ class GarconPluginSettingsSearchableConfigurable(
         return panel {
             row("Config File:") {
                 textFieldWithBrowseButton(
-                    browseDialogTitle = "Config File Path",
                     project = project,
                     fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(
                         PluginsConstants.YAML_FILES_FILTER_EXTENSION
-                    ),
+                    ).withTitle("Config File Path"),
                     fileChosen = { chosenFile ->
                         chosenFile.presentableUrl.also {
                             applyConfigurationFromFile(it)

@@ -2,7 +2,6 @@ package ru.hh.plugins.psi_utils.kotlin
 
 import com.intellij.openapi.project.DumbService
 import org.jetbrains.kotlin.idea.codeinsight.utils.commitAndUnblockDocument
-import org.jetbrains.kotlin.idea.core.ShortenReferences
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -14,7 +13,6 @@ import ru.hh.plugins.psi_utils.reformatWithCodeStyle
 fun KtFile.shortReferencesAndReformatWithCodeStyle() {
     this.commitAndUnblockDocument()
     DumbService.getInstance(project).completeJustSubmittedTasks()
-    ShortenReferences.DEFAULT.process(this)
     this.reformatWithCodeStyle()
 }
 

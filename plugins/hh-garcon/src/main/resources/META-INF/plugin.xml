@@ -34,6 +34,10 @@
                            displayType="NONE"/>
     </extensions>
 
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
+    </extensions>
+
     <actions>
         <!-- Add your actions here -->
         <action class="ru.hh.plugins.garcon.actions.create_screen_page_object.CreateScreenPageObjectAction"
