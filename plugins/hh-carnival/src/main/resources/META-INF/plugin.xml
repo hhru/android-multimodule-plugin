@@ -1,8 +1,4 @@
 <idea-plugin>
-    <id>ru.hh.plugins.Carnival</id>
-    <name>Carnival</name>
-    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
-
     <depends>com.intellij.modules.lang</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>org.intellij.groovy</depends>

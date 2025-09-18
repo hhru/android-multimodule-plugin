@@ -1,8 +1,9 @@
+import org.jetbrains.intellij.platform.gradle.extensions.intellijPlatform
+
 pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven("https://packages.atlassian.com/maven/repository/public")
     }
 
     fun systemProperty(name: String): Provider<String> {
@@ -19,7 +20,7 @@ pluginManagement {
             val pluginId = requested.id.id
 
             when {
-                pluginId == "org.jetbrains.intellij" ->
+                pluginId.startsWith("org.jetbrains.intellij.") ->
                     useVersion(gradleIntellijPluginVersion.get())
 
                 pluginId == "org.jetbrains.changelog" ->
@@ -35,12 +36,24 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("org.jetbrains.intellij.platform.settings")
+}
+
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+
     repositories {
         mavenCentral()
-        gradlePluginPortal()
-        maven("https://packages.atlassian.com/maven/repository/public")
+        maven("https://packages.atlassian.com/maven/repository/public") {
+            mavenContent {
+                includeGroupAndSubgroups("""com.atlassian""")
+            }
+        }
+        intellijPlatform {
+            defaultRepositories()
+        }
     }
 }
 

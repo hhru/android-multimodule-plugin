@@ -9,9 +9,6 @@ plugins {
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 
-    @Suppress("MagicNumber")
-    maxParallelForks = 8
-
     failFast = false
 
     /**

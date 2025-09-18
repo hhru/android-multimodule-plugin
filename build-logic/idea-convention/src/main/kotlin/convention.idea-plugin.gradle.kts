@@ -1,73 +1,65 @@
-import org.jetbrains.changelog.ChangelogPluginExtension
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.date
-import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.intellij.IntelliJPluginExtension
-import org.jetbrains.intellij.tasks.PatchPluginXmlTask
-import org.jetbrains.intellij.tasks.RunIdeTask
+import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
 
 plugins {
     id("convention.idea-plugin-base")
+    id("org.jetbrains.intellij.platform")
     id("org.jetbrains.changelog")
 }
 
-fun properties(key: String): String = project.findProperty(key)?.toString().orEmpty()
+private fun properties(key: String): String = project.findProperty(key)?.toString().orEmpty()
 
-group = properties("pluginGroup")
-version = properties("pluginVersion")
+project.version = properties("pluginVersion")
 
-configure<IntelliJPluginExtension> {
-    pluginName.set(properties("pluginName"))
-}
+intellijPlatform {
+    // Hack for removing errors "call to AnalyticsSettings before initialization"
+    // https://issuetracker.google.com/issues/224810684?pli=1
+    buildSearchableOptions = false
 
-configure<ChangelogPluginExtension> {
-    version.set(properties("pluginVersion"))
-
-    path.set("${project.projectDir}/CHANGELOG.md")
-    header.set(provider { "[$version] - ${date()}" })
-    itemPrefix.set("-")
-    keepUnreleasedSection.set(true)
-    unreleasedTerm.set("[Unreleased]")
-    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
-}
-
-tasks.withType<PatchPluginXmlTask> {
-    version.set(properties("pluginVersion"))
-    sinceBuild.set(properties("pluginSinceBuild"))
-    val pluginUntilBuild = properties("pluginUntilBuild")
-    if (pluginUntilBuild.isNotBlank()) {
-        untilBuild.set(pluginUntilBuild)
-    } else {
-        println("Skip setup of `untilBuild` property")
-    }
-
-    // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-    pluginDescription.set(
-        projectDir.resolve("README.md").readText().lines().run {
-            val start = "<!-- Plugin description -->"
-            val end = "<!-- Plugin description end -->"
-
-            if (!containsAll(listOf(start, end))) {
-                throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
-            }
-            subList(indexOf(start) + 1, indexOf(end))
-        }.joinToString("\n").run { markdownToHTML(this) }
-    )
-
-    // Get the latest available change notes from the changelog file
-    changeNotes.set(
-        provider {
-            changelog.run {
-                getOrNull(properties("pluginVersion")) ?: getLatest()
-            }.toHTML()
+    pluginConfiguration {
+        version = project.version.toString()
+        description = providers.of(PluginDescriptionValueSource::class.java) {
+            parameters.readmeFilePath = project.file("README.md")
         }
-    )
+        changeNotes = provider {
+            changelog.renderItem(
+                changelog.getLatest().withHeader(false).withEmptySections(false),
+                Changelog.OutputType.HTML
+            )
+        }
+        ideaVersion {
+            sinceBuild = properties("pluginSinceBuild")
+            properties("pluginUntilBuild").let {
+                if (it.isNotBlank()) {
+                    untilBuild = it
+                } else {
+                    // keep default untilBuild
+                }
+            }
+        }
+        vendor {
+            name = "hh.ru"
+            email = "p.strelchenko@hh.ru"
+            url = "https://hh.ru"
+        }
+    }
 }
 
-tasks.getByName<Zip>("buildPlugin") {
-    archiveFileName.set("${properties("pluginName")}.zip")
+changelog {
+    path = "${project.projectDir}/CHANGELOG.md"
+    header = provider { "[$version] - ${date()}" }
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    unreleasedTerm = "[Unreleased]"
+    groups = listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security")
 }
 
-tasks.getByName<RunIdeTask>("runIde") {
+tasks.named<Zip>("buildPlugin").configure {
+    archiveFileName = intellijPlatform.projectName.map { "$it.zip" }
+}
+
+tasks.named<RunIdeTask>("runIde").configure {
     maxHeapSize = "8g"
     minHeapSize = "4g"
 }

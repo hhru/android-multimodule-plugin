@@ -38,52 +38,17 @@
 
    </details>
 
-4. Идём в корневой файл `gradle.properties` и локально меняем старую версию компилятора и путь к
-   локально установленной
+4. Идём в корневой файл `gradle.properties` и локально меняем путь к локально установленной
    Android Studio.
 
    ```properties
    systemProp.androidStudioPath=/Users/p.strelchenko/Applications/Android\ Studio\ Iguana\ 2023.2.1.app/Contents
-   systemProp.androidStudioCompilerVersion=232.10227.8
    ```
 
 5. Пытаемся запустить плагин `Geminio` через встроенную в проект конфигурацию `Geminio [RUN]`.
    Желательно заранее подготовить проект с шаблонами (обоих типов: и новых модулей, и новых файлов).
 
 6. Если API никак не поменялось, то запуск пройдёт успешно, все шаблоны будут работать корректно.
-
-### Известные проблемы
-
-#### Cannot find builtin plugin 'org.jetbrains.kotlin'
-
-Ошибка вида
-`Cannot find builtin plugin 'org.jetbrains.kotlin' for IDE: /Users/i.karenkov/Applications/Android Studio.app/Contents`
-указывает на то, что в плагинах установленной Android Studio не удалось найти Kotlin plugin.
-
-Это происходит из-за того, что мы всё ещё
-используем [Gradle IntelliJ Plugin (1.x)](https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html),
-при этом актуальный плагин для работы с Android Studio начиная с Ladybug -
-это [IntelliJ Platform Gradle Plugin (2.x)](https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html)
-
-**Как это хакнуть локально**
-
-1. Проверьте, есть ли в вашей Android Studio папка plugins/Kotlin. Итоговый путь
-   `path_to_as/plugins/Kotlin`.
-2. Если папка Kotlin есть, значит вам
-   поможет [это решение](https://github.com/JetBrains/intellij-platform-gradle-plugin/issues/1176#issuecomment-1294811277).
-   Суть проблемы в том, что в файле `builtinRegistry-1.xml` отсутствует объявление
-   `org.jetbrains.kotlin`. Это можно
-   легко исправить, добавив в него
-   ```xml
-     <plugin directoryName="Kotlin" id="org.jetbrains.kotlin">
-       <dependencies>
-         <dependency>com.intellij.modules.platform</dependency>
-         <dependency>com.intellij.modules.java</dependency>
-         <dependency>com.intellij.modules.java-capable</dependency>
-         <dependency>com.intellij.java</dependency>
-       </dependencies>
-     </plugin>
-   ```
 
 ## Тестирование Geminio
 
@@ -112,8 +77,7 @@
 
 2. Вернуть обратно значение `systemProp.androidStudioPath`, локальное изменение коммитить нельзя.
 
-3. Заменить `pluginSinceBuild` в `gradle.properties` нужных плагинов на новую версию по аналогии с
-   `systemProp.androidStudioCompilerVersion`
+3. Заменить `pluginSinceBuild` в `gradle.properties` нужных плагинов на новую версию
 
 4. **Обновить URL для новой версии Android Studio**
 

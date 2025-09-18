@@ -1,39 +1,40 @@
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.intellij.IntelliJPluginExtension
-import org.jetbrains.intellij.tasks.BuildSearchableOptionsTask
-import org.jetbrains.intellij.tasks.InstrumentCodeTask
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import ru.hh.plugins.ExternalLibrariesExtension
+import java.nio.file.Path
 
 plugins {
     id("convention.kotlin-jvm")
-    id("org.jetbrains.intellij")
+    id("org.jetbrains.intellij.platform.base")
 }
 
-configure<IntelliJPluginExtension> {
-    type.set("AI")
+val currentVersion: ExternalLibrariesExtension.Product = Libs.chosenIdeaVersion
 
-    val currentVersion = Libs.chosenIdeaVersion
-    when (currentVersion) {
-        is ExternalLibrariesExtension.Product.ICBasedIde -> {
-            version.set(currentVersion.ideVersion)
+dependencies {
+    intellijPlatform {
+        when (currentVersion) {
+            is ExternalLibrariesExtension.Product.ICBasedIde -> {
+                androidStudio(currentVersion.ideVersion, useInstaller = true)
+
+                // XXX: Find a better way to add the bundled version of the plugin to the dependencies
+                intellijPlatform.plugin(Libs.androidStudioPlugin)
+            }
+            is ExternalLibrariesExtension.Product.LocalIde -> {
+                local(currentVersion.pathToIde)
+
+                // XXX: Find a better way to add the bundled version of the plugin to the dependencies
+                localPlugin(Path.of(currentVersion.pathToIde, "plugins/android").toString())
+            }
+            else -> error("Should not be reached")
         }
 
-        is ExternalLibrariesExtension.Product.LocalIde -> {
-            localPath.set(currentVersion.pathToIde)
-        }
-    }
-    plugins.set(currentVersion.pluginsNames)
-}
+        bundledPlugins(
+            "com.intellij.java",
+            "org.jetbrains.kotlin",
+        )
+        pluginVerifier()
+        testFramework(TestFrameworkType.Platform)
 
-tasks.getByName<InstrumentCodeTask>("instrumentCode") {
-    val currentVersion = Libs.chosenIdeaVersion
-    if (currentVersion is ExternalLibrariesExtension.Product.LocalIde) {
-        compilerVersion.set(currentVersion.compilerVersion)
+        // Workaround for https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-faq.html#junit5-test-framework-refers-to-junit4
+        testRuntimeOnly(ExternalLibrariesExtension.UnitTests.junit4)
     }
-}
-
-// Hack for removing errors "call to AnalyticsSettings before initialization"
-// https://issuetracker.google.com/issues/224810684?pli=1
-tasks.getByName<BuildSearchableOptionsTask>("buildSearchableOptions") {
-    enabled = false
 }

@@ -1,5 +1,6 @@
 package ru.hh.plugins.extensions.openapi
 
+import com.android.tools.idea.projectsystem.gradle.getHolderModule
 import com.android.tools.idea.util.androidFacet
 import com.intellij.openapi.module.Module
 import com.intellij.psi.PsiFile
@@ -29,7 +30,7 @@ fun Module.isAndroidAppModule(): Boolean {
      *
      * To remove these submodules we add this condition.
      */
-    val isHolderModule = this == androidFacet?.module
+    val isHolderModule = this == androidFacet?.module?.getHolderModule()
 
     return isAppProject && isHolderModule
 }

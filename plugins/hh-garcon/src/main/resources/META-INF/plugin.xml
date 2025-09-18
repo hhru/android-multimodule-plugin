@@ -1,8 +1,4 @@
 <idea-plugin>
-    <id>ru.hh.plugins.Garcon</id>
-    <name>Garcon</name>
-    <vendor email="p.strelchenko@hh.ru" url="https://hh.ru">hh.ru</vendor>
-
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.android</depends>
@@ -13,7 +9,7 @@
 
         <!-- region Live templates -->
         <defaultLiveTemplates file="liveTemplates/Garcon.xml"/>
-        
+
         <liveTemplateContext
                 contextId="ru.hh.android.plugins.garcon.live_templates.step"
                 implementation="ru.hh.plugins.garcon.live_templates.LiveTemplateStepContext"/>
