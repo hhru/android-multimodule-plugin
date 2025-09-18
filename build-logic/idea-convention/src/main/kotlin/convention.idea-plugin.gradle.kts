@@ -60,6 +60,9 @@ tasks.named<Zip>("buildPlugin").configure {
 }
 
 tasks.named<RunIdeTask>("runIde").configure {
+    jvmArgumentProviders += CommandLineArgumentProvider {
+        listOf("-Didea.kotlin.plugin.use.k2=true")
+    }
     maxHeapSize = "8g"
     minHeapSize = "4g"
 }
