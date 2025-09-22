@@ -18,6 +18,7 @@ import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
+import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
 import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
 import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 import ru.hh.plugins.geminio.wizard.StudioWizardDialogFactory
@@ -79,12 +80,17 @@ class ExecuteGeminioModuleTemplateAction(
         val targetDirectory = actionEvent.getTargetDirectory()
 
         val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe, targetDirectory)
+        val features = (geminioRecipe
+            .predefinedFeaturesSection
+            .features[PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS]
+                as PredefinedFeatureParameter.ModuleCreationParameter
+                )
 
         val configureTemplateParametersStepFactory = ConfigureTemplateParametersStepFactory(project)
         val stepModel = configureTemplateParametersStepFactory.createForNewModule(
             stepTitle = "Create new $actionText",
             directoryPath = directoryPath,
-            defaultPackageName = "ru.hh", // TODO - fetch from settings
+            defaultPackageName = features.defaultPackageNamePrefix,
             androidStudioTemplate = geminioTemplateData.androidStudioTemplate
         )
         val chooseAppsStep = ChooseModulesModelWizardStep(
@@ -95,7 +101,13 @@ class ExecuteGeminioModuleTemplateAction(
 
         val wizard = ModelWizard.Builder()
             .addStep(stepModel.configureTemplateParametersStep)
-            .addStep(chooseAppsStep)
+            .let {
+                if (features.enableChooseModulesStep) {
+                    it.addStep(chooseAppsStep)
+                } else {
+                    it
+                }
+            }
             .build()
 
         val dialog = StudioWizardDialogFactory.getWizardBuilder(wizard, WIZARD_TITLE)
