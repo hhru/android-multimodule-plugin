@@ -1,5 +1,6 @@
 package ru.hh.plugins.geminio.services.templates
 
+import com.android.sdklib.AndroidMajorVersion
 import com.android.tools.idea.gradle.plugin.AgpVersions
 import com.android.tools.idea.npw.template.ModuleTemplateDataBuilder
 import com.android.tools.idea.npw.template.ProjectTemplateDataBuilder
@@ -111,9 +112,9 @@ class GeminioRecipeExecutorFactoryService(
                 main = ThemeData(STUB_MAIN_THEME_DATA_NAME, true)
             )
             builder.apis = ApiTemplateData(
-                buildApi = createStubApiVersion(),
-                targetApi = createStubApiVersion(),
-                minApi = createStubApiVersion(),
+                buildApi = createStubAndroidVersion(),
+                targetApi = createStubAndroidMajorVersion(),
+                minApi = createStubAndroidMajorVersion(),
                 appCompatVersion = STUB_API_VERSION,
             )
             builder.category = Category.Other
@@ -134,8 +135,12 @@ class GeminioRecipeExecutorFactoryService(
             builder.setProjectDefaults(project)
         }
 
-    private fun createStubApiVersion(): ApiVersion {
-        return ApiVersion(STUB_API_VERSION, STUB_API_VERSION_STRING)
+    private fun createStubAndroidVersion(): com.android.sdklib.AndroidVersion {
+        return com.android.sdklib.AndroidVersion(STUB_API_VERSION, STUB_API_VERSION_STRING)
+    }
+
+    private fun createStubAndroidMajorVersion(): AndroidMajorVersion {
+        return AndroidMajorVersion(STUB_API_VERSION, STUB_API_VERSION_STRING)
     }
 
     private fun GeminioTemplateData.getModuleName(): String {

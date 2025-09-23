@@ -11,7 +11,8 @@ enum class TemplateFormFactor(
     MOBILE("mobile"),
     WEAR("wear"),
     TV("tv"),
-    AUTOMOTIVE("automotive"),
+    CAR("car"),
+    XR("xr"),
     GENERIC("generic");
 
     companion object {

@@ -30,13 +30,7 @@ intellijPlatform {
         }
         ideaVersion {
             sinceBuild = properties("pluginSinceBuild")
-            properties("pluginUntilBuild").let {
-                if (it.isNotBlank()) {
-                    untilBuild = it
-                } else {
-                    // keep default untilBuild
-                }
-            }
+            untilBuild = properties("pluginUntilBuild")
         }
         vendor {
             name = "hh.ru"
@@ -60,6 +54,9 @@ tasks.named<Zip>("buildPlugin").configure {
 }
 
 tasks.named<RunIdeTask>("runIde").configure {
+    jvmArgumentProviders += CommandLineArgumentProvider {
+        listOf("-Didea.kotlin.plugin.use.k2=true")
+    }
     maxHeapSize = "8g"
     minHeapSize = "4g"
 }
