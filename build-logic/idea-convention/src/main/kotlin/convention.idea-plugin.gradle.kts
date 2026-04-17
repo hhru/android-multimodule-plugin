@@ -54,6 +54,12 @@ tasks.named<Zip>("buildPlugin").configure {
 }
 
 tasks.named<RunIdeTask>("runIde").configure {
+    // Android Studio 2025.3.x expects nio-fs classes to be visible to the
+    // application classloader when launched via plain `java`.
+    classpath += project.files(provider {
+        platformPath.resolve("lib/nio-fs.jar").toFile()
+    })
+
     jvmArgumentProviders += CommandLineArgumentProvider {
         listOf("-Didea.kotlin.plugin.use.k2=true")
     }

@@ -1,3 +1,3 @@
 plugins {
-    id("convention.kotlin-jvm")
+    id("convention.idea-plugin-library")
 }

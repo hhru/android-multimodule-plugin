@@ -44,7 +44,7 @@ fun Module.findPsiFileByName(name: String): PsiFile? {
     return result
 }
 
-fun Module.findClassesAnnotatedWith(annotationFullQualifiedName: String): MutableCollection<PsiMember>? {
+fun Module.findClassesAnnotatedWith(annotationFullQualifiedName: String): Collection<PsiMember>? {
     val psiManager = PsiManager.getInstance(project)
 
     return ClassUtil.findPsiClass(psiManager, annotationFullQualifiedName)?.let { psiClass ->

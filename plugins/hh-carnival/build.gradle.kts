@@ -14,7 +14,6 @@ dependencies {
         bundledPlugins(
             "Git4Idea",
             "org.intellij.groovy",
-            "org.intellij.intelliLang",
         )
     }
 

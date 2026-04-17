@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -24,10 +25,14 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = Libs.javaVersion.toString()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(Libs.javaVersion.toString()))
 
         allWarningsAsErrors = false
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn -Xjvm-default"
+        freeCompilerArgs.set(
+            listOf(
+                "-Xopt-in=kotlin.RequiresOptIn -Xjvm-default"
+            )
+        )
     }
 }
