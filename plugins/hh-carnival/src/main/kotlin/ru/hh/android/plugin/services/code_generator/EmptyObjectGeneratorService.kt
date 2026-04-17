@@ -4,7 +4,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
-import org.jetbrains.kotlin.idea.core.getOrCreateCompanionObject
+import org.jetbrains.kotlin.idea.base.psi.getOrCreateCompanionObject
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.nj2k.postProcessing.type
 import org.jetbrains.kotlin.psi.KtClass
@@ -79,7 +79,10 @@ class EmptyObjectGeneratorService(
             KotlinBuiltIns.isChar(parameterType) -> "''"
             KotlinBuiltIns.isDouble(parameterType) -> "0.0"
             KotlinBuiltIns.isFloat(parameterType) -> "0f"
-            KotlinBuiltIns.isInt(parameterType) || KotlinBuiltIns.isShort(parameterType) || KotlinBuiltIns.isByte(parameterType) -> "0"
+            KotlinBuiltIns.isInt(parameterType) || KotlinBuiltIns.isShort(parameterType) || KotlinBuiltIns.isByte(
+                parameterType
+            ) -> "0"
+
             KotlinBuiltIns.isLong(parameterType) -> "0L"
             KotlinBuiltIns.isNullableAny(parameterType) -> "null"
             KotlinBuiltIns.isString(parameterType) -> "$STRING_PARAMETER_TYPE_NAME.$EMPTY_OBJECT_PROPERTY_NAME"
