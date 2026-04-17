@@ -21,7 +21,6 @@ enum class TemplateCategory(
     SERVICE("service"),
     CAR("car"),
     TV("tv"),
-    TEST("test"),
     OTHER("other");
 
     companion object {
