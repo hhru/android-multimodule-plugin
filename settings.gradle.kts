@@ -62,25 +62,5 @@ rootProject.name = "hh-android-plugins"
 includeBuild("libraries")
 includeBuild("build-logic")
 
-// region Shared modules
-
-// region Shared core modules
-include(":shared:core:utils")
-include(":shared:core:freemarker")
-include(":shared:core:ui")
-include(":shared:core:code-modification")
-include(":shared:core:models")
-include(":shared:core:psi-utils")
-include(":shared:core:logger")
-include(":shared:core:notifications")
-include(":shared:core:android-studio-stubs")
-// endregion
-
-// region Shared features
-include(":shared:feature:geminio-sdk")
-// endregion
-
-// endregion
-
 // Plugins
 include(":plugins:hh-geminio")
