@@ -20,6 +20,10 @@ dependencies {
     implementation(project(":shared:core:logger"))
     implementation(project(":shared:core:notifications"))
 
+    intellijPlatform.bundledPlugin("org.intellij.groovy")
+
+    implementation(Libs.freemarker)
+
     /**
      * IMPORTANT NOTE!
      *
@@ -33,4 +37,6 @@ dependencies {
 
     // Libraries
     implementation(Libs.flexmark) // Markdown parser
+
+    testImplementation(Libs.tests.kotest)
 }
