@@ -1,15 +1,8 @@
 # hh-android-plugins
 
-Репозиторий с плагинами для Android Studio, разработанными в hh.ru .
+Плагин `hh-geminio` для Android Studio — плагин, добавляющий возможность создавать свои шаблоны кода на основе шаблонов движка `FreeMarker`.
 
-### Список плагинов в репозитории
-
-- [hh-carnival](./plugins/hh-carnival) - плагин для быстрого создания нового feature-модуля, который также добавляет ещё немного полезных вещей
-- [hh-garcon](./plugins/hh-garcon) - плагин для быстрого создания Page Object-ов из XML-вёрстки
-- [hh-geminio](./plugins/hh-geminio) - плагин, добавляющий возможность создавать свои шаблоны кода на основе FreeMarker-а
-
-Готовые дистрибутивы плагинов можно скачать 
-[на страничке релизов в Github](https://github.com/hhru/android-multimodule-plugin/releases/).
+Готовый дистрибутив плагина можно скачать [на страничке релизов в Github](https://github.com/hhru/android-multimodule-plugin/releases/).
 
 Чтобы установить готовый дистрибутив, открываем Android Studio и идём по пути: 
 `Preferences -> Plugins -> иконка шестерёнки -> Install Plugin from disk`, выбираем скачанный zip-архив, дожидаемся 
@@ -17,7 +10,7 @@
 
 ### Чтобы собрать любой из плагинов, нужно
 
-1. Убедитесь, что у вас есть Intellij IDEA (минимум CE) с подключенным Plugin Dev Kit
+1. Убедитесь, что у вас есть IntelliJ IDEA (минимум CE) с подключенным Plugin Dev Kit
 2. Склонировать проект
 3. Если вы скачивали Android Studio через Toolbox, или у вас не Mac OS, то вероятно вам потребуется изменить путь к локальной версии Android Studio, который указывается [вот здесь](./libraries/src/main/kotlin/ru/hh/plugins/ExternalLibrariesExtension.kt) - объект `Product.LOCAL`
 4. Запустить gradle-таску `buildPlugin` в проекте нужного плагина

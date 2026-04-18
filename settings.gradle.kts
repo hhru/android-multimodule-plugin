@@ -83,6 +83,4 @@ include(":shared:feature:geminio-sdk")
 // endregion
 
 // Plugins
-include(":plugins:hh-carnival")
-include(":plugins:hh-garcon")
 include(":plugins:hh-geminio")

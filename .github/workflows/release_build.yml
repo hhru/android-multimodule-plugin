@@ -35,8 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            build/plugins/hh-carnival.zip
-            build/plugins/hh-garcon.zip
             build/plugins/hh-geminio.zip
           tag_name: build-${{ github.run_number }}
           name: Build №${{ github.run_number }}

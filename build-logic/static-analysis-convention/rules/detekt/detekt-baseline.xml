@@ -6,14 +6,6 @@
     <ID>ComplexMethod:GeminioRecipeExt.kt$internal fun GeminioRecipe.toIndentString(): String</ID>
     <ID>ComplexMethod:PutSerializableDetector.kt$PutSerializableDetector$override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod)</ID>
     <ID>ComplexMethod:RecipeExpressionParser.kt$internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var configFilePath: String = String.EMPTY</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var isDebugEnabled: Boolean = false</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var templatesPaths: TemplatesPaths = TemplatesPaths()</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig$var widgetsClassesMap: MutableMap&lt;String, WidgetDescription&gt; = mutableMapOf()</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.TemplatesPaths$var rvItemPageObjectTemplatePath: String = String.EMPTY</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.TemplatesPaths$var screenPageObjectTemplatePath: String = String.EMPTY</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.WidgetDescription$var idSuffixes: MutableList&lt;String&gt; = mutableListOf()</ID>
-    <ID>DataClassShouldBeImmutable:GarconPluginConfig.kt$GarconPluginConfig.WidgetDescription$var kakaoWidgetFQN: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var configFilePath: String = String.EMPTY</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var groupsNames: GroupsNames = GroupsNames()</ID>
     <ID>DataClassShouldBeImmutable:GeminioPluginConfig.kt$GeminioPluginConfig$var isDebugEnabled: Boolean = false</ID>
@@ -25,13 +17,11 @@
     <ID>DestructuringDeclarationWithTooManyEntries:StringRecipeExpressionMapper.kt$val (_, srcOut, resOut, manifestOut, _, _, _, rootOut) = moduleTemplateData</ID>
     <ID>ForbiddenComment:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$// TODO: Fix annotator, https://github.com/hhru/android-multimodule-plugin/issues/42</ID>
     <ID>ForbiddenComment:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction$// TODO - fetch from settings</ID>
-    <ID>ForbiddenComment:GarconPluginSettings.kt$GarconPluginSettings$// todo</ID>
     <ID>ForbiddenComment:GeminioPluginSettings.kt$GeminioPluginSettings$// todo</ID>
     <ID>ForbiddenComment:build.gradle.kts$// TODO [build-logic] Look with a fresh eye, why this needs to be duplicated, if there is common dependency resolution in settings.gradle</ID>
     <ID>FunctionOnlyReturningConstant:DeprecatedAndroidResourceAnnotator.kt$DeprecatedAndroidResourceAnnotator$private fun XmlAttributeValue.hasDeprecatedMark(): Boolean</ID>
     <ID>FunctionParameterNaming:CodeStyleViewDeclarationExt.kt$ViewDeclaration: CodeStyleViewDeclaration</ID>
     <ID>LabeledExpression:BuildGradleModificationService.kt$BuildGradleModificationService$return@wrapInCommand</ID>
-    <ID>LabeledExpression:ClassFiltersFactory.kt$ClassFiltersFactory$return@ClassFilter if (aClass is KtLightClassForSourceDeclaration) { when (val classOrObject = aClass.kotlinOrigin) { is KtClass -&gt; (classOrObject.isInner() || classOrObject.isAnnotation()).not() &amp;&amp; InheritanceUtil.isInheritor(aClass, GarconConstants.AGODA_SCREEN_CLASS_FQN) else -&gt; false } } else { false }</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var filterModulesJTextField: JTextField</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var modulesJList: CheckBoxListView&lt;ModuleDisplayableItem&gt;</ID>
     <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var readmeBlockTextArea: JEditorPane</ID>
@@ -42,10 +32,6 @@
     <ID>LateinitUsage:CreateScreenPageObjectDialog.kt$CreateScreenPageObjectDialog$private lateinit var destinationFolderComboBox: KotlinDestinationFolderComboBox</ID>
     <ID>LateinitUsage:CreateScreenPageObjectDialog.kt$CreateScreenPageObjectDialog$private lateinit var openInEditorCheckBox: JCheckBox</ID>
     <ID>LateinitUsage:CreateScreenPageObjectDialog.kt$CreateScreenPageObjectDialog$private lateinit var packageNameChooserComboBox: PackageNameReferenceEditorCombo</ID>
-    <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var configFilePathTextField: JTextField</ID>
-    <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var enableDebugModeCheckBox: JCheckBox</ID>
-    <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var rvItemPageObjectTemplatePathTextField: JTextField</ID>
-    <ID>LateinitUsage:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$private lateinit var screenPageObjectTemplatePathTextField: JTextField</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var configFilePathTextField: JTextField</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var isDebugEnabledCheckbox: JCheckBox</ID>
     <ID>LateinitUsage:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$private lateinit var modulesTemplatesRootDirPathTextField: JTextField</ID>
@@ -135,7 +121,6 @@
     <ID>ReturnCount:CopyAndroidModuleAction.kt$CopyAndroidModuleAction$private fun NewModuleParams.isValid(): Boolean</ID>
     <ID>ReturnCount:KotlinClassChooserComboBox.kt$&lt;no name provided&gt;$override fun getSelectedFromTreeUserObject(node: DefaultMutableTreeNode): PsiClass?</ID>
     <ID>ReturnCount:ModuleUtils.kt$internal fun Module.searchGradlePsiFile(filename: String): PsiFile?</ID>
-    <ID>ReturnCount:PageObjectPropertyConverter.kt$PageObjectPropertyConverter$private fun AndroidViewTagInfo.toWidgetDescription( pluginConfig: GarconPluginConfig ): GarconPluginConfig.WidgetDescription</ID>
     <ID>ReturnCount:PredefinedFeaturesSectionParser.kt$internal fun Map&lt;String, Any&gt;.toPredefinedFeaturesSection(): PredefinedFeaturesSection</ID>
     <ID>ReturnCount:PutSerializableDetector.kt$PutSerializableDetector$override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod)</ID>
     <ID>ReturnCount:PutSerializableDetector.kt$PutSerializableDetector$private fun checkIsSerializable( psiClassReferenceType: PsiClassReferenceType, checkedClass: PsiClass, objectPath: String ): String?</ID>
