@@ -51,7 +51,6 @@
     <ID>LateinitUsage:PluginConfigEditor.kt$PluginConfigEditor$private lateinit var pluginFolderDirPathTextField: JTextField</ID>
     <ID>LongMethod:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$override fun getComponent(): JComponent</ID>
     <ID>LongMethod:CreateScreenPageObjectDialog.kt$CreateScreenPageObjectDialog$override fun createCenterPanel(): JComponent</ID>
-    <ID>LongMethod:GarconPluginSettingsEditor.kt$GarconPluginSettingsEditor$fun createComponent(project: Project): JComponent</ID>
     <ID>LongMethod:GeminioPluginSettingsEditor.kt$GeminioPluginSettingsEditor$fun createComponent(project: Project): JComponent</ID>
     <ID>LongMethod:GeminioRecipeExecutorFactoryService.kt$GeminioRecipeExecutorFactoryService$private fun createModuleTemplateData( project: Project, directoryPath: String, moduleName: String, packageName: String ): ModuleTemplateData</ID>
     <ID>LongMethod:GeminioRecipeMapper.kt$internal fun GeminioRecipe.toGeminioTemplateData(project: Project): GeminioTemplateData</ID>

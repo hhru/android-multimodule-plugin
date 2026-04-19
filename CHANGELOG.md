@@ -1,5 +1,20 @@
 # Geminio
 
+## [1.15.0]
+
+### Changed
+
+- Remove `hh-carnival` and `hh-garcon` plugins from repository, now this repository is only about `hh-geminio`.
+- Upgrade Gradle version to 9.4.1 through `./gradlew wrapper --gradle-version=9.4.1 && ./gradlew wrapper`.
+- Simplify build-logic: removes included builds, combines all shared modules into `hh-geminio`'s sources.
+- Move sources of `hh-geminio` to the root of the project.
+
+## [1.14.0]
+
+### Added
+
+- Support for Android Studio Panda 3 Patch 1.
+
 ## [1.13.0]
 
 ### Added
