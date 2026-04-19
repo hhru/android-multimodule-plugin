@@ -8,8 +8,8 @@ import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateStringPar
 /**
  * Propagates the current pure form state back into legacy Android Studio template parameters.
  *
- * This keeps the old execution runtime working while the UI layer is being migrated away from
- * `ModelWizard`.
+ * This keeps the old execution runtime working while Geminio still relies on Android Studio's
+ * template/executor infrastructure under the hood.
  */
 internal fun GeminioTemplateData.applyFormValues(
     form: GeminioForm,

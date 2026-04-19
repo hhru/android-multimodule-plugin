@@ -4,7 +4,7 @@ package ru.hh.plugins.geminio.sdk.form
  * Mutable runtime state for a [GeminioForm].
  *
  * The session owns current field values, computes suggestions and evaluates visibility/enabled
- * rules. This is the state object the future custom dialog will talk to instead of `ModelWizard`.
+ * rules. This is the state object used by the custom Geminio dialogs instead of `ModelWizard`.
  */
 internal class GeminioFormSession(
     private val form: GeminioForm,
