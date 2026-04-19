@@ -70,7 +70,7 @@ internal class GeminioRecipeExecutionCharacterizationSpec : FreeSpec({
     }
 })
 
-private val EXECUTION_RECIPE = """
+private const val EXECUTION_RECIPE = """
 requiredParams:
   name: Geminio execution test
   description: Covers command execution behavior
