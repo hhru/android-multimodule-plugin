@@ -92,7 +92,7 @@ internal class GeminioFormCharacterizationSpec : FreeSpec({
     }
 })
 
-private val RECIPE_WITH_WIDGETS_AND_GLOBALS = """
+private const val RECIPE_WITH_WIDGETS_AND_GLOBALS = """
 requiredParams:
   name: Geminio form test
   description: Covers widgets and globals behavior
