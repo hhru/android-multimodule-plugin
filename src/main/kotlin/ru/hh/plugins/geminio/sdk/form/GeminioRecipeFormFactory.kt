@@ -116,6 +116,7 @@ private fun createPredefinedModuleFields(
 }
 
 private fun RecipeParameter.toFormField(): GeminioFormField {
+    // TODO: add enum parameter support when Geminio recipes start exposing them in the custom UI runtime.
     return when (this) {
         is RecipeParameter.StringParameter -> GeminioFormField.StringField(
             id = id,
