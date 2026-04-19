@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
@@ -112,10 +113,9 @@ tasks.withType<Test>().configureEach {
 // region Static analysis
 
 detekt {
+    source.setFrom("src/main/kotlin")
     config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
     baseline = file("tools/static-analysis/detekt/detekt-baseline.xml")
-
-    source.setFrom("src/main/kotlin")
 }
 
 tasks.named<Detekt>("detekt").configure {
@@ -125,6 +125,21 @@ tasks.named<Detekt>("detekt").configure {
         txt.required.set(true)
         sarif.required.set(false)
     }
+}
+
+val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) {
+    description = "Overrides current baseline."
+
+    source(files("src/main/kotlin"))
+    config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
+    baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
+
+    buildUponDefaultConfig.set(true)
+    ignoreFailures.set(true)
+    parallel.set(true)
+
+    include("**/*.kt")
+    include("**/*.kts")
 }
 
 // endregion
