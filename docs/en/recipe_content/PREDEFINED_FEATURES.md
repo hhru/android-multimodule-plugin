@@ -6,8 +6,8 @@ wThe section is needed to enable some built-in features inside Geminio.
 Available list values:
 
 - `enableModuleCreationParams` - adds two text fields for new module's name and its main package name.
-  After adding this feature, in [expressions](../EXPRESSIONS.md) of [`widgets`](./WIDGETS.md)
-  and [`globals`](./GLOBALS.md), sections and also in FTL templates you can use the following parameters:
+  After adding this feature, in [expressions](../EXPRESSIONS.md) of [`widgets`](WIDGETS.md)
+  and [`globals`](GLOBALS.md), sections and also in FTL templates you can use the following parameters:
     * `__moduleName` - module name
     * `__packageName` - the packageName of the module that is added to` AndroidManifest.xml`
     * `__formattedModuleName` is a formatted module name that can be used as a prefix for classes inside a new module.

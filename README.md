@@ -1,32 +1,31 @@
-# hh-android-plugins
+<!-- Plugin description -->
+**Geminio** -- Android Studio Plugin for generating code from FreeMarker templates.
+<!-- Plugin description end -->
+
+# hh-geminio
 
 Плагин `hh-geminio` для Android Studio — плагин, добавляющий возможность создавать свои шаблоны кода на основе шаблонов движка `FreeMarker`.
 
-Готовый дистрибутив плагина можно скачать [на страничке релизов в Github](https://github.com/hhru/android-multimodule-plugin/releases/).
+Готовый дистрибутив плагина можно скачать [на страничке релизов в GitHub](https://github.com/hhru/android-multimodule-plugin/releases/).
 
 Чтобы установить готовый дистрибутив, открываем Android Studio и идём по пути: 
 `Preferences -> Plugins -> иконка шестерёнки -> Install Plugin from disk`, выбираем скачанный zip-архив, дожидаемся 
 установки, по необходимости перезагружаем Android Studio.
 
-### Чтобы собрать любой из плагинов, нужно
+## Зачем
 
-1. Убедитесь, что у вас есть IntelliJ IDEA (минимум CE) с подключенным Plugin Dev Kit
-2. Склонировать проект
-3. Если вы скачивали Android Studio через Toolbox, или у вас не Mac OS, то вероятно вам потребуется изменить путь к локальной версии Android Studio, который указывается [вот здесь](./libraries/src/main/kotlin/ru/hh/plugins/ExternalLibrariesExtension.kt) - объект `Product.LOCAL`
-4. Запустить gradle-таску `buildPlugin` в проекте нужного плагина
-5. Собранный zip-архив плагина можно подключить в Android Studio через `Preferences -> Plugins -> Install from disk`
+В Android Studio 4.1 отключили поддержку кастомных Freemarker-ных шаблонов. Раньше их можно было создать, положить в
+определённую папку внутри Android Studio, и студия самостоятельно подтягивала их в качестве 'Other'-шаблонов.
 
-Готово, можно пользоваться!
+Начиная с Android Studio 4.1, добавление шаблонов возможно только из IDEA-плагинов. Нас это не устраивает и мы хотим
+добавлять / обновлять шаблоны независимо от плагинов.
 
-## Полезные ссылки про разработку плагинов
+Для этого и нужен Geminio.
 
-- [How to Build Developer Tools on Top of IntelliJ Platform](https://www.youtube.com/watch?v=S1u8uVjPjvc&list=PLTTdNLQSLhAIFZo6kTpcf8PiPABcyYkSi&index=3&t=0s)
-- [KotlinConf 2018 // Writing IntelliJ Plugins for Kotlin by Alec Strong & Egor Andreevici](https://www.youtube.com/watch?v=j2tvi4GbOr4)
-- [Droidcon Italy 2017 // Make your Android Studio Plugin - Andrea Lucibello](https://www.youtube.com/watch?v=znDROg5CzZw)
-- [Write an Android Studio Plugin Part 1: Creating a basic plugin](https://proandroiddev.com/write-an-android-studio-plugin-part-1-creating-a-basic-plugin-af956c4f8b50)
+## Содержание
 
-На русском языке:
-
-- [Mobius 2019 Piter // Фантастические плагины и где они обитают](https://www.youtube.com/watch?v=MSMI85JMIwE&ab_channel=Mobius)
-- [Mobius 2020 Piter // Служебный плагин](https://www.youtube.com/watch?v=QKervhpICjk&ab_channel=Mobius)
-- [Joker 2019 // Краш-курс по IntelliJ IDEA Plugin DevKit](https://www.youtube.com/watch?v=xoTrgA2zOJI&ab_channel=JUG.ru)
+- [Как работает плагин](./docs/ru/HOW_IT_WORKS.md)
+- [Конфигурация плагина](./docs/ru/PLUGIN_CONFIG.md)
+- [Выражения](./docs/ru/EXPRESSIONS.md)
+- [Устройство "рецепта"](./docs/ru/RECIPE_CONTENT.md)
+- [Шаблоны модулей](./docs/ru/MODULES_TEMPLATES.md)

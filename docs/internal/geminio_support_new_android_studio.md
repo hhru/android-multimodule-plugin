@@ -23,8 +23,8 @@
 
     <summary>Скриншоты</summary>
 
-   ![Путь до окна `About` из главного меню - часть I](./img/about_android_studio_part_1.png)
-   ![Путь до окна `About` из главного меню - часть II](./img/about_android_studio_part_2.png)
+   ![Путь до окна `About` из главного меню - часть I](../img/about_android_studio_part_1.png)
+   ![Путь до окна `About` из главного меню - часть II](../img/about_android_studio_part_2.png)
 
     </details>
 
@@ -34,7 +34,7 @@
    <details>
    <summary>Скриншот</summary>
 
-   ![Версия Android Studio](./img/android_studio_version.png)
+   ![Версия Android Studio](../img/android_studio_version.png)
 
    </details>
 
@@ -80,7 +80,7 @@
    актуальный архив следует искать [на этой странице](https://developer.android.com/studio/archive).
    Ищем нужную версию, копируем ссылку на `Zip files -> Linux`, заменяем старую ссылку на новую.
 
-   ![Ссылки на архивы дистрибутивов Android Studio](./img/android_studio_archives.png)
+   ![Ссылки на архивы дистрибутивов Android Studio](../img/android_studio_archives.png)
 
 4. **Обновляем версию плагина**
 
@@ -88,7 +88,7 @@
 
 5. **Дописываем changelog плагина**
 
-   Обновите [plugins/hh-geminio/CHANGELOG.md](../../plugins/hh-geminio/CHANGELOG.md) и допишите, что поддержали новую версию Android Studio.
+   Обновите [plugins/hh-geminio/CHANGELOG.md](../../CHANGELOG.md) и допишите, что поддержали новую версию Android Studio.
 
 6. Делаем PR из ветки в `master`-ветку.
 

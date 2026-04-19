@@ -1,6 +1,10 @@
-# Geminio
+<!-- Plugin description -->
+**Geminio** -- Android Studio Plugin for generating code from FreeMarker templates.
+<!-- Plugin description end -->
 
-![Geminio](./img/Geminio.png)
+# hh-geminio
+
+![Geminio](docs/img/Geminio.png)
 
 Android Studio's plugin for generating code from FreeMarker templates
 

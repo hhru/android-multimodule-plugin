@@ -1,10 +1,10 @@
-## `recipe.yaml` content
+## Устройство "рецепта"
 
-The "recipe" is a set of instructions and prerequisites for executing your template.
+Рецепт - набор инструкций и предварительных условий для выполнения вашего шаблона.
 
-*Attention!* Each recipe file must be named `recipe.yaml`.
+Важно! Каждый файл рецепта должен называться `recipe.yaml`.
 
-Each `recipe.yaml` file should look something like that:
+Каждый рецепт выглядит примерно так:
 
 ```yaml
 requiredParams:
@@ -23,7 +23,7 @@ optionalParams:
     - menu_entry
   minApi: 7
   minBuildApi: 8
-
+  
 # required only for modules templates
 predefinedFeatures:
   - enableModuleCreationParams:
@@ -83,7 +83,7 @@ globals:
   - stringParameter:
       id: reducerClassName
       value: ${moduleName}Reducer
-
+      
   - booleanParameter:
       id: anotherBooleanFlag
       value: true
@@ -138,32 +138,31 @@ recipe:
       - kotlin-kapt
 ```
 
-The recipe consists of 6 sections:
+Рецепт состоит из 6-х секций
 
-- `requiredParams` — required parameters for your template;
-- `optionalParams` — optional parameters;
-- `predefinedFeatures` - a set of predefined features in Geminio, which can add new widgets to the template, supplement
-  the functionality.
-- `widgets` — description of template parameters; only string and boolean parameters are available for use;
-- `globals` - description of invisible parameters for templates, some "global" variables.
-- `recipe` — a set of instructions that should be executed.
+- `requiredParams` - обязательные параметры для вашего шаблона
+- `optionalParams` - соответственно, необязательные параметры
+- `predefinedFeatures` - набор заранее предопределённых фич в Geminio, которые могут добавлять новые виджеты в шаблон, дополнять функционал.
+- `widgets` - описание параметров шаблона - для использования доступны строковые и булевские параметры
+- `globals` - описание невидимых параметров для шаблонов, некие "глобальные" переменные.
+- `recipe` - сам рецепт, набор инструкций, которые нужно выполнить
 
-If you think that it looks like the old good FreeMarker's `template.xml` && `recipe.xml`,
-but only combined into a single file, — you are absolutely right.
+Если вам кажется, что это похоже на старые-добрые Freemarker-ные template.xml && recipe.xml,
+только в одном файле, то вам не кажется.
 
-### Recipe's sections
+### Секции "рецептов"
 
-- [requiredParams](./recipe_content/REQURED_PARAMS.md)
-- [optionalParams](./recipe_content/OPTIONAL_PARAMS.md)
-- [predefinedFeatures](./recipe_content/PREDEFINED_FEATURES.md)
-- [widgets](./recipe_content/WIDGETS.md)
-- [globals](./recipe_content/GLOBALS.md)
-- [recipe](./recipe_content/RECIPE.md)
+- [requiredParams](recipe_content/REQURED_PARAMS.md)
+- [optionalParams](recipe_content/OPTIONAL_PARAMS.md)
+- [predefinedFeatures](recipe_content/PREDEFINED_FEATURES.md)
+- [widgets](recipe_content/WIDGETS.md)
+- [globals](recipe_content/GLOBALS.md)
+- [recipe](recipe_content/RECIPE.md)
 
-### Additional info
+### Дополнительно
 
-- [Expressions](./EXPRESSIONS.md)
+- [Выражения](EXPRESSIONS.md)
 
 ---
 
-[Return to MoC](../../README_EN.md)
+[Обратно к содержанию](../../plugins/hh-geminio/README.md#Содержание)
