@@ -78,6 +78,16 @@ internal class GeminioPureFormRuntimeSpec : FreeSpec({
         session.applySuggestion("generatedClass") shouldBe "FeedScreenGenerated"
     }
 
+    "should keep dependent expressions reactive when source string becomes empty" {
+        val fixture = createRecipeFixture(RECIPE_WITH_WIDGETS_AND_GLOBALS)
+        val session = GeminioFormSession(fixture.recipe.toGeminioForm())
+
+        session.setStringValue("className", "")
+
+        session.suggestedStringValue("factoryName") shouldBe "Factory"
+        session.suggestedStringValue("generatedClass") shouldBe "Generated"
+    }
+
     "should expose predefined module parameters with derived suggestions" {
         val fixture = createRecipeFixture(RECIPE_WITH_PREDEFINED_MODULE_PARAMS)
         val form = fixture.recipe.toGeminioForm()

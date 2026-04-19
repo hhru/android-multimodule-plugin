@@ -1,11 +1,11 @@
 package ru.hh.plugins.geminio.actions.template
 
 import com.android.tools.idea.model.AndroidModel
-import com.android.tools.idea.wizard.model.ModelWizard
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.kotlin.idea.core.util.toPsiFile
@@ -13,12 +13,21 @@ import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.getTargetDirectory
+import ru.hh.plugins.extensions.packageName
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
-import ru.hh.plugins.geminio.services.templates.ConfigureTemplateParametersStepFactory
-import ru.hh.plugins.geminio.wizard.StudioWizardDialogFactory
+import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
+import ru.hh.plugins.geminio.sdk.form.applyFormValues
+import ru.hh.plugins.geminio.sdk.form.toGeminioForm
+import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
+import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.geminio.services.templates.createGeminioNamedModuleTemplateContext
+import ru.hh.plugins.geminio.wizard.GeminioFormDialog
+import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
+import java.io.File
 import kotlin.system.measureTimeMillis
 
 /**
@@ -40,10 +49,9 @@ class ExecuteGeminioTemplateAction(
 ) {
 
     private companion object {
-        const val COMMAND_NAME = "ExecuteGeminioTemplateActionCommand"
-        const val COMMAND_AFTER_WIZARD_NAME = "ExecuteGeminioTemplateActionCommandAfterWizard"
-
-        const val WIZARD_TITLE = "Geminio wizard"
+        const val COMMAND_NAME = "ExecuteGeminioTemplateAction.Command"
+        const val DIALOG_TITLE = "Geminio template"
+        const val LOADING_TITLE = "Generating Geminio template"
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
@@ -67,53 +75,104 @@ class ExecuteGeminioTemplateAction(
         val (project, facet) = actionEvent.fetchEventData()
 
         val targetDirectory = actionEvent.getTargetDirectory()
-
-        val stepFactory = ConfigureTemplateParametersStepFactory(project)
-        val stepModel = stepFactory.createFromAndroidFacet(
-            commandName = COMMAND_NAME,
-            stepTitle = actionText,
-            facet = facet,
+        val geminioTemplateData = geminioSdk.createGeminioTemplateData(
+            project = project,
+            geminioRecipe = geminioRecipe,
             targetDirectory = targetDirectory,
-            androidStudioTemplate = geminioSdk.createGeminioTemplateData(
-                project = project,
-                geminioRecipe = geminioRecipe,
-                targetDirectory = targetDirectory
-            ).androidStudioTemplate
         )
+        val form = geminioRecipe.toGeminioForm()
+        val formSession = GeminioFormSession(form)
 
-        val wizard = ModelWizard.Builder().addStep(stepModel.configureTemplateParametersStep).build().apply {
-            this.addResultListener(object : ModelWizard.WizardListener {
-                override fun onWizardFinished(result: ModelWizard.WizardResult) {
-                    super.onWizardFinished(result)
-
-                    if (result.isFinished.not()) {
-                        HHNotifications.error(message = "User closed Geminio Template Wizard")
-                        return
-                    }
-
-                    applyShortenReferencesAndCodeStyle()
-
-                    project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
-                    HHNotifications.info(message = "Finished '$actionText' template execution")
-                }
-
-                private fun applyShortenReferencesAndCodeStyle() {
-                    measureTimeMillis {
-                        project.executeWriteCommand(COMMAND_AFTER_WIZARD_NAME) {
-                            stepModel.renderTemplateModel.createdFiles.forEach { file ->
-                                val psiFile = file.toPsiFile(project) as? KtFile
-                                psiFile?.shortReferencesAndReformatWithCodeStyle()
-                            }
-                        }
-                    }.also { HHLogger.d("Shorten references time: $it ms") }
-                }
-            })
+        val dialog = GeminioFormDialog(
+            project = project,
+            title = "$DIALOG_TITLE: $actionText",
+            templateName = geminioRecipe.requiredParams.name,
+            templateDescription = geminioRecipe.requiredParams.description,
+            form = form,
+            session = formSession,
+        )
+        if (dialog.showAndGet().not()) {
+            return
         }
 
-        val dialog = StudioWizardDialogFactory.getWizardBuilder(wizard, WIZARD_TITLE)
-            .create(project)
+        val templateContext = facet.createGeminioNamedModuleTemplateContext(targetDirectory)
+        val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService(project)
+        val targetPackageName = if (form.fieldsById.containsKey(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
+            formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID).orEmpty()
+        } else {
+            templateContext.initialPackageSuggestion.ifBlank { facet.packageName }
+        }
 
-        dialog.show()
+        val preparedExecution = recipeExecutorFactoryService.createRecipeExecutorForExistingModule(
+            facet = facet,
+            targetDirectory = targetDirectory,
+            targetPackageName = targetPackageName,
+        )
+
+        geminioTemplateData.applyFormValues(form, formSession)
+
+        executeTemplateWithLoader(
+            project = project,
+            actionEvent = actionEvent,
+            geminioTemplateData = geminioTemplateData,
+            preparedExecution = preparedExecution,
+        )
+    }
+
+    private fun applyShortenReferencesAndCodeStyle(
+        project: Project,
+        createdFiles: Collection<File>,
+    ) {
+        measureTimeMillis {
+            createdFiles.forEach { file ->
+                val psiFile = file.toPsiFile(project) as? KtFile
+                psiFile?.shortReferencesAndReformatWithCodeStyle()
+            }
+        }.also { HHLogger.d("Shorten references time: $it ms") }
+    }
+
+    private fun executeTemplateWithLoader(
+        project: Project,
+        actionEvent: AnActionEvent,
+        geminioTemplateData: GeminioTemplateData,
+        preparedExecution: GeminioRecipeExecutorFactoryService.PreparedExistingModuleRecipeExecution,
+    ) {
+        val loadingDialog = GeminioLoadingDialog(
+            project = project,
+            title = LOADING_TITLE,
+            description = "Generating '$actionText' template. Please wait...",
+        )
+        loadingDialog.isVisible = true
+
+        ApplicationManager.getApplication().invokeLater {
+            var completedSuccessfully = false
+            try {
+                project.executeWriteCommand(COMMAND_NAME) {
+                    geminioTemplateData.androidStudioTemplate.recipe.invoke(
+                        preparedExecution.recipeExecutor,
+                        preparedExecution.moduleTemplateData,
+                    )
+                    applyShortenReferencesAndCodeStyle(
+                        project = project,
+                        createdFiles = preparedExecution.createdFiles,
+                    )
+                }
+                completedSuccessfully = true
+            } catch (error: Throwable) {
+                HHLogger.e("Template '$actionText' execution failed:\n${error.stackTraceToString()}")
+                HHNotifications.error(
+                    message = "Some error occurred when '$actionText' executed. " +
+                            "Check warnings at the bottom right corner."
+                )
+            } finally {
+                loadingDialog.dispose()
+            }
+
+            if (completedSuccessfully) {
+                project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
+                HHNotifications.info(message = "Finished '$actionText' template execution")
+            }
+        }
     }
 
     private fun AnActionEvent.fetchEventData(): EventData {
