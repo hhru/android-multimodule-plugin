@@ -1,19 +1,20 @@
 package ru.hh.plugins.geminio.wizard
 
 import com.intellij.icons.AllIcons
-import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.LabelPosition
 import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.Row
-import com.intellij.ui.dsl.builder.RowLayout
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI
 import ru.hh.plugins.extensions.isQualifiedPackageName
@@ -27,6 +28,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Font
+import java.awt.KeyboardFocusManager
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.Icon
@@ -49,6 +51,9 @@ internal class GeminioFormDialog(
     private val form: GeminioForm,
     private val session: GeminioFormSession,
     private val headerIcon: Icon = AllIcons.Nodes.Module,
+    private val confirmActionText: String = "Finish",
+    private val preferredScrollSize: Dimension = Dimension(560, 420),
+    private val preferInitialInputFocus: Boolean = true,
 ) : DialogWrapper(project, true) {
 
     private val autoManagedStringFieldIds = linkedSetOf<String>()
@@ -57,15 +62,16 @@ internal class GeminioFormDialog(
     private val fieldVisibility = linkedMapOf<String, Boolean>()
     private val stringFields = linkedMapOf<String, Cell<JBTextField>>()
     private val booleanFields = linkedMapOf<String, Cell<JBCheckBox>>()
-    private val stringFieldLayouts = form.computeStringFieldLayouts()
 
     private lateinit var contentPanel: DialogPanel
 
     private var isRefreshing = false
+    private var isClosingScheduled = false
 
     init {
         this.title = title
         isResizable = true
+        setOKButtonText(confirmActionText)
         init()
         refreshUi()
     }
@@ -83,7 +89,10 @@ internal class GeminioFormDialog(
         }
 
         return JBScrollPane(contentPanel).apply {
-            preferredSize = Dimension(JBUI.scale(560), JBUI.scale(420))
+            preferredSize = Dimension(
+                JBUI.scale(preferredScrollSize.width),
+                JBUI.scale(preferredScrollSize.height),
+            )
             border = JBUI.Borders.empty()
         }.let { scrollPane ->
             JPanel(BorderLayout()).apply {
@@ -94,8 +103,38 @@ internal class GeminioFormDialog(
     }
 
     override fun getPreferredFocusedComponent(): JComponent? {
+        if (preferInitialInputFocus.not()) {
+            return null
+        }
+
         return stringFields.entries.firstOrNull { (fieldId, _) -> fieldVisibility[fieldId] != false }?.value?.component
             ?: booleanFields.entries.firstOrNull { (fieldId, _) -> fieldVisibility[fieldId] != false }?.value?.component
+    }
+
+    override fun doOKAction() {
+        if (isClosingScheduled) {
+            return
+        }
+
+        if (confirmActionText != "Next") {
+            super.doOKAction()
+            return
+        }
+
+        isClosingScheduled = true
+
+        // On macOS/JBR, closing a dialog with an active text caret and opening the next dialog
+        // immediately can crash inside native text-input handling. We move focus away from the
+        // editor and postpone the actual close to the next EDT tick.
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner()
+        rootPane.requestFocusInWindow()
+
+        ApplicationManager.getApplication().invokeLater {
+            if (isDisposed.not()) {
+                super.doOKAction()
+            }
+            isClosingScheduled = false
+        }
     }
 
     override fun doValidateAll(): List<ValidationInfo> {
@@ -114,34 +153,14 @@ internal class GeminioFormDialog(
 
     private fun Panel.createStringFieldRow(field: GeminioFormField.StringField) {
         val initialText = session.stringValue(field.id).orEmpty()
-
-        val row = row("${field.name}:") {
-            val textFieldCell = textField()
-                .align(Align.FILL)
-                .resizableColumn()
-                .applyToComponent {
-                    text = initialText
-                    onTextChange {
-                        if (isRefreshing) {
-                            return@onTextChange
-                        }
-
-                        // Preserve empty string as a real value so dependent expressions can
-                        // react to deleting the last character without falling back to `null`.
-                        session.setStringValue(field.id, text)
-                        autoManagedStringFieldIds.remove(field.id)
-                        refreshUi()
-                    }
-                }
-
-            field.help
-                ?.takeIf { shouldShowFieldComment(field.name, it) }
-                ?.let(textFieldCell::comment)
-            stringFields[field.id] = textFieldCell
+        val row = row {
+            createStringFieldCell(field, initialText)
         }
-        if (stringFieldLayouts[field.id] == RowLayout.INDEPENDENT) {
-            row.layout(RowLayout.INDEPENDENT)
-        }
+        val textFieldCell = stringFields.getValue(field.id)
+
+        field.help
+            ?.takeIf { shouldShowFieldComment(field.name, it) }
+            ?.let(textFieldCell::comment)
 
         fieldRows[field.id] = row
         fieldVisibility[field.id] = true
@@ -149,6 +168,31 @@ internal class GeminioFormDialog(
         if (field.suggestEvaluator != null && shouldAutoManageStringField(field.id, initialText)) {
             autoManagedStringFieldIds += field.id
         }
+    }
+
+    private fun Row.createStringFieldCell(
+        field: GeminioFormField.StringField,
+        initialText: String,
+    ): Cell<JBTextField> {
+        return textField()
+            .align(Align.FILL)
+            .resizableColumn()
+            .label(field.name, LabelPosition.TOP)
+            .applyToComponent {
+                text = initialText
+                onTextChange {
+                    if (isRefreshing) {
+                        return@onTextChange
+                    }
+
+                    // Preserve empty string as a real value so dependent expressions can
+                    // react to deleting the last character without falling back to `null`.
+                    session.setStringValue(field.id, text)
+                    autoManagedStringFieldIds.remove(field.id)
+                    refreshUi()
+                }
+            }
+            .also { stringFields[field.id] = it }
     }
 
     private fun createHeaderPanel(): JComponent {
@@ -338,46 +382,4 @@ internal class GeminioFormDialog(
     ): Boolean {
         return help.isNotBlank() && help != fieldName
     }
-}
-
-private fun GeminioForm.computeStringFieldLayouts(): Map<String, RowLayout> {
-    val layouts = linkedMapOf<String, RowLayout>()
-    fields
-        .splitIntoNeighboringStringGroups()
-        .forEach { stringFields ->
-            val shortestLabelLength = stringFields.minOfOrNull { it.name.length } ?: return@forEach
-
-            stringFields.forEach { field ->
-                layouts[field.id] = if (field.name.length >= shortestLabelLength * 2 && shortestLabelLength > 0) {
-                    RowLayout.INDEPENDENT
-                } else {
-                    RowLayout.LABEL_ALIGNED
-                }
-            }
-        }
-
-    return layouts
-}
-
-private fun List<GeminioFormField>.splitIntoNeighboringStringGroups(): List<List<GeminioFormField.StringField>> {
-    val groups = mutableListOf<List<GeminioFormField.StringField>>()
-    val currentGroup = mutableListOf<GeminioFormField.StringField>()
-
-    forEach { field ->
-        when (field) {
-            is GeminioFormField.StringField -> currentGroup += field
-            is GeminioFormField.BooleanField -> {
-                if (currentGroup.isNotEmpty()) {
-                    groups += currentGroup.toList()
-                    currentGroup.clear()
-                }
-            }
-        }
-    }
-
-    if (currentGroup.isNotEmpty()) {
-        groups += currentGroup.toList()
-    }
-
-    return groups
 }
