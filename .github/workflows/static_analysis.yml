@@ -14,5 +14,5 @@ jobs:
         uses: alaegin/Detekt-Action@v1.23.4
         with:
           github_token: ${{ secrets.github_token }}
-          detekt_config: build-logic/static-analysis-convention/rules/detekt/detekt-config.yaml
-          detekt_baseline: build-logic/static-analysis-convention/rules/detekt/detekt-baseline.xml
+          detekt_config: tools/static-analysis/detekt/detekt-config.yaml
+          detekt_baseline: tools/static-analysis/detekt/detekt-baseline.xml
