@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 1
       - name: detekt
-        uses: alaegin/Detekt-Action@v1.23.4
+        uses: alaegin/Detekt-Action@v1.23.8
         with:
           github_token: ${{ secrets.github_token }}
           detekt_config: tools/static-analysis/detekt/detekt-config.yaml
