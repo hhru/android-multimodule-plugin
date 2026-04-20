@@ -1,12 +1,12 @@
 package ru.hh.plugins.geminio.sdk.execution
 
-import com.android.tools.idea.util.ReformatUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.utils.ide.EditorUtils
+import ru.hh.plugins.utils.ide.ReformatUtils
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -33,7 +33,7 @@ internal object GeminioGeneratedFilesPostProcessor {
             PsiDocumentManager.getInstance(project).commitAllDocuments()
 
             if (createdFiles.isNotEmpty()) {
-                ReformatUtil.reformatRearrangeAndSave(project, createdFiles)
+                ReformatUtils.reformatRearrangeAndSave(project, createdFiles)
                 PsiDocumentManager.getInstance(project).commitAllDocuments()
             }
 
