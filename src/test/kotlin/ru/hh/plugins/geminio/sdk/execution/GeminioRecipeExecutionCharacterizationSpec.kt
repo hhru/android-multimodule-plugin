@@ -41,7 +41,9 @@ internal class GeminioRecipeExecutionCharacterizationSpec : FreeSpec({
         fileOperations.createdDirectories.shouldContain(targetDirectory.resolve("generated"))
         Files.isDirectory(targetDirectory.resolve("generated")) shouldBe true
         Files.readString(targetDirectory.resolve("FeatureScreen.kt")) shouldBe "class FeatureScreen"
-        Files.readString(targetDirectory.resolve("generated/FeatureScreenFactory.kt")) shouldBe "object FeatureScreenFactory"
+        Files.readString(
+            targetDirectory.resolve("generated/FeatureScreenFactory.kt")
+        ) shouldBe "object FeatureScreenFactory"
         executionResult.filesToOpen.shouldContain(targetDirectory.resolve("generated/FeatureScreenFactory.kt").toFile())
     }
 
