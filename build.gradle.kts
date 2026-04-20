@@ -112,41 +112,22 @@ tasks.withType<Test>().configureEach {
 
 // region Static analysis
 
-detekt {
-    source.setFrom("src/main/kotlin", "src/test/kotlin")
-    config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
-    baseline = file("tools/static-analysis/detekt/detekt-baseline.xml")
-}
-
 tasks.named<Detekt>("detekt").configure {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(false)
-    }
+    setupCommonDetektSettings()
 }
 
 val detektFormat by tasks.registering(Detekt::class) {
-    parallel = true
+    setupCommonDetektSettings()
+
     autoCorrect = true
-    disableDefaultRuleSets = true
-    buildUponDefaultConfig = true
-
-    source(files("src/main/kotlin", "src/test/kotlin"))
-    config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
-    baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
-
-    include("**/*.kt")
-    include("**/*.kts")
 }
 
 val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) {
     description = "Overrides current baseline."
 
-    source(files("src/main/kotlin", "src/test/kotlin"))
-    config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
-    baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
+    source(projectDir)
+    config.setFrom(detektConfigPath)
+    baseline.set(file(detektBaselinePath))
 
     buildUponDefaultConfig.set(true)
     ignoreFailures.set(true)
@@ -155,5 +136,33 @@ val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) 
     include("**/*.kt")
     include("**/*.kts")
 }
+
+private fun Detekt.setupCommonDetektSettings() {
+    // Common properties
+    parallel = true
+    autoCorrect = false
+    disableDefaultRuleSets = false
+    buildUponDefaultConfig = false
+
+    // Setup sources for run
+    source(projectDir)
+    config.setFrom(detektConfigPath)
+    baseline.set(file(detektBaselinePath))
+
+    include("**/*.kt")
+    include("**/*.kts")
+    exclude("**/build/**")
+
+    // reports configuration
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(false)
+    }
+}
+
+private val detektConfigPath = "tools/static-analysis/detekt/detekt-config.yaml"
+private val detektBaselinePath = "tools/static-analysis/detekt/detekt-baseline.xml"
 
 // endregion
