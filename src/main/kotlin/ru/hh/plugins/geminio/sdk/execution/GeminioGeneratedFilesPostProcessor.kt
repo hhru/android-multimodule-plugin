@@ -1,10 +1,12 @@
 package ru.hh.plugins.geminio.sdk.execution
 
-import com.android.tools.idea.templates.TemplateUtils
 import com.android.tools.idea.util.ReformatUtil
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VfsUtil
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
 import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.utils.ide.EditorUtils
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -36,10 +38,31 @@ internal object GeminioGeneratedFilesPostProcessor {
             }
 
             if (filesToOpen.isNotEmpty()) {
-                TemplateUtils.openEditors(project, filesToOpen, true)
+                openEditors(project, filesToOpen, true)
             }
         }.also { elapsedTimeMs ->
             HHLogger.d("Geminio generated files post-processing time: $elapsedTimeMs ms")
         }
     }
+
+    private fun openEditors(
+        project: Project,
+        filesToOpen: Collection<File>,
+        select: Boolean,
+    ) {
+        var last: VirtualFile? = null
+
+        filesToOpen
+            .filter(File::exists)
+            .mapNotNull { VfsUtil.findFileByIoFile(it, true) }
+            .forEach { file ->
+                last = file
+                EditorUtils.openEditor(project, file)
+            }
+
+        if (select && last != null) {
+            EditorUtils.selectEditor(project, last)
+        }
+    }
+
 }

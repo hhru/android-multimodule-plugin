@@ -1,6 +1,5 @@
 package ru.hh.plugins.extensions
 
-import com.android.tools.idea.wizard.template.camelCaseToUnderlines
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
@@ -43,7 +42,33 @@ fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirecto
 }
 
 fun String.fromCamelCaseToUnderlines(): String {
-    return camelCaseToUnderlines(this)
+    if (isEmpty()) {
+        return String.EMPTY
+    }
+
+    val normalized = replace('-', '_').replace(' ', '_')
+    val builder = StringBuilder()
+
+    normalized.forEachIndexed { index, char ->
+        when {
+            char == '_' -> {
+                if (builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+            }
+
+            char.isUpperCase() -> {
+                if (index != 0 && builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+                builder.append(char.lowercaseChar())
+            }
+
+            else -> builder.append(char.lowercaseChar())
+        }
+    }
+
+    return builder.toString().trim('_')
 }
 
 fun String.toUnderlines(): String {
@@ -70,8 +95,18 @@ fun String.toFormattedModuleName(): String {
         moduleName
             .replaceWordsBreakers()
             .split(' ')
-            .map { it.capitalize() }
+            .map { it.capitalizeAscii() }
             .forEach { append(it) }
         toString()
+    }
+}
+
+private fun String.capitalizeAscii(): String {
+    return replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.uppercaseChar().toString()
+        } else {
+            char.toString()
+        }
     }
 }

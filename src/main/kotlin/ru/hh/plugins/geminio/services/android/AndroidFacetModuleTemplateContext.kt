@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.services.templates
+package ru.hh.plugins.geminio.services.android
 
 import com.android.tools.idea.npw.project.getModuleTemplates
 import com.android.tools.idea.npw.project.getPackageForPath
@@ -16,10 +16,11 @@ internal data class GeminioNamedModuleTemplateContext(
 )
 
 /**
- * Resolves a safe Android module template description for the selected target directory.
+ * Builds an Android-specific module template context for the selected target directory.
  *
- * The result is shared between the old Android Studio wizard flow and the new custom Geminio UI,
- * so both paths keep using identical module paths and initial package suggestion logic.
+ * Geminio still relies on Android Studio project-model APIs to resolve module paths and initial
+ * package suggestions, but this adapter is now separate from the custom UI and custom execution
+ * runtime.
  */
 internal fun AndroidFacet.createGeminioNamedModuleTemplateContext(
     targetDirectory: VirtualFile,
@@ -34,10 +35,7 @@ internal fun AndroidFacet.createGeminioNamedModuleTemplateContext(
     /**
      * Sometimes AndroidFacet returns module paths without AIDL or SRC directories.
      *
-     * `ModuleTemplateDataBuilder`/`RenderTemplateModel` expect those paths to exist, otherwise the
-     * old Android template runtime crashes or silently skips file generation. We keep the same
-     * fallback wrapper here so both the legacy wizard flow and the custom Geminio UI use identical
-     * module path semantics.
+     * We keep the fallback wrapper here so path resolution is stable for Geminio's own runtime.
      */
     val shouldReplaceAidlDirectory = moduleTemplate.paths.getAidlDirectory("stub.package") == null
     val shouldReplaceSrcDirectory = moduleTemplate.paths.getSrcDirectory("stub.package") == null
