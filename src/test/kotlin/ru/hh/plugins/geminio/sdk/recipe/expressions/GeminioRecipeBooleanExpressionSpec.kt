@@ -6,12 +6,14 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeEvaluationContext
+import ru.hh.plugins.geminio.sdk.execution.evaluateBoolean
+import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
-import ru.hh.plugins.geminio.sdk.template.mapping.expressions.evaluateBoolean
 
 internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
 
@@ -20,7 +22,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             ReturnTrue
         ).toExpression()
 
-        given.evaluateBoolean(emptyMap()) shouldBe true
+        given.evaluateBoolean(emptyContext()) shouldBe true
     }
 
     "Should return 'true' even there are some parameters" {
@@ -28,7 +30,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             ReturnTrue
         ).toExpression()
 
-        given.evaluateBoolean(createParametersMap()) shouldBe true
+        given.evaluateBoolean(context(createParametersMap())) shouldBe true
     }
 
     "Should return 'false'" {
@@ -36,7 +38,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             ReturnFalse
         ).toExpression()
 
-        given.evaluateBoolean(emptyMap()) shouldBe false
+        given.evaluateBoolean(emptyContext()) shouldBe false
     }
 
     "Should return 'false' even there are some parameters" {
@@ -44,7 +46,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             ReturnFalse
         ).toExpression()
 
-        given.evaluateBoolean(createParametersMap()) shouldBe false
+        given.evaluateBoolean(context(createParametersMap())) shouldBe false
     }
 
     "Should read value from parameter" {
@@ -52,8 +54,8 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Dynamic("includeModule", emptyList())
         ).toExpression()
 
-        given.evaluateBoolean(createParametersMap()) shouldBe true
-        given.evaluateBoolean(createParametersMap(includeModule = false)) shouldBe false
+        given.evaluateBoolean(context(createParametersMap())) shouldBe true
+        given.evaluateBoolean(context(createParametersMap(includeModule = false))) shouldBe false
     }
 
     "Should throw exceptions if have illegal commands for boolean expression" {
@@ -63,11 +65,11 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
         val given4 = listOf(RecipeExpressionCommand.ManifestOut).toExpression()
         val given5 = listOf(RecipeExpressionCommand.RootOut).toExpression()
 
-        val ex1 = shouldThrow<IllegalArgumentException> { given1.evaluateBoolean(createParametersMap()) }
-        val ex2 = shouldThrow<IllegalArgumentException> { given2.evaluateBoolean(createParametersMap()) }
-        val ex3 = shouldThrow<IllegalArgumentException> { given3.evaluateBoolean(createParametersMap()) }
-        val ex4 = shouldThrow<IllegalArgumentException> { given4.evaluateBoolean(createParametersMap()) }
-        val ex5 = shouldThrow<IllegalArgumentException> { given5.evaluateBoolean(createParametersMap()) }
+        val ex1 = shouldThrow<IllegalArgumentException> { given1.evaluateBoolean(context(createParametersMap())) }
+        val ex2 = shouldThrow<IllegalArgumentException> { given2.evaluateBoolean(context(createParametersMap())) }
+        val ex3 = shouldThrow<IllegalArgumentException> { given3.evaluateBoolean(context(createParametersMap())) }
+        val ex4 = shouldThrow<IllegalArgumentException> { given4.evaluateBoolean(context(createParametersMap())) }
+        val ex5 = shouldThrow<IllegalArgumentException> { given5.evaluateBoolean(context(createParametersMap())) }
 
         ex1.message shouldStartWith "Unexpected command for boolean parameter"
         ex2.message shouldStartWith "Unexpected command for boolean parameter"
@@ -82,7 +84,7 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Dynamic("includeModule", emptyList())
         ).toExpression()
 
-        val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(createParametersMap()) }
+        val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(context(createParametersMap())) }
 
         ex.message shouldStartWith "Unexpected commands for boolean parameter evaluation"
     }
@@ -91,8 +93,19 @@ internal class GeminioRecipeBooleanExpressionSpec : FreeSpec({
         val command = RecipeExpressionCommand.Dynamic("includeFactory", emptyList())
         val given = listOf<RecipeExpressionCommand>(command).toExpression()
 
-        val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(createParametersMap()) }
+        val ex = shouldThrow<IllegalArgumentException> { given.evaluateBoolean(context(createParametersMap())) }
 
         ex.message shouldStartWith "Unknown parameter or not boolean parameter for boolean expression [id: ${command.parameterId}]"
     }
 })
+
+private fun context(parameters: Map<String, Any?>): GeminioRecipeEvaluationContext {
+    return GeminioRecipeEvaluationContext(
+        templateParameters = parameters,
+        pathContext = GeminioFormPathContext(),
+    )
+}
+
+private fun emptyContext(): GeminioRecipeEvaluationContext {
+    return context(emptyMap())
+}
