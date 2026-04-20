@@ -3,7 +3,6 @@ package ru.hh.plugins.freemarker_wrapper
 import com.google.common.base.Charsets
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
-import ru.hh.plugins.freemarker_wrapper.adapters.PropertyObjectWrapper
 import java.io.File
 import java.io.StringWriter
 
@@ -30,7 +29,6 @@ class FreemarkerConfiguration(
         defaultEncoding = Charsets.UTF_8.name()
         localizedLookup = false
         templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
-        objectWrapper = PropertyObjectWrapper()
 
         setDirectoryForTemplateLoading(File(configuredPath))
     }

@@ -1,7 +1,6 @@
 package ru.hh.plugins.extensions.openapi
 
 import com.android.tools.idea.projectsystem.gradle.getHolderModule
-import com.android.tools.idea.util.androidFacet
 import com.intellij.openapi.module.Module
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
@@ -9,14 +8,16 @@ import com.intellij.psi.PsiMember
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
 import com.intellij.psi.util.ClassUtil
+import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.kotlin.utils.addToStdlib.measureTimeMillisWithResult
 import ru.hh.plugins.logger.HHLogger
 
 fun Module.isAndroidLibraryModule(): Boolean {
-    return androidFacet?.configuration?.isLibraryProject ?: false
+    return AndroidFacet.getInstance(this)?.configuration?.isLibraryProject ?: false
 }
 
 fun Module.isAndroidAppModule(): Boolean {
+    val androidFacet = AndroidFacet.getInstance(this)
     val isAppProject = androidFacet?.configuration?.isAppProject ?: false
 
     /**
