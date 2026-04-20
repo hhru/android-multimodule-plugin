@@ -52,9 +52,22 @@ internal class GeminioFormDialog(
     private val session: GeminioFormSession,
     private val headerIcon: Icon = AllIcons.Nodes.Module,
     private val confirmActionText: String = "Finish",
-    private val preferredScrollSize: Dimension = Dimension(560, 420),
+    private val preferredScrollSize: Dimension = Dimension(DEFAULT_DIALOG_WIDTH, DEFAULT_DIALOG_HEIGHT),
     private val preferInitialInputFocus: Boolean = true,
 ) : DialogWrapper(project, true) {
+
+    private companion object {
+        const val DEFAULT_DIALOG_WIDTH = 560
+        const val DEFAULT_DIALOG_HEIGHT = 420
+        const val CONTENT_TOP_PADDING = 12
+        const val CONTENT_LEFT_PADDING = 12
+        const val CONTENT_BOTTOM_PADDING = 12
+        const val CONTENT_RIGHT_PADDING = 20
+        const val HEADER_TITLE_FONT_DELTA = 6
+        const val HEADER_DESCRIPTION_GAP = 4
+        const val HEADER_CONTENT_GAP = 12
+        const val HEADER_PADDING = 16
+    }
 
     private val autoManagedStringFieldIds = linkedSetOf<String>()
     private val autoManagedBooleanFieldIds = linkedSetOf<String>()
@@ -63,7 +76,7 @@ internal class GeminioFormDialog(
     private val stringFields = linkedMapOf<String, Cell<JBTextField>>()
     private val booleanFields = linkedMapOf<String, Cell<JBCheckBox>>()
 
-    private lateinit var contentPanel: DialogPanel
+    private var contentPanel: DialogPanel? = null
 
     private var isRefreshing = false
     private var isClosingScheduled = false
@@ -85,7 +98,12 @@ internal class GeminioFormDialog(
                 }
             }
         }.apply {
-            border = JBUI.Borders.empty(12, 12, 12, 20)
+            border = JBUI.Borders.empty(
+                CONTENT_TOP_PADDING,
+                CONTENT_LEFT_PADDING,
+                CONTENT_BOTTOM_PADDING,
+                CONTENT_RIGHT_PADDING,
+            )
         }
 
         return JBScrollPane(contentPanel).apply {
@@ -138,17 +156,11 @@ internal class GeminioFormDialog(
     }
 
     override fun doValidateAll(): List<ValidationInfo> {
-        return form.fields.mapNotNull { field ->
-            val state = session.fieldState(field.id)
-            if ((fieldVisibility[field.id] ?: true).not() || state.enabled.not()) {
-                return@mapNotNull null
-            }
-
-            when (field) {
-                is GeminioFormField.StringField -> validateStringField(field)
-                is GeminioFormField.BooleanField -> null
-            }
-        }
+        return form.fields
+            .asSequence()
+            .filter(::shouldValidateField)
+            .mapNotNull(::validateField)
+            .toList()
     }
 
     private fun Panel.createStringFieldRow(field: GeminioFormField.StringField) {
@@ -181,15 +193,13 @@ internal class GeminioFormDialog(
             .applyToComponent {
                 text = initialText
                 onTextChange {
-                    if (isRefreshing) {
-                        return@onTextChange
+                    if (isRefreshing.not()) {
+                        // Preserve empty string as a real value so dependent expressions can
+                        // react to deleting the last character without falling back to `null`.
+                        session.setStringValue(field.id, text)
+                        autoManagedStringFieldIds.remove(field.id)
+                        refreshUi()
                     }
-
-                    // Preserve empty string as a real value so dependent expressions can
-                    // react to deleting the last character without falling back to `null`.
-                    session.setStringValue(field.id, text)
-                    autoManagedStringFieldIds.remove(field.id)
-                    refreshUi()
                 }
             }
             .also { stringFields[field.id] = it }
@@ -197,7 +207,7 @@ internal class GeminioFormDialog(
 
     private fun createHeaderPanel(): JComponent {
         val titleLabel = JLabel(templateName).apply {
-            font = font.deriveFont(Font.BOLD, font.size2D + JBUI.scale(6).toFloat())
+            font = font.deriveFont(Font.BOLD, font.size2D + JBUI.scale(HEADER_TITLE_FONT_DELTA).toFloat())
         }
         val descriptionLabel = JLabel(
             "<html>${StringUtil.escapeXmlEntities(templateDescription)}</html>"
@@ -209,12 +219,12 @@ internal class GeminioFormDialog(
             isOpaque = false
             layout = BoxLayout(this, BoxLayout.Y_AXIS)
             add(titleLabel)
-            add(Box.createVerticalStrut(JBUI.scale(4)))
+            add(Box.createVerticalStrut(JBUI.scale(HEADER_DESCRIPTION_GAP)))
             add(descriptionLabel)
         }
 
-        val content = JPanel(BorderLayout(JBUI.scale(12), 0)).apply {
-            border = JBUI.Borders.empty(16)
+        val content = JPanel(BorderLayout(JBUI.scale(HEADER_CONTENT_GAP), 0)).apply {
+            border = JBUI.Borders.empty(HEADER_PADDING)
             add(JLabel(headerIcon).apply {
                 verticalAlignment = JLabel.TOP
             }, BorderLayout.WEST)
@@ -235,15 +245,13 @@ internal class GeminioFormDialog(
                 .applyToComponent {
                     isSelected = initialValue
                     addActionListener {
-                        if (isRefreshing) {
-                            return@addActionListener
+                        if (isRefreshing.not()) {
+                            session.setBooleanValue(field.id, isSelected)
+                            if (field.origin == GeminioFormFieldOrigin.GLOBAL) {
+                                autoManagedBooleanFieldIds.remove(field.id)
+                            }
+                            refreshUi()
                         }
-
-                        session.setBooleanValue(field.id, isSelected)
-                        if (field.origin == GeminioFormFieldOrigin.GLOBAL) {
-                            autoManagedBooleanFieldIds.remove(field.id)
-                        }
-                        refreshUi()
                     }
                 }
 
@@ -268,34 +276,8 @@ internal class GeminioFormDialog(
             syncAutoManagedValues()
 
             form.fields.forEach { field ->
-                val state = session.fieldState(field.id)
-                val previousVisibility = fieldVisibility.put(field.id, state.visible)
-
-                if (previousVisibility != state.visible) {
-                    fieldRows[field.id]?.visible(state.visible)
+                if (refreshFieldUi(field)) {
                     visibilityChanged = true
-                }
-
-                fieldRows[field.id]?.enabled(state.enabled)
-
-                when (field) {
-                    is GeminioFormField.StringField -> {
-                        stringFields[field.id]?.component?.apply {
-                            val expectedText = session.stringValue(field.id).orEmpty()
-                            if (text != expectedText) {
-                                text = expectedText
-                            }
-                        }
-                    }
-
-                    is GeminioFormField.BooleanField -> {
-                        booleanFields[field.id]?.component?.apply {
-                            val expectedSelected = session.booleanValue(field.id)
-                            if (isSelected != expectedSelected) {
-                                isSelected = expectedSelected
-                            }
-                        }
-                    }
                 }
             }
         } finally {
@@ -303,8 +285,10 @@ internal class GeminioFormDialog(
         }
 
         if (visibilityChanged) {
-            contentPanel.revalidate()
-            contentPanel.repaint()
+            contentPanel?.let { panel ->
+                panel.revalidate()
+                panel.repaint()
+            }
         }
     }
 
@@ -315,9 +299,7 @@ internal class GeminioFormDialog(
         }
 
         autoManagedBooleanFieldIds.forEach { fieldId ->
-            val field = form.requireField(fieldId) as? GeminioFormField.BooleanField ?: return@forEach
-            val value = field.initialValueEvaluator?.invoke(session) ?: session.booleanValue(fieldId)
-            session.setBooleanValue(fieldId, value)
+            syncAutoManagedBooleanValue(fieldId)
         }
     }
 
@@ -334,52 +316,132 @@ internal class GeminioFormDialog(
         val value = session.stringValue(field.id).orEmpty()
         val component = stringFields[field.id]?.component ?: return null
 
-        field.constraints.forEach { constraint ->
-            when (constraint) {
-                StringParameterConstraint.NONEMPTY -> {
-                    if (value.isBlank()) {
-                        return ValidationInfo("'${field.name}' should not be empty", component)
-                    }
-                }
-
-                StringParameterConstraint.CLASS -> {
-                    if (value.isNotBlank() && value.isValidIdentifier(project).not()) {
-                        return ValidationInfo("'${field.name}' should be a valid class name", component)
-                    }
-                }
-
-                StringParameterConstraint.PACKAGE -> {
-                    if (value.isNotBlank() && value.isQualifiedPackageName(project).not()) {
-                        return ValidationInfo("'${field.name}' should be a valid package name", component)
-                    }
-                }
-
-                StringParameterConstraint.MODULE -> {
-                    if (value.isBlank() || value.any { it.isWhitespace() } || value.contains(':') || value.contains('/')) {
-                        return ValidationInfo("'${field.name}' should be a valid module name", component)
-                    }
-                }
-
-                StringParameterConstraint.SOURCE_SET_FOLDER -> {
-                    if (value.isBlank() || value.any { it == '/' || it == '\\' || it.isWhitespace() }) {
-                        return ValidationInfo("'${field.name}' should be a valid source set name", component)
-                    }
-                }
-
-                else -> {
-                    // Other constraints still live in the old Android template runtime and will be
-                    // reintroduced explicitly once the custom UI/execution stack fully replaces it.
-                }
+        return field.constraints
+            .asSequence()
+            .mapNotNull { constraint ->
+                validateConstraint(
+                    field = field,
+                    value = value,
+                    constraint = constraint,
+                    component = component,
+                )
             }
-        }
-
-        return null
+            .firstOrNull()
     }
 
     private fun shouldShowFieldComment(
         fieldName: String,
         help: String,
-    ): Boolean {
-        return help.isNotBlank() && help != fieldName
+    ): Boolean = help.isNotBlank() && help != fieldName
+
+    private fun shouldValidateField(field: GeminioFormField): Boolean {
+        val state = session.fieldState(field.id)
+        return (fieldVisibility[field.id] ?: true) && state.enabled
+    }
+
+    private fun validateField(field: GeminioFormField): ValidationInfo? {
+        return when (field) {
+            is GeminioFormField.StringField -> validateStringField(field)
+            is GeminioFormField.BooleanField -> null
+        }
+    }
+
+    private fun refreshFieldUi(field: GeminioFormField): Boolean {
+        val state = session.fieldState(field.id)
+        val previousVisibility = fieldVisibility.put(field.id, state.visible)
+
+        fieldRows[field.id]?.visible(state.visible)
+        fieldRows[field.id]?.enabled(state.enabled)
+        syncFieldComponent(field)
+
+        return previousVisibility != state.visible
+    }
+
+    private fun syncFieldComponent(field: GeminioFormField) {
+        when (field) {
+            is GeminioFormField.StringField -> {
+                val expectedText = session.stringValue(field.id).orEmpty()
+                stringFields[field.id]?.component?.takeIf { it.text != expectedText }?.text = expectedText
+            }
+
+            is GeminioFormField.BooleanField -> {
+                val expectedSelected = session.booleanValue(field.id)
+                booleanFields[field.id]?.component?.takeIf { it.isSelected != expectedSelected }?.isSelected =
+                    expectedSelected
+            }
+        }
+    }
+
+    private fun syncAutoManagedBooleanValue(fieldId: String) {
+        val field = form.requireField(fieldId) as? GeminioFormField.BooleanField ?: return
+        val value = field.initialValueEvaluator?.invoke(session) ?: session.booleanValue(fieldId)
+        session.setBooleanValue(fieldId, value)
+    }
+
+    private fun validateConstraint(
+        field: GeminioFormField.StringField,
+        value: String,
+        constraint: StringParameterConstraint,
+        component: JBTextField,
+    ): ValidationInfo? {
+        return when (constraint) {
+            StringParameterConstraint.NONEMPTY -> {
+                validationInfoOrNull(value.isBlank(), "'${field.name}' should not be empty", component)
+            }
+
+            StringParameterConstraint.CLASS -> {
+                validationInfoOrNull(
+                    value.isNotBlank() && value.isValidIdentifier(project).not(),
+                    "'${field.name}' should be a valid class name",
+                    component,
+                )
+            }
+
+            StringParameterConstraint.PACKAGE -> {
+                validationInfoOrNull(
+                    value.isNotBlank() && value.isQualifiedPackageName(project).not(),
+                    "'${field.name}' should be a valid package name",
+                    component,
+                )
+            }
+
+            StringParameterConstraint.MODULE -> {
+                validationInfoOrNull(
+                    isInvalidModuleName(value),
+                    "'${field.name}' should be a valid module name",
+                    component,
+                )
+            }
+
+            StringParameterConstraint.SOURCE_SET_FOLDER -> {
+                validationInfoOrNull(
+                    isInvalidSourceSetName(value),
+                    "'${field.name}' should be a valid source set name",
+                    component,
+                )
+            }
+
+            else -> null
+        }
+    }
+
+    private fun validationInfoOrNull(
+        shouldFail: Boolean,
+        message: String,
+        component: JBTextField,
+    ): ValidationInfo? {
+        return if (shouldFail) ValidationInfo(message, component) else null
+    }
+
+    private fun isInvalidModuleName(value: String): Boolean {
+        return value.isBlank() ||
+            value.any(Char::isWhitespace) ||
+            value.contains(':') ||
+            value.contains('/')
+    }
+
+    private fun isInvalidSourceSetName(value: String): Boolean {
+        return value.isBlank() ||
+            value.any { it == '/' || it == '\\' || it.isWhitespace() }
     }
 }

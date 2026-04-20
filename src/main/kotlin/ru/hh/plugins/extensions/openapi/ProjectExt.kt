@@ -3,7 +3,6 @@ package ru.hh.plugins.extensions.openapi
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.project.modules
 import com.intellij.psi.codeStyle.CodeStyleManager
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
@@ -21,24 +20,6 @@ import ru.hh.plugins.logger.HHLogger
  */
 fun Project.executeWithoutCodeStyle(action: () -> Unit) {
     CodeStyleManager.getInstance(this).performActionWithFormatterDisabled(action)
-}
-
-/**
- * Fetch all android applications modules in project.
- *
- * Application module - module with applied `com.android.application` gradle plugin.
- */
-fun Project.getAndroidApplicationsModules(): List<Module> {
-    return modules.asList().filter { it.isAndroidAppModule() }
-}
-
-/**
- * Fetch all libraries modules in project.
- *
- * Library module - module with applied `com.android.library` or `java-library` gradle plugins.
- */
-fun Project.getLibrariesModules(): List<Module> {
-    return modules.asList().filter { it.isAndroidLibraryModule() }
 }
 
 fun Project.getRootModule(): Module {

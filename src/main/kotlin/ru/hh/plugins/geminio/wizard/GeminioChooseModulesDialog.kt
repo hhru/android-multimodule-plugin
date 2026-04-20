@@ -10,8 +10,8 @@ import com.intellij.util.ui.JBUI
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.layout.onTextChange
-import ru.hh.plugins.extensions.openapi.getAndroidApplicationsModules
 import ru.hh.plugins.geminio.actions.module_template.steps.ModuleDisplayableItem
+import ru.hh.plugins.geminio.services.android.getAndroidApplicationsModules
 import ru.hh.plugins.views.CheckBoxListView
 import java.awt.Dimension
 import javax.swing.JComponent
@@ -25,10 +25,15 @@ internal class GeminioChooseModulesDialog(
     private val project: Project,
     title: String,
     private val confirmActionText: String = "Finish",
-    private val preferredDialogSize: Dimension = Dimension(680, 520),
+    private val preferredDialogSize: Dimension = Dimension(DEFAULT_DIALOG_WIDTH, DEFAULT_DIALOG_HEIGHT),
 ) : DialogWrapper(project, true) {
 
-    private lateinit var modulesListView: CheckBoxListView<ModuleDisplayableItem>
+    private companion object {
+        const val DEFAULT_DIALOG_WIDTH = 680
+        const val DEFAULT_DIALOG_HEIGHT = 520
+    }
+
+    private val modulesListView = CheckBoxListView<ModuleDisplayableItem>()
 
     private val allModulesItems: List<ModuleDisplayableItem> by lazy {
         val projectNamePrefix = "${project.name.replace(Char.SPACE, Char.UNDERSCORE)}."
@@ -73,7 +78,6 @@ internal class GeminioChooseModulesDialog(
             }
 
             row {
-                modulesListView = CheckBoxListView()
                 scrollCell(modulesListView)
                     .label("Choose app-modules:", LabelPosition.TOP)
                     .align(Align.FILL)
@@ -104,8 +108,8 @@ internal class GeminioChooseModulesDialog(
         }
     }
 
-    override fun getPreferredFocusedComponent(): JComponent? {
-        return if (::modulesListView.isInitialized) modulesListView else null
+    override fun getPreferredFocusedComponent(): JComponent {
+        return modulesListView
     }
 
     fun getSelectedModules(): List<Module> {

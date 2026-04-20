@@ -1,30 +1,29 @@
 package ru.hh.plugins.geminio.actions.template
 
-import com.android.tools.idea.model.AndroidModel
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
-import org.jetbrains.android.facet.AndroidFacet
-import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.getTargetDirectory
-import ru.hh.plugins.extensions.packageName
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
+import ru.hh.plugins.geminio.services.android.GeminioAndroidPathContextFactory
 import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
+import ru.hh.plugins.geminio.services.android.hasAvailableAndroidTemplateContext
+import ru.hh.plugins.geminio.services.android.packageName
+import ru.hh.plugins.geminio.services.android.requireAndroidTemplateContext
+import ru.hh.plugins.geminio.services.android.showAndroidSyncQuestionDialog
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
@@ -52,18 +51,14 @@ class ExecuteGeminioTemplateAction(
     private companion object {
         const val DIALOG_TITLE = "Geminio template"
         const val LOADING_TITLE = "Generating Geminio template"
+        const val EXECUTION_FAILURE_MESSAGE =
+            "Some error occurred when '%s' executed. Check warnings at the bottom right corner."
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
-        val dataContext = e.dataContext
-
-        val module = LangDataKeys.MODULE.getData(dataContext)
-        val facet = module?.let { AndroidFacet.getInstance(it) }
-
-        e.presentation
-            .isEnabledAndVisible = (e.project == null || facet == null || AndroidModel.get(facet) == null).not()
+        e.presentation.isEnabledAndVisible = e.hasAvailableAndroidTemplateContext()
     }
 
     override fun actionPerformed(actionEvent: AnActionEvent) {
@@ -72,7 +67,7 @@ class ExecuteGeminioTemplateAction(
         val geminioSdk = GeminioSdkFactory.createGeminioSdk()
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
 
-        val (project, facet) = actionEvent.fetchEventData()
+        val (project, facet) = actionEvent.requireAndroidTemplateContext()
 
         val targetDirectory = actionEvent.getTargetDirectory()
         val form = geminioRecipe.toGeminioForm()
@@ -96,7 +91,7 @@ class ExecuteGeminioTemplateAction(
         } else {
             templateContext.initialPackageSuggestion.ifBlank { facet.packageName }
         }
-        val pathContext = GeminioRecipePathContextFactory.createForExistingModule(
+        val pathContext = GeminioAndroidPathContextFactory.createForExistingModule(
             facet = facet,
             targetDirectory = targetDirectory,
             targetPackageName = targetPackageName,
@@ -159,37 +154,28 @@ class ExecuteGeminioTemplateAction(
                     }
 
                 completedSuccessfully = true
-            } catch (error: Throwable) {
-                HHLogger.e("Template '$actionText' execution failed:\n${error.stackTraceToString()}")
-                HHNotifications.error(
-                    message = "Some error occurred when '$actionText' executed. " +
-                            "Check warnings at the bottom right corner."
-                )
+            } catch (error: IOException) {
+                handleExecutionError(actionText, error)
+            } catch (error: IllegalArgumentException) {
+                handleExecutionError(actionText, error)
+            } catch (error: IllegalStateException) {
+                handleExecutionError(actionText, error)
             } finally {
                 loadingDialog.dispose()
             }
 
             if (completedSuccessfully) {
-                project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
+                project.showAndroidSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
                 HHNotifications.info(message = "Finished '$actionText' template execution")
             }
         }
     }
 
-    private fun AnActionEvent.fetchEventData(): EventData {
-        val dataContext = dataContext
-
-        val module = LangDataKeys.MODULE.getData(dataContext)
-        val facet = module?.let { AndroidFacet.getInstance(it) }
-
-        return EventData(
-            project = requireNotNull(project),
-            androidFacet = requireNotNull(facet)
-        )
+    private fun handleExecutionError(
+        actionText: String,
+        error: Exception,
+    ) {
+        HHLogger.e("Template '$actionText' execution failed:\n${error.stackTraceToString()}")
+        HHNotifications.error(message = EXECUTION_FAILURE_MESSAGE.format(actionText))
     }
-
-    private data class EventData(
-        val project: Project,
-        val androidFacet: AndroidFacet
-    )
 }

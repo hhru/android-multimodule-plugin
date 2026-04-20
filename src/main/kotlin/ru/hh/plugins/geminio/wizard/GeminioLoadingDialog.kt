@@ -5,7 +5,6 @@ import com.intellij.openapi.wm.WindowManager
 import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI
-import java.awt.Dialog
 import javax.swing.JDialog
 import javax.swing.JProgressBar
 
@@ -22,8 +21,12 @@ internal class GeminioLoadingDialog(
 ) : JDialog(
     WindowManager.getInstance().getFrame(project),
     title,
-    Dialog.ModalityType.MODELESS,
+    ModalityType.MODELESS,
 ) {
+
+    private companion object {
+        const val DIALOG_PADDING = 16
+    }
 
     init {
         defaultCloseOperation = DO_NOTHING_ON_CLOSE
@@ -41,7 +44,7 @@ internal class GeminioLoadingDialog(
                     .resizableColumn()
             }
         }.apply {
-            border = JBUI.Borders.empty(16)
+            border = JBUI.Borders.empty(DIALOG_PADDING)
         }
 
         pack()

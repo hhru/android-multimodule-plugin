@@ -1,16 +1,22 @@
-package ru.hh.plugins.geminio.sdk.execution
+package ru.hh.plugins.geminio.services.android
 
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
-import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
-import ru.hh.plugins.geminio.models.GeminioSourceSetConfig
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
-import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
 
 /**
- * Builds path aliases used by Geminio expressions for both existing-module and new-module flows.
+ * Builds Geminio path aliases from Android-specific module metadata.
  */
-internal object GeminioRecipePathContextFactory {
+internal object GeminioAndroidPathContextFactory {
+
+    internal data class NewModulePathRequest(
+        val currentDirPath: String,
+        val newModuleRootDirectoryPath: String,
+        val moduleName: String,
+        val packageName: String,
+        val sourceSet: String,
+        val sourceCodeFolderName: String,
+    )
 
     fun createForExistingModule(
         facet: AndroidFacet,
@@ -25,7 +31,8 @@ internal object GeminioRecipePathContextFactory {
 
         return GeminioFormPathContext(
             srcOut = requireNotNull(modulePaths.getSrcDirectory(targetPackageName)) {
-                "Cannot resolve src directory for package '$targetPackageName' in module '${templateContext.namedModuleTemplate.name}'"
+                "Cannot resolve src directory for package '$targetPackageName' " +
+                    "in module '${templateContext.namedModuleTemplate.name}'"
             }.absolutePath,
             resOut = modulePaths.resDirectories.firstOrNull()
                 ?.absolutePath
@@ -37,29 +44,22 @@ internal object GeminioRecipePathContextFactory {
         )
     }
 
-    fun createForNewModule(
-        currentDirPath: String,
-        newModuleRootDirectoryPath: String,
-        moduleName: String,
-        packageName: String,
-        sourceSet: String,
-        sourceCodeFolderName: String,
-    ): GeminioFormPathContext {
+    fun createForNewModule(request: NewModulePathRequest): GeminioFormPathContext {
         val modulePaths = GeminioAndroidModulePaths(
-            basePath = newModuleRootDirectoryPath,
-            moduleName = moduleName,
+            basePath = request.newModuleRootDirectoryPath,
+            moduleName = request.moduleName,
             sourceSetConfig = GeminioSourceSetConfig(
-                sourceSet = sourceSet,
-                sourceCodeFolderName = sourceCodeFolderName,
+                sourceSet = request.sourceSet,
+                sourceCodeFolderName = request.sourceCodeFolderName,
             ),
         )
 
         return GeminioFormPathContext(
-            srcOut = modulePaths.getSrcDirectory(packageName).absolutePath,
+            srcOut = modulePaths.getSrcDirectory(request.packageName).absolutePath,
             resOut = modulePaths.resDirectories.firstOrNull()?.absolutePath,
             manifestOut = modulePaths.manifestDirectory.absolutePath,
             rootOut = modulePaths.moduleRoot.absolutePath,
-            currentDirOut = currentDirPath,
+            currentDirOut = request.currentDirPath,
         )
     }
 

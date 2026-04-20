@@ -44,5 +44,4 @@ internal object EditorUtils {
         ProjectViewSelectInPaneTarget(project, currentPane, true)
             .select(psiFile, false)
     }
-
 }

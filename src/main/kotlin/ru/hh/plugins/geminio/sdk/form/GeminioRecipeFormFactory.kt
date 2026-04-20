@@ -116,7 +116,8 @@ private fun createPredefinedModuleFields(
 }
 
 private fun RecipeParameter.toFormField(): GeminioFormField {
-    // TODO: add enum parameter support when Geminio recipes start exposing them in the custom UI runtime.
+    // Enum widget support is intentionally deferred until Geminio recipes start exposing it
+    // through the custom UI runtime.
     return when (this) {
         is RecipeParameter.StringParameter -> GeminioFormField.StringField(
             id = id,
@@ -146,8 +147,8 @@ private fun GlobalsSection.toShowHiddenGlobalsField(
     existingFieldIds: Set<String>,
 ): GeminioFormField.BooleanField {
     check(GLOBALS_SHOW_HIDDEN_VALUES_ID !in existingFieldIds) {
-        "You cannot have template parameter with id='$GLOBALS_SHOW_HIDDEN_VALUES_ID' with 'globals' section in your recipe.yaml. " +
-            "Rename your parameter from widgets section."
+        "You cannot have template parameter with id='$GLOBALS_SHOW_HIDDEN_VALUES_ID' " +
+            "with 'globals' section in your recipe.yaml. Rename your parameter from widgets section."
     }
 
     return GeminioFormField.BooleanField(

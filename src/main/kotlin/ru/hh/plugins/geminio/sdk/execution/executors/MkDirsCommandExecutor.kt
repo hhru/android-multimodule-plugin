@@ -2,7 +2,6 @@ package ru.hh.plugins.geminio.sdk.execution.executors
 
 import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeEvaluationContext
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeFileOperations
 import ru.hh.plugins.geminio.sdk.execution.evaluateString
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.MkDirItem
@@ -14,7 +13,6 @@ import java.io.File
  */
 internal fun RecipeCommand.MkDirs.execute(
     context: GeminioRecipeEvaluationContext,
-    request: GeminioRecipeExecutionRequest,
     fileOperations: GeminioRecipeFileOperations,
 ) {
     dirs.forEach { rootItem ->
@@ -32,7 +30,8 @@ private fun GeminioRecipeFileOperations.makeDirectories(
     context: GeminioRecipeEvaluationContext,
 ) {
     val directoryName = requireNotNull(mkDirItem.name.evaluateString(context)) {
-        "Recipe execution, 'mkDirs' command: cannot evaluate directory name [mkDirItem: $mkDirItem, combinedPath: $combinedPath]"
+        "Recipe execution, 'mkDirs' command: cannot evaluate directory name " +
+            "[mkDirItem: $mkDirItem, combinedPath: $combinedPath]"
     }
     val filePath = "$combinedPath/".takeIf { combinedPath.isNotEmpty() }.orEmpty() + directoryName
 
