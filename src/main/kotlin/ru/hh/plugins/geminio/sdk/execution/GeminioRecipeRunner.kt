@@ -8,7 +8,9 @@ import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
  * Pure Geminio execution engine that interprets recipe commands without Android Studio templates.
  */
 internal class GeminioRecipeRunner(
-    private val fileOperationsFactory: (project: com.intellij.openapi.project.Project) -> GeminioRecipeFileOperations = ::IdeGeminioRecipeFileOperations,
+    private val fileOperationsFactory:
+    (project: com.intellij.openapi.project.Project) -> GeminioRecipeFileOperations =
+        ::IdeGeminioRecipeFileOperations,
 ) {
 
     fun run(
@@ -44,10 +46,10 @@ internal class GeminioRecipeRunner(
             when (command) {
                 is RecipeCommand.Instantiate -> command.execute(context, request, fileOperations)
                 is RecipeCommand.InstantiateAndOpen -> command.execute(context, request, fileOperations)
-                is RecipeCommand.Open -> command.execute(context, request, fileOperations)
+                is RecipeCommand.Open -> command.execute(context, fileOperations)
                 is RecipeCommand.Predicate -> command.execute(this, context, request, fileOperations)
                 is RecipeCommand.AddDependencies -> command.execute(context, request)
-                is RecipeCommand.MkDirs -> command.execute(context, request, fileOperations)
+                is RecipeCommand.MkDirs -> command.execute(context, fileOperations)
                 is RecipeCommand.AddGradlePlugins -> command.execute(context, request)
             }
         }

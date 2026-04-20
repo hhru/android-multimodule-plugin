@@ -28,16 +28,9 @@ internal object ReformatUtils {
             files.asSequence()
                 .filter(File::isFile)
                 .filterNot { it.name.startsWith("gradlew") }
-                .forEach { file ->
-                    val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file)
-                        ?: return@forEach
-
-                    reformatAndRearrange(
-                        project = project,
-                        virtualFile = virtualFile,
-                        keepDocumentLocked = true,
-                    )
-
+                .mapNotNull(LocalFileSystem.getInstance()::findFileByIoFile)
+                .forEach { virtualFile ->
+                    reformatAndRearrange(project, virtualFile, keepDocumentLocked = true)
                     FileDocumentManager.getInstance().getDocument(virtualFile)?.let { document ->
                         FileDocumentManager.getInstance().saveDocument(document)
                     }

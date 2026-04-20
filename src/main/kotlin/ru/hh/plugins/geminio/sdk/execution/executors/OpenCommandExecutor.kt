@@ -1,7 +1,6 @@
 package ru.hh.plugins.geminio.sdk.execution.executors
 
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeEvaluationContext
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeFileOperations
 import ru.hh.plugins.geminio.sdk.execution.evaluateString
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
@@ -13,7 +12,6 @@ import java.io.File
  */
 internal fun RecipeCommand.Open.execute(
     context: GeminioRecipeEvaluationContext,
-    request: GeminioRecipeExecutionRequest,
     fileOperations: GeminioRecipeFileOperations,
 ) {
     val filePath = file.evaluateString(context)

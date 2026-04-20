@@ -12,7 +12,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
-import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
@@ -26,7 +25,6 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETE
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioForm
@@ -36,6 +34,8 @@ import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
+import ru.hh.plugins.geminio.services.android.GeminioAndroidPathContextFactory
+import ru.hh.plugins.geminio.services.android.showAndroidSyncQuestionDialog
 import ru.hh.plugins.geminio.wizard.GeminioChooseModulesDialog
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
@@ -66,10 +66,17 @@ class ExecuteGeminioModuleTemplateAction(
         const val DIALOG_TITLE = "Geminio Module wizard"
         const val CHOOSE_MODULES_DIALOG_TITLE = "Choose app-modules"
         const val LOADING_TITLE = "Generating Geminio module template"
+        const val MODULE_FORM_DIALOG_WIDTH = 760
+        const val MODULE_FORM_DIALOG_HEIGHT = 620
+        const val CHOOSE_MODULES_DIALOG_WIDTH = 720
+        const val CHOOSE_MODULES_DIALOG_HEIGHT = 560
     }
 
-    private val MODULE_FORM_DIALOG_SIZE = Dimension(760, 620)
-    private val CHOOSE_MODULES_DIALOG_SIZE = Dimension(720, 560)
+    private val moduleFormDialogSize = Dimension(MODULE_FORM_DIALOG_WIDTH, MODULE_FORM_DIALOG_HEIGHT)
+    private val chooseModulesDialogSize = Dimension(
+        CHOOSE_MODULES_DIALOG_WIDTH,
+        CHOOSE_MODULES_DIALOG_HEIGHT,
+    )
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
@@ -94,7 +101,10 @@ class ExecuteGeminioModuleTemplateAction(
         val geminioRecipe = geminioSdk.parseYamlRecipe(geminioRecipePath)
 
         check(geminioRecipe.predefinedFeaturesSection.hasFeature(PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS)) {
-            "Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
+            "Recipe for module creation should enable " +
+                "'${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. " +
+                "Add 'predefinedFeatures' section with " +
+                "'${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"
         }
 
         HHLogger.d("Recipe successfully parsed!")
@@ -102,7 +112,8 @@ class ExecuteGeminioModuleTemplateAction(
         val targetDirectory = actionEvent.getTargetDirectory()
         val features = geminioRecipe
             .predefinedFeaturesSection
-            .features[PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS] as PredefinedFeatureParameter.ModuleCreationParameter
+            .features[PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS]
+            as PredefinedFeatureParameter.ModuleCreationParameter
 
         val form = geminioRecipe.toGeminioForm()
         val formSession = GeminioFormSession(form)
@@ -112,38 +123,31 @@ class ExecuteGeminioModuleTemplateAction(
         // focused text fields is opened directly from a popup action.
         ApplicationManager.getApplication().invokeLater {
             showModuleCreationFlow(
-                actionEvent = actionEvent,
-                project = project,
-                directoryPath = directoryPath,
-                targetDirectory = targetDirectory,
-                geminioRecipe = geminioRecipe,
-                features = features,
-                form = form,
-                formSession = formSession,
+                ModuleCreationFlowContext(
+                    actionEvent = actionEvent,
+                    project = project,
+                    directoryPath = directoryPath,
+                    targetDirectory = targetDirectory,
+                    geminioRecipe = geminioRecipe,
+                    features = features,
+                    form = form,
+                    formSession = formSession,
+                ),
             )
         }
     }
 
-    private fun showModuleCreationFlow(
-        actionEvent: AnActionEvent,
-        project: Project,
-        directoryPath: String,
-        targetDirectory: VirtualFile,
-        geminioRecipe: GeminioRecipe,
-        features: PredefinedFeatureParameter.ModuleCreationParameter,
-        form: GeminioForm,
-        formSession: GeminioFormSession,
-    ) {
+    private fun showModuleCreationFlow(context: ModuleCreationFlowContext) {
         HHLogger.d("Showing custom Geminio module form dialog")
         val formDialog = GeminioFormDialog(
-            project = project,
+            project = context.project,
             title = "$DIALOG_TITLE: $actionText",
-            templateName = geminioRecipe.requiredParams.name,
-            templateDescription = geminioRecipe.requiredParams.description,
-            form = form,
-            session = formSession,
-            confirmActionText = if (features.enableChooseModulesStep) "Next" else "Finish",
-            preferredScrollSize = MODULE_FORM_DIALOG_SIZE,
+            templateName = context.geminioRecipe.requiredParams.name,
+            templateDescription = context.geminioRecipe.requiredParams.description,
+            form = context.form,
+            session = context.formSession,
+            confirmActionText = if (context.features.enableChooseModulesStep) "Next" else "Finish",
+            preferredScrollSize = moduleFormDialogSize,
             preferInitialInputFocus = false,
         )
         if (formDialog.showAndGet().not()) {
@@ -151,87 +155,39 @@ class ExecuteGeminioModuleTemplateAction(
             return
         }
 
-        val selectedApplicationModules = if (features.enableChooseModulesStep) {
-            HHLogger.d("Showing Geminio choose-modules dialog")
-            val chooseModulesDialog = GeminioChooseModulesDialog(
-                project = project,
-                title = CHOOSE_MODULES_DIALOG_TITLE,
-                confirmActionText = "Finish",
-                preferredDialogSize = CHOOSE_MODULES_DIALOG_SIZE,
-            )
-            if (chooseModulesDialog.showAndGet().not()) {
-                HHNotifications.error(message = "User closed Geminio Module Template Wizard")
-                return
-            }
-            chooseModulesDialog.getSelectedModules()
-        } else {
-            emptyList()
-        }
-
-        val moduleName = requireNotNull(formSession.stringValue(FEATURE_MODULE_NAME_PARAMETER_ID)) {
-            "Module name should be available for Geminio module template execution"
-        }
-        val packageName = requireNotNull(formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
-            "Package name should be available for Geminio module template execution"
-        }
-        val sourceSet = requireNotNull(formSession.stringValue(FEATURE_SOURCE_SET_PARAMETER_ID)) {
-            "Source set should be available for Geminio module template execution"
-        }
-        val sourceCodeFolderName =
-            requireNotNull(formSession.stringValue(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID)) {
-                "Source code folder name should be available for Geminio module template execution"
-            }
-        val pathContext = GeminioRecipePathContextFactory.createForNewModule(
-            currentDirPath = targetDirectory.path,
-            newModuleRootDirectoryPath = directoryPath,
-            moduleName = moduleName,
-            packageName = packageName,
-            sourceSet = sourceSet,
-            sourceCodeFolderName = sourceCodeFolderName,
-        )
-        val additionalParameters = createAdditionalTemplateParameters(
-            project = project,
-            applicationModules = selectedApplicationModules,
-        )
-        val executionRequest = GeminioRecipeExecutionRequest(
-            project = project,
-            pathContext = pathContext,
-            templateParameters = GeminioTemplateParametersFactory.create(
-                session = formSession,
-                packageName = packageName,
-                applicationPackageName = packageName,
-                currentDirPath = requireNotNull(pathContext.currentDirOut),
-                additionalParameters = additionalParameters,
-            ),
-            freemarkerConfiguration = FreemarkerConfiguration(
-                geminioRecipe.freemarkerTemplatesRootDirPath,
-            ),
-        )
+        val selectedApplicationModules = chooseApplicationModules(context)
+            ?: return
 
         executeModuleTemplateWithLoader(
-            project = project,
-            actionEvent = actionEvent,
-            actionText = actionText,
-            directoryPath = directoryPath,
-            geminioRecipe = geminioRecipe,
-            executionRequest = executionRequest,
-            moduleName = moduleName,
-            applicationModules = selectedApplicationModules,
+            buildExecutionContext(context, selectedApplicationModules),
         )
     }
 
-    private fun executeModuleTemplateWithLoader(
-        project: Project,
-        actionEvent: AnActionEvent,
-        actionText: String,
-        directoryPath: String,
-        geminioRecipe: GeminioRecipe,
-        executionRequest: GeminioRecipeExecutionRequest,
-        moduleName: String,
-        applicationModules: List<Module>,
-    ) {
+    private fun chooseApplicationModules(
+        context: ModuleCreationFlowContext,
+    ): List<Module>? {
+        return if (context.features.enableChooseModulesStep) {
+            HHLogger.d("Showing Geminio choose-modules dialog")
+            val chooseModulesDialog = GeminioChooseModulesDialog(
+                project = context.project,
+                title = CHOOSE_MODULES_DIALOG_TITLE,
+                confirmActionText = "Finish",
+                preferredDialogSize = chooseModulesDialogSize,
+            )
+            if (chooseModulesDialog.showAndGet().not()) {
+                HHNotifications.error(message = "User closed Geminio Module Template Wizard")
+                null
+            } else {
+                chooseModulesDialog.getSelectedModules()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun executeModuleTemplateWithLoader(context: ModuleExecutionContext) {
         val loadingDialog = GeminioLoadingDialog(
-            project = project,
+            project = context.project,
             title = LOADING_TITLE,
             description = "Generating '$actionText' module template. Please wait...",
         )
@@ -240,51 +196,137 @@ class ExecuteGeminioModuleTemplateAction(
         ApplicationManager.getApplication().invokeLater {
             var completedSuccessfully = false
             try {
-                WriteCommandAction.writeCommandAction(project)
-                    .withName("Geminio module recipe execution '${geminioRecipe.requiredParams.name}")
+                WriteCommandAction.writeCommandAction(context.project)
+                    .withName("Geminio module recipe execution '${context.geminioRecipe.requiredParams.name}")
                     .withGlobalUndo()
                     .withUndoConfirmationPolicy(UndoConfirmationPolicy.REQUEST_CONFIRMATION)
                     .run<IOException> {
                         GeminioRecipeRunner().run(
-                            geminioRecipe = geminioRecipe,
-                            request = executionRequest,
+                            geminioRecipe = context.geminioRecipe,
+                            request = context.executionRequest,
                         ).also { result ->
                             GeminioGeneratedFilesPostProcessor.process(
-                                project = project,
+                                project = context.project,
                                 createdFiles = result.createdFiles,
                                 filesToOpen = result.filesToOpen,
                             )
                         }
 
                         modifySettingGradle(
-                            project = project,
-                            directoryPath = directoryPath,
-                            moduleName = moduleName,
+                            project = context.project,
+                            directoryPath = context.directoryPath,
+                            moduleName = context.moduleName,
                         )
                         modifyBuildGradle(
-                            project = project,
-                            applicationModules = applicationModules,
-                            moduleName = moduleName,
+                            project = context.project,
+                            applicationModules = context.applicationModules,
+                            moduleName = context.moduleName,
                         )
                     }
 
                 completedSuccessfully = true
-            } catch (error: Throwable) {
-                HHLogger.e("Module template '$actionText' execution failed:\n${error.stackTraceToString()}")
-                HHNotifications.error(
-                    message = "Some error occurred when '$actionText' executed. " +
-                            "Check warnings at the bottom right corner."
-                )
+            } catch (error: IOException) {
+                handleModuleExecutionError(error)
+            } catch (error: IllegalArgumentException) {
+                handleModuleExecutionError(error)
+            } catch (error: IllegalStateException) {
+                handleModuleExecutionError(error)
             } finally {
                 loadingDialog.dispose()
             }
 
             if (completedSuccessfully) {
-                project.showSyncQuestionDialog(syncPerformedActionEvent = actionEvent)
+                context.project.showAndroidSyncQuestionDialog(syncPerformedActionEvent = context.actionEvent)
                 HHNotifications.info(message = "Finished '$actionText' module template execution")
             }
         }
     }
+
+    private fun handleModuleExecutionError(error: Exception) {
+        HHLogger.e("Module template '$actionText' execution failed:\n${error.stackTraceToString()}")
+        HHNotifications.error(
+            message = "Some error occurred when '$actionText' executed. " +
+                "Check warnings at the bottom right corner."
+        )
+    }
+
+    private fun buildExecutionContext(
+        context: ModuleCreationFlowContext,
+        selectedApplicationModules: List<Module>,
+    ): ModuleExecutionContext {
+        val moduleName = requireNotNull(context.formSession.stringValue(FEATURE_MODULE_NAME_PARAMETER_ID)) {
+            "Module name should be available for Geminio module template execution"
+        }
+        val packageName = requireNotNull(context.formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
+            "Package name should be available for Geminio module template execution"
+        }
+        val sourceSet = requireNotNull(context.formSession.stringValue(FEATURE_SOURCE_SET_PARAMETER_ID)) {
+            "Source set should be available for Geminio module template execution"
+        }
+        val sourceCodeFolderName =
+            requireNotNull(context.formSession.stringValue(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID)) {
+                "Source code folder name should be available for Geminio module template execution"
+            }
+        val pathContext = GeminioAndroidPathContextFactory.createForNewModule(
+            request = GeminioAndroidPathContextFactory.NewModulePathRequest(
+                currentDirPath = context.targetDirectory.path,
+                newModuleRootDirectoryPath = context.directoryPath,
+                moduleName = moduleName,
+                packageName = packageName,
+                sourceSet = sourceSet,
+                sourceCodeFolderName = sourceCodeFolderName,
+            ),
+        )
+        val additionalParameters = createAdditionalTemplateParameters(
+            project = context.project,
+            applicationModules = selectedApplicationModules,
+        )
+        val executionRequest = GeminioRecipeExecutionRequest(
+            project = context.project,
+            pathContext = pathContext,
+            templateParameters = GeminioTemplateParametersFactory.create(
+                session = context.formSession,
+                packageName = packageName,
+                applicationPackageName = packageName,
+                currentDirPath = requireNotNull(pathContext.currentDirOut),
+                additionalParameters = additionalParameters,
+            ),
+            freemarkerConfiguration = FreemarkerConfiguration(
+                context.geminioRecipe.freemarkerTemplatesRootDirPath,
+            ),
+        )
+
+        return ModuleExecutionContext(
+            project = context.project,
+            actionEvent = context.actionEvent,
+            directoryPath = context.directoryPath,
+            geminioRecipe = context.geminioRecipe,
+            executionRequest = executionRequest,
+            moduleName = moduleName,
+            applicationModules = selectedApplicationModules,
+        )
+    }
+
+    private data class ModuleCreationFlowContext(
+        val actionEvent: AnActionEvent,
+        val project: Project,
+        val directoryPath: String,
+        val targetDirectory: VirtualFile,
+        val geminioRecipe: GeminioRecipe,
+        val features: PredefinedFeatureParameter.ModuleCreationParameter,
+        val form: GeminioForm,
+        val formSession: GeminioFormSession,
+    )
+
+    private data class ModuleExecutionContext(
+        val project: Project,
+        val actionEvent: AnActionEvent,
+        val directoryPath: String,
+        val geminioRecipe: GeminioRecipe,
+        val executionRequest: GeminioRecipeExecutionRequest,
+        val moduleName: String,
+        val applicationModules: List<Module>,
+    )
 
     private fun createAdditionalTemplateParameters(
         project: Project,

@@ -1,4 +1,4 @@
-package ru.hh.plugins.geminio.models
+package ru.hh.plugins.geminio.services.android
 
 import com.android.tools.idea.projectsystem.AndroidModulePaths
 import ru.hh.plugins.extensions.toSlashedFilePath
@@ -6,10 +6,9 @@ import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 /**
- * Implementation of [com.android.tools.idea.projectsystem.AndroidModulePaths] interface
- * for correct propagation of different folders paths.
+ * Android-specific module path adapter for Geminio module generation.
  */
-class GeminioAndroidModulePaths(
+internal class GeminioAndroidModulePaths(
     private val basePath: String,
     private val moduleName: String,
     sourceSetConfig: GeminioSourceSetConfig,
@@ -33,7 +32,6 @@ class GeminioAndroidModulePaths(
     override val manifestDirectory: File
         get() {
             val manifestDirectoryPath = "$moduleRootPath/$manifestFolderPath"
-
             log("getter for manifestDirectory | path: $manifestDirectoryPath")
             return File(manifestDirectoryPath)
         }
@@ -41,7 +39,6 @@ class GeminioAndroidModulePaths(
     override val moduleRoot: File
         get() {
             val moduleRootDirPath = moduleRootPath
-
             log("getter for moduleRoot | path: $moduleRootDirPath")
             return File(moduleRootDirPath)
         }
@@ -49,44 +46,37 @@ class GeminioAndroidModulePaths(
     override val resDirectories: List<File>
         get() {
             val resDirectoryPath = "$moduleRootPath/$resFolderPath"
-
             log("getter for resDirectories | path: $resDirectoryPath")
             return listOf(File(resDirectoryPath))
         }
 
     override fun getAidlDirectory(packageName: String?): File {
         val aidlDirectoryPath = "$moduleRootPath/$aidlFolderPath" + packageName?.toSlashedFilePath().orEmpty()
-
         log("getter for getAidlDirectory(packageName: $packageName) | path: $aidlDirectoryPath")
         return File(aidlDirectoryPath)
     }
 
     override fun getSrcDirectory(packageName: String?): File {
         val srcDirectoryPath = "$moduleRootPath/$sourcesFolderPath" + packageName?.toSlashedFilePath().orEmpty()
-
         log("getter for getSrcDirectory(packageName: $packageName) | path: $srcDirectoryPath")
         return File(srcDirectoryPath)
     }
 
     override fun getTestDirectory(packageName: String?): File {
         val testDirectoryPath = "$moduleRootPath/$uiTestsFolderPath" + packageName?.toSlashedFilePath().orEmpty()
-
         log("getter for getTestDirectory(packageName: $packageName) | path: $testDirectoryPath")
         return File(testDirectoryPath)
     }
 
     override fun getUnitTestDirectory(packageName: String?): File {
-        val unitTestDirectoryPath =
-            "$moduleRootPath/$unitTestsFolderPath" + packageName?.toSlashedFilePath().orEmpty()
-
+        val unitTestDirectoryPath = "$moduleRootPath/$unitTestsFolderPath" + packageName?.toSlashedFilePath().orEmpty()
         log("getter for getUnitTestDirectory(packageName: $packageName) | path: $unitTestDirectoryPath")
         return File(unitTestDirectoryPath)
     }
 
-    // Don't really know what it is.
     override val mlModelsDirectories: List<File>
         get() {
-            log("getter for mlModelsDirectories | I don't know WTF")
+            log("getter for mlModelsDirectories | not used")
             return emptyList()
         }
 

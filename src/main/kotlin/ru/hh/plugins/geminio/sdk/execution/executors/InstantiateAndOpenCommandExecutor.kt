@@ -20,5 +20,5 @@ internal fun RecipeCommand.InstantiateAndOpen.execute(
 
     RecipeCommand.Open(
         file = to,
-    ).execute(context, request, fileOperations)
+    ).execute(context, fileOperations)
 }

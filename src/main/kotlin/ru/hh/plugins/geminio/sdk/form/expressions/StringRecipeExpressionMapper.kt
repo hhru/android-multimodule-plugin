@@ -7,8 +7,18 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
 
+private const val ACTIVITY_KEYWORD = "Activity"
+private const val FRAGMENT_KEYWORD = "Fragment"
+private const val SERVICE_KEYWORD = "Service"
+private const val PROVIDER_KEYWORD = "Provider"
+private const val ACTIVITY_LAYOUT_PREFIX = "activity"
+private const val FRAGMENT_LAYOUT_PREFIX = "fragment"
+private const val ACTIVITY_LAYOUT_RESOURCE_PREFIX = "activity_"
+private const val FRAGMENT_LAYOUT_RESOURCE_PREFIX = "fragment_"
+
 /**
- * Converts a recipe string expression into a pure evaluator working on [ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext].
+ * Converts a recipe string expression into a pure evaluator working on
+ * [ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext].
  */
 internal fun RecipeExpression.toStringEvaluator(): GeminioFormStringEvaluator {
     val expression = this
@@ -88,15 +98,15 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
 
 private fun String.activityToLayout(): String {
     return componentToLayoutResourceName(
-        componentKeyword = "Activity",
-        layoutPrefix = "activity",
+        componentKeyword = ACTIVITY_KEYWORD,
+        layoutPrefix = ACTIVITY_LAYOUT_PREFIX,
     )
 }
 
 private fun String.fragmentToLayout(): String {
     return componentToLayoutResourceName(
-        componentKeyword = "Fragment",
-        layoutPrefix = "fragment",
+        componentKeyword = FRAGMENT_KEYWORD,
+        layoutPrefix = FRAGMENT_LAYOUT_PREFIX,
     )
 }
 
@@ -115,7 +125,7 @@ private fun String.componentToLayoutResourceName(
 private fun String.classToResource(): String {
     var result = this
 
-    listOf("Activity", "Fragment", "Service", "Provider")
+    listOf(ACTIVITY_KEYWORD, FRAGMENT_KEYWORD, SERVICE_KEYWORD, PROVIDER_KEYWORD)
         .forEach { suffix ->
             result = result.removeComponentSuffix(suffix)
         }
@@ -125,15 +135,15 @@ private fun String.classToResource(): String {
 
 private fun String.layoutToActivity(): String {
     return layoutToComponentName(
-        expectedPrefix = "activity_",
-        componentSuffix = "Activity",
+        expectedPrefix = ACTIVITY_LAYOUT_RESOURCE_PREFIX,
+        componentSuffix = ACTIVITY_KEYWORD,
     )
 }
 
 private fun String.layoutToFragment(): String {
     return layoutToComponentName(
-        expectedPrefix = "fragment_",
-        componentSuffix = "Fragment",
+        expectedPrefix = FRAGMENT_LAYOUT_RESOURCE_PREFIX,
+        componentSuffix = FRAGMENT_KEYWORD,
     )
 }
 

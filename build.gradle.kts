@@ -127,6 +127,19 @@ tasks.named<Detekt>("detekt").configure {
     }
 }
 
+val detektFormat by tasks.registering(Detekt::class) {
+    parallel = true
+    autoCorrect = true
+    disableDefaultRuleSets = true
+    buildUponDefaultConfig = true
+
+    config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
+    baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
+
+    include("**/*.kt")
+    include("**/*.kts")
+}
+
 val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) {
     description = "Overrides current baseline."
 

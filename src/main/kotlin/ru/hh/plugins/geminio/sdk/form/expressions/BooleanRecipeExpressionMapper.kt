@@ -6,7 +6,8 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 
 /**
- * Converts a recipe boolean expression into a pure evaluator working on [ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext].
+ * Converts a recipe boolean expression into a pure evaluator working on
+ * [ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext].
  */
 internal fun RecipeExpression.toBooleanEvaluator(): GeminioFormBooleanEvaluator {
     val expression = this
@@ -18,7 +19,8 @@ private fun RecipeExpression.evaluateBoolean(
 ): Boolean {
     return when (expressionCommands.size) {
         // Legacy compatibility with the old Android Studio-backed runtime.
-        // TODO: tighten this after the custom runtime migration and reject empty boolean expressions.
+        // This branch should be revisited after the custom runtime migration and eventually reject
+        // empty boolean expressions instead of silently treating them as `true`.
         0 -> true
         1 -> expressionCommands[0].resolveBooleanValue(context)
         else -> throw IllegalArgumentException(
