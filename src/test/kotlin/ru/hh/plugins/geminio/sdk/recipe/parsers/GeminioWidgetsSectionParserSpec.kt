@@ -220,6 +220,210 @@ internal class GeminioWidgetsSectionParserSpec : FreeSpec({
             )
         )
     }
+
+    "Should expand included widgets in declared order" {
+        val fixture = createRecipeFixture(
+            recipeYaml = """
+                requiredParams:
+                  name: Geminio include parser test
+                  description: Covers widgets include order
+
+                widgets:
+                  - stringParameter:
+                      id: screenName
+                      name: Screen name
+                      default: FeedScreen
+
+                  - include:
+                      file: shared/codeowners.widgets.yaml
+
+                  - booleanParameter:
+                      id: generateDi
+                      name: Generate DI
+                      default: true
+
+                recipe: []
+            """,
+            templates = mapOf(
+                "shared/codeowners.widgets.yaml" to """
+                    widgets:
+                      - stringParameter:
+                          id: codeOwnerTeam
+                          name: Codeowners team
+                          default: team-example
+
+                      - stringParameter:
+                          id: codeOwnerPath
+                          name: Codeowners path
+                          default: /feature
+                """
+            ),
+        )
+
+        fixture.recipe.widgetsSection.parameters.map(RecipeParameter::id) shouldBe listOf(
+            "screenName",
+            "codeOwnerTeam",
+            "codeOwnerPath",
+            "generateDi",
+        )
+    }
+
+    "Should resolve nested widgets includes" {
+        val fixture = createRecipeFixture(
+            recipeYaml = """
+                requiredParams:
+                  name: Geminio nested include test
+                  description: Covers nested widgets includes
+
+                widgets:
+                  - include:
+                      file: shared/base.widgets.yaml
+
+                recipe: []
+            """,
+            templates = mapOf(
+                "shared/base.widgets.yaml" to """
+                    widgets:
+                      - stringParameter:
+                          id: moduleName
+                          name: Module name
+                          default: feature-feed
+
+                      - include:
+                          file: nested/codeowners.widgets.yaml
+                """,
+                "shared/nested/codeowners.widgets.yaml" to """
+                    widgets:
+                      - stringParameter:
+                          id: codeOwnerTeam
+                          name: Codeowners team
+                          default: team-example
+                """
+            ),
+        )
+
+        fixture.recipe.widgetsSection.parameters.map(RecipeParameter::id) shouldBe listOf(
+            "moduleName",
+            "codeOwnerTeam",
+        )
+    }
+
+    "Should detect circular widgets includes" {
+        val exception = shouldThrow<IllegalArgumentException> {
+            createRecipeFixture(
+                recipeYaml = """
+                    requiredParams:
+                      name: Geminio include cycle test
+                      description: Covers circular widgets includes
+
+                    widgets:
+                      - include:
+                          file: shared/a.widgets.yaml
+
+                    recipe: []
+                """,
+                templates = mapOf(
+                    "shared/a.widgets.yaml" to """
+                        widgets:
+                          - include:
+                              file: b.widgets.yaml
+                    """,
+                    "shared/b.widgets.yaml" to """
+                        widgets:
+                          - include:
+                              file: a.widgets.yaml
+                    """
+                ),
+            )
+        }
+
+        exception.message?.contains("Circular widgets include detected") shouldBe true
+    }
+
+    "Should reject duplicate widget ids after include expansion" {
+        val exception = shouldThrow<IllegalArgumentException> {
+            createRecipeFixture(
+                recipeYaml = """
+                    requiredParams:
+                      name: Geminio duplicate widgets test
+                      description: Covers duplicate widget ids after include
+
+                    widgets:
+                      - stringParameter:
+                          id: codeOwnerTeam
+                          name: Codeowners team
+                          default: local-team
+
+                      - include:
+                          file: shared/codeowners.widgets.yaml
+
+                    recipe: []
+                """,
+                templates = mapOf(
+                    "shared/codeowners.widgets.yaml" to """
+                        widgets:
+                          - stringParameter:
+                              id: codeOwnerTeam
+                              name: Included codeowners team
+                              default: included-team
+                    """
+                ),
+            )
+        }
+
+        exception.message?.contains("Widget parameter ids should be unique") shouldBe true
+    }
+
+    "Should resolve suggest options source relative to included widgets file" {
+        val fixture = createRecipeFixture(
+            recipeYaml = """
+                requiredParams:
+                  name: Geminio include source test
+                  description: Covers options.source inside included widgets file
+
+                widgets:
+                  - include:
+                      file: shared/codeowners.widgets.yaml
+
+                recipe: []
+            """,
+            templates = mapOf(
+                "shared/codeowners.widgets.yaml" to """
+                    widgets:
+                      - suggestParameter:
+                          id: codeOwnerPath
+                          name: Codeowners path
+                          sealed: true
+                          options:
+                            source: options/codeowners_paths.csv
+                """,
+                "shared/options/codeowners_paths.csv" to """
+                    value,label
+                    /feature,Feature
+                    /service,Service
+                """
+            ),
+        )
+
+        fixture.recipe.widgetsSection shouldBe WidgetsSection(
+            parameters = listOf(
+                RecipeParameter.SuggestParameter(
+                    id = "codeOwnerPath",
+                    name = "Codeowners path",
+                    help = null,
+                    visibilityExpression = null,
+                    availabilityExpression = null,
+                    default = null,
+                    isSealed = true,
+                    suggestExpression = null,
+                    options = listOf(
+                        SuggestParameterOption(value = "/feature", label = "Feature"),
+                        SuggestParameterOption(value = "/service", label = "Service"),
+                    ),
+                )
+            )
+        )
+    }
 })
 
 private fun RecipeExpressionCommand.asExpression() =

@@ -5,6 +5,7 @@
 ### Added
 
 - `suggestParameter` — a searchable string-backed parameter with optional `sealed` mode, inline options and `options.source` CSV support.
+- `include` in the `widgets` section to reuse shared widget groups across multiple recipes.
 - Support `==` and `!=` operators for string-backed parameters in boolean expressions such as `visibility` and `availability`.
 - Undo support for recipe execution actions.
 

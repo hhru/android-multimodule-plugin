@@ -96,6 +96,35 @@ Additional notes:
   `default`, and if `default` is also missing or invalid, it falls back to the first option;
 - for `sealed: false`, any entered string is accepted, while `options` only power completion.
 
+#### `include`
+
+`include` lets you reuse a shared group of widgets from another file.
+
+Example:
+
+```yaml
+widgets:
+  - stringParameter:
+      id: screenName
+      name: Screen name
+      default: FeedScreen
+
+  - include:
+      file: shared/codeowners.widgets.yaml
+```
+
+Rules:
+
+- `file` is resolved relative to the file where the include is declared;
+- the included file should contain only the top-level `widgets` section;
+- includes are expanded in place, so widget order is preserved;
+- nested includes are supported;
+- circular includes are forbidden;
+- widget ids should remain unique after include expansion.
+
+If an included widget uses `suggestParameter.options.source`, that CSV path is also resolved
+relative to the included file, not to the root recipe.
+
 ---
 
 [Back to `recipe.yaml` content](../RECIPE_CONTENT.md)
