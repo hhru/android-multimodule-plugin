@@ -6,9 +6,10 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.UndoConfirmationPolicy
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.extensions.packageName
@@ -17,7 +18,6 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAME
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionResult
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
@@ -29,6 +29,7 @@ import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
+import java.io.IOException
 
 /**
  * Base action for executing templates from YAML config.
@@ -49,7 +50,6 @@ class ExecuteGeminioTemplateAction(
 ) {
 
     private companion object {
-        const val COMMAND_NAME = "ExecuteGeminioTemplateAction.Command"
         const val DIALOG_TITLE = "Geminio template"
         const val LOADING_TITLE = "Generating Geminio template"
     }
@@ -141,18 +141,23 @@ class ExecuteGeminioTemplateAction(
         ApplicationManager.getApplication().invokeLater {
             var completedSuccessfully = false
             try {
-                var executionResult: GeminioRecipeExecutionResult? = null
-                project.executeWriteCommand(COMMAND_NAME) {
-                    executionResult = GeminioRecipeRunner().run(
-                        geminioRecipe = geminioRecipe,
-                        request = executionRequest,
-                    )
-                }
-                GeminioGeneratedFilesPostProcessor.process(
-                    project = project,
-                    createdFiles = requireNotNull(executionResult).createdFiles,
-                    filesToOpen = requireNotNull(executionResult).filesToOpen,
-                )
+                WriteCommandAction.writeCommandAction(project)
+                    .withName("Geminio recipe execution '${geminioRecipe.requiredParams.name}")
+                    .withGlobalUndo()
+                    .withUndoConfirmationPolicy(UndoConfirmationPolicy.REQUEST_CONFIRMATION)
+                    .run<IOException> {
+                        GeminioRecipeRunner().run(
+                            geminioRecipe = geminioRecipe,
+                            request = executionRequest,
+                        ).also { result ->
+                            GeminioGeneratedFilesPostProcessor.process(
+                                project = project,
+                                createdFiles = result.createdFiles,
+                                filesToOpen = result.filesToOpen,
+                            )
+                        }
+                    }
+
                 completedSuccessfully = true
             } catch (error: Throwable) {
                 HHLogger.e("Template '$actionText' execution failed:\n${error.stackTraceToString()}")

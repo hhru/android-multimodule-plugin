@@ -4,11 +4,12 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.UndoConfirmationPolicy
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
-import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.code_modification.BuildGradleModificationService
 import ru.hh.plugins.code_modification.SettingsGradleModificationService
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
@@ -25,7 +26,6 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETE
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
-import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionResult
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
@@ -44,6 +44,7 @@ import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import java.awt.Dimension
+import java.io.IOException
 
 /**
  * Action for creating new module.
@@ -62,8 +63,6 @@ class ExecuteGeminioModuleTemplateAction(
 ) {
 
     private companion object {
-        const val COMMAND_RECIPE_EXECUTION = "ExecuteGeminioModuleTemplateAction.RecipeExecution"
-
         const val DIALOG_TITLE = "Geminio Module wizard"
         const val CHOOSE_MODULES_DIALOG_TITLE = "Choose app-modules"
         const val LOADING_TITLE = "Generating Geminio module template"
@@ -241,29 +240,34 @@ class ExecuteGeminioModuleTemplateAction(
         ApplicationManager.getApplication().invokeLater {
             var completedSuccessfully = false
             try {
-                var executionResult: GeminioRecipeExecutionResult? = null
-                project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-                    executionResult = GeminioRecipeRunner().run(
-                        geminioRecipe = geminioRecipe,
-                        request = executionRequest,
-                    )
+                WriteCommandAction.writeCommandAction(project)
+                    .withName("Geminio module recipe execution '${geminioRecipe.requiredParams.name}")
+                    .withGlobalUndo()
+                    .withUndoConfirmationPolicy(UndoConfirmationPolicy.REQUEST_CONFIRMATION)
+                    .run<IOException> {
+                        GeminioRecipeRunner().run(
+                            geminioRecipe = geminioRecipe,
+                            request = executionRequest,
+                        ).also { result ->
+                            GeminioGeneratedFilesPostProcessor.process(
+                                project = project,
+                                createdFiles = result.createdFiles,
+                                filesToOpen = result.filesToOpen,
+                            )
+                        }
 
-                    modifySettingGradle(
-                        project = project,
-                        directoryPath = directoryPath,
-                        moduleName = moduleName,
-                    )
-                    modifyBuildGradle(
-                        project = project,
-                        applicationModules = applicationModules,
-                        moduleName = moduleName,
-                    )
-                }
-                GeminioGeneratedFilesPostProcessor.process(
-                    project = project,
-                    createdFiles = requireNotNull(executionResult).createdFiles,
-                    filesToOpen = executionResult.filesToOpen,
-                )
+                        modifySettingGradle(
+                            project = project,
+                            directoryPath = directoryPath,
+                            moduleName = moduleName,
+                        )
+                        modifyBuildGradle(
+                            project = project,
+                            applicationModules = applicationModules,
+                            moduleName = moduleName,
+                        )
+                    }
+
                 completedSuccessfully = true
             } catch (error: Throwable) {
                 HHLogger.e("Module template '$actionText' execution failed:\n${error.stackTraceToString()}")
