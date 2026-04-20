@@ -67,6 +67,26 @@ widgets:
       help: Generate fragment Toothpick Module for easy instantiation
       default: true
 
+  - suggestParameter:
+      id: uiFramework
+      name: UI framework
+      help: Which UI stack should be generated
+      default: compose
+      sealed: true
+      options:
+        - value: compose
+          label: Compose
+        - value: views
+          label: Views
+
+  - suggestParameter:
+      id: targetModule
+      name: Target module
+      help: Module for integration
+      sealed: true
+      options:
+        source: options/modules.csv
+
   - stringParameter:
       id: moduleName
       name: Fragment Toothpick Module
@@ -78,6 +98,12 @@ widgets:
       default: BlankModule
       visibility: ${includeModule}
       suggest: ${className.classToResource().underscoreToCamelCase()}Module
+
+  - stringParameter:
+      id: composePackage
+      name: Compose package
+      default: ru.hh.feature.compose
+      visibility: ${uiFramework} == compose
 
 globals:
   - stringParameter:
@@ -143,7 +169,7 @@ recipe:
 - `requiredParams` - обязательные параметры для вашего шаблона
 - `optionalParams` - соответственно, необязательные параметры
 - `predefinedFeatures` - набор заранее предопределённых фич в Geminio, которые могут добавлять новые виджеты в шаблон, дополнять функционал.
-- `widgets` - описание параметров шаблона - для использования доступны строковые и булевские параметры
+- `widgets` - описание параметров шаблона - для использования доступны строковые, булевские и suggest-параметры
 - `globals` - описание невидимых параметров для шаблонов, некие "глобальные" переменные.
 - `recipe` - сам рецепт, набор инструкций, которые нужно выполнить
 

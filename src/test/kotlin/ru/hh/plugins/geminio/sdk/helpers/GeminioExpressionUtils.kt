@@ -20,10 +20,12 @@ internal object GeminioExpressionUtils {
     fun createParametersMap(
         includeModule: Boolean = true,
         className: String = "BlankFragment",
+        uiFramework: String = "compose",
     ): Map<String, Any?> {
         return mapOf(
             "className" to className,
             "includeModule" to includeModule,
+            "uiFramework" to uiFramework,
         )
     }
 

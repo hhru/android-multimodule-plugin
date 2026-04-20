@@ -11,6 +11,8 @@
 suggest: fragment_${className.classToResource().underscoreToCamelCase()}
 visibility: ${includeModule}
 availability: true
+# visibility: ${uiFramework} == compose
+# availability: ${uiFramework} != views
 ```
 
 Текст внутри `${}` считается за "динамическую" часть выражения, которую требуется вычислять в зависимости от содержания,
@@ -27,9 +29,14 @@ availability: true
 - `layoutToFragment`
 - `underscoreToCamelCase`
 
-Для булевских выражений есть специальные значения - `true` / `false`
+Для булевских выражений сейчас поддерживаются:
 
-+ для них возможно использование только boolean-параметров
+- `true` / `false`
+- `${booleanParameter}`
+- `${stringOrSuggestParameter} == value`
+- `${stringOrSuggestParameter} != value`
+
+Логические `&&` / `||` пока не поддерживаются.
 
 Примеры выражений для секции `recipe`:
 
@@ -64,4 +71,4 @@ availability: true
 
 ---
 
-[Обратно к содержанию](../../plugins/hh-geminio/README.md#Содержание)
+[Обратно к содержанию](../../README.md#Содержание)

@@ -35,6 +35,13 @@ internal class GeminioFormSession(
         return values[fieldId] as? Boolean ?: false
     }
 
+    fun suggestValue(fieldId: String): String? {
+        val field = requireSuggestField(fieldId)
+        return (values[fieldId] as? String)
+            ?.takeIf { value -> field.isSealed.not() || field.containsValue(value) }
+            ?: resolveSuggestFallbackValue(field)
+    }
+
     fun setStringValue(fieldId: String, value: String?) {
         requireStringField(fieldId)
         values[fieldId] = value
@@ -45,9 +52,26 @@ internal class GeminioFormSession(
         values[fieldId] = value
     }
 
+    fun setSuggestValue(fieldId: String, value: String?) {
+        val field = requireSuggestField(fieldId)
+        require(field.isSealed.not() || field.containsValue(value)) {
+            "Field with id='$fieldId' does not contain suggested option '$value'"
+        }
+        values[fieldId] = value
+    }
+
     fun suggestedStringValue(fieldId: String): String? {
         val field = requireStringField(fieldId)
         return field.suggestEvaluator?.invoke(this)
+    }
+
+    fun suggestedSuggestValue(fieldId: String): String? {
+        val field = requireSuggestField(fieldId)
+        val suggestedValue = field.suggestEvaluator?.invoke(this)
+
+        return suggestedValue?.takeIf { value ->
+            field.isSealed.not() || field.containsValue(value)
+        }
     }
 
     /**
@@ -61,6 +85,27 @@ internal class GeminioFormSession(
         val suggestedValue = field.suggestEvaluator?.invoke(this) ?: stringValue(fieldId)
         values[fieldId] = suggestedValue
         return suggestedValue
+    }
+
+    /**
+     * Recomputes a suggest field suggestion and writes back a valid value.
+     *
+     * For open-set fields we can store any string. Sealed fields ignore invalid suggestions, then
+     * preserve the current valid value, then fall back to `default`, and finally to the first
+     * option.
+     */
+    fun applySuggestFieldSuggestion(fieldId: String): String? {
+        val field = requireSuggestField(fieldId)
+        val resolvedValue = when {
+            field.isSealed -> suggestedSuggestValue(fieldId)
+                ?: (values[fieldId] as? String)?.takeIf(field::containsValue)
+                ?: resolveSuggestFallbackValue(field)
+
+            else -> field.suggestEvaluator?.invoke(this) ?: suggestValue(fieldId)
+        }
+
+        values[fieldId] = resolvedValue
+        return resolvedValue
     }
 
     /**
@@ -83,6 +128,14 @@ internal class GeminioFormSession(
                 value = booleanValue(fieldId),
                 visible = field.visibilityEvaluator?.invoke(this) ?: true,
                 enabled = field.availabilityEvaluator?.invoke(this) ?: true,
+            )
+
+            is GeminioFormField.SuggestField -> GeminioFormFieldState(
+                id = field.id,
+                value = suggestValue(fieldId),
+                visible = field.visibilityEvaluator?.invoke(this) ?: true,
+                enabled = field.availabilityEvaluator?.invoke(this) ?: true,
+                suggestedValue = suggestedSuggestValue(fieldId),
             )
         }
     }
@@ -110,7 +163,26 @@ internal class GeminioFormSession(
             is GeminioFormField.BooleanField -> {
                 values[field.id] = field.initialValueEvaluator?.invoke(this) ?: field.defaultValue ?: false
             }
+
+            is GeminioFormField.SuggestField -> {
+                values[field.id] = resolveSuggestInitialValue(field)
+            }
         }
+    }
+
+    private fun resolveSuggestInitialValue(field: GeminioFormField.SuggestField): String? {
+        val initialValue = field.initialValueEvaluator?.invoke(this)
+
+        return when {
+            field.isSealed -> initialValue?.takeIf(field::containsValue) ?: resolveSuggestFallbackValue(field)
+            else -> initialValue ?: resolveSuggestFallbackValue(field)
+        }
+    }
+
+    private fun resolveSuggestFallbackValue(field: GeminioFormField.SuggestField): String {
+        return field.defaultValue
+            ?.takeIf { value -> field.isSealed.not() || field.containsValue(value) }
+            ?: field.options.first().value
     }
 
     private fun requireStringField(fieldId: String): GeminioFormField.StringField {
@@ -121,5 +193,10 @@ internal class GeminioFormSession(
     private fun requireBooleanField(fieldId: String): GeminioFormField.BooleanField {
         return form.requireField(fieldId) as? GeminioFormField.BooleanField
             ?: throw IllegalArgumentException("Field with id='$fieldId' is not a boolean field")
+    }
+
+    private fun requireSuggestField(fieldId: String): GeminioFormField.SuggestField {
+        return form.requireField(fieldId) as? GeminioFormField.SuggestField
+            ?: throw IllegalArgumentException("Field with id='$fieldId' is not a suggest field")
     }
 }

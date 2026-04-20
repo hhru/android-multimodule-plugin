@@ -1,7 +1,8 @@
 ### `widgets` section
 
-The `widget` section is a user's parameter list for your template. For now, we support only string and boolean
-parameters. Each parameter supports [expression](../EXPRESSIONS.md) evaluation.
+The `widget` section is a user's parameter list for your template. For now, we support string,
+boolean and searchable suggest parameters. Each parameter supports
+[expression](../EXPRESSIONS.md) evaluation.
 
 #### `stringParameter`
 
@@ -50,6 +51,50 @@ Optional parameters:
 a module, some additional method, and so on). Will be converted to a checkbox on the UI.
 
 Has exactly the same parameters as `stringParameter`, but `booleanParameter` has no `suggest`.
+
+#### `suggestParameter`
+
+`suggestParameter` — description of a string-backed parameter rendered as a searchable completion field.
+
+Has the same base parameters as `stringParameter`, including `suggest`, `visibility` and `availability`,
+plus the following fields:
+
+- `sealed` — optional boolean flag. Defaults to `false`.
+  When `sealed: true`, the final value should match one of the declared options.
+- `options` — required source of suggested values. Can be declared in one of two forms:
+
+    * inline list:
+
+      ```yaml
+      options:
+        - value: compose
+          label: Compose
+        - value: views
+      ```
+
+    * external CSV file relative to `recipe.yaml`:
+
+      ```yaml
+      options:
+        source: options/ui_frameworks.csv
+      ```
+
+Inline options and CSV rows support:
+
+- `value` — the actual value exposed to expressions and FreeMarker templates;
+- `label` — optional text shown in the UI. If omitted, Geminio uses `value`.
+
+CSV files are read as UTF-8 and support either `value` or `value,label` rows. The optional
+`value,label` header is ignored automatically.
+
+Additional notes:
+
+- `default` should match one of `options.value` only when `sealed: true`;
+- `suggest` is evaluated in terms of stored values, not labels;
+- for `sealed: true`, if `suggest` returns a value that is not present in `options`, Geminio does
+  not apply it. Instead, it keeps the current value when it is still valid; otherwise it uses
+  `default`, and if `default` is also missing or invalid, it falls back to the first option;
+- for `sealed: false`, any entered string is accepted, while `options` only power completion.
 
 ---
 

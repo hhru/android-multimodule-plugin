@@ -7,7 +7,9 @@ import io.kotest.matchers.string.shouldStartWith
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Dynamic
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.EqualTo
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.Fixed
+import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.NotEqualTo
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ResOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnFalse
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.ReturnTrue
@@ -15,8 +17,6 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
-
-private const val SECTION_NAME = "Test"
 
 internal class GeminioRecipeExpressionParserSpec : FreeSpec({
 
@@ -194,11 +194,53 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
         givenExpressionStringWithFalse.toRecipeExpression(SECTION_NAME) shouldBe expectedExpressionWithFalse
     }
 
+    "Should parse equality comparison for string-like parameters" {
+        val givenExpressionString = "\${uiFramework} == compose"
+        val expectedExpression = listOf(
+            EqualTo(
+                parameter = Dynamic(
+                    parameterId = "uiFramework",
+                    modifiers = emptyList(),
+                ),
+                expectedValue = "compose",
+            )
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+    }
+
+    "Should parse inequality comparison with quoted value" {
+        val givenExpressionString = $$"${className.classToResource()} != \"blank_fragment\""
+        val expectedExpression = listOf(
+            NotEqualTo(
+                parameter = Dynamic(
+                    parameterId = "className",
+                    modifiers = listOf(CLASS_TO_RESOURCE),
+                ),
+                expectedValue = "blank_fragment",
+            )
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+    }
+
     "Should throw exception when reach unknown modifiers" {
-        val givenExpressionString = "\${resOut.unknown()}/layout/\${fragmentName}.xml"
+        val givenExpressionString = $$"${resOut.unknown()}/layout/${fragmentName}.xml"
 
         val ex = shouldThrow<IllegalArgumentException> { givenExpressionString.toRecipeExpression(SECTION_NAME) }
 
         ex.message shouldStartWith "'$SECTION_NAME' section: Unknown parsing key [key: unknown"
     }
+
+    "Should throw exception when comparison uses unsupported left side" {
+        val givenExpressionString = "\${srcOut} == src"
+
+        val ex = shouldThrow<IllegalArgumentException> { givenExpressionString.toRecipeExpression(SECTION_NAME) }
+
+        ex.message shouldStartWith (
+                "'$SECTION_NAME' section: Boolean comparison supports only a single dynamic parameter expression"
+                )
+    }
 })
+
+private const val SECTION_NAME = "Test"
