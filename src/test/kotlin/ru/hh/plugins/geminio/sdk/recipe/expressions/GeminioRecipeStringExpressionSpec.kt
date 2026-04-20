@@ -47,7 +47,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
         ).toExpression()
 
         given.evaluateString(createEvaluationContext(createParametersMap())) shouldBe
-            "/Project/src/main/kotlin/com/example/mylibrary/Module.kt"
+                "/Project/src/main/kotlin/com/example/mylibrary/Module.kt"
     }
 
     "Should read 'resOut' from module data" {
@@ -57,7 +57,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
         ).toExpression()
 
         given.evaluateString(createEvaluationContext(createParametersMap())) shouldBe
-            "/Project/src/main/res/layout/fragment_blank.xml"
+                "/Project/src/main/res/layout/fragment_blank.xml"
     }
 
     "Should throw exception if have illegal commands for string expression" {

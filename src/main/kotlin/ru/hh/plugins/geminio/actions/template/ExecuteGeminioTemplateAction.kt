@@ -24,7 +24,7 @@ import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
-import ru.hh.plugins.geminio.services.templates.createGeminioNamedModuleTemplateContext
+import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger

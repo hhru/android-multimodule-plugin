@@ -1,8 +1,9 @@
 package ru.hh.plugins.geminio.sdk.execution
 
-import com.android.tools.idea.templates.TemplateUtils
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiDocumentManager
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -35,7 +36,7 @@ internal class IdeGeminioRecipeFileOperations(
 
     override fun append(source: String, to: File) {
         val targetText = if (to.exists()) {
-            TemplateUtils.readTextFromDocument(project, to).orEmpty()
+            readTextFromIdeOrDisk(to).orEmpty()
         } else {
             String()
         }
@@ -68,8 +69,16 @@ internal class IdeGeminioRecipeFileOperations(
     }
 
     private fun ensureDirectoryExists(directory: File) = runCatching {
-        TemplateUtils.checkedCreateDirectoryIfMissing(directory)
+        VfsUtil.createDirectories(directory.absolutePath)
     }.getOrElse { error ->
         throw IllegalStateException("Cannot create directory '${directory.absolutePath}'", error)
+    }
+
+    private fun readTextFromIdeOrDisk(file: File): String? {
+        val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file)
+            ?: return file.takeIf(File::exists)?.readText(StandardCharsets.UTF_8)
+
+        return FileDocumentManager.getInstance().getCachedDocument(virtualFile)?.text
+            ?: file.readText(StandardCharsets.UTF_8)
     }
 }

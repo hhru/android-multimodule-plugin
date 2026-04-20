@@ -5,7 +5,7 @@ import org.jetbrains.android.facet.AndroidFacet
 import ru.hh.plugins.geminio.models.GeminioAndroidModulePaths
 import ru.hh.plugins.geminio.models.GeminioSourceSetConfig
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
-import ru.hh.plugins.geminio.services.templates.createGeminioNamedModuleTemplateContext
+import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
 
 /**
  * Builds path aliases used by Geminio expressions for both existing-module and new-module flows.
