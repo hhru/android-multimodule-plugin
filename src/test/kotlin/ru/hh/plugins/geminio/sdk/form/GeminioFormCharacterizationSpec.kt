@@ -66,10 +66,14 @@ internal class GeminioFormCharacterizationSpec : FreeSpec({
         val form = fixture.recipe.toGeminioForm()
         val session = GeminioFormSession(form)
         val moduleName = form.requireField(FEATURE_MODULE_NAME_PARAMETER_ID) as GeminioFormField.StringField
-        val formattedModuleName = form.requireField(FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID) as GeminioFormField.StringField
+        val formattedModuleName = form.requireField(
+            FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
+        ) as GeminioFormField.StringField
         val packageName = form.requireField(FEATURE_PACKAGE_NAME_PARAMETER_ID) as GeminioFormField.StringField
         val sourceSet = form.requireField(FEATURE_SOURCE_SET_PARAMETER_ID) as GeminioFormField.StringField
-        val sourceCodeFolder = form.requireField(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID) as GeminioFormField.StringField
+        val sourceCodeFolder = form.requireField(
+            FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
+        ) as GeminioFormField.StringField
 
         moduleName.defaultValue shouldBe "mymodule"
         formattedModuleName.defaultValue shouldBe "MyModule"
@@ -124,7 +128,7 @@ globals:
 recipe: []
 """
 
-private val RECIPE_WITH_PREDEFINED_MODULE_PARAMS = """
+private const val RECIPE_WITH_PREDEFINED_MODULE_PARAMS = """
 requiredParams:
   name: Geminio module test
   description: Covers predefined module params

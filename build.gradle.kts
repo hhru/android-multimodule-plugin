@@ -113,7 +113,7 @@ tasks.withType<Test>().configureEach {
 // region Static analysis
 
 detekt {
-    source.setFrom("src/main/kotlin")
+    source.setFrom("src/main/kotlin", "src/test/kotlin")
     config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
     baseline = file("tools/static-analysis/detekt/detekt-baseline.xml")
 }
@@ -133,6 +133,7 @@ val detektFormat by tasks.registering(Detekt::class) {
     disableDefaultRuleSets = true
     buildUponDefaultConfig = true
 
+    source(files("src/main/kotlin", "src/test/kotlin"))
     config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
     baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
 
@@ -143,7 +144,7 @@ val detektFormat by tasks.registering(Detekt::class) {
 val detektProjectBaseline by tasks.registering(DetektCreateBaselineTask::class) {
     description = "Overrides current baseline."
 
-    source(files("src/main/kotlin"))
+    source(files("src/main/kotlin", "src/test/kotlin"))
     config.setFrom("tools/static-analysis/detekt/detekt-config.yaml")
     baseline.set(file("tools/static-analysis/detekt/detekt-baseline.xml"))
 

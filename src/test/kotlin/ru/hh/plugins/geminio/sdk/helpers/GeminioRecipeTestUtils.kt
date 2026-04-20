@@ -1,17 +1,9 @@
 package ru.hh.plugins.geminio.sdk.helpers
 
 import com.intellij.openapi.project.Project
-import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.parsers.parseGeminioRecipeFromYamlFile
 import java.lang.reflect.Proxy
 import java.nio.file.Files
-import java.nio.file.Path
-
-internal data class RecipeFixture(
-    val rootDir: Path,
-    val recipeFile: Path,
-    val recipe: GeminioRecipe,
-)
 
 internal fun createRecipeFixture(
     recipeYaml: String,
@@ -33,6 +25,7 @@ internal fun createRecipeFixture(
         recipe = recipeFile.toString().parseGeminioRecipeFromYamlFile(),
     )
 }
+
 internal fun createMockProject(): Project {
     return Proxy.newProxyInstance(
         Project::class.java.classLoader,
