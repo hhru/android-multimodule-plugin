@@ -1,20 +1,15 @@
 package ru.hh.plugins.geminio.sdk.execution
 
-import com.android.tools.idea.wizard.template.booleanParameter
-import com.android.tools.idea.wizard.template.stringParameter
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
-import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createModuleTemplateData
-import ru.hh.plugins.geminio.sdk.helpers.RawPathVirtualFile
+import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
 import ru.hh.plugins.geminio.sdk.helpers.createMockProject
 import ru.hh.plugins.geminio.sdk.helpers.createRecipeFixture
-import ru.hh.plugins.geminio.sdk.helpers.createRecordingRecipeExecutor
-import ru.hh.plugins.geminio.sdk.template.aliases.AndroidStudioTemplateParameter
-import ru.hh.plugins.geminio.sdk.template.executors.executeGeminioRecipe
-import ru.hh.plugins.geminio.sdk.template.models.GeminioRecipeExecutorData
+import java.io.File
 import java.nio.file.Files
+import java.nio.file.Path
 
 /**
  * Фиксирует исполнение mkDirs, instantiate, instantiateAndOpen, predicate и elseCommands.
@@ -30,20 +25,24 @@ internal class GeminioRecipeExecutionCharacterizationSpec : FreeSpec({
             ),
         )
         val targetDirectory = Files.createTempDirectory("geminio-target-")
-        val parameters = createExecutionParameters(className = "FeatureScreen", includeFactory = true)
-        val recipeExecutorHandle = createRecordingRecipeExecutor()
+        val fileOperations = RecordingGeminioRecipeFileOperations()
 
-        recipeExecutorHandle.executor.executeGeminioRecipe(
-            targetDirectory = RawPathVirtualFile(targetDirectory.toString()),
+        val executionResult = GeminioRecipeRunner(
+            fileOperationsFactory = { fileOperations },
+        ).run(
             geminioRecipe = fixture.recipe,
-            executorData = createExecutorData(parameters, fixture.rootDir.toString()),
+            request = createExecutionRequest(
+                targetDirectory = targetDirectory,
+                parameters = createExecutionParameters(className = "FeatureScreen", includeFactory = true),
+                templatesRootDirPath = fixture.rootDir.toString(),
+            ),
         )
 
-        recipeExecutorHandle.createdDirectories.shouldContain(targetDirectory.resolve("generated"))
+        fileOperations.createdDirectories.shouldContain(targetDirectory.resolve("generated"))
         Files.isDirectory(targetDirectory.resolve("generated")) shouldBe true
         Files.readString(targetDirectory.resolve("FeatureScreen.kt")) shouldBe "class FeatureScreen"
         Files.readString(targetDirectory.resolve("generated/FeatureScreenFactory.kt")) shouldBe "object FeatureScreenFactory"
-        recipeExecutorHandle.openedFiles.shouldContain(targetDirectory.resolve("generated/FeatureScreenFactory.kt"))
+        executionResult.filesToOpen.shouldContain(targetDirectory.resolve("generated/FeatureScreenFactory.kt").toFile())
     }
 
     "should execute elseCommands when predicate is false" {
@@ -55,18 +54,22 @@ internal class GeminioRecipeExecutionCharacterizationSpec : FreeSpec({
             ),
         )
         val targetDirectory = Files.createTempDirectory("geminio-target-")
-        val parameters = createExecutionParameters(className = "FeatureScreen", includeFactory = false)
-        val recipeExecutorHandle = createRecordingRecipeExecutor()
+        val fileOperations = RecordingGeminioRecipeFileOperations()
 
-        recipeExecutorHandle.executor.executeGeminioRecipe(
-            targetDirectory = RawPathVirtualFile(targetDirectory.toString()),
+        val executionResult = GeminioRecipeRunner(
+            fileOperationsFactory = { fileOperations },
+        ).run(
             geminioRecipe = fixture.recipe,
-            executorData = createExecutorData(parameters, fixture.rootDir.toString()),
+            request = createExecutionRequest(
+                targetDirectory = targetDirectory,
+                parameters = createExecutionParameters(className = "FeatureScreen", includeFactory = false),
+                templatesRootDirPath = fixture.rootDir.toString(),
+            ),
         )
 
         Files.exists(targetDirectory.resolve("FeatureScreen.kt")) shouldBe true
         Files.exists(targetDirectory.resolve("generated/FeatureScreenFactory.kt")) shouldBe false
-        recipeExecutorHandle.openedFiles.shouldContain(targetDirectory.resolve("FeatureScreen.kt"))
+        executionResult.filesToOpen.shouldContain(targetDirectory.resolve("FeatureScreen.kt").toFile())
     }
 })
 
@@ -107,38 +110,53 @@ recipe:
 private fun createExecutionParameters(
     className: String,
     includeFactory: Boolean,
-): Map<String, AndroidStudioTemplateParameter> {
-    val classNameParameter = stringParameter {
-        name = "Class name"
-        default = className
-    }.apply {
-        value = className
-    }
-    val includeFactoryParameter = booleanParameter {
-        name = "Include factory"
-        default = includeFactory
-    }.apply {
-        value = includeFactory
-    }
-
+): Map<String, Any?> {
     return mapOf(
-        "className" to classNameParameter,
-        "includeFactory" to includeFactoryParameter,
+        "className" to className,
+        "includeFactory" to includeFactory,
     )
 }
 
-private fun createExecutorData(
-    parameters: Map<String, AndroidStudioTemplateParameter>,
+private fun createExecutionRequest(
+    targetDirectory: Path,
+    parameters: Map<String, Any?>,
     templatesRootDirPath: String,
-): GeminioRecipeExecutorData {
-    return GeminioRecipeExecutorData(
+): GeminioRecipeExecutionRequest {
+    return GeminioRecipeExecutionRequest(
         project = createMockProject(),
-        isDryRun = false,
-        moduleTemplateData = createModuleTemplateData(),
-        existingParametersMap = parameters,
-        resolvedParamsMap = parameters.asIterable().associate { entry ->
-            entry.key to entry.value.value
-        },
+        pathContext = GeminioFormPathContext(
+            currentDirOut = targetDirectory.toString(),
+        ),
+        templateParameters = parameters,
         freemarkerConfiguration = FreemarkerConfiguration(templatesRootDirPath),
     )
+}
+
+private class RecordingGeminioRecipeFileOperations : GeminioRecipeFileOperations {
+
+    val createdDirectories = linkedSetOf<Path>()
+
+    override val createdFiles = linkedSetOf<File>()
+    override val filesToOpen = linkedSetOf<File>()
+
+    override fun save(source: String, to: File) {
+        to.parentFile?.mkdirs()
+        to.writeText(source)
+        createdFiles += to
+    }
+
+    override fun append(source: String, to: File) {
+        to.parentFile?.mkdirs()
+        to.appendText(source)
+        createdFiles += to
+    }
+
+    override fun createDirectory(at: File) {
+        at.mkdirs()
+        createdDirectories.add(at.toPath())
+    }
+
+    override fun open(file: File) {
+        filesToOpen += file
+    }
 }

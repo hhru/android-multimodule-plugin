@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import ru.hh.plugins.code_modification.BuildGradleModificationService
@@ -15,16 +16,26 @@ import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.extensions.getTargetDirectory
-import ru.hh.plugins.geminio.models.GeminioRecipeExecutorModel
+import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
+import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
+import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionResult
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
+import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
+import ru.hh.plugins.geminio.sdk.form.GeminioForm
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
-import ru.hh.plugins.geminio.sdk.form.applyFormValues
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
-import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
+import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
-import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
 import ru.hh.plugins.geminio.wizard.GeminioChooseModulesDialog
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
@@ -56,9 +67,10 @@ class ExecuteGeminioModuleTemplateAction(
         const val DIALOG_TITLE = "Geminio Module wizard"
         const val CHOOSE_MODULES_DIALOG_TITLE = "Choose app-modules"
         const val LOADING_TITLE = "Generating Geminio module template"
-        val MODULE_FORM_DIALOG_SIZE = Dimension(760, 620)
-        val CHOOSE_MODULES_DIALOG_SIZE = Dimension(720, 560)
     }
+
+    private val MODULE_FORM_DIALOG_SIZE = Dimension(760, 620)
+    private val CHOOSE_MODULES_DIALOG_SIZE = Dimension(720, 560)
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
@@ -105,7 +117,6 @@ class ExecuteGeminioModuleTemplateAction(
                 project = project,
                 directoryPath = directoryPath,
                 targetDirectory = targetDirectory,
-                geminioSdk = geminioSdk,
                 geminioRecipe = geminioRecipe,
                 features = features,
                 form = form,
@@ -118,11 +129,10 @@ class ExecuteGeminioModuleTemplateAction(
         actionEvent: AnActionEvent,
         project: Project,
         directoryPath: String,
-        targetDirectory: com.intellij.openapi.vfs.VirtualFile,
-        geminioSdk: ru.hh.plugins.geminio.sdk.GeminioSdk,
-        geminioRecipe: ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe,
+        targetDirectory: VirtualFile,
+        geminioRecipe: GeminioRecipe,
         features: PredefinedFeatureParameter.ModuleCreationParameter,
-        form: ru.hh.plugins.geminio.sdk.form.GeminioForm,
+        form: GeminioForm,
         formSession: GeminioFormSession,
     ) {
         HHLogger.d("Showing custom Geminio module form dialog")
@@ -159,19 +169,44 @@ class ExecuteGeminioModuleTemplateAction(
             emptyList()
         }
 
-        HHLogger.d("Creating Geminio template data after dialog confirmation")
-        val geminioTemplateData = geminioSdk.createGeminioTemplateData(project, geminioRecipe, targetDirectory)
-        geminioTemplateData.applyFormValues(form, formSession)
-        propagateAdditionalParams(
+        val moduleName = requireNotNull(formSession.stringValue(FEATURE_MODULE_NAME_PARAMETER_ID)) {
+            "Module name should be available for Geminio module template execution"
+        }
+        val packageName = requireNotNull(formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
+            "Package name should be available for Geminio module template execution"
+        }
+        val sourceSet = requireNotNull(formSession.stringValue(FEATURE_SOURCE_SET_PARAMETER_ID)) {
+            "Source set should be available for Geminio module template execution"
+        }
+        val sourceCodeFolderName =
+            requireNotNull(formSession.stringValue(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID)) {
+                "Source code folder name should be available for Geminio module template execution"
+            }
+        val pathContext = GeminioRecipePathContextFactory.createForNewModule(
+            currentDirPath = targetDirectory.path,
+            newModuleRootDirectoryPath = directoryPath,
+            moduleName = moduleName,
+            packageName = packageName,
+            sourceSet = sourceSet,
+            sourceCodeFolderName = sourceCodeFolderName,
+        )
+        val additionalParameters = createAdditionalTemplateParameters(
             project = project,
-            geminioTemplateData = geminioTemplateData,
             applicationModules = selectedApplicationModules,
         )
-
-        val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService(project)
-        val recipeExecutorModel = recipeExecutorFactoryService.createRecipeExecutor(
-            newModuleRootDirectoryPath = directoryPath,
-            geminioTemplateData = geminioTemplateData,
+        val executionRequest = GeminioRecipeExecutionRequest(
+            project = project,
+            pathContext = pathContext,
+            templateParameters = GeminioTemplateParametersFactory.create(
+                session = formSession,
+                packageName = packageName,
+                applicationPackageName = packageName,
+                currentDirPath = requireNotNull(pathContext.currentDirOut),
+                additionalParameters = additionalParameters,
+            ),
+            freemarkerConfiguration = FreemarkerConfiguration(
+                geminioRecipe.freemarkerTemplatesRootDirPath,
+            ),
         )
 
         executeModuleTemplateWithLoader(
@@ -179,8 +214,9 @@ class ExecuteGeminioModuleTemplateAction(
             actionEvent = actionEvent,
             actionText = actionText,
             directoryPath = directoryPath,
-            geminioTemplateData = geminioTemplateData,
-            recipeExecutorModel = recipeExecutorModel,
+            geminioRecipe = geminioRecipe,
+            executionRequest = executionRequest,
+            moduleName = moduleName,
             applicationModules = selectedApplicationModules,
         )
     }
@@ -190,8 +226,9 @@ class ExecuteGeminioModuleTemplateAction(
         actionEvent: AnActionEvent,
         actionText: String,
         directoryPath: String,
-        geminioTemplateData: GeminioTemplateData,
-        recipeExecutorModel: GeminioRecipeExecutorModel,
+        geminioRecipe: GeminioRecipe,
+        executionRequest: GeminioRecipeExecutionRequest,
+        moduleName: String,
         applicationModules: List<Module>,
     ) {
         val loadingDialog = GeminioLoadingDialog(
@@ -204,31 +241,35 @@ class ExecuteGeminioModuleTemplateAction(
         ApplicationManager.getApplication().invokeLater {
             var completedSuccessfully = false
             try {
+                var executionResult: GeminioRecipeExecutionResult? = null
                 project.executeWriteCommand(COMMAND_RECIPE_EXECUTION) {
-                    with(recipeExecutorModel) {
-                        geminioTemplateData.androidStudioTemplate.recipe.invoke(
-                            recipeExecutor,
-                            moduleTemplateData,
-                        )
-                    }
+                    executionResult = GeminioRecipeRunner().run(
+                        geminioRecipe = geminioRecipe,
+                        request = executionRequest,
+                    )
 
                     modifySettingGradle(
                         project = project,
                         directoryPath = directoryPath,
-                        recipeExecutorModel = recipeExecutorModel,
+                        moduleName = moduleName,
                     )
                     modifyBuildGradle(
                         project = project,
                         applicationModules = applicationModules,
-                        recipeExecutorModel = recipeExecutorModel,
+                        moduleName = moduleName,
                     )
                 }
+                GeminioGeneratedFilesPostProcessor.process(
+                    project = project,
+                    createdFiles = requireNotNull(executionResult).createdFiles,
+                    filesToOpen = executionResult.filesToOpen,
+                )
                 completedSuccessfully = true
             } catch (error: Throwable) {
                 HHLogger.e("Module template '$actionText' execution failed:\n${error.stackTraceToString()}")
                 HHNotifications.error(
                     message = "Some error occurred when '$actionText' executed. " +
-                        "Check warnings at the bottom right corner."
+                            "Check warnings at the bottom right corner."
                 )
             } finally {
                 loadingDialog.dispose()
@@ -241,29 +282,29 @@ class ExecuteGeminioModuleTemplateAction(
         }
     }
 
-    private fun propagateAdditionalParams(
+    private fun createAdditionalTemplateParameters(
         project: Project,
-        geminioTemplateData: GeminioTemplateData,
         applicationModules: List<Module>,
-    ) {
-        with(geminioTemplateData) {
-            val projectNamePrefix = project.name.replace(Char.SPACE, Char.UNDERSCORE) + "."
-            paramsStore[geminioIds.newApplicationModulesParameterId] = applicationModules.map { module ->
+    ): Map<String, Any?> {
+        val projectNamePrefix = project.name.replace(Char.SPACE, Char.UNDERSCORE) + "."
+
+        return mapOf(
+            FEATURE_APPLICATIONS_MODULES_PARAMETER_ID to applicationModules.map { module ->
                 module.name.removePrefix(projectNamePrefix)
             }
-        }
+        )
     }
 
     private fun modifySettingGradle(
         project: Project,
         directoryPath: String,
-        recipeExecutorModel: GeminioRecipeExecutorModel,
+        moduleName: String,
     ) {
         val settingsGradleModificationService = SettingsGradleModificationService.getInstance(project)
         val newModuleRelativePath =
-            directoryPath.removePrefix("${project.basePath!!}/") + "/" + recipeExecutorModel.moduleName
+            directoryPath.removePrefix("${project.basePath!!}/") + "/" + moduleName
         settingsGradleModificationService.addGradleModuleDescription(
-            moduleName = recipeExecutorModel.moduleName,
+            moduleName = moduleName,
             moduleRelativePath = newModuleRelativePath,
         )
     }
@@ -271,13 +312,13 @@ class ExecuteGeminioModuleTemplateAction(
     private fun modifyBuildGradle(
         project: Project,
         applicationModules: List<Module>,
-        recipeExecutorModel: GeminioRecipeExecutorModel,
+        moduleName: String,
     ) {
         val buildGradleModificationService = BuildGradleModificationService.getInstance(project)
         val addingDependencies = listOf(
             BuildGradleDependency.Project(
                 configuration = BuildGradleDependencyConfiguration.IMPLEMENTATION,
-                value = recipeExecutorModel.moduleName,
+                value = moduleName,
             )
         )
         applicationModules.forEach { appModule ->

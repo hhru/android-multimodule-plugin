@@ -8,27 +8,27 @@ import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import org.jetbrains.android.facet.AndroidFacet
-import org.jetbrains.kotlin.idea.core.util.toPsiFile
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
-import org.jetbrains.kotlin.psi.KtFile
 import ru.hh.plugins.dialog.sync.showSyncQuestionDialog
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.extensions.packageName
+import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
+import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionResult
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipePathContextFactory
+import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
+import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
-import ru.hh.plugins.geminio.sdk.form.applyFormValues
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
-import ru.hh.plugins.geminio.sdk.models.GeminioTemplateData
-import ru.hh.plugins.geminio.services.templates.GeminioRecipeExecutorFactoryService
+import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.services.templates.createGeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
-import ru.hh.plugins.psi_utils.kotlin.shortReferencesAndReformatWithCodeStyle
-import java.io.File
-import kotlin.system.measureTimeMillis
 
 /**
  * Base action for executing templates from YAML config.
@@ -75,11 +75,6 @@ class ExecuteGeminioTemplateAction(
         val (project, facet) = actionEvent.fetchEventData()
 
         val targetDirectory = actionEvent.getTargetDirectory()
-        val geminioTemplateData = geminioSdk.createGeminioTemplateData(
-            project = project,
-            geminioRecipe = geminioRecipe,
-            targetDirectory = targetDirectory,
-        )
         val form = geminioRecipe.toGeminioForm()
         val formSession = GeminioFormSession(form)
 
@@ -96,46 +91,45 @@ class ExecuteGeminioTemplateAction(
         }
 
         val templateContext = facet.createGeminioNamedModuleTemplateContext(targetDirectory)
-        val recipeExecutorFactoryService = GeminioRecipeExecutorFactoryService(project)
         val targetPackageName = if (form.fieldsById.containsKey(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
             formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID).orEmpty()
         } else {
             templateContext.initialPackageSuggestion.ifBlank { facet.packageName }
         }
-
-        val preparedExecution = recipeExecutorFactoryService.createRecipeExecutorForExistingModule(
+        val pathContext = GeminioRecipePathContextFactory.createForExistingModule(
             facet = facet,
             targetDirectory = targetDirectory,
             targetPackageName = targetPackageName,
         )
-
-        geminioTemplateData.applyFormValues(form, formSession)
+        val executionRequest = GeminioRecipeExecutionRequest(
+            project = project,
+            pathContext = pathContext,
+            templateParameters = GeminioTemplateParametersFactory.create(
+                session = formSession,
+                packageName = targetPackageName,
+                applicationPackageName = facet.packageName.ifBlank { targetPackageName },
+                currentDirPath = requireNotNull(pathContext.currentDirOut),
+            ),
+            freemarkerConfiguration = FreemarkerConfiguration(
+                geminioRecipe.freemarkerTemplatesRootDirPath,
+            ),
+        )
 
         executeTemplateWithLoader(
             project = project,
             actionEvent = actionEvent,
-            geminioTemplateData = geminioTemplateData,
-            preparedExecution = preparedExecution,
+            actionText = actionText,
+            geminioRecipe = geminioRecipe,
+            executionRequest = executionRequest,
         )
-    }
-
-    private fun applyShortenReferencesAndCodeStyle(
-        project: Project,
-        createdFiles: Collection<File>,
-    ) {
-        measureTimeMillis {
-            createdFiles.forEach { file ->
-                val psiFile = file.toPsiFile(project) as? KtFile
-                psiFile?.shortReferencesAndReformatWithCodeStyle()
-            }
-        }.also { HHLogger.d("Shorten references time: $it ms") }
     }
 
     private fun executeTemplateWithLoader(
         project: Project,
         actionEvent: AnActionEvent,
-        geminioTemplateData: GeminioTemplateData,
-        preparedExecution: GeminioRecipeExecutorFactoryService.PreparedExistingModuleRecipeExecution,
+        actionText: String,
+        geminioRecipe: GeminioRecipe,
+        executionRequest: GeminioRecipeExecutionRequest,
     ) {
         val loadingDialog = GeminioLoadingDialog(
             project = project,
@@ -147,16 +141,18 @@ class ExecuteGeminioTemplateAction(
         ApplicationManager.getApplication().invokeLater {
             var completedSuccessfully = false
             try {
+                var executionResult: GeminioRecipeExecutionResult? = null
                 project.executeWriteCommand(COMMAND_NAME) {
-                    geminioTemplateData.androidStudioTemplate.recipe.invoke(
-                        preparedExecution.recipeExecutor,
-                        preparedExecution.moduleTemplateData,
-                    )
-                    applyShortenReferencesAndCodeStyle(
-                        project = project,
-                        createdFiles = preparedExecution.createdFiles,
+                    executionResult = GeminioRecipeRunner().run(
+                        geminioRecipe = geminioRecipe,
+                        request = executionRequest,
                     )
                 }
+                GeminioGeneratedFilesPostProcessor.process(
+                    project = project,
+                    createdFiles = requireNotNull(executionResult).createdFiles,
+                    filesToOpen = requireNotNull(executionResult).filesToOpen,
+                )
                 completedSuccessfully = true
             } catch (error: Throwable) {
                 HHLogger.e("Template '$actionText' execution failed:\n${error.stackTraceToString()}")
