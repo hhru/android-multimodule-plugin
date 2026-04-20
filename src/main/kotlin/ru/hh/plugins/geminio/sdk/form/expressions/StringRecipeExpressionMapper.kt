@@ -6,7 +6,6 @@ import ru.hh.plugins.geminio.sdk.form.GeminioFormStringEvaluator
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier
-import java.util.Locale
 
 /**
  * Converts a recipe string expression into a pure evaluator working on [ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext].
@@ -74,24 +73,12 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
 
     modifiers.forEach { modifier ->
         result = when (modifier) {
-            RecipeExpressionModifier.ACTIVITY_TO_LAYOUT -> {
-                result.toLayoutResourceName(suffix = "Activity", prefix = "activity")
-            }
-
-            RecipeExpressionModifier.FRAGMENT_TO_LAYOUT -> {
-                result.toLayoutResourceName(suffix = "Fragment", prefix = "fragment")
-            }
-
-            RecipeExpressionModifier.CLASS_TO_RESOURCE -> result.camelCaseToUnderlines()
+            RecipeExpressionModifier.ACTIVITY_TO_LAYOUT -> result.activityToLayout()
+            RecipeExpressionModifier.FRAGMENT_TO_LAYOUT -> result.fragmentToLayout()
+            RecipeExpressionModifier.CLASS_TO_RESOURCE -> result.classToResource()
             RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES -> result.camelCaseToUnderlines()
-            RecipeExpressionModifier.LAYOUT_TO_ACTIVITY -> {
-                result.layoutToComponentName(prefix = "activity", suffix = "Activity")
-            }
-
-            RecipeExpressionModifier.LAYOUT_TO_FRAGMENT -> {
-                result.layoutToComponentName(prefix = "fragment", suffix = "Fragment")
-            }
-
+            RecipeExpressionModifier.LAYOUT_TO_ACTIVITY -> result.layoutToActivity()
+            RecipeExpressionModifier.LAYOUT_TO_FRAGMENT -> result.layoutToFragment()
             RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE -> result.underscoreToCamelCase()
         }
     }
@@ -99,28 +86,150 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
     return result
 }
 
-private fun String.toLayoutResourceName(
-    suffix: String,
-    prefix: String,
+private fun String.activityToLayout(): String {
+    return componentToLayoutResourceName(
+        componentKeyword = "Activity",
+        layoutPrefix = "activity",
+    )
+}
+
+private fun String.fragmentToLayout(): String {
+    return componentToLayoutResourceName(
+        componentKeyword = "Fragment",
+        layoutPrefix = "fragment",
+    )
+}
+
+private fun String.componentToLayoutResourceName(
+    componentKeyword: String,
+    layoutPrefix: String,
 ): String {
-    val baseName = removeSuffix(suffix).camelCaseToUnderlines().removePrefix("${prefix}_")
-    return "${prefix}_${baseName}".trimEnd('_')
+    if (isEmpty()) {
+        return ""
+    }
+
+    val normalized = stripComponentMarker(componentKeyword)
+    return "${layoutPrefix}_${normalized.camelCaseToUnderlines()}"
+}
+
+private fun String.classToResource(): String {
+    var result = this
+
+    listOf("Activity", "Fragment", "Service", "Provider")
+        .forEach { suffix ->
+            result = result.removeComponentSuffix(suffix)
+        }
+
+    return result.camelCaseToUnderlines()
+}
+
+private fun String.layoutToActivity(): String {
+    return layoutToComponentName(
+        expectedPrefix = "activity_",
+        componentSuffix = "Activity",
+    )
+}
+
+private fun String.layoutToFragment(): String {
+    return layoutToComponentName(
+        expectedPrefix = "fragment_",
+        componentSuffix = "Fragment",
+    )
 }
 
 private fun String.layoutToComponentName(
-    prefix: String,
-    suffix: String,
+    expectedPrefix: String,
+    componentSuffix: String,
 ): String {
-    val rawName = removePrefix("${prefix}_")
-    return rawName.underscoreToCamelCase() + suffix
+    val rawName = removePrefix(expectedPrefix)
+    val componentName = rawName.underscoreToCamelCase()
+        .ifEmpty { "Main" }
+
+    return componentName + componentSuffix
+}
+
+private fun String.stripComponentMarker(componentKeyword: String): String {
+    return when {
+        removeComponentSuffix(componentKeyword) != this -> removeComponentSuffix(componentKeyword)
+        removeComponentPrefix(componentKeyword) != this -> removeComponentPrefix(componentKeyword)
+        else -> this
+    }
+}
+
+private fun String.removeComponentSuffix(componentKeyword: String): String {
+    val matchedLength = matchedComponentKeywordLengthAtEnd(componentKeyword)
+    return if (matchedLength != null) {
+        dropLast(matchedLength)
+    } else {
+        this
+    }
+}
+
+private fun String.removeComponentPrefix(componentKeyword: String): String {
+    val matchedLength = matchedComponentKeywordLengthAtStart(componentKeyword)
+    return if (matchedLength != null) {
+        drop(matchedLength)
+    } else {
+        this
+    }
+}
+
+private fun String.matchedComponentKeywordLengthAtEnd(componentKeyword: String): Int? {
+    return (length downTo 2)
+        .firstOrNull { candidateLength ->
+            componentKeyword.length >= candidateLength &&
+                regionMatches(
+                    this.length - candidateLength,
+                    componentKeyword,
+                    0,
+                    candidateLength,
+                    ignoreCase = true,
+                )
+        }
+}
+
+private fun String.matchedComponentKeywordLengthAtStart(componentKeyword: String): Int? {
+    return (length downTo 2)
+        .firstOrNull { candidateLength ->
+            componentKeyword.length >= candidateLength &&
+                componentKeyword.regionMatches(
+                    0,
+                    this,
+                    0,
+                    candidateLength,
+                    ignoreCase = true,
+                )
+        }
 }
 
 private fun String.camelCaseToUnderlines(): String {
-    return replace(Regex("([a-z0-9])([A-Z])"), "$1_$2")
-        .replace(Regex("([A-Z])([A-Z][a-z])"), "$1_$2")
-        .replace('-', '_')
-        .replace(' ', '_')
-        .lowercase(Locale.getDefault())
+    if (isEmpty()) {
+        return ""
+    }
+
+    val normalized = replace('-', '_').replace(' ', '_')
+    val builder = StringBuilder()
+
+    normalized.forEachIndexed { index, char ->
+        when {
+            char == '_' -> {
+                if (builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+            }
+
+            char.isUpperCase() -> {
+                if (index != 0 && builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+                builder.append(char.lowercaseChar())
+            }
+
+            else -> builder.append(char.lowercaseChar())
+        }
+    }
+
+    return builder.toString().trim('_')
 }
 
 private fun String.underscoreToCamelCase(): String {
@@ -132,7 +241,7 @@ private fun String.underscoreToCamelCase(): String {
 private fun String.capitalizeAscii(): String {
     return replaceFirstChar { char ->
         if (char.isLowerCase()) {
-            char.titlecase(Locale.getDefault())
+            char.uppercaseChar().toString()
         } else {
             char.toString()
         }

@@ -6,7 +6,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
-import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createModuleTemplateData
+import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createEvaluationContext
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.createParametersMap
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.evaluateString
 import ru.hh.plugins.geminio.sdk.helpers.GeminioExpressionUtils.toExpression
@@ -17,7 +17,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
     "Should return null" {
         val given = listOf<RecipeExpressionCommand>().toExpression()
 
-        given.evaluateString(createModuleTemplateData(), emptyMap()) shouldBe null
+        given.evaluateString(createEvaluationContext(emptyMap())) shouldBe null
     }
 
     "Should return fixed content" {
@@ -25,7 +25,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Fixed("fragment_")
         ).toExpression()
 
-        given.evaluateString(createModuleTemplateData(), emptyMap()) shouldBe "fragment_"
+        given.evaluateString(createEvaluationContext(emptyMap())) shouldBe "fragment_"
     }
 
     "Should read dynamic content from parameter" {
@@ -34,10 +34,9 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Fixed("Module")
         ).toExpression()
 
-        given.evaluateString(createModuleTemplateData(), createParametersMap()) shouldBe "BlankFragmentModule"
+        given.evaluateString(createEvaluationContext(createParametersMap())) shouldBe "BlankFragmentModule"
         given.evaluateString(
-            createModuleTemplateData(),
-            createParametersMap(className = "Changed")
+            createEvaluationContext(createParametersMap(className = "Changed")),
         ) shouldBe "ChangedModule"
     }
 
@@ -47,10 +46,8 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Fixed("Module.kt")
         ).toExpression()
 
-        given.evaluateString(
-            createModuleTemplateData(),
-            createParametersMap()
-        ) shouldBe "/Project/src/main/kotlin/com/example/mylibrary/Module.kt"
+        given.evaluateString(createEvaluationContext(createParametersMap())) shouldBe
+            "/Project/src/main/kotlin/com/example/mylibrary/Module.kt"
     }
 
     "Should read 'resOut' from module data" {
@@ -59,10 +56,8 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
             RecipeExpressionCommand.Fixed("layout/fragment_blank.xml")
         ).toExpression()
 
-        given.evaluateString(
-            createModuleTemplateData(),
-            createParametersMap()
-        ) shouldBe "/Project/src/main/res/layout/fragment_blank.xml"
+        given.evaluateString(createEvaluationContext(createParametersMap())) shouldBe
+            "/Project/src/main/res/layout/fragment_blank.xml"
     }
 
     "Should throw exception if have illegal commands for string expression" {
@@ -70,14 +65,14 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
         val given2 = listOf(RecipeExpressionCommand.ReturnFalse).toExpression()
 
         val ex1 = shouldThrow<IllegalArgumentException> {
-            given1.evaluateString(createModuleTemplateData(), createParametersMap())
+            given1.evaluateString(createEvaluationContext(createParametersMap()))
         }
         val ex2 = shouldThrow<IllegalArgumentException> {
-            given2.evaluateString(createModuleTemplateData(), createParametersMap())
+            given2.evaluateString(createEvaluationContext(createParametersMap()))
         }
 
-        ex1.message shouldStartWith "Unexpected command for string value"
-        ex2.message shouldStartWith "Unexpected command for string value"
+        ex1.message shouldStartWith "Unexpected command for string parameter"
+        ex2.message shouldStartWith "Unexpected command for string parameter"
     }
 
     "Should throw exception if there is unknown parameter for string expression" {
@@ -85,7 +80,7 @@ internal class GeminioRecipeStringExpressionSpec : FreeSpec({
         val given = listOf(command).toExpression()
 
         val ex = shouldThrow<IllegalArgumentException> {
-            given.evaluateString(createModuleTemplateData(), createParametersMap())
+            given.evaluateString(createEvaluationContext(createParametersMap()))
         }
 
         ex.message shouldStartWith "Unknown parameter or not string parameter for string expression [${command.parameterId}]"

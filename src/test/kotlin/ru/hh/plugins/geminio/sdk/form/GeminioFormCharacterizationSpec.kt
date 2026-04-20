@@ -1,7 +1,5 @@
 package ru.hh.plugins.geminio.sdk.form
 
-import com.android.tools.idea.wizard.template.BooleanParameter
-import com.android.tools.idea.wizard.template.StringParameter
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -12,7 +10,6 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAME
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_SOURCE_SET_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_ID
 import ru.hh.plugins.geminio.sdk.helpers.createRecipeFixture
-import ru.hh.plugins.geminio.sdk.helpers.createTemplateParametersMap
 
 /**
  * Фиксирует текущее поведение формы: widgets, globals и predefined module params.
@@ -21,11 +18,11 @@ internal class GeminioFormCharacterizationSpec : FreeSpec({
 
     "should preserve widgets defaults, constraints and dynamic state" {
         val fixture = createRecipeFixture(RECIPE_WITH_WIDGETS_AND_GLOBALS)
-        val parameters = fixture.recipe.createTemplateParametersMap()
-
-        val className = parameters["className"] as StringParameter
-        val generateFactory = parameters["generateFactory"] as BooleanParameter
-        val factoryName = parameters["factoryName"] as StringParameter
+        val form = fixture.recipe.toGeminioForm()
+        val session = GeminioFormSession(form)
+        val className = form.requireField("className") as GeminioFormField.StringField
+        val generateFactory = form.requireField("generateFactory") as GeminioFormField.BooleanField
+        val factoryName = form.requireField("factoryName") as GeminioFormField.StringField
 
         className.defaultValue shouldBe "BlankScreen"
         className.constraints.map { it.name }.shouldContainExactly("CLASS", "NONEMPTY")
@@ -33,51 +30,46 @@ internal class GeminioFormCharacterizationSpec : FreeSpec({
         generateFactory.defaultValue shouldBe false
 
         factoryName.defaultValue shouldBe "BlankScreenFactory"
-        factoryName.visible shouldBe false
-        factoryName.enabled shouldBe false
+        session.fieldState("factoryName").visible shouldBe false
+        session.fieldState("factoryName").enabled shouldBe false
 
-        generateFactory.value = true
-        className.value = "FeedScreen"
+        session.setBooleanValue("generateFactory", true)
+        session.setStringValue("className", "FeedScreen")
 
-        factoryName.visible shouldBe true
-        factoryName.enabled shouldBe true
-        factoryName.suggest() shouldBe "FeedScreenFactory"
-        factoryName.value shouldBe "FeedScreenFactory"
+        session.fieldState("factoryName").visible shouldBe true
+        session.fieldState("factoryName").enabled shouldBe true
+        session.applySuggestion("factoryName") shouldBe "FeedScreenFactory"
+        session.stringValue("factoryName") shouldBe "FeedScreenFactory"
     }
 
     "should keep globals hidden until special checkbox is enabled" {
         val fixture = createRecipeFixture(RECIPE_WITH_WIDGETS_AND_GLOBALS)
-        val parameters = fixture.recipe.createTemplateParametersMap()
+        val session = GeminioFormSession(fixture.recipe.toGeminioForm())
 
-        val toggleGlobals = parameters[GLOBALS_SHOW_HIDDEN_VALUES_ID] as BooleanParameter
-        val className = parameters["className"] as StringParameter
-        val generatedClass = parameters["generatedClass"] as StringParameter
-        val shouldRenderFactory = parameters["shouldRenderFactory"] as BooleanParameter
+        session.booleanValue(GLOBALS_SHOW_HIDDEN_VALUES_ID) shouldBe false
+        session.fieldState(GLOBALS_SHOW_HIDDEN_VALUES_ID).visible shouldBe true
+        session.fieldState("generatedClass").visible shouldBe false
+        session.fieldState("shouldRenderFactory").visible shouldBe false
 
-        toggleGlobals.defaultValue shouldBe false
-        toggleGlobals.visible shouldBe true
-        generatedClass.visible shouldBe false
-        shouldRenderFactory.visible shouldBe false
+        session.suggestedStringValue("generatedClass") shouldBe "BlankScreenGenerated"
 
-        generatedClass.suggest() shouldBe "BlankScreenGenerated"
+        session.setBooleanValue(GLOBALS_SHOW_HIDDEN_VALUES_ID, true)
+        session.setStringValue("className", "FeedScreen")
 
-        toggleGlobals.value = true
-        className.value = "FeedScreen"
-
-        generatedClass.visible shouldBe true
-        shouldRenderFactory.visible shouldBe true
-        generatedClass.suggest() shouldBe "FeedScreenGenerated"
+        session.fieldState("generatedClass").visible shouldBe true
+        session.fieldState("shouldRenderFactory").visible shouldBe true
+        session.suggestedStringValue("generatedClass") shouldBe "FeedScreenGenerated"
     }
 
     "should expose predefined module parameters with derived suggestions" {
         val fixture = createRecipeFixture(RECIPE_WITH_PREDEFINED_MODULE_PARAMS)
-        val parameters = fixture.recipe.createTemplateParametersMap()
-
-        val moduleName = parameters[FEATURE_MODULE_NAME_PARAMETER_ID] as StringParameter
-        val formattedModuleName = parameters[FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID] as StringParameter
-        val packageName = parameters[FEATURE_PACKAGE_NAME_PARAMETER_ID] as StringParameter
-        val sourceSet = parameters[FEATURE_SOURCE_SET_PARAMETER_ID] as StringParameter
-        val sourceCodeFolder = parameters[FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID] as StringParameter
+        val form = fixture.recipe.toGeminioForm()
+        val session = GeminioFormSession(form)
+        val moduleName = form.requireField(FEATURE_MODULE_NAME_PARAMETER_ID) as GeminioFormField.StringField
+        val formattedModuleName = form.requireField(FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID) as GeminioFormField.StringField
+        val packageName = form.requireField(FEATURE_PACKAGE_NAME_PARAMETER_ID) as GeminioFormField.StringField
+        val sourceSet = form.requireField(FEATURE_SOURCE_SET_PARAMETER_ID) as GeminioFormField.StringField
+        val sourceCodeFolder = form.requireField(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID) as GeminioFormField.StringField
 
         moduleName.defaultValue shouldBe "mymodule"
         formattedModuleName.defaultValue shouldBe "MyModule"
@@ -85,10 +77,10 @@ internal class GeminioFormCharacterizationSpec : FreeSpec({
         sourceSet.defaultValue shouldBe "testFixtures"
         sourceCodeFolder.defaultValue shouldBe "kotlin"
 
-        moduleName.value = "feature-auth"
+        session.setStringValue(FEATURE_MODULE_NAME_PARAMETER_ID, "feature-auth")
 
-        formattedModuleName.suggest() shouldBe "FeatureAuth"
-        packageName.suggest() shouldBe "ru.hh.feature.feature_auth"
+        session.suggestedStringValue(FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID) shouldBe "FeatureAuth"
+        session.suggestedStringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID) shouldBe "ru.hh.feature.feature_auth"
     }
 })
 
