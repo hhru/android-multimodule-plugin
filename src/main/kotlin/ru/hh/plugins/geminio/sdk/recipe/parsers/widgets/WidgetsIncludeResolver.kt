@@ -8,11 +8,6 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequ
 import ru.hh.plugins.utils.yaml.YamlUtils
 import java.io.File
 
-internal data class RawWidgetDefinition(
-    val definition: Map<String, Any>,
-    val sourceFilePath: String?,
-)
-
 internal fun Map<String, Any>.resolveRawWidgetDefinitions(
     recipeFilePath: String? = null,
 ): List<RawWidgetDefinition> {
@@ -105,7 +100,7 @@ private fun Map<String, Any>.resolveIncludedWidgetDefinitions(
         sectionErrorMessage(
             sectionName,
             "Included widgets file should contain only '$KEY_WIDGETS_SECTION' top-level section " +
-                "[path: $normalizedIncludeFilePath, keys: ${includedConfigMap.keys}].",
+                    "[path: $normalizedIncludeFilePath, keys: ${includedConfigMap.keys}].",
         )
     }
 
