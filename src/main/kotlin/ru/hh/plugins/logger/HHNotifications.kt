@@ -51,11 +51,6 @@ class HHNotifications private constructor() {
             sendNotification(message, NotificationType.INFORMATION)
         }
 
-        fun warning(message: String) {
-            println("[$title] [WARNING] $message")
-            sendNotification(message, NotificationType.WARNING)
-        }
-
         fun error(message: String) {
             println("[$title] [ERROR] $message")
             sendNotification(message, NotificationType.ERROR)

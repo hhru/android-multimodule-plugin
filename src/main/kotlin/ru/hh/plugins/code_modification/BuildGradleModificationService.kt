@@ -41,16 +41,6 @@ class BuildGradleModificationService(
         }
     }
 
-    fun addDepsIntoFile(
-        psiFile: PsiFile,
-        gradleDependencies: List<BuildGradleDependency>,
-        isInWriteCommand: Boolean = false
-    ) {
-        wrapInCommand(isInWriteCommand) {
-            psiFile.addGradleDependencies(gradleDependencies)
-        }
-    }
-
     fun addDepsInModuleDirectory(
         rootDir: PsiDirectory?,
         gradleDependencies: List<BuildGradleDependency>,

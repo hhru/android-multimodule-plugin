@@ -24,7 +24,7 @@ import javax.swing.JComponent
 internal class GeminioChooseModulesDialog(
     private val project: Project,
     title: String,
-    private val confirmActionText: String = "Finish",
+    confirmActionText: String = "Finish",
     private val preferredDialogSize: Dimension = Dimension(DEFAULT_DIALOG_WIDTH, DEFAULT_DIALOG_HEIGHT),
 ) : DialogWrapper(project, true) {
 

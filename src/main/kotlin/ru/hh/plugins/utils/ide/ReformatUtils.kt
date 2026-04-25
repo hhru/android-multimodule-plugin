@@ -38,18 +38,6 @@ internal object ReformatUtils {
         }
     }
 
-    fun reformatAndRearrange(
-        project: Project,
-        psiElement: PsiElement,
-    ) {
-        reformatAndRearrange(
-            project = project,
-            virtualFile = psiElement.containingFile.virtualFile,
-            psiElement = psiElement,
-            keepDocumentLocked = true,
-        )
-    }
-
     @JvmOverloads
     fun reformatAndRearrange(
         project: Project,

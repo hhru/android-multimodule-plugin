@@ -13,18 +13,6 @@ class FreemarkerConfiguration(
     private val configuredPath: String
 ) : Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS) {
 
-    companion object {
-
-        fun buildAndResolve(
-            templatesDirPath: String,
-            templateName: String,
-            params: Map<String, Any>
-        ): String {
-            val freemarkerConfiguration = FreemarkerConfiguration(templatesDirPath)
-            return freemarkerConfiguration.resolveTemplate(templateName, params)
-        }
-    }
-
     init {
         defaultEncoding = Charsets.UTF_8.name()
         localizedLookup = false

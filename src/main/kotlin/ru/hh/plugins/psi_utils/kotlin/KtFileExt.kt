@@ -1,20 +1,11 @@
 package ru.hh.plugins.psi_utils.kotlin
 
-import com.intellij.openapi.project.DumbService
-import org.jetbrains.kotlin.idea.codeinsight.utils.commitAndUnblockDocument
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME
 import ru.hh.plugins.PluginsConstants.BUILD_GRADLE_PLUGINS_BLOCK_NAME
-import ru.hh.plugins.psi_utils.reformatWithCodeStyle
-
-fun KtFile.shortReferencesAndReformatWithCodeStyle() {
-    this.commitAndUnblockDocument()
-    DumbService.getInstance(project).completeJustSubmittedTasks()
-    this.reformatWithCodeStyle()
-}
 
 /**
  * Invoke in write command only.
@@ -29,7 +20,7 @@ fun KtFile.getOrCreateBuildGradleDependenciesBlock(): KtBlockExpression {
     }
 
     return findBlockExpressionByName(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
-        ?: return createScriptBlock(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
+        ?: createScriptBlock(BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME)
 }
 
 /**
@@ -45,7 +36,7 @@ fun KtFile.getOrCreateGradlePluginsBlock(): KtBlockExpression {
     }
 
     return findBlockExpressionByName(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
-        ?: return createScriptBlock(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
+        ?: createScriptBlock(BUILD_GRADLE_PLUGINS_BLOCK_NAME)
 }
 
 private fun KtFile.findBlockExpressionByName(blockName: String): KtBlockExpression? {

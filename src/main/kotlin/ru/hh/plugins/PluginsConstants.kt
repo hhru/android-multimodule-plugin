@@ -1,9 +1,6 @@
 package ru.hh.plugins
 
 object PluginsConstants {
-    const val XML_FILE_EXTENSION = ".xml"
-    const val KOTLIN_FILE_EXTENSION = ".kt"
-    const val ANDROID_LAYOUT_RES_DIR_NAME = "layout"
     const val BUILD_GRADLE_DEPENDENCIES_BLOCK_NAME = "dependencies"
     const val BUILD_GRADLE_PLUGINS_BLOCK_NAME = "plugins"
 

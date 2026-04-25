@@ -171,9 +171,6 @@ internal sealed class GeminioFormField {
             }
         }
 
-        fun resolveStoredValue(input: String?): String? {
-            return findOption(input)?.value ?: input
-        }
     }
 }
 

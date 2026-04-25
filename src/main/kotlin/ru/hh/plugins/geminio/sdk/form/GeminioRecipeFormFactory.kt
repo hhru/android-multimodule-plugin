@@ -11,7 +11,6 @@ import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.GLOBALS_SHOW_HIDDEN_VALUES_
 import ru.hh.plugins.geminio.sdk.form.expressions.toBooleanEvaluator
 import ru.hh.plugins.geminio.sdk.form.expressions.toStringEvaluator
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
-import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSection
 import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeature
 import ru.hh.plugins.geminio.sdk.recipe.models.predefined.PredefinedFeatureParameter
@@ -39,7 +38,7 @@ internal fun GeminioRecipe.toGeminioForm(): GeminioForm {
     }
 
     if (globalsSection.parameters.isNotEmpty()) {
-        fields += globalsSection.toShowHiddenGlobalsField(existingFieldIds = fields.map { it.id }.toSet())
+        fields += createShowHiddenGlobalsField(existingFieldIds = fields.map { it.id }.toSet())
         fields += globalsSection.parameters.map { globalsParameter ->
             globalsParameter.toFormField(showHiddenValuesId = GLOBALS_SHOW_HIDDEN_VALUES_ID)
         }
@@ -159,7 +158,7 @@ private fun RecipeParameter.toFormField(): GeminioFormField {
     }
 }
 
-private fun GlobalsSection.toShowHiddenGlobalsField(
+private fun createShowHiddenGlobalsField(
     existingFieldIds: Set<String>,
 ): GeminioFormField.BooleanField {
     check(GLOBALS_SHOW_HIDDEN_VALUES_ID !in existingFieldIds) {
