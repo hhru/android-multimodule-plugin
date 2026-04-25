@@ -39,6 +39,20 @@
     * `uri_authority`
     * `kotlin_function`
 
+  `nonempty` проверяет, что значение не пустое. `class`, `activity`, `package`, `app_package`,
+  `source_set_folder`, `layout`, `drawable`, `navigation`, `values`, `string`, `uri_authority` и
+  `kotlin_function` проверяют формат значения. `module` оставлен совместимым с Android Studio wizard:
+  сам constraint не запрещает синтаксис значения, включая `:`.
+
+  `unique` и `exists` применяются вместе с типовыми constraints, когда UI может сопоставить значение с
+  файловым контекстом текущего шаблона:
+    * `module` - проверяют Gradle path уже подключенного модуля проекта. Path вычисляется из content root модуля
+      относительно корня проекта: `applicant/feature/auth` превращается в `applicant:feature:auth`, а suffix
+      `/src/<sourceSet>` отбрасывается без привязки к конкретным именам source set;
+    * `package` / `app_package` - проверяют package path в source root создаваемого модуля, если он известен;
+    * `layout`, `drawable`, `navigation`, `values` - проверяют ресурс в соответствующей папке `res`;
+    * `string` - проверяет наличие string resource в `res/values`.
+
 - `default` - значение параметра по умолчанию
 - `suggest` - текстовое [выражение](../EXPRESSIONS.md) для автоматического изменения поля, которое может зависеть от
   других полей
@@ -85,7 +99,7 @@
 
 - `value` - фактическое значение, которое попадёт в выражения и FreeMarker-шаблоны
 - `label` - необязательный текст, который будет показан пользователю на UI. Если его не задать,
-  Geminio использует `value`
+  Geminio использует `value`. Значения `label` должны быть уникальными внутри одного `suggestParameter`
 
 CSV-файлы читаются как UTF-8 и поддерживают строки вида `value` или `value,label`. Необязательный
 заголовок `value,label` будет автоматически проигнорирован.

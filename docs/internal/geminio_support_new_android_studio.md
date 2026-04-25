@@ -38,14 +38,21 @@
 
    </details>
 
-4. Идём в корневой файл `gradle.properties` и локально меняем путь к локально установленной
-   Android Studio.
+4. Идём в корневой файл `build.gradle.kts` и меняем версию Android Studio в зависимости
+   `androidStudio(...)`.
 
-   ```properties
-   systemProp.androidStudioPath=/Users/p.strelchenko/Applications/Android\ Studio\ Iguana\ 2023.2.1.app/Contents
+   ```kotlin
+   intellijPlatform {
+       // Android Studio Panda 3 Patch 1
+       androidStudio("2025.3.3.7")
+   }
    ```
 
-5. Пытаемся запустить плагин `Geminio` через встроенную в проект конфигурацию `Geminio [RUN]`.
+   Версию для Gradle-плагина удобнее сверять со
+   [списком релизов Android Studio](https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html).
+
+5. Пытаемся запустить плагин `Geminio` через встроенную в проект конфигурацию `Run Plugin`
+   или через Gradle-таску `./gradlew runIde`.
    Желательно заранее подготовить проект с шаблонами (обоих типов: и новых модулей, и новых файлов).
 
 6. Если API никак не поменялось, то запуск пройдёт успешно, все шаблоны будут работать корректно.
@@ -70,25 +77,30 @@
 
 1. **Создаём новую ветку в репозитории**
 
-2. Вернуть обратно значение `systemProp.androidStudioPath`, локальное изменение коммитить нельзя.
+2. **Обновить версию Android Studio для сборки**
 
-3. **Обновить URL для новой версии Android Studio**
+   Обновите значение `androidStudio(...)` в корневом
+   [build.gradle.kts](../../build.gradle.kts). Эта версия используется для компиляции, `runIde`,
+   сборки плагина и CI-проверок.
 
-   Обновляем значение `ANDROID_STUDIO_URL` в
-   файлах [.github/workflows/build.yml](../../.github/workflows/build.yml) и
-   [.github/workflows/release_build.yml](../../.github/workflows/release_build.yml). Ссылку на
-   актуальный архив следует искать [на этой странице](https://developer.android.com/studio/archive).
-   Ищем нужную версию, копируем ссылку на `Zip files -> Linux`, заменяем старую ссылку на новую.
+3. **Обновляем версию плагина**
 
-   ![Ссылки на архивы дистрибутивов Android Studio](../img/android_studio_archives.png)
+   Обновите версию `hh-geminio` в корневом
+   [gradle.properties](../../gradle.properties) (ищите по строке `version=`). Мы меняем минорную
+   версию, когда добавляем поддержку новой Android Studio (вторая цифра).
 
-4. **Обновляем версию плагина**
+4. **Дописываем changelog плагина**
 
-   Обновите версию `hh-geminio` в `gradle.properties` (ищите по строке `pluginVersion=`). Мы меняем минорную версию, когда добавляем поддержку новой Android Studio (вторая цифра).
+   Обновите [CHANGELOG.md](../../CHANGELOG.md) и допишите, что поддержали новую версию Android Studio.
 
-5. **Дописываем changelog плагина**
+5. **Проверяем сборку**
 
-   Обновите [plugins/hh-geminio/CHANGELOG.md](../../CHANGELOG.md) и допишите, что поддержали новую версию Android Studio.
+   Минимальный набор проверок:
+
+   ```bash
+   ./gradlew test
+   ./gradlew buildPlugin verifyPluginStructure verifyPlugin
+   ```
 
 6. Делаем PR из ветки в `master`-ветку.
 
@@ -145,50 +157,7 @@ val yaml = Yaml(
 Чтобы сохранить обратную совместимость плагина `Geminio`, приходится делать интересные хаки
 компиляции:
 
-- Создавать модуль с stub-классами для Android Studio (ищи модуль
-  `shared:core:android-studio-stubs`).
-- Подключать этот модуль через `compileOnly` к основному модулю плагинов.
+- Создавать stub-классы для Android Studio прямо в исходниках плагина. Пример:
+  `src/main/kotlin/com/android/tools/idea/ui/wizard/StudioWizardDialogBuilder.kt`.
 - В рантайме определять наличие класса по его FQCN (для примера смотри класс
   `StudioWizardDialogFactory`).
-
-### Проект крашится в рантайме
-
-В этом случае нужно разбирать каждую проблему отдельно. Иногда это получается просто, но чаще всего
-требуется
-дополнительное погружение в исходники Android Studio. В этом случае рекомендуется
-открывать [исходники Android-проектов](https://cs.android.com/) и искать по названию класса, который
-упал.
-
-Например, при обновлении на `Android Studio Iguana` перестали работать шаблоны новых модулей. IDE
-показала stacktrace:
-при вызове `com.android.tools.idea.npw.template.ProjectTemplateDataBuilder.build` произошёл
-`NullPointerException`.
-
-Пытаемся разобраться (скорее всего потребуется работа с дебаггером), в итоге находим ошибку: начиная
-с `Android Studio Iguana` требуется устанавливать свойство `agpVersion` в
-`ProjectTemplateDataBuilder`.
-
-```kotlin
-builder.agpVersion = AgpVersions.latestKnown
-```
-
-> А почему разбираемся не через исходники внутри IDE, тут же можно посмотреть и использования
-> классов и переходы можно
-> осуществлять?
-
-Потому что при подключении локальной версии Android Studio исходники с документацией превращаются в
-декомпилированные исходники с потерей большой доли информации. По ним практически невозможно ни в
-чём разобраться. А если подключать "актуальную версию Android Studio" не локально, то можно
-столкнуться с тем, что исходники `Android Studio`, которую вы хотите поддержать, и исходники
-`Android Studio`, которую скачает `gradle-intellij-plugin`, окажутся
-**НЕ ЭКВИВАЛЕНТНЫ**. С другой стороны, вам может повезти и исходники будут похожи на правду.
-
-Как подключить нужную версию:
-
-- Заходим в файл `ExternalLibrariesExtension`.
-- Находим там `enum class PredefinedIdeProducts`.
-- По аналогии с другими элементами создаём описание нужной вам версии `Android Studio`.
-- Меняем свойство
-  `val chosenIdeaVersion: Product = PredefinedIdeProducts.ANDROID_STUDIO_IGUANA.product`.
-- И добиваемся синхронизации проекта (компиляция и запуск необязательны, хотя бы синхронизация,
-  чтобы получить доступ к исходникам).

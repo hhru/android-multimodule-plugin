@@ -8,6 +8,8 @@ import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.modules
+import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import ru.hh.plugins.code_modification.BuildGradleModificationService
@@ -16,7 +18,9 @@ import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.extensions.UNDERSCORE
 import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.extensions.getTargetDirectory
+import ru.hh.plugins.extensions.toFilePathFromGradleModulePath
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.freemarker_wrapper.FreemarkerException
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
@@ -29,6 +33,8 @@ import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioForm
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
+import ru.hh.plugins.geminio.sdk.form.GeminioGradleModulePathNormalizer
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.hasFeature
@@ -44,6 +50,7 @@ import ru.hh.plugins.logger.HHNotifications
 import ru.hh.plugins.models.gradle.BuildGradleDependency
 import ru.hh.plugins.models.gradle.BuildGradleDependencyConfiguration
 import java.awt.Dimension
+import java.io.File
 import java.io.IOException
 
 /**
@@ -149,6 +156,7 @@ class ExecuteGeminioModuleTemplateAction(
             confirmActionText = if (context.features.enableChooseModulesStep) "Next" else "Finish",
             preferredScrollSize = moduleFormDialogSize,
             preferInitialInputFocus = false,
+            validationContextProvider = { createModuleValidationContext(context) },
         )
         if (formDialog.showAndGet().not()) {
             HHNotifications.error(message = "User closed Geminio Module Template Wizard")
@@ -226,6 +234,8 @@ class ExecuteGeminioModuleTemplateAction(
 
                 completedSuccessfully = true
             } catch (error: IOException) {
+                handleModuleExecutionError(error)
+            } catch (error: FreemarkerException) {
                 handleModuleExecutionError(error)
             } catch (error: IllegalArgumentException) {
                 handleModuleExecutionError(error)
@@ -341,14 +351,43 @@ class ExecuteGeminioModuleTemplateAction(
         )
     }
 
+    private fun createModuleValidationContext(
+        context: ModuleCreationFlowContext,
+    ): GeminioStringConstraintValidationContext {
+        return GeminioStringConstraintValidationContext(
+            newModuleParentDirectory = File(context.directoryPath),
+            newModuleName = context.formSession.stringValue(FEATURE_MODULE_NAME_PARAMETER_ID),
+            sourceSet = context.formSession.stringValue(FEATURE_SOURCE_SET_PARAMETER_ID),
+            sourceCodeFolderName = context.formSession.stringValue(FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID),
+            existingModuleNames = context.project.existingGradleModuleNames(),
+        )
+    }
+
+    private fun Project.existingGradleModuleNames(): Set<String> {
+        val projectBasePath = basePath?.let(::File) ?: return emptySet()
+        return GeminioGradleModulePathNormalizer.normalize(
+            projectBasePath = projectBasePath,
+            moduleRootPaths = modules.flatMap { module -> module.moduleRootPaths() },
+        )
+    }
+
+    private fun Module.moduleRootPaths(): List<File> {
+        return ModuleRootManager.getInstance(this)
+            .contentRoots
+            .map { root -> File(root.path) }
+    }
+
     private fun modifySettingGradle(
         project: Project,
         directoryPath: String,
         moduleName: String,
     ) {
         val settingsGradleModificationService = SettingsGradleModificationService.getInstance(project)
-        val newModuleRelativePath =
-            directoryPath.removePrefix("${project.basePath!!}/") + "/" + moduleName
+        val newModuleRelativePath = createNewModuleRelativePath(
+            projectBasePath = project.basePath!!,
+            directoryPath = directoryPath,
+            moduleName = moduleName,
+        )
         settingsGradleModificationService.addGradleModuleDescription(
             moduleName = moduleName,
             moduleRelativePath = newModuleRelativePath,
@@ -371,4 +410,23 @@ class ExecuteGeminioModuleTemplateAction(
             buildGradleModificationService.addDepsIntoModule(appModule, addingDependencies, true)
         }
     }
+}
+
+internal fun createNewModuleRelativePath(
+    projectBasePath: String,
+    directoryPath: String,
+    moduleName: String,
+): String {
+    val projectRoot = File(projectBasePath).normalize()
+    val selectedDirectory = File(directoryPath).normalize()
+    val parentRelativePath = requireNotNull(selectedDirectory.relativeToOrNull(projectRoot)) {
+        "Selected directory '$directoryPath' should be inside project root '$projectBasePath'"
+    }.path
+        .replace(File.separatorChar, '/')
+        .trim('/')
+    val moduleRelativePath = moduleName.toFilePathFromGradleModulePath()
+
+    return listOf(parentRelativePath, moduleRelativePath)
+        .filter(String::isNotBlank)
+        .joinToString(separator = "/")
 }

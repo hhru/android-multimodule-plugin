@@ -1,6 +1,7 @@
 package ru.hh.plugins.geminio.services.android
 
 import com.android.tools.idea.projectsystem.AndroidModulePaths
+import ru.hh.plugins.extensions.toFilePathFromGradleModulePath
 import ru.hh.plugins.extensions.toSlashedFilePath
 import ru.hh.plugins.logger.HHLogger
 import java.io.File
@@ -27,7 +28,7 @@ internal class GeminioAndroidModulePaths(
     private val resFolderPath = "src/$sourceSet/res"
     private val aidlFolderPath = "src/$sourceSet/aidl"
     private val sourcesFolderPath = "src/$sourceSet/$sourceCodeFolderName"
-    private val moduleRootPath: String get() = "$basePath/$moduleName"
+    private val moduleRootPath: String get() = "$basePath/${moduleName.toFilePathFromGradleModulePath()}"
 
     override val manifestDirectory: File
         get() {

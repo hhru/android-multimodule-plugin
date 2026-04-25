@@ -35,8 +35,6 @@ private const val CHAR_COMMAND_MODIFIER_SKIP = ')'
  * Parser from recipe's expressions declarations into objects.
  */
 internal fun String.toRecipeExpression(sectionName: String): RecipeExpression {
-    parseComparisonExpression(sectionName)?.let { return it }
-
     val commands = mutableListOf<RecipeExpressionCommand>()
 
     var fixed = ""
@@ -142,6 +140,13 @@ internal fun String.toRecipeExpression(sectionName: String): RecipeExpression {
     }
 
     return RecipeExpression(commands)
+}
+
+/**
+ * Parser from recipe's boolean expressions declarations into objects.
+ */
+internal fun String.toBooleanRecipeExpression(sectionName: String): RecipeExpression {
+    return parseComparisonExpression(sectionName) ?: toRecipeExpression(sectionName)
 }
 
 private fun String.parseComparisonExpression(sectionName: String): RecipeExpression? {
