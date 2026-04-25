@@ -4,8 +4,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
 
-val String.Companion.EMPTY: String get() = ""
-
 fun String.isQualifiedPackageName(project: Project): Boolean {
     val psiManager = PsiManager.getInstance(project)
     val nameHelper = PsiNameHelper.getInstance(psiManager.project)
@@ -30,7 +28,7 @@ fun String.toFilePathFromGradleModulePath(): String {
 
 fun String.fromCamelCaseToUnderlines(): String {
     if (isEmpty()) {
-        return String.EMPTY
+        return ""
     }
 
     val normalized = replace('-', '_').replace(' ', '_')

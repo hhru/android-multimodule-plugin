@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.execution.executors
 
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeEvaluationContext
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeFileOperations
 import ru.hh.plugins.geminio.sdk.execution.evaluateString
@@ -18,7 +17,7 @@ internal fun RecipeCommand.MkDirs.execute(
     dirs.forEach { rootItem ->
         fileOperations.makeDirectories(
             mkDirItem = rootItem,
-            combinedPath = String.EMPTY,
+            combinedPath = "",
             context = context,
         )
     }
