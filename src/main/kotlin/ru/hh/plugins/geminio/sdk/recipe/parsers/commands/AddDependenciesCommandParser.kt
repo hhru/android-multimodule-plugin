@@ -25,7 +25,7 @@ private fun Map<String, Any>.toBuildGradleDependency(sectionName: String): Build
         )
     }
 
-    for (configuration in BuildGradleDependencyConfiguration.values()) {
+    for (configuration in BuildGradleDependencyConfiguration.entries) {
         val value = this[configuration.yamlKey] as? String
         if (value != null) {
             return parseDependency(value, configuration)

@@ -16,6 +16,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionComma
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionCommand.SrcOut
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.CLASS_TO_RESOURCE
 import ru.hh.plugins.geminio.sdk.recipe.models.expressions.RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE
+import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
 internal class GeminioRecipeExpressionParserSpec : FreeSpec({
@@ -194,6 +195,19 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
         givenExpressionStringWithFalse.toRecipeExpression(SECTION_NAME) shouldBe expectedExpressionWithFalse
     }
 
+    "Should keep comparison-like string expression as regular text expression" {
+        val givenExpressionString = "\${uiFramework} == compose"
+        val expectedExpression = listOf(
+            Dynamic(
+                parameterId = "uiFramework",
+                modifiers = emptyList(),
+            ),
+            Fixed(" == compose"),
+        ).intoExpression()
+
+        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+    }
+
     "Should parse equality comparison for string-like parameters" {
         val givenExpressionString = "\${uiFramework} == compose"
         val expectedExpression = listOf(
@@ -206,7 +220,7 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
             )
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+        givenExpressionString.toBooleanRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should parse inequality comparison with quoted value" {
@@ -221,7 +235,7 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
             )
         ).intoExpression()
 
-        givenExpressionString.toRecipeExpression(SECTION_NAME) shouldBe expectedExpression
+        givenExpressionString.toBooleanRecipeExpression(SECTION_NAME) shouldBe expectedExpression
     }
 
     "Should throw exception when reach unknown modifiers" {
@@ -235,7 +249,9 @@ internal class GeminioRecipeExpressionParserSpec : FreeSpec({
     "Should throw exception when comparison uses unsupported left side" {
         val givenExpressionString = "\${srcOut} == src"
 
-        val ex = shouldThrow<IllegalArgumentException> { givenExpressionString.toRecipeExpression(SECTION_NAME) }
+        val ex = shouldThrow<IllegalArgumentException> {
+            givenExpressionString.toBooleanRecipeExpression(SECTION_NAME)
+        }
 
         ex.message shouldStartWith (
                 "'$SECTION_NAME' section: Boolean comparison supports only a single dynamic parameter expression"

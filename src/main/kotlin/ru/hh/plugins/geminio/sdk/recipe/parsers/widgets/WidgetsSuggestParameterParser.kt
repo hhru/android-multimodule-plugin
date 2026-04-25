@@ -6,6 +6,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.SuggestParameterOption
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
+import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
 import java.io.File
@@ -50,6 +51,13 @@ internal fun Map<String, Any>.toWidgetsSuggestParameter(
                 "[values: ${options.map(SuggestParameterOption::value)}].",
         )
     }
+    require(options.distinctBy(SuggestParameterOption::label).size == options.size) {
+        sectionErrorMessage(
+            sectionName,
+            "Suggest parameter options should have unique '$KEY_OPTION_LABEL' values " +
+                "[labels: ${options.map(SuggestParameterOption::label)}].",
+        )
+    }
     require(isSealed.not() || default == null || options.any { option -> option.value == default }) {
         sectionErrorMessage(
             sectionName,
@@ -62,8 +70,8 @@ internal fun Map<String, Any>.toWidgetsSuggestParameter(
         id = id,
         name = name,
         help = help,
-        visibilityExpression = visibilityExpressionString?.toRecipeExpression(sectionName),
-        availabilityExpression = availabilityExpressionString?.toRecipeExpression(sectionName),
+        visibilityExpression = visibilityExpressionString?.toBooleanRecipeExpression(sectionName),
+        availabilityExpression = availabilityExpressionString?.toBooleanRecipeExpression(sectionName),
         default = default,
         isSealed = isSealed,
         suggestExpression = suggestExpressionString?.toRecipeExpression(sectionName),

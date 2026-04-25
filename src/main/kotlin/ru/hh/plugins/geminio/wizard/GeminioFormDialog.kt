@@ -296,8 +296,11 @@ internal class GeminioFormDialog(
                     addValueListener {
                         if (isRefreshing.not()) {
                             autoManagedSuggestFieldIds.remove(field.id)
-                            session.setSuggestValue(field.id, resolvedValue())
-                            refreshUi()
+                            val canUpdateSessionValue = field.isSealed.not() || isValidValue()
+                            if (canUpdateSessionValue) {
+                                session.setSuggestValue(field.id, resolvedValue())
+                                refreshUi()
+                            }
                         }
                     }
                 }

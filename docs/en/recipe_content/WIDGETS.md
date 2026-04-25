@@ -96,7 +96,8 @@ plus the following fields:
 Inline options and CSV rows support:
 
 - `value` — the actual value exposed to expressions and FreeMarker templates;
-- `label` — optional text shown in the UI. If omitted, Geminio uses `value`.
+- `label` — optional text shown in the UI. If omitted, Geminio uses `value`. Labels should be
+  unique within one `suggestParameter`.
 
 CSV files are read as UTF-8 and support either `value` or `value,label` rows. The optional
 `value,label` header is ignored automatically.

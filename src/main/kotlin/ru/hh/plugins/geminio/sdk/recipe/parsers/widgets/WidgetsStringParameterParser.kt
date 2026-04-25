@@ -6,6 +6,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
+import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
 
@@ -46,8 +47,8 @@ internal fun Map<String, Any>.toWidgetsStringParameter(sectionName: String): Rec
         id = id,
         name = name,
         help = help,
-        visibilityExpression = visibilityExpressionString?.toRecipeExpression(sectionName),
-        availabilityExpression = availabilityExpressionString?.toRecipeExpression(sectionName),
+        visibilityExpression = visibilityExpressionString?.toBooleanRecipeExpression(sectionName),
+        availabilityExpression = availabilityExpressionString?.toBooleanRecipeExpression(sectionName),
         default = default,
         suggestExpression = suggestExpressionString?.toRecipeExpression(sectionName),
         constraints = constraintsKeys?.map { it.toStringParameterConstraint() } ?: emptyList()

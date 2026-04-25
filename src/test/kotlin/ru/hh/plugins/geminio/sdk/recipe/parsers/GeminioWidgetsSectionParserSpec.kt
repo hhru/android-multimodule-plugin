@@ -83,6 +83,29 @@ internal class GeminioWidgetsSectionParserSpec : FreeSpec({
                 "'value' values [values: [compose, compose]]."
     }
 
+    "Should reject suggest widget with duplicate option labels" {
+        val widgetsSectionYaml = """
+            widgets:
+              - suggestParameter:
+                  id: uiFramework
+                  name: UI framework
+                  options:
+                    - value: compose
+                      label: UI
+                    - value: views
+                      label: UI
+        """.trimIndent()
+        val parsed: Map<String, Any> = Yaml().load(widgetsSectionYaml)
+
+        val ex = shouldThrow<IllegalArgumentException> {
+            parsed.toWidgetsSection()
+        }
+
+        ex.message shouldBe
+                "'widgets:suggestParameter' section: Suggest parameter options should have unique " +
+                "'label' values [labels: [UI, UI]]."
+    }
+
     "Should reject sealed suggest widget when default is not present in options" {
         val widgetsSectionYaml = """
             widgets:

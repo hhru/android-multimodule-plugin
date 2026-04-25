@@ -7,6 +7,7 @@ import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.globals.GlobalsSectionParameterType
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
+import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
 
 private const val KEY_GLOBALS_SECTION = "globals"
@@ -27,7 +28,7 @@ internal fun Map<String, Any>.toGlobalsSection(): GlobalsSection {
 }
 
 private fun Map<String, Any>.toGlobalsSectionParameter(): GlobalsSectionParameter {
-    for (parameterType in GlobalsSectionParameterType.values()) {
+    for (parameterType in GlobalsSectionParameterType.entries) {
         val parameterMap = this[parameterType.yamlKey] as? Map<String, Any>
         if (parameterMap != null) {
             return parameterMap.parseParameter(parameterType)
@@ -72,7 +73,7 @@ private fun Map<String, Any>.parseParameter(
         GlobalsSectionParameterType.BOOLEAN_PARAMETER -> {
             GlobalsSectionParameter.BooleanParameter(
                 id = id,
-                value = valueExpressionString.toRecipeExpression(KEY_GLOBALS_SECTION)
+                value = valueExpressionString.toBooleanRecipeExpression(KEY_GLOBALS_SECTION)
             )
         }
     }
