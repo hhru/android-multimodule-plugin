@@ -24,7 +24,8 @@ import ru.hh.plugins.geminio.sdk.form.GeminioForm
 import ru.hh.plugins.geminio.sdk.form.GeminioFormField
 import ru.hh.plugins.geminio.sdk.form.GeminioFormFieldOrigin
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
-import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidator
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Font
@@ -54,6 +55,9 @@ internal class GeminioFormDialog(
     private val confirmActionText: String = "Finish",
     private val preferredScrollSize: Dimension = Dimension(DEFAULT_DIALOG_WIDTH, DEFAULT_DIALOG_HEIGHT),
     private val preferInitialInputFocus: Boolean = true,
+    private val validationContextProvider: () -> GeminioStringConstraintValidationContext = {
+        GeminioStringConstraintValidationContext()
+    },
 ) : DialogWrapper(project, true) {
 
     private companion object {
@@ -89,6 +93,7 @@ internal class GeminioFormDialog(
         setOKButtonText(confirmActionText)
         init()
         refreshUi()
+        initValidation()
     }
 
     override fun createCenterPanel(): JComponent {
@@ -373,17 +378,13 @@ internal class GeminioFormDialog(
         val value = session.stringValue(field.id).orEmpty()
         val component = stringFields[field.id]?.component ?: return null
 
-        return field.constraints
-            .asSequence()
-            .mapNotNull { constraint ->
-                validateConstraint(
-                    field = field,
-                    value = value,
-                    constraint = constraint,
-                    component = component,
-                )
-            }
-            .firstOrNull()
+        return GeminioStringConstraintValidator.validate(
+            field = field,
+            value = value,
+            context = validationContextProvider(),
+            isValidIdentifier = { candidate -> candidate.isValidIdentifier(project) },
+            isQualifiedName = { candidate -> candidate.isQualifiedPackageName(project) },
+        )?.let { message -> ValidationInfo(message, component) }
     }
 
     private fun shouldShowFieldComment(

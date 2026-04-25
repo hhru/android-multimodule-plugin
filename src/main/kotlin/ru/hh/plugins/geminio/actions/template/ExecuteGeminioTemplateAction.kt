@@ -7,8 +7,10 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.freemarker_wrapper.FreemarkerException
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
@@ -16,9 +18,11 @@ import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.services.android.GeminioAndroidPathContextFactory
+import ru.hh.plugins.geminio.services.android.GeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.services.android.hasAvailableAndroidTemplateContext
 import ru.hh.plugins.geminio.services.android.packageName
@@ -28,6 +32,7 @@ import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
+import java.io.File
 import java.io.IOException
 
 /**
@@ -70,6 +75,7 @@ class ExecuteGeminioTemplateAction(
         val (project, facet) = actionEvent.requireAndroidTemplateContext()
 
         val targetDirectory = actionEvent.getTargetDirectory()
+        val templateContext = lazy { facet.createGeminioNamedModuleTemplateContext(targetDirectory) }
         val form = geminioRecipe.toGeminioForm()
         val formSession = GeminioFormSession(form)
 
@@ -80,16 +86,23 @@ class ExecuteGeminioTemplateAction(
             templateDescription = geminioRecipe.requiredParams.description,
             form = form,
             session = formSession,
+            validationContextProvider = {
+                createTemplateValidationContext(
+                    templateContext = templateContext.value,
+                    sourceRoots = ModuleRootManager.getInstance(facet.module)
+                        .sourceRoots
+                        .map { sourceRoot -> File(sourceRoot.path) },
+                )
+            },
         )
         if (dialog.showAndGet().not()) {
             return
         }
 
-        val templateContext = facet.createGeminioNamedModuleTemplateContext(targetDirectory)
         val targetPackageName = if (form.fieldsById.containsKey(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
             formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID).orEmpty()
         } else {
-            templateContext.initialPackageSuggestion.ifBlank { facet.packageName }
+            templateContext.value.initialPackageSuggestion.ifBlank { facet.packageName }
         }
         val pathContext = GeminioAndroidPathContextFactory.createForExistingModule(
             facet = facet,
@@ -156,6 +169,8 @@ class ExecuteGeminioTemplateAction(
                 completedSuccessfully = true
             } catch (error: IOException) {
                 handleExecutionError(actionText, error)
+            } catch (error: FreemarkerException) {
+                handleExecutionError(actionText, error)
             } catch (error: IllegalArgumentException) {
                 handleExecutionError(actionText, error)
             } catch (error: IllegalStateException) {
@@ -169,6 +184,21 @@ class ExecuteGeminioTemplateAction(
                 HHNotifications.info(message = "Finished '$actionText' template execution")
             }
         }
+    }
+
+    private fun createTemplateValidationContext(
+        templateContext: GeminioNamedModuleTemplateContext,
+        sourceRoots: List<File>,
+    ): GeminioStringConstraintValidationContext {
+        val modulePaths = templateContext.namedModuleTemplate.paths
+        val fallbackResDirectory = modulePaths.moduleRoot?.resolve("src/main/res")
+
+        return GeminioStringConstraintValidationContext(
+            sourceRoots = sourceRoots,
+            resourceDirectories = modulePaths.resDirectories.ifEmpty {
+                listOfNotNull(fallbackResDirectory)
+            },
+        )
     }
 
     private fun handleExecutionError(
