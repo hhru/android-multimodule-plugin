@@ -17,15 +17,15 @@ import com.intellij.ui.dsl.builder.Panel
 import com.intellij.ui.dsl.builder.Row
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI
-import ru.hh.plugins.extensions.isQualifiedPackageName
-import ru.hh.plugins.extensions.isValidIdentifier
-import ru.hh.plugins.extensions.layout.onTextChange
+import ru.hh.plugins.geminio.common.extensions.isQualifiedPackageName
+import ru.hh.plugins.geminio.common.extensions.isValidIdentifier
 import ru.hh.plugins.geminio.sdk.form.GeminioForm
 import ru.hh.plugins.geminio.sdk.form.GeminioFormField
 import ru.hh.plugins.geminio.sdk.form.GeminioFormFieldOrigin
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
 import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
 import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidator
+import ru.hh.plugins.geminio.ui.extensions.onTextChange
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Font
@@ -436,7 +436,7 @@ internal class GeminioFormDialog(
                 val expectedValue = session.suggestValue(field.id)
                 val suggestField = suggestFields[field.id]?.component ?: return
                 val resolvedValue = suggestField.resolvedValue()
-                val expectedText = field.findOption(expectedValue)?.label ?: expectedValue.orEmpty()
+                val expectedText = field.findOption(expectedValue)?.label ?: expectedValue
 
                 if (resolvedValue != expectedValue || suggestField.text != expectedText) {
                     suggestField.setResolvedValue(expectedValue)

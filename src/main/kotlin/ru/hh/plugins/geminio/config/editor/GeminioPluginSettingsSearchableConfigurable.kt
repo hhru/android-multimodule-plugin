@@ -10,12 +10,12 @@ import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
-import ru.hh.plugins.PluginsConstants
 import ru.hh.plugins.geminio.ActionsHelper
+import ru.hh.plugins.geminio.common.PluginsConstants
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.extensions.copyFromFormState
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.utils.yaml.YamlUtils
+import ru.hh.plugins.geminio.logger.HHLogger
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils
 
 class GeminioPluginSettingsSearchableConfigurable(
     private val project: Project

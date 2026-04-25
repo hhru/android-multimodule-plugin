@@ -5,7 +5,7 @@ package ru.hh.plugins.geminio.sdk.recipe.parsers.widgets
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.rootSectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
-import ru.hh.plugins.utils.yaml.YamlUtils
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils
 import java.io.File
 
 internal fun Map<String, Any>.resolveRawWidgetDefinitions(

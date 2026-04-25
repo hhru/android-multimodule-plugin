@@ -4,9 +4,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDocumentManager
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.utils.ide.EditorUtils
-import ru.hh.plugins.utils.ide.ReformatUtils
+import ru.hh.plugins.geminio.ide.EditorUtils
+import ru.hh.plugins.geminio.ide.ReformatUtils
+import ru.hh.plugins.geminio.logger.HHLogger
 import java.io.File
 import kotlin.system.measureTimeMillis
 

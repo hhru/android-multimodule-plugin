@@ -2,12 +2,12 @@ package ru.hh.plugins.geminio.sdk.execution.executors
 
 import com.intellij.openapi.vfs.LocalFileSystem
 import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
-import ru.hh.plugins.code_modification.BuildGradleModificationService
+import ru.hh.plugins.geminio.gradle.BuildGradleModificationService
+import ru.hh.plugins.geminio.logger.HHLogger
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeEvaluationContext
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathAlias
 import ru.hh.plugins.geminio.sdk.recipe.models.commands.RecipeCommand
-import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 /**

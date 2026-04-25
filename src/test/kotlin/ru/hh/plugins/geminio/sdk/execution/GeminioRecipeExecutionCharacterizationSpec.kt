@@ -3,10 +3,10 @@ package ru.hh.plugins.geminio.sdk.execution
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
 import ru.hh.plugins.geminio.sdk.helpers.createMockProject
 import ru.hh.plugins.geminio.sdk.helpers.createRecipeFixture
+import ru.hh.plugins.geminio.templating.FreemarkerConfiguration
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

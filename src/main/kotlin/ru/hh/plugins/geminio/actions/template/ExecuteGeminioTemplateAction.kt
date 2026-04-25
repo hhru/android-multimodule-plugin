@@ -8,9 +8,9 @@ import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
-import ru.hh.plugins.extensions.getTargetDirectory
-import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
-import ru.hh.plugins.freemarker_wrapper.FreemarkerException
+import ru.hh.plugins.geminio.ide.extensions.getTargetDirectory
+import ru.hh.plugins.geminio.logger.HHLogger
+import ru.hh.plugins.geminio.logger.HHNotifications
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
@@ -28,10 +28,10 @@ import ru.hh.plugins.geminio.services.android.hasAvailableAndroidTemplateContext
 import ru.hh.plugins.geminio.services.android.packageName
 import ru.hh.plugins.geminio.services.android.requireAndroidTemplateContext
 import ru.hh.plugins.geminio.services.android.showAndroidSyncQuestionDialog
+import ru.hh.plugins.geminio.templating.FreemarkerConfiguration
+import ru.hh.plugins.geminio.templating.FreemarkerException
 import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.logger.HHNotifications
 import java.io.File
 import java.io.IOException
 

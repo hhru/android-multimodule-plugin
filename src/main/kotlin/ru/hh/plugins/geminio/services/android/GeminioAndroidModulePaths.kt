@@ -1,9 +1,9 @@
 package ru.hh.plugins.geminio.services.android
 
 import com.android.tools.idea.projectsystem.AndroidModulePaths
-import ru.hh.plugins.extensions.toFilePathFromGradleModulePath
-import ru.hh.plugins.extensions.toSlashedFilePath
-import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.geminio.common.extensions.toFilePathFromGradleModulePath
+import ru.hh.plugins.geminio.common.extensions.toSlashedFilePath
+import ru.hh.plugins.geminio.logger.HHLogger
 import java.io.File
 
 /**

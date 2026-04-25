@@ -7,12 +7,12 @@ import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.LabelPosition
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI
-import ru.hh.plugins.extensions.SPACE
-import ru.hh.plugins.extensions.UNDERSCORE
-import ru.hh.plugins.extensions.layout.onTextChange
 import ru.hh.plugins.geminio.actions.module_template.steps.ModuleDisplayableItem
+import ru.hh.plugins.geminio.common.extensions.SPACE
+import ru.hh.plugins.geminio.common.extensions.UNDERSCORE
 import ru.hh.plugins.geminio.services.android.getAndroidApplicationsModules
-import ru.hh.plugins.views.CheckBoxListView
+import ru.hh.plugins.geminio.ui.checkboxlist.CheckBoxListView
+import ru.hh.plugins.geminio.ui.extensions.onTextChange
 import java.awt.Dimension
 import javax.swing.JComponent
 

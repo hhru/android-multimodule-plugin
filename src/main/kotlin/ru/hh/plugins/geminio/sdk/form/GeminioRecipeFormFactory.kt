@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.sdk.form
 
-import ru.hh.plugins.extensions.toFormattedModuleName
-import ru.hh.plugins.extensions.toPackageNameFromModuleName
+import ru.hh.plugins.geminio.common.extensions.toFormattedModuleName
+import ru.hh.plugins.geminio.common.extensions.toPackageNameFromModuleName
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID

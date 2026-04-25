@@ -4,16 +4,15 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
-import ru.hh.plugins.extensions.toUnderlines
-import ru.hh.plugins.geminio.GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME
 import ru.hh.plugins.geminio.actions.RescanTemplatesAction
 import ru.hh.plugins.geminio.actions.SetupGeminioConfigAction
 import ru.hh.plugins.geminio.actions.module_template.ExecuteGeminioModuleTemplateAction
 import ru.hh.plugins.geminio.actions.template.ExecuteGeminioTemplateAction
+import ru.hh.plugins.geminio.common.extensions.toUnderlines
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.logger.HHNotifications
+import ru.hh.plugins.geminio.logger.HHLogger
+import ru.hh.plugins.geminio.logger.HHNotifications
 import java.io.File
 
 internal class ActionsHelper {
@@ -225,7 +224,9 @@ internal class ActionsHelper {
     private fun File.getSubfolderNamesWithRecipes(): List<String> {
         return listFiles { file, _ -> file.isDirectory }
             ?.filter { file ->
-                file.listFiles { _, name -> name == GEMINIO_TEMPLATE_CONFIG_FILE_NAME }.isNullOrEmpty().not()
+                file.listFiles { _, name ->
+                    name == GeminioConstants.GEMINIO_TEMPLATE_CONFIG_FILE_NAME
+                }.isNullOrEmpty().not()
             }
             ?.map { it.name }
             ?: emptyList()

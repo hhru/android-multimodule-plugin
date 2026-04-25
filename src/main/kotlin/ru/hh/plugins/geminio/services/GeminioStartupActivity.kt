@@ -6,8 +6,8 @@ import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.wm.WindowManager
 import ru.hh.plugins.geminio.ActionsHelper
 import ru.hh.plugins.geminio.config.editor.GeminioPluginSettings
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.logger.HHNotifications
+import ru.hh.plugins.geminio.logger.HHLogger
+import ru.hh.plugins.geminio.logger.HHNotifications
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.util.concurrent.atomic.AtomicReference

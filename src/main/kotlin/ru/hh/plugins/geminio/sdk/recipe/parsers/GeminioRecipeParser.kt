@@ -7,7 +7,7 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.optional.toOptionalParams
 import ru.hh.plugins.geminio.sdk.recipe.parsers.predefined.toPredefinedFeaturesSection
 import ru.hh.plugins.geminio.sdk.recipe.parsers.required.toRequiredParams
 import ru.hh.plugins.geminio.sdk.recipe.parsers.widgets.toWidgetsSection
-import ru.hh.plugins.utils.yaml.YamlUtils
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils
 import java.io.File
 
 /**

@@ -8,7 +8,7 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErro
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequiredParameterErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
-import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils.getBooleanOrStringExpression
 import java.io.File
 
 /**

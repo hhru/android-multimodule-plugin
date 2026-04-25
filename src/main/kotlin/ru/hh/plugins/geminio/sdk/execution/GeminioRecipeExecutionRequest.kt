@@ -1,8 +1,8 @@
 package ru.hh.plugins.geminio.sdk.execution
 
 import com.intellij.openapi.project.Project
-import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathContext
+import ru.hh.plugins.geminio.templating.FreemarkerConfiguration
 
 /**
  * Immutable input for pure Geminio recipe execution.
