@@ -1,6 +1,5 @@
 package ru.hh.plugins.geminio.sdk.form.expressions
 
-import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 import ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathAlias
 import ru.hh.plugins.geminio.sdk.form.GeminioFormStringEvaluator

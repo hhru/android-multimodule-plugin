@@ -448,61 +448,6 @@ internal class GeminioFormDialog(
         session.setBooleanValue(fieldId, value)
     }
 
-    private fun validateConstraint(
-        field: GeminioFormField.StringField,
-        value: String,
-        constraint: StringParameterConstraint,
-        component: JBTextField,
-    ): ValidationInfo? {
-        return when (constraint) {
-            StringParameterConstraint.NONEMPTY -> {
-                validationInfoOrNull(value.isBlank(), "'${field.name}' should not be empty", component)
-            }
-
-            StringParameterConstraint.CLASS -> {
-                validationInfoOrNull(
-                    value.isNotBlank() && value.isValidIdentifier(project).not(),
-                    "'${field.name}' should be a valid class name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.PACKAGE -> {
-                validationInfoOrNull(
-                    value.isNotBlank() && value.isQualifiedPackageName(project).not(),
-                    "'${field.name}' should be a valid package name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.MODULE -> {
-                validationInfoOrNull(
-                    isInvalidModuleName(value),
-                    "'${field.name}' should be a valid module name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.SOURCE_SET_FOLDER -> {
-                validationInfoOrNull(
-                    isInvalidSourceSetName(value),
-                    "'${field.name}' should be a valid source set name",
-                    component,
-                )
-            }
-
-            else -> null
-        }
-    }
-
-    private fun validationInfoOrNull(
-        shouldFail: Boolean,
-        message: String,
-        component: JBTextField,
-    ): ValidationInfo? {
-        return if (shouldFail) ValidationInfo(message, component) else null
-    }
-
     private fun validateSuggestField(field: GeminioFormField.SuggestField): ValidationInfo? {
         return when {
             field.isSealed.not() -> null
@@ -516,17 +461,5 @@ internal class GeminioFormDialog(
                 }
             }
         }
-    }
-
-    private fun isInvalidModuleName(value: String): Boolean {
-        return value.isBlank() ||
-            value.any(Char::isWhitespace) ||
-            value.contains(':') ||
-            value.contains('/')
-    }
-
-    private fun isInvalidSourceSetName(value: String): Boolean {
-        return value.isBlank() ||
-            value.any { it == '/' || it == '\\' || it.isWhitespace() }
     }
 }
