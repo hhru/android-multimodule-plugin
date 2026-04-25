@@ -20,4 +20,3 @@ internal fun Project.showAndroidSyncQuestionDialog(syncPerformedActionEvent: AnA
         }
     }
 }
-

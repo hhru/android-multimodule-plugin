@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Rewrites runtime and UI of plugin to avoid Android Studio dependencies as much as possible. 
+- Rewrites runtime and UI of plugin to avoid Android Studio dependencies as much as possible.
 
 ## [1.15.0]
 

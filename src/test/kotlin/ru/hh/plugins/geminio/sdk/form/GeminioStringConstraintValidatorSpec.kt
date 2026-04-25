@@ -156,6 +156,35 @@ internal class GeminioStringConstraintValidatorSpec : FreeSpec({
             validate(field, "ru.hh.new_feature", context) shouldBe null
         }
     }
+
+    "should enforce package existence constraints in existing source roots" {
+        withTempDirectory { root ->
+            val sourceRoot = root.resolve("src/main/kotlin")
+            sourceRoot.resolve("ru/hh/existing").mkdirs()
+            val context = GeminioStringConstraintValidationContext(
+                sourceRoots = listOf(sourceRoot),
+            )
+            val uniquePackageField = stringField(
+                name = "Package name",
+                constraints = listOf(
+                    StringParameterConstraint.PACKAGE,
+                    StringParameterConstraint.UNIQUE,
+                ),
+            )
+            val existingPackageField = stringField(
+                name = "Existing package",
+                constraints = listOf(
+                    StringParameterConstraint.PACKAGE,
+                    StringParameterConstraint.EXISTS,
+                ),
+            )
+
+            validate(uniquePackageField, "ru.hh.existing", context) shouldBe "'Package name' should be unique"
+            validate(uniquePackageField, "ru.hh.new_feature", context) shouldBe null
+            validate(existingPackageField, "ru.hh.missing", context) shouldBe "'Existing package' should already exist"
+            validate(existingPackageField, "ru.hh.existing", context) shouldBe null
+        }
+    }
 })
 
 private fun stringField(

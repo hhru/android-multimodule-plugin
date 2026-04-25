@@ -383,8 +383,11 @@ class ExecuteGeminioModuleTemplateAction(
         moduleName: String,
     ) {
         val settingsGradleModificationService = SettingsGradleModificationService.getInstance(project)
-        val newModuleRelativePath =
-            directoryPath.removePrefix("${project.basePath!!}/") + "/" + moduleName.toFilePathFromGradleModulePath()
+        val newModuleRelativePath = createNewModuleRelativePath(
+            projectBasePath = project.basePath!!,
+            directoryPath = directoryPath,
+            moduleName = moduleName,
+        )
         settingsGradleModificationService.addGradleModuleDescription(
             moduleName = moduleName,
             moduleRelativePath = newModuleRelativePath,
@@ -407,4 +410,23 @@ class ExecuteGeminioModuleTemplateAction(
             buildGradleModificationService.addDepsIntoModule(appModule, addingDependencies, true)
         }
     }
+}
+
+internal fun createNewModuleRelativePath(
+    projectBasePath: String,
+    directoryPath: String,
+    moduleName: String,
+): String {
+    val projectRoot = File(projectBasePath).normalize()
+    val selectedDirectory = File(directoryPath).normalize()
+    val parentRelativePath = requireNotNull(selectedDirectory.relativeToOrNull(projectRoot)) {
+        "Selected directory '$directoryPath' should be inside project root '$projectBasePath'"
+    }.path
+        .replace(File.separatorChar, '/')
+        .trim('/')
+    val moduleRelativePath = moduleName.toFilePathFromGradleModulePath()
+
+    return listOf(parentRelativePath, moduleRelativePath)
+        .filter(String::isNotBlank)
+        .joinToString(separator = "/")
 }

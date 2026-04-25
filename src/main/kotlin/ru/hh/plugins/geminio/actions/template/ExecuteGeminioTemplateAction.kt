@@ -7,6 +7,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.UndoConfirmationPolicy
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
 import ru.hh.plugins.freemarker_wrapper.FreemarkerException
@@ -31,6 +32,7 @@ import ru.hh.plugins.geminio.wizard.GeminioFormDialog
 import ru.hh.plugins.geminio.wizard.GeminioLoadingDialog
 import ru.hh.plugins.logger.HHLogger
 import ru.hh.plugins.logger.HHNotifications
+import java.io.File
 import java.io.IOException
 
 /**
@@ -84,7 +86,14 @@ class ExecuteGeminioTemplateAction(
             templateDescription = geminioRecipe.requiredParams.description,
             form = form,
             session = formSession,
-            validationContextProvider = { createTemplateValidationContext(templateContext.value) },
+            validationContextProvider = {
+                createTemplateValidationContext(
+                    templateContext = templateContext.value,
+                    sourceRoots = ModuleRootManager.getInstance(facet.module)
+                        .sourceRoots
+                        .map { sourceRoot -> File(sourceRoot.path) },
+                )
+            },
         )
         if (dialog.showAndGet().not()) {
             return
@@ -179,11 +188,13 @@ class ExecuteGeminioTemplateAction(
 
     private fun createTemplateValidationContext(
         templateContext: GeminioNamedModuleTemplateContext,
+        sourceRoots: List<File>,
     ): GeminioStringConstraintValidationContext {
         val modulePaths = templateContext.namedModuleTemplate.paths
         val fallbackResDirectory = modulePaths.moduleRoot?.resolve("src/main/res")
 
         return GeminioStringConstraintValidationContext(
+            sourceRoots = sourceRoots,
             resourceDirectories = modulePaths.resDirectories.ifEmpty {
                 listOfNotNull(fallbackResDirectory)
             },
