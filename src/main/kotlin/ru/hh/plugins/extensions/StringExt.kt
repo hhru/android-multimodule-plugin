@@ -1,12 +1,8 @@
 package ru.hh.plugins.extensions
 
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
-import com.intellij.refactoring.PackageWrapper
-
-private const val KOTLIN_FILE_EXTENSION = ".kt"
 
 val String.Companion.EMPTY: String get() = ""
 
@@ -24,21 +20,12 @@ fun String.isValidIdentifier(project: Project): Boolean {
     return nameHelper.isIdentifier(this)
 }
 
-fun String.replaceLineBreaks(): String {
-    return this.replace("\n", "\n<br />", true)
-}
-
 fun String.toSlashedFilePath(): String {
     return this.replace('.', '/').let { "/$it" }
 }
 
-fun String.toKotlinFileName() = "${this}$KOTLIN_FILE_EXTENSION"
-
-fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirectory? {
-    val psiManager = PsiManager.getInstance(project)
-    val packageWrapper = PackageWrapper(psiManager, this)
-
-    return packageWrapper.directories.lastOrNull { it.virtualFile.path == withPath }
+fun String.toFilePathFromGradleModulePath(): String {
+    return trim(':').replace(':', Char.SLASH)
 }
 
 fun String.fromCamelCaseToUnderlines(): String {
@@ -77,6 +64,8 @@ fun String.toUnderlines(): String {
 
 fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
     val formattedModuleName = this
+        .replace(':', Char.DOT)
+        .trim(Char.DOT)
         .replace(Char.SPACE, Char.UNDERSCORE)
         .replace(Char.HYPHEN, Char.UNDERSCORE)
     return "$packageNamePrefix.$formattedModuleName"

@@ -60,7 +60,7 @@ private fun createPredefinedModuleFields(
         GeminioFormField.StringField(
             id = FEATURE_MODULE_NAME_PARAMETER_ID,
             name = "Module name",
-            help = "The name of creating module without ':' prefix",
+            help = "The Gradle path of creating module without ':' prefix",
             origin = GeminioFormFieldOrigin.PREDEFINED,
             defaultValue = "mymodule",
             constraints = listOf(

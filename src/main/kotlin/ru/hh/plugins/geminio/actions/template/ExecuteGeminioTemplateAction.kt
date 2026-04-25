@@ -16,9 +16,11 @@ import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeExecutionRequest
 import ru.hh.plugins.geminio.sdk.execution.GeminioRecipeRunner
 import ru.hh.plugins.geminio.sdk.execution.GeminioTemplateParametersFactory
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
 import ru.hh.plugins.geminio.sdk.form.toGeminioForm
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.services.android.GeminioAndroidPathContextFactory
+import ru.hh.plugins.geminio.services.android.GeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.services.android.createGeminioNamedModuleTemplateContext
 import ru.hh.plugins.geminio.services.android.hasAvailableAndroidTemplateContext
 import ru.hh.plugins.geminio.services.android.packageName
@@ -70,6 +72,7 @@ class ExecuteGeminioTemplateAction(
         val (project, facet) = actionEvent.requireAndroidTemplateContext()
 
         val targetDirectory = actionEvent.getTargetDirectory()
+        val templateContext = lazy { facet.createGeminioNamedModuleTemplateContext(targetDirectory) }
         val form = geminioRecipe.toGeminioForm()
         val formSession = GeminioFormSession(form)
 
@@ -80,16 +83,16 @@ class ExecuteGeminioTemplateAction(
             templateDescription = geminioRecipe.requiredParams.description,
             form = form,
             session = formSession,
+            validationContextProvider = { createTemplateValidationContext(templateContext.value) },
         )
         if (dialog.showAndGet().not()) {
             return
         }
 
-        val templateContext = facet.createGeminioNamedModuleTemplateContext(targetDirectory)
         val targetPackageName = if (form.fieldsById.containsKey(FEATURE_PACKAGE_NAME_PARAMETER_ID)) {
             formSession.stringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID).orEmpty()
         } else {
-            templateContext.initialPackageSuggestion.ifBlank { facet.packageName }
+            templateContext.value.initialPackageSuggestion.ifBlank { facet.packageName }
         }
         val pathContext = GeminioAndroidPathContextFactory.createForExistingModule(
             facet = facet,
@@ -169,6 +172,19 @@ class ExecuteGeminioTemplateAction(
                 HHNotifications.info(message = "Finished '$actionText' template execution")
             }
         }
+    }
+
+    private fun createTemplateValidationContext(
+        templateContext: GeminioNamedModuleTemplateContext,
+    ): GeminioStringConstraintValidationContext {
+        val modulePaths = templateContext.namedModuleTemplate.paths
+        val fallbackResDirectory = modulePaths.moduleRoot?.resolve("src/main/res")
+
+        return GeminioStringConstraintValidationContext(
+            resourceDirectories = modulePaths.resDirectories.ifEmpty {
+                listOfNotNull(fallbackResDirectory)
+            },
+        )
     }
 
     private fun handleExecutionError(

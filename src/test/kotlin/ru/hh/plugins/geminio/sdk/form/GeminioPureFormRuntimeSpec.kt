@@ -111,6 +111,11 @@ internal class GeminioPureFormRuntimeSpec : FreeSpec({
 
         session.suggestedStringValue(FEATURE_FORMATTED_MODULE_NAME_PARAMETER_ID) shouldBe "FeatureAuth"
         session.suggestedStringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID) shouldBe "ru.hh.feature.feature_auth"
+
+        session.setStringValue(FEATURE_MODULE_NAME_PARAMETER_ID, "applicant:feature:part-time-job")
+
+        session.suggestedStringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID) shouldBe
+            "ru.hh.feature.applicant.feature.part_time_job"
     }
 })
 

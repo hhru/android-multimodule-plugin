@@ -37,6 +37,20 @@ Optional parameters:
     * `uri_authority`;
     * `kotlin_function`.
 
+  `nonempty` checks that the value is not blank. `class`, `activity`, `package`, `app_package`,
+  `source_set_folder`, `layout`, `drawable`, `navigation`, `values`, `string`, `uri_authority`, and
+  `kotlin_function` validate the value format. `module` stays compatible with Android Studio wizard behavior:
+  the constraint itself does not reject value syntax, including `:`.
+
+  `unique` and `exists` are applied together with typed constraints when the UI can map the value to the current
+  template's file context:
+    * `module` checks the Gradle path of an already connected project module. The path is derived from the module
+      content root relative to the project root: `applicant/feature/auth` becomes `applicant:feature:auth`, and the
+      `/src/<sourceSet>` suffix is stripped without depending on specific source set names;
+    * `package` / `app_package` checks the package path in the new module source root when it is known;
+    * `layout`, `drawable`, `navigation`, `values` checks the resource in the corresponding `res` directory;
+    * `string` checks a string resource in `res/values`.
+
 - `default` — the default value of the parameter;
 - `suggest` — a string [expression](../EXPRESSIONS.md) to automatically change the field, which may depend on other
   fields;

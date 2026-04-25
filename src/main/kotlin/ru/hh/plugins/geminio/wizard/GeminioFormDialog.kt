@@ -24,7 +24,8 @@ import ru.hh.plugins.geminio.sdk.form.GeminioForm
 import ru.hh.plugins.geminio.sdk.form.GeminioFormField
 import ru.hh.plugins.geminio.sdk.form.GeminioFormFieldOrigin
 import ru.hh.plugins.geminio.sdk.form.GeminioFormSession
-import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidationContext
+import ru.hh.plugins.geminio.sdk.form.GeminioStringConstraintValidator
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Font
@@ -54,6 +55,9 @@ internal class GeminioFormDialog(
     private val confirmActionText: String = "Finish",
     private val preferredScrollSize: Dimension = Dimension(DEFAULT_DIALOG_WIDTH, DEFAULT_DIALOG_HEIGHT),
     private val preferInitialInputFocus: Boolean = true,
+    private val validationContextProvider: () -> GeminioStringConstraintValidationContext = {
+        GeminioStringConstraintValidationContext()
+    },
 ) : DialogWrapper(project, true) {
 
     private companion object {
@@ -87,6 +91,7 @@ internal class GeminioFormDialog(
         setOKButtonText(confirmActionText)
         init()
         refreshUi()
+        initValidation()
     }
 
     override fun createCenterPanel(): JComponent {
@@ -316,17 +321,13 @@ internal class GeminioFormDialog(
         val value = session.stringValue(field.id).orEmpty()
         val component = stringFields[field.id]?.component ?: return null
 
-        return field.constraints
-            .asSequence()
-            .mapNotNull { constraint ->
-                validateConstraint(
-                    field = field,
-                    value = value,
-                    constraint = constraint,
-                    component = component,
-                )
-            }
-            .firstOrNull()
+        return GeminioStringConstraintValidator.validate(
+            field = field,
+            value = value,
+            context = validationContextProvider(),
+            isValidIdentifier = { candidate -> candidate.isValidIdentifier(project) },
+            isQualifiedName = { candidate -> candidate.isQualifiedPackageName(project) },
+        )?.let { message -> ValidationInfo(message, component) }
     }
 
     private fun shouldShowFieldComment(
@@ -378,70 +379,4 @@ internal class GeminioFormDialog(
         session.setBooleanValue(fieldId, value)
     }
 
-    private fun validateConstraint(
-        field: GeminioFormField.StringField,
-        value: String,
-        constraint: StringParameterConstraint,
-        component: JBTextField,
-    ): ValidationInfo? {
-        return when (constraint) {
-            StringParameterConstraint.NONEMPTY -> {
-                validationInfoOrNull(value.isBlank(), "'${field.name}' should not be empty", component)
-            }
-
-            StringParameterConstraint.CLASS -> {
-                validationInfoOrNull(
-                    value.isNotBlank() && value.isValidIdentifier(project).not(),
-                    "'${field.name}' should be a valid class name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.PACKAGE -> {
-                validationInfoOrNull(
-                    value.isNotBlank() && value.isQualifiedPackageName(project).not(),
-                    "'${field.name}' should be a valid package name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.MODULE -> {
-                validationInfoOrNull(
-                    isInvalidModuleName(value),
-                    "'${field.name}' should be a valid module name",
-                    component,
-                )
-            }
-
-            StringParameterConstraint.SOURCE_SET_FOLDER -> {
-                validationInfoOrNull(
-                    isInvalidSourceSetName(value),
-                    "'${field.name}' should be a valid source set name",
-                    component,
-                )
-            }
-
-            else -> null
-        }
-    }
-
-    private fun validationInfoOrNull(
-        shouldFail: Boolean,
-        message: String,
-        component: JBTextField,
-    ): ValidationInfo? {
-        return if (shouldFail) ValidationInfo(message, component) else null
-    }
-
-    private fun isInvalidModuleName(value: String): Boolean {
-        return value.isBlank() ||
-            value.any(Char::isWhitespace) ||
-            value.contains(':') ||
-            value.contains('/')
-    }
-
-    private fun isInvalidSourceSetName(value: String): Boolean {
-        return value.isBlank() ||
-            value.any { it == '/' || it == '\\' || it.isWhitespace() }
-    }
 }

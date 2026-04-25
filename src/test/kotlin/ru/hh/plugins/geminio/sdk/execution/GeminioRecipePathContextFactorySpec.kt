@@ -43,4 +43,24 @@ internal class GeminioRecipePathContextFactorySpec : FreeSpec({
         pathContext.rootOut shouldBe "/workspace/modules/reports"
         pathContext.currentDirOut shouldBe "/workspace/modules"
     }
+
+    "should map Gradle module path segments to nested module directories" {
+        val pathContext = GeminioAndroidPathContextFactory.createForNewModule(
+            request = GeminioAndroidPathContextFactory.NewModulePathRequest(
+                currentDirPath = "/workspace/modules",
+                newModuleRootDirectoryPath = "/workspace/modules",
+                moduleName = "applicant:feature:part-time-job",
+                packageName = "ru.hh.applicant.feature.part_time_job",
+                sourceSet = "main",
+                sourceCodeFolderName = "kotlin",
+            ),
+        )
+
+        pathContext.srcOut shouldBe
+            "/workspace/modules/applicant/feature/part-time-job/src/main/kotlin/ru/hh/applicant/feature/part_time_job"
+        pathContext.resOut shouldBe "/workspace/modules/applicant/feature/part-time-job/src/main/res"
+        pathContext.manifestOut shouldBe "/workspace/modules/applicant/feature/part-time-job/src/main"
+        pathContext.rootOut shouldBe "/workspace/modules/applicant/feature/part-time-job"
+        pathContext.currentDirOut shouldBe "/workspace/modules"
+    }
 })

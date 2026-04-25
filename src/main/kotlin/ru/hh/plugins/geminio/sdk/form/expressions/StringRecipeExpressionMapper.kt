@@ -1,5 +1,6 @@
 package ru.hh.plugins.geminio.sdk.form.expressions
 
+import ru.hh.plugins.extensions.fromCamelCaseToUnderlines
 import ru.hh.plugins.geminio.sdk.form.GeminioFormEvaluationContext
 import ru.hh.plugins.geminio.sdk.form.GeminioFormPathAlias
 import ru.hh.plugins.geminio.sdk.form.GeminioFormStringEvaluator
@@ -86,7 +87,7 @@ private fun String.applyModifiers(modifiers: List<RecipeExpressionModifier>): St
             RecipeExpressionModifier.ACTIVITY_TO_LAYOUT -> result.activityToLayout()
             RecipeExpressionModifier.FRAGMENT_TO_LAYOUT -> result.fragmentToLayout()
             RecipeExpressionModifier.CLASS_TO_RESOURCE -> result.classToResource()
-            RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES -> result.camelCaseToUnderlines()
+            RecipeExpressionModifier.CAMEL_CASE_TO_UNDERLINES -> result.fromCamelCaseToUnderlines()
             RecipeExpressionModifier.LAYOUT_TO_ACTIVITY -> result.layoutToActivity()
             RecipeExpressionModifier.LAYOUT_TO_FRAGMENT -> result.layoutToFragment()
             RecipeExpressionModifier.UNDERSCORE_TO_CAMEL_CASE -> result.underscoreToCamelCase()
@@ -119,7 +120,7 @@ private fun String.componentToLayoutResourceName(
     }
 
     val normalized = stripComponentMarker(componentKeyword)
-    return "${layoutPrefix}_${normalized.camelCaseToUnderlines()}"
+    return "${layoutPrefix}_${normalized.fromCamelCaseToUnderlines()}"
 }
 
 private fun String.classToResource(): String {
@@ -130,7 +131,7 @@ private fun String.classToResource(): String {
             result = result.removeComponentSuffix(suffix)
         }
 
-    return result.camelCaseToUnderlines()
+    return result.fromCamelCaseToUnderlines()
 }
 
 private fun String.layoutToActivity(): String {
@@ -188,13 +189,13 @@ private fun String.matchedComponentKeywordLengthAtEnd(componentKeyword: String):
     return (length downTo 2)
         .firstOrNull { candidateLength ->
             componentKeyword.length >= candidateLength &&
-                regionMatches(
-                    this.length - candidateLength,
-                    componentKeyword,
-                    0,
-                    candidateLength,
-                    ignoreCase = true,
-                )
+                    regionMatches(
+                        this.length - candidateLength,
+                        componentKeyword,
+                        0,
+                        candidateLength,
+                        ignoreCase = true,
+                    )
         }
 }
 
@@ -202,44 +203,14 @@ private fun String.matchedComponentKeywordLengthAtStart(componentKeyword: String
     return (length downTo 2)
         .firstOrNull { candidateLength ->
             componentKeyword.length >= candidateLength &&
-                componentKeyword.regionMatches(
-                    0,
-                    this,
-                    0,
-                    candidateLength,
-                    ignoreCase = true,
-                )
+                    componentKeyword.regionMatches(
+                        0,
+                        this,
+                        0,
+                        candidateLength,
+                        ignoreCase = true,
+                    )
         }
-}
-
-private fun String.camelCaseToUnderlines(): String {
-    if (isEmpty()) {
-        return ""
-    }
-
-    val normalized = replace('-', '_').replace(' ', '_')
-    val builder = StringBuilder()
-
-    normalized.forEachIndexed { index, char ->
-        when {
-            char == '_' -> {
-                if (builder.isNotEmpty() && builder.last() != '_') {
-                    builder.append('_')
-                }
-            }
-
-            char.isUpperCase() -> {
-                if (index != 0 && builder.isNotEmpty() && builder.last() != '_') {
-                    builder.append('_')
-                }
-                builder.append(char.lowercaseChar())
-            }
-
-            else -> builder.append(char.lowercaseChar())
-        }
-    }
-
-    return builder.toString().trim('_')
 }
 
 private fun String.underscoreToCamelCase(): String {
