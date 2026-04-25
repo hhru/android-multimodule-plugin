@@ -9,6 +9,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.freemarker_wrapper.FreemarkerException
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_PACKAGE_NAME_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkFactory
 import ru.hh.plugins.geminio.sdk.execution.GeminioGeneratedFilesPostProcessor
@@ -158,6 +159,8 @@ class ExecuteGeminioTemplateAction(
 
                 completedSuccessfully = true
             } catch (error: IOException) {
+                handleExecutionError(actionText, error)
+            } catch (error: FreemarkerException) {
                 handleExecutionError(actionText, error)
             } catch (error: IllegalArgumentException) {
                 handleExecutionError(actionText, error)

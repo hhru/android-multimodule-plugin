@@ -20,6 +20,7 @@ import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.extensions.getTargetDirectory
 import ru.hh.plugins.extensions.toFilePathFromGradleModulePath
 import ru.hh.plugins.freemarker_wrapper.FreemarkerConfiguration
+import ru.hh.plugins.freemarker_wrapper.FreemarkerException
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_APPLICATIONS_MODULES_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_DEFAULT_SOURCE_CODE_FOLDER_PARAMETER_ID
 import ru.hh.plugins.geminio.sdk.GeminioSdkConstants.FEATURE_MODULE_NAME_PARAMETER_ID
@@ -233,6 +234,8 @@ class ExecuteGeminioModuleTemplateAction(
 
                 completedSuccessfully = true
             } catch (error: IOException) {
+                handleModuleExecutionError(error)
+            } catch (error: FreemarkerException) {
                 handleModuleExecutionError(error)
             } catch (error: IllegalArgumentException) {
                 handleModuleExecutionError(error)
