@@ -397,6 +397,40 @@ internal class GeminioWidgetsSectionParserSpec : FreeSpec({
         exception.message?.contains("Widget parameter ids should be unique") shouldBe true
     }
 
+    "Should reject include entry with sibling widget keys" {
+        val exception = shouldThrow<IllegalArgumentException> {
+            createRecipeFixture(
+                recipeYaml = """
+                    requiredParams:
+                      name: Geminio invalid include test
+                      description: Covers include entry with sibling keys
+
+                    widgets:
+                      - include:
+                          file: shared/codeowners.widgets.yaml
+                        stringParameter:
+                          id: screenName
+                          name: Screen name
+
+                    recipe: []
+                """,
+                templates = mapOf(
+                    "shared/codeowners.widgets.yaml" to """
+                        widgets:
+                          - stringParameter:
+                              id: codeOwnerTeam
+                              name: Codeowners team
+                              default: team-example
+                    """
+                ),
+            )
+        }
+
+        exception.message shouldBe
+            "'widgets' section: Include widget entry should declare only 'include' " +
+                "[keys: [include, stringParameter]]."
+    }
+
     "Should resolve suggest options source relative to included widgets file" {
         val fixture = createRecipeFixture(
             recipeYaml = """

@@ -44,6 +44,13 @@ private fun Map<String, Any>.resolveRawWidgetDefinitions(
                 )
             )
         } else {
+            require(widgetMap.keys == setOf(KEY_INCLUDE_PARAMETER_TYPE)) {
+                sectionErrorMessage(
+                    KEY_WIDGETS_SECTION,
+                    "Include widget entry should declare only '$KEY_INCLUDE_PARAMETER_TYPE' " +
+                        "[keys: ${widgetMap.keys}].",
+                )
+            }
             includeMap.resolveIncludedWidgetDefinitions(
                 parentSourceFilePath = sourceFilePath,
                 includeChain = includeChain,
