@@ -1,88 +1,30 @@
 import org.jetbrains.intellij.platform.gradle.extensions.intellijPlatform
 
+rootProject.name = "hh-geminio"
+
 pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    fun systemProperty(name: String): Provider<String> {
-        return providers.systemProperty(name)
-    }
-
-    val gradleIntellijPluginVersion = systemProperty("gradleIntellijPluginVersion")
-    val gradleChangelogPluginVersion = systemProperty("gradleChangelogPluginVersion")
-    val kotlinVersion = systemProperty("kotlinVersion")
-    val detektVersion = systemProperty("detektVersion")
-
-    resolutionStrategy {
-        eachPlugin {
-            val pluginId = requested.id.id
-
-            when {
-                pluginId.startsWith("org.jetbrains.intellij.") ->
-                    useVersion(gradleIntellijPluginVersion.get())
-
-                pluginId == "org.jetbrains.changelog" ->
-                    useVersion(gradleChangelogPluginVersion.get())
-
-                pluginId == "io.gitlab.arturbosch.detekt" ->
-                    useVersion(detektVersion.get())
-
-                pluginId.startsWith("org.jetbrains.kotlin.") ->
-                    useVersion(kotlinVersion.get())
-            }
-        }
+    plugins {
+        id("org.jetbrains.kotlin.jvm") version "2.3.0"
+        id("org.jetbrains.changelog") version "2.5.0"
     }
 }
 
 plugins {
-    id("org.jetbrains.intellij.platform.settings")
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("org.jetbrains.intellij.platform.settings") version "2.14.0"
 }
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
 
+    // Configure all projects' repositories
     repositories {
         mavenCentral()
-        maven("https://packages.atlassian.com/maven/repository/public") {
-            mavenContent {
-                includeGroupAndSubgroups("""com.atlassian""")
-            }
-        }
+
+        // IntelliJ Platform Gradle Plugin Repositories Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-repositories-extension.html
         intellijPlatform {
             defaultRepositories()
         }
     }
 }
-
-rootProject.name = "hh-android-plugins"
-
-includeBuild("libraries")
-includeBuild("build-logic")
-
-// region Shared modules
-
-// region Shared core modules
-include(":shared:core:utils")
-include(":shared:core:freemarker")
-include(":shared:core:ui")
-include(":shared:core:code-modification")
-include(":shared:core:models")
-include(":shared:core:psi-utils")
-include(":shared:core:logger")
-include(":shared:core:notifications")
-include(":shared:core:android-studio-stubs")
-// endregion
-
-// region Shared features
-include(":shared:feature:geminio-sdk")
-// endregion
-
-// endregion
-
-// Plugins
-include(":plugins:hh-carnival")
-include(":plugins:hh-garcon")
-include(":plugins:hh-geminio")

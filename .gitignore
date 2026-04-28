@@ -12,6 +12,10 @@
 /.idea/gradle.xml
 /.idea/compiler.xml
 /.idea/misc.xml
+/.idea/.name
+/.idea/AndroidProjectSystem.xml
+
+.kotlin
 
 # Gradle files
 .gradle/

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:RecipeExpressionParser.kt$internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
+    <ID>CyclomaticComplexMethod:TemplateCategoryMapper.kt$internal fun TemplateCategory.toAndroidStudioTemplateCategory(): AndroidStudioTemplateCategory</ID>
+    <ID>CyclomaticComplexMethod:WidgetsStringParameterConstraintMapper.kt$internal fun StringParameterConstraint.toAndroidStudioTemplateStringParameterConstraint(): AndroidStudioTemplateStringParameterConstraint</ID>
+    <ID>DestructuringDeclarationWithTooManyEntries:StringRecipeExpressionMapper.kt$val (_, srcOut, resOut, manifestOut, _, _, _, rootOut) = moduleTemplateData</ID>
+    <ID>LateinitUsage:ChooseModulesModelWizardStep.kt$ChooseModulesModelWizardStep$private lateinit var modulesJList: CheckBoxListView&lt;ModuleDisplayableItem></ID>
+    <ID>LongMethod:RecipeExpressionParser.kt$internal fun String.toRecipeExpression(sectionName: String): RecipeExpression</ID>
+    <ID>LongMethod:WidgetsInjector.kt$private fun GeminioRecipe.toParametersData(): GeminioRecipeParametersData</ID>
+    <ID>MagicNumber:AddDependenciesCommandParser.kt$3</ID>
+    <ID>MaxLineLength:AddDependenciesCommandParser.kt$message = "Illegal configuration for adding build.gradle dependency - each list item should be single map entry, e.g. `- kapt: Libs.toothpick`"</ID>
+    <ID>MaxLineLength:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction$"Recipe for module creation should enable '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' feature. Add 'predefinedFeatures' section with '${PredefinedFeature.ENABLE_MODULE_CREATION_PARAMS.yamlKey}' list item"</ID>
+    <ID>MaxLineLength:FreemarkerConfiguration.kt$FreemarkerConfiguration$"Can't resolve template [configuredPath: $configuredPath, templateRelativePath: $templateRelativePath, templateParams: $templateParams]"</ID>
+    <ID>MaxLineLength:GlobalsSectionMapper.kt$"You cannot have template parameter with id='$showHiddenValuesId' with 'globals' section in your recipe.yaml. "</ID>
+    <ID>MaxLineLength:MkDirsCommandParser.kt$message = "Can't parse mkDirs command structure item as Map&lt;String, List&lt;Any>>. You should check your yaml config."</ID>
+    <ID>MaxLineLength:MkDirsCommandParser.kt$message = "We don't allow empty map objects for mkDirs command structure. If you need empty directory, just use simple strings, not objects [`- di`, not `- di:`]"</ID>
+    <ID>MaxLineLength:PredicateCommandParser.kt$elseCommands = elseCommands?.map { it.toRecipeCommand("$sectionName:$KEY_COMMAND_ELSE_COMMANDS") } ?: emptyList()</ID>
+    <ID>MaxLineLength:RecipeExpressionModifier.kt$RecipeExpressionModifier.CLASS_TO_RESOURCE$/** Similar to [CAMEL_CASE_TO_UNDERLINES], but strips off common class suffixes such as "Activity", "Fragment", etc. */</ID>
+    <ID>MaxLineLength:SettingsGradleModificationService.kt$SettingsGradleModificationService$*</ID>
+    <ID>MaxLineLength:StringParameterConstraint.kt$StringParameterConstraint.EXISTS$*</ID>
+    <ID>MaxLineLength:StringParameterConstraint.kt$StringParameterConstraint.UNIQUE$*</ID>
+    <ID>MaxLineLength:StringRecipeExpressionMapper.kt$?:</ID>
+    <ID>MaxLineLength:StudioWizardDialogBuilder.kt$StudioWizardDialogBuilder.Companion$"This is stub for com.android.tools.idea.wizard.ui.StudioWizardDialogBuilder from Android Studio &lt;= Chipmunk"</ID>
+    <ID>MaxLineLength:WidgetsStringParameterConstraintMapper.kt$internal</ID>
+    <ID>PrintStackTrace:FreemarkerConfiguration.kt$FreemarkerConfiguration$ex</ID>
+    <ID>ReturnCount:KotlinClassChooserComboBox.kt$&lt;no name provided>$override fun getSelectedFromTreeUserObject(node: DefaultMutableTreeNode): PsiClass?</ID>
+    <ID>ReturnCount:PredefinedFeaturesSectionParser.kt$internal fun Map&lt;String, Any>.toPredefinedFeaturesSection(): PredefinedFeaturesSection</ID>
+    <ID>ReturnCount:YamlUtils.kt$YamlUtils$fun loadFromConfigFile(filePath: String, onError: (Throwable) -> Unit): LinkedHashMap&lt;String, Any>?</ID>
+    <ID>SpreadOperator:WidgetsInjector.kt$(*allWidgets.toTypedArray())</ID>
+    <ID>StringLiteralDuplication:RecipeCommandParser.kt$"$sectionName:$KEY_COMMAND_INSTANTIATE"</ID>
+    <ID>StringShouldBeRawString:KtPsiFactoryExt.kt$"project(\":$moduleName\").projectDir = settingsDir.resolve(\"$relativePath\")"</ID>
+    <ID>SwallowedException:PsiDirectoryExt.kt$ex: IncorrectOperationException</ID>
+    <ID>SwallowedException:StudioWizardDialogFactory.kt$StudioWizardDialogFactory$ex: ClassNotFoundException</ID>
+    <ID>TooGenericExceptionCaught:ExecuteGeminioModuleTemplateAction.kt$ExecuteGeminioModuleTemplateAction.&lt;no name provided>$ex: Exception</ID>
+    <ID>TooGenericExceptionCaught:FreemarkerConfiguration.kt$FreemarkerConfiguration$ex: Exception</ID>
+    <ID>TooGenericExceptionCaught:YamlUtils.kt$YamlUtils$ex: Exception</ID>
+    <ID>UseCheckOrError:BuildGradleModificationService.kt$BuildGradleModificationService$throw IllegalStateException( "Can't find `$BUILD_GRADLE_FILENAME` or `$BUILD_GRADLE_KTS_FILENAME` file in ${module.name}" )</ID>
+    <ID>UseCheckOrError:SettingsGradleModificationService.kt$SettingsGradleModificationService$throw IllegalStateException( "Can't find `$SETTINGS_GRADLE_FILENAME` or `$SETTINGS_GRADLE_KTS_FILENAME` file in root module" )</ID>
+    <ID>UseCheckOrError:StudioWizardDialogFactory.kt$StudioWizardDialogFactory$throw IllegalStateException("There is no wizard builders classes")</ID>
+    <ID>WildcardImport:IntPropertyAdapter.kt$import freemarker.template.*</ID>
+    <ID>WildcardImport:StringPropertyAdapter.kt$import freemarker.template.*</ID>
+  </CurrentIssues>
+</SmellBaseline>
