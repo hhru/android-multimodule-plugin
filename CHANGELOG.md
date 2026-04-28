@@ -1,5 +1,11 @@
 # Geminio
 
+## [2.0.0]
+
+### Changed
+
+- Rewrites runtime and UI of plugin to avoid Android Studio dependencies as much as possible.
+
 ## [1.15.0]
 
 ### Changed

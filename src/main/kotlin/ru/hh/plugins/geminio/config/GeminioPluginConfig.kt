@@ -1,12 +1,11 @@
 package ru.hh.plugins.geminio.config
 
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.utils.yaml.YamlConfigModel
 
 class GeminioPluginConfig(
-    override var configFilePath: String = String.EMPTY,
-    var templatesRootDirPath: String = String.EMPTY,
-    var modulesTemplatesRootDirPath: String = String.EMPTY,
+    override var configFilePath: String = "",
+    var templatesRootDirPath: String = "",
+    var modulesTemplatesRootDirPath: String = "",
     var groupsNames: GroupsNames = GroupsNames(),
     var isDebugEnabled: Boolean = false,
 ) : YamlConfigModel {
@@ -33,7 +32,7 @@ class GeminioPluginConfig(
     }
 
     data class GroupsNames(
-        var forNewGroup: String = String.EMPTY,
-        var forNewModulesGroup: String = String.EMPTY
+        var forNewGroup: String = "",
+        var forNewModulesGroup: String = ""
     )
 }

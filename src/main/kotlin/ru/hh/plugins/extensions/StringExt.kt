@@ -1,15 +1,8 @@
 package ru.hh.plugins.extensions
 
-import com.android.tools.idea.wizard.template.camelCaseToUnderlines
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiNameHelper
-import com.intellij.refactoring.PackageWrapper
-
-private const val KOTLIN_FILE_EXTENSION = ".kt"
-
-val String.Companion.EMPTY: String get() = ""
 
 fun String.isQualifiedPackageName(project: Project): Boolean {
     val psiManager = PsiManager.getInstance(project)
@@ -25,25 +18,42 @@ fun String.isValidIdentifier(project: Project): Boolean {
     return nameHelper.isIdentifier(this)
 }
 
-fun String.replaceLineBreaks(): String {
-    return this.replace("\n", "\n<br />", true)
-}
-
 fun String.toSlashedFilePath(): String {
     return this.replace('.', '/').let { "/$it" }
 }
 
-fun String.toKotlinFileName() = "${this}$KOTLIN_FILE_EXTENSION"
-
-fun String.packageToPsiDirectory(project: Project, withPath: String): PsiDirectory? {
-    val psiManager = PsiManager.getInstance(project)
-    val packageWrapper = PackageWrapper(psiManager, this)
-
-    return packageWrapper.directories.lastOrNull { it.virtualFile.path == withPath }
+fun String.toFilePathFromGradleModulePath(): String {
+    return trim(':').replace(':', Char.SLASH)
 }
 
 fun String.fromCamelCaseToUnderlines(): String {
-    return camelCaseToUnderlines(this)
+    if (isEmpty()) {
+        return ""
+    }
+
+    val normalized = replace('-', '_').replace(' ', '_')
+    val builder = StringBuilder()
+
+    normalized.forEachIndexed { index, char ->
+        when {
+            char == '_' -> {
+                if (builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+            }
+
+            char.isUpperCase() -> {
+                if (index != 0 && builder.isNotEmpty() && builder.last() != '_') {
+                    builder.append('_')
+                }
+                builder.append(char.lowercaseChar())
+            }
+
+            else -> builder.append(char.lowercaseChar())
+        }
+    }
+
+    return builder.toString().trim('_')
 }
 
 fun String.toUnderlines(): String {
@@ -52,6 +62,8 @@ fun String.toUnderlines(): String {
 
 fun String.toPackageNameFromModuleName(packageNamePrefix: String): String {
     val formattedModuleName = this
+        .replace(':', Char.DOT)
+        .trim(Char.DOT)
         .replace(Char.SPACE, Char.UNDERSCORE)
         .replace(Char.HYPHEN, Char.UNDERSCORE)
     return "$packageNamePrefix.$formattedModuleName"
@@ -70,8 +82,18 @@ fun String.toFormattedModuleName(): String {
         moduleName
             .replaceWordsBreakers()
             .split(' ')
-            .map { it.capitalize() }
+            .map { it.capitalizeAscii() }
             .forEach { append(it) }
         toString()
+    }
+}
+
+private fun String.capitalizeAscii(): String {
+    return replaceFirstChar { char ->
+        if (char.isLowerCase()) {
+            char.uppercaseChar().toString()
+        } else {
+            char.toString()
+        }
     }
 }

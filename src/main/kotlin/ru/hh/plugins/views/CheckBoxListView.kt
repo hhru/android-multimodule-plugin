@@ -2,7 +2,6 @@ package ru.hh.plugins.views
 
 import com.intellij.ui.ClickListener
 import com.intellij.ui.CollectionListModel
-import ru.hh.plugins.extensions.EMPTY
 import ru.hh.plugins.extensions.SPACE
 import ru.hh.plugins.models.CheckBoxListViewItem
 import java.awt.event.KeyAdapter
@@ -44,7 +43,7 @@ class CheckBoxListView<T>(
     }
 
     private fun setupClickListenerOnCheckBoxes() {
-        val emptyCheckbox = JCheckBox(String.EMPTY)
+        val emptyCheckbox = JCheckBox("")
         val clickableArea = emptyCheckbox.minimumSize.width + CLICKABLE_AREA_WIDTH
         val clickableAreaY = emptyCheckbox.minimumSize.height + CheckBoxListViewItemRenderer.PADDING_VALUE
         (

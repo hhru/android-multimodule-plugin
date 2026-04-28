@@ -11,7 +11,6 @@ import com.intellij.util.ArrayUtil
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.KtTypeCodeFragment
-import ru.hh.plugins.extensions.EMPTY
 import java.awt.event.ActionListener
 
 /**
@@ -31,7 +30,7 @@ class KotlinFileComboBoxWrapper(
 
     companion object {
         private fun createDocument(text: String?, project: Project): Document? {
-            val codeFragment = KtPsiFactory(project).createTypeCodeFragment(text ?: String.EMPTY, null)
+            val codeFragment = KtPsiFactory(project).createTypeCodeFragment(text ?: "", null)
             return PsiDocumentManager.getInstance(project).getDocument(codeFragment)
         }
     }
