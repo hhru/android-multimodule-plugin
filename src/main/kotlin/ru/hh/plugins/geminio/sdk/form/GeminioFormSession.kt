@@ -35,8 +35,9 @@ internal class GeminioFormSession(
         return values[fieldId] as? Boolean ?: false
     }
 
-    fun suggestValue(fieldId: String): String? {
+    fun suggestValue(fieldId: String): String {
         val field = requireSuggestField(fieldId)
+
         return (values[fieldId] as? String)
             ?.takeIf { value -> field.isSealed.not() || field.containsValue(value) }
             ?: resolveSuggestFallbackValue(field)
@@ -138,13 +139,6 @@ internal class GeminioFormSession(
                 suggestedValue = suggestedSuggestValue(fieldId),
             )
         }
-    }
-
-    /**
-     * Convenience method for rendering the whole form in field order.
-     */
-    fun allFieldStates(): List<GeminioFormFieldState> {
-        return form.fields.map { field -> fieldState(field.id) }
     }
 
     /**

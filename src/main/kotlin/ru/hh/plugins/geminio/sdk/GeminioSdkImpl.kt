@@ -1,9 +1,9 @@
 package ru.hh.plugins.geminio.sdk
 
+import ru.hh.plugins.geminio.logger.HHLogger
 import ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe
 import ru.hh.plugins.geminio.sdk.recipe.models.extensions.toIndentString
 import ru.hh.plugins.geminio.sdk.recipe.parsers.parseGeminioRecipeFromYamlFile
-import ru.hh.plugins.logger.HHLogger
 import java.io.File
 
 internal class GeminioSdkImpl : GeminioSdk {

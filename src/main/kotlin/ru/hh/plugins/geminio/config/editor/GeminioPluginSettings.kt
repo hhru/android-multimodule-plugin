@@ -9,7 +9,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import ru.hh.plugins.geminio.config.GeminioPluginConfig
 import ru.hh.plugins.geminio.config.extensions.isNotFullyInitialized
-import ru.hh.plugins.utils.yaml.YamlUtils
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils
 
 @Service(Service.Level.PROJECT)
 @State(

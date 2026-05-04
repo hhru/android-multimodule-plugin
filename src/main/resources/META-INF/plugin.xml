@@ -19,11 +19,11 @@
         <!-- endregion -->
 
         <!-- Notifications -->
-        <notificationGroup id="ru.hh.plugins.notifications"
+        <notificationGroup id="ru.hh.plugins.geminio.notifications"
                            displayType="BALLOON"/>
 
         <!-- Logger -->
-        <notificationGroup id="ru.hh.plugins.logger"
+        <notificationGroup id="ru.hh.plugins.geminio.logger"
                            displayType="NONE"/>
 
     </extensions>

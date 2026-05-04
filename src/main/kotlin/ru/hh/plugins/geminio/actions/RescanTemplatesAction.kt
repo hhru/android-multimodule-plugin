@@ -5,10 +5,10 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiDirectory
-import ru.hh.plugins.extensions.getSelectedPsiElement
 import ru.hh.plugins.geminio.ActionsHelper
-import ru.hh.plugins.logger.HHLogger
-import ru.hh.plugins.logger.HHNotifications
+import ru.hh.plugins.geminio.ide.extensions.getSelectedPsiElement
+import ru.hh.plugins.geminio.logger.HHLogger
+import ru.hh.plugins.geminio.logger.HHNotifications
 
 class RescanTemplatesAction : AnAction(
     /* text = */

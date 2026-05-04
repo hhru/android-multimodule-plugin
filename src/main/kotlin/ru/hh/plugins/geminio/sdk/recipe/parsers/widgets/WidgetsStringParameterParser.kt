@@ -8,7 +8,7 @@ import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionRequ
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toBooleanRecipeExpression
 import ru.hh.plugins.geminio.sdk.recipe.parsers.expressions.toRecipeExpression
-import ru.hh.plugins.utils.yaml.YamlUtils.getBooleanOrStringExpression
+import ru.hh.plugins.geminio.utils.yaml.YamlUtils.getBooleanOrStringExpression
 
 private const val KEY_PARAMETER_ID = "id"
 private const val KEY_PARAMETER_NAME = "name"

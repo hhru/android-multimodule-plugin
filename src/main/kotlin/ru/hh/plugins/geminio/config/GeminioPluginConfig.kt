@@ -1,6 +1,6 @@
 package ru.hh.plugins.geminio.config
 
-import ru.hh.plugins.utils.yaml.YamlConfigModel
+import ru.hh.plugins.geminio.utils.yaml.YamlConfigModel
 
 class GeminioPluginConfig(
     override var configFilePath: String = "",

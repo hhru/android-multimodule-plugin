@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.actions.module_template.steps
 
 import com.intellij.openapi.module.Module
-import ru.hh.plugins.models.CheckBoxListViewItem
+import ru.hh.plugins.geminio.ui.checkboxlist.CheckBoxListViewItem
 
 data class ModuleDisplayableItem(
     override val text: String,

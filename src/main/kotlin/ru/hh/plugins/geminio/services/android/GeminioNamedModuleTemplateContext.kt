@@ -6,8 +6,8 @@ import com.android.tools.idea.projectsystem.AndroidModulePaths
 import com.android.tools.idea.projectsystem.NamedModuleTemplate
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.android.facet.AndroidFacet
-import ru.hh.plugins.extensions.toSlashedFilePath
-import ru.hh.plugins.logger.HHLogger
+import ru.hh.plugins.geminio.common.extensions.toSlashedFilePath
+import ru.hh.plugins.geminio.logger.HHLogger
 import java.io.File
 
 internal data class GeminioNamedModuleTemplateContext(

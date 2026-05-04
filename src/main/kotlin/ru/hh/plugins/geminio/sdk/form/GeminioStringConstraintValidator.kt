@@ -1,7 +1,7 @@
 package ru.hh.plugins.geminio.sdk.form
 
-import ru.hh.plugins.extensions.SLASH
-import ru.hh.plugins.extensions.toFilePathFromGradleModulePath
+import ru.hh.plugins.geminio.common.extensions.SLASH
+import ru.hh.plugins.geminio.common.extensions.toFilePathFromGradleModulePath
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.StringParameterConstraint
 import java.io.File
 import java.net.URI
