@@ -137,6 +137,44 @@ internal sealed class GeminioFormField {
         val defaultValue: Boolean? = null,
         val initialValueEvaluator: GeminioFormBooleanEvaluator? = null,
     ) : GeminioFormField()
+
+    /**
+     * Searchable completion field with optional closed-set validation.
+     */
+    data class SuggestField(
+        override val id: String,
+        override val name: String,
+        override val help: String?,
+        override val origin: GeminioFormFieldOrigin,
+        override val visibilityEvaluator: GeminioFormBooleanEvaluator? = null,
+        override val availabilityEvaluator: GeminioFormBooleanEvaluator? = null,
+        val defaultValue: String? = null,
+        val isSealed: Boolean = false,
+        val initialValueEvaluator: GeminioFormStringEvaluator? = null,
+        val suggestEvaluator: GeminioFormStringEvaluator? = null,
+        val options: List<GeminioFormSuggestOption>,
+    ) : GeminioFormField() {
+
+        init {
+            require(options.isNotEmpty()) {
+                "Suggest field '$id' should contain at least one option."
+            }
+        }
+
+        fun containsValue(value: String?): Boolean {
+            return value != null && options.any { option -> option.value == value }
+        }
+
+        fun findOption(textOrValue: String?): GeminioFormSuggestOption? {
+            return options.firstOrNull { option ->
+                option.value == textOrValue || option.label == textOrValue
+            }
+        }
+
+        fun resolveStoredValue(input: String?): String? {
+            return findOption(input)?.value ?: input
+        }
+    }
 }
 
 /**

@@ -117,6 +117,49 @@ internal class GeminioPureFormRuntimeSpec : FreeSpec({
         session.suggestedStringValue(FEATURE_PACKAGE_NAME_PARAMETER_ID) shouldBe
             "ru.hh.feature.applicant.feature.part_time_job"
     }
+
+    "should support suggest widgets with closed-set suggest and boolean comparisons" {
+        val fixture = createRecipeFixture(RECIPE_WITH_SUGGEST_WIDGETS)
+        val form = fixture.recipe.toGeminioForm()
+        val session = GeminioFormSession(form)
+
+        form.requireField("uiFramework").origin shouldBe GeminioFormFieldOrigin.WIDGET
+        session.suggestValue("uiFramework") shouldBe "compose"
+        session.suggestedSuggestValue("uiFramework") shouldBe "compose"
+        session.fieldState("composePackage").visible shouldBe true
+        session.fieldState("generatePreview").enabled shouldBe true
+
+        session.setStringValue("preferredUiFramework", "views")
+        session.applySuggestFieldSuggestion("uiFramework") shouldBe "views"
+
+        session.suggestValue("uiFramework") shouldBe "views"
+        session.fieldState("composePackage").visible shouldBe false
+        session.fieldState("generatePreview").enabled shouldBe false
+    }
+
+    "should ignore invalid sealed suggest and keep valid fallback value" {
+        val fixture = createRecipeFixture(RECIPE_WITH_SUGGEST_WIDGETS)
+        val session = GeminioFormSession(fixture.recipe.toGeminioForm())
+
+        session.setStringValue("preferredUiFramework", "swiftui")
+
+        session.suggestedSuggestValue("uiFramework") shouldBe null
+        session.applySuggestFieldSuggestion("uiFramework") shouldBe "compose"
+        session.suggestValue("uiFramework") shouldBe "compose"
+    }
+
+    "should allow arbitrary values for non-sealed suggest widgets" {
+        val fixture = createRecipeFixture(RECIPE_WITH_OPEN_SUGGEST_WIDGETS)
+        val session = GeminioFormSession(fixture.recipe.toGeminioForm())
+
+        session.suggestValue("targetModule") shouldBe "app"
+        session.setSuggestValue("targetModule", "feature-manual")
+
+        session.suggestValue("targetModule") shouldBe "feature-manual"
+        session.suggestedSuggestValue("targetModule") shouldBe "feature-feed"
+        session.applySuggestFieldSuggestion("targetModule") shouldBe "feature-feed"
+        session.suggestValue("targetModule") shouldBe "feature-feed"
+    }
 })
 
 private const val RECIPE_WITH_WIDGETS_AND_GLOBALS = """
@@ -171,5 +214,69 @@ predefinedFeatures:
       defaultSourceCodeFolderName: kotlin
 
 widgets: []
+recipe: []
+"""
+
+private const val RECIPE_WITH_SUGGEST_WIDGETS = """
+requiredParams:
+  name: Geminio suggest test
+  description: Covers suggest widgets behavior
+
+widgets:
+  - stringParameter:
+      id: preferredUiFramework
+      name: Preferred UI framework
+      default: compose
+
+  - suggestParameter:
+      id: uiFramework
+      name: UI framework
+      help: Which UI stack should be generated
+      default: compose
+      sealed: true
+      suggest: ${'$'}{preferredUiFramework}
+      options:
+        - value: compose
+          label: Compose
+        - value: views
+          label: Views
+
+  - stringParameter:
+      id: composePackage
+      name: Compose package
+      default: ru.hh.compose
+      visibility: ${'$'}{uiFramework} == compose
+
+  - booleanParameter:
+      id: generatePreview
+      name: Generate preview
+      default: true
+      availability: ${'$'}{uiFramework} != views
+
+recipe: []
+"""
+
+private const val RECIPE_WITH_OPEN_SUGGEST_WIDGETS = """
+requiredParams:
+  name: Geminio open suggest test
+  description: Covers non-sealed suggest widgets behavior
+
+widgets:
+  - stringParameter:
+      id: preferredTargetModule
+      name: Preferred target module
+      default: feature-feed
+
+  - suggestParameter:
+      id: targetModule
+      name: Target module
+      default: app
+      suggest: ${'$'}{preferredTargetModule}
+      options:
+        - value: app
+          label: App module
+        - value: feature-feed
+          label: Feed
+
 recipe: []
 """

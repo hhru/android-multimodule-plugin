@@ -40,6 +40,14 @@ private fun RecipeExpressionCommand.resolveBooleanValue(
                 )
         }
 
+        is RecipeExpressionCommand.EqualTo -> {
+            parameter.resolveDynamicStringValue(context) == expectedValue
+        }
+
+        is RecipeExpressionCommand.NotEqualTo -> {
+            parameter.resolveDynamicStringValue(context) != expectedValue
+        }
+
         RecipeExpressionCommand.ReturnTrue -> true
         RecipeExpressionCommand.ReturnFalse -> false
 

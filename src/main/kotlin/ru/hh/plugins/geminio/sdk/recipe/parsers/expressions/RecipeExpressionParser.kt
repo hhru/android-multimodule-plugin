@@ -13,6 +13,15 @@ private const val CURRENT_DIR_OUT_FOLDER_NAME = "currentDirOut"
 
 private const val FIXED_TRUE_VALUE = "true"
 private const val FIXED_FALSE_VALUE = "false"
+private const val COMPARISON_OPERATOR_EQUALS = "=="
+private const val COMPARISON_OPERATOR_NOT_EQUALS = "!="
+private const val COMPARISON_PARAMETER_GROUP_INDEX = 1
+private const val COMPARISON_OPERATOR_GROUP_INDEX = 2
+private const val COMPARISON_EXPECTED_VALUE_GROUP_INDEX = 3
+private const val WRAPPED_QUOTE_LENGTH = 2
+
+private val BOOLEAN_COMPARISON_REGEX =
+    Regex("""^\s*(\$\{[^}]+})\s*(==|!=)\s*(.+?)\s*$""")
 
 private const val CHAR_DYNAMIC_COMMAND_START = '$'
 private const val CHAR_DYNAMIC_COMMAND_END = '}'
@@ -131,4 +140,59 @@ internal fun String.toRecipeExpression(sectionName: String): RecipeExpression {
     }
 
     return RecipeExpression(commands)
+}
+
+/**
+ * Parser from recipe's boolean expressions declarations into objects.
+ */
+internal fun String.toBooleanRecipeExpression(sectionName: String): RecipeExpression {
+    return parseComparisonExpression(sectionName) ?: toRecipeExpression(sectionName)
+}
+
+private fun String.parseComparisonExpression(sectionName: String): RecipeExpression? {
+    val match = BOOLEAN_COMPARISON_REGEX.matchEntire(this) ?: return null
+    val parameterExpression = match.groupValues[COMPARISON_PARAMETER_GROUP_INDEX]
+    val operator = match.groupValues[COMPARISON_OPERATOR_GROUP_INDEX]
+    val expectedValue = match.groupValues[COMPARISON_EXPECTED_VALUE_GROUP_INDEX].trim().removeWrappingQuotes()
+    val parameterCommand = parameterExpression.toDynamicComparisonParameter(sectionName)
+    val comparisonCommand = operator.toComparisonCommand(parameterCommand, expectedValue)
+
+    return comparisonCommand?.let { command ->
+        RecipeExpression(listOf(command))
+    }
+}
+
+private fun String.toDynamicComparisonParameter(
+    sectionName: String,
+): RecipeExpressionCommand.Dynamic {
+    val expression = toRecipeExpression(sectionName)
+
+    return expression.expressionCommands.singleOrNull() as? RecipeExpressionCommand.Dynamic
+        ?: throw IllegalArgumentException(
+            "'$sectionName' section: Boolean comparison supports only a single dynamic " +
+                "parameter expression [expression: $this]."
+        )
+}
+
+private fun String.toComparisonCommand(
+    parameterCommand: RecipeExpressionCommand.Dynamic,
+    expectedValue: String,
+): RecipeExpressionCommand? {
+    return when (this) {
+        COMPARISON_OPERATOR_EQUALS -> RecipeExpressionCommand.EqualTo(parameterCommand, expectedValue)
+        COMPARISON_OPERATOR_NOT_EQUALS -> RecipeExpressionCommand.NotEqualTo(parameterCommand, expectedValue)
+        else -> null
+    }
+}
+
+private fun String.removeWrappingQuotes(): String {
+    if (length < WRAPPED_QUOTE_LENGTH) {
+        return this
+    }
+
+    return when {
+        startsWith('"') && endsWith('"') -> substring(1, lastIndex)
+        startsWith('\'') && endsWith('\'') -> substring(1, lastIndex)
+        else -> this
+    }
 }

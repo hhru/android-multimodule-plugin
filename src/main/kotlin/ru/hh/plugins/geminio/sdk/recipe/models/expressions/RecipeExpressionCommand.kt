@@ -11,6 +11,16 @@ sealed class RecipeExpressionCommand {
         val modifiers: List<RecipeExpressionModifier>
     ) : RecipeExpressionCommand()
 
+    data class EqualTo(
+        val parameter: Dynamic,
+        val expectedValue: String
+    ) : RecipeExpressionCommand()
+
+    data class NotEqualTo(
+        val parameter: Dynamic,
+        val expectedValue: String
+    ) : RecipeExpressionCommand()
+
     object SrcOut : RecipeExpressionCommand()
 
     object ResOut : RecipeExpressionCommand()

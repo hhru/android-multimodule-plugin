@@ -75,10 +75,12 @@ internal class GeminioFormDialog(
 
     private val autoManagedStringFieldIds = linkedSetOf<String>()
     private val autoManagedBooleanFieldIds = linkedSetOf<String>()
+    private val autoManagedSuggestFieldIds = linkedSetOf<String>()
     private val fieldRows = linkedMapOf<String, Row>()
     private val fieldVisibility = linkedMapOf<String, Boolean>()
     private val stringFields = linkedMapOf<String, Cell<JBTextField>>()
     private val booleanFields = linkedMapOf<String, Cell<JBCheckBox>>()
+    private val suggestFields = linkedMapOf<String, Cell<GeminioSearchableSuggestField>>()
 
     private var contentPanel: DialogPanel? = null
 
@@ -100,6 +102,7 @@ internal class GeminioFormDialog(
                 when (field) {
                     is GeminioFormField.StringField -> createStringFieldRow(field)
                     is GeminioFormField.BooleanField -> createBooleanFieldRow(field)
+                    is GeminioFormField.SuggestField -> createSuggestFieldRow(field)
                 }
             }
         }.apply {
@@ -131,6 +134,7 @@ internal class GeminioFormDialog(
         }
 
         return stringFields.entries.firstOrNull { (fieldId, _) -> fieldVisibility[fieldId] != false }?.value?.component
+            ?: suggestFields.entries.firstOrNull { (fieldId, _) -> fieldVisibility[fieldId] != false }?.value?.component
             ?: booleanFields.entries.firstOrNull { (fieldId, _) -> fieldVisibility[fieldId] != false }?.value?.component
     }
 
@@ -274,6 +278,48 @@ internal class GeminioFormDialog(
         }
     }
 
+    private fun Panel.createSuggestFieldRow(field: GeminioFormField.SuggestField) {
+        val initialValue = session.suggestValue(field.id)
+        val row = row {
+            val suggestFieldCell = cell(
+                GeminioSearchableSuggestField(
+                    project = project,
+                    options = field.options,
+                    initialValue = initialValue,
+                    isSealed = field.isSealed,
+                )
+            )
+                .align(Align.FILL)
+                .resizableColumn()
+                .label(field.name, LabelPosition.TOP)
+                .applyToComponent {
+                    addValueListener {
+                        if (isRefreshing.not()) {
+                            autoManagedSuggestFieldIds.remove(field.id)
+                            val canUpdateSessionValue = field.isSealed.not() || isValidValue()
+                            if (canUpdateSessionValue) {
+                                session.setSuggestValue(field.id, resolvedValue())
+                                refreshUi()
+                            }
+                        }
+                    }
+                }
+
+            field.help
+                ?.takeIf { shouldShowFieldComment(field.name, it) }
+                ?.let(suggestFieldCell::comment)
+
+            suggestFields[field.id] = suggestFieldCell
+        }
+
+        fieldRows[field.id] = row
+        fieldVisibility[field.id] = true
+
+        if (field.suggestEvaluator != null && shouldAutoManageSuggestField(field, initialValue)) {
+            autoManagedSuggestFieldIds += field.id
+        }
+    }
+
     private fun refreshUi() {
         isRefreshing = true
         var visibilityChanged = false
@@ -306,6 +352,8 @@ internal class GeminioFormDialog(
         autoManagedBooleanFieldIds.forEach { fieldId ->
             syncAutoManagedBooleanValue(fieldId)
         }
+
+        autoManagedSuggestFieldIds.forEach(session::applySuggestFieldSuggestion)
     }
 
     private fun shouldAutoManageStringField(
@@ -315,6 +363,18 @@ internal class GeminioFormDialog(
         val suggestedValue = session.suggestedStringValue(fieldId).orEmpty()
 
         return currentText.isEmpty() || currentText == suggestedValue
+    }
+
+    private fun shouldAutoManageSuggestField(
+        field: GeminioFormField.SuggestField,
+        currentValue: String?,
+    ): Boolean {
+        val suggestedValue = session.suggestedSuggestValue(field.id)
+        val defaultValue = field.defaultValue
+            ?.takeIf { value -> field.isSealed.not() || field.containsValue(value) }
+            ?: field.options.first().value
+
+        return currentValue == suggestedValue || currentValue == defaultValue
     }
 
     private fun validateStringField(field: GeminioFormField.StringField): ValidationInfo? {
@@ -344,6 +404,7 @@ internal class GeminioFormDialog(
         return when (field) {
             is GeminioFormField.StringField -> validateStringField(field)
             is GeminioFormField.BooleanField -> null
+            is GeminioFormField.SuggestField -> validateSuggestField(field)
         }
     }
 
@@ -370,6 +431,17 @@ internal class GeminioFormDialog(
                 booleanFields[field.id]?.component?.takeIf { it.isSelected != expectedSelected }?.isSelected =
                     expectedSelected
             }
+
+            is GeminioFormField.SuggestField -> {
+                val expectedValue = session.suggestValue(field.id)
+                val suggestField = suggestFields[field.id]?.component ?: return
+                val resolvedValue = suggestField.resolvedValue()
+                val expectedText = field.findOption(expectedValue)?.label ?: expectedValue.orEmpty()
+
+                if (resolvedValue != expectedValue || suggestField.text != expectedText) {
+                    suggestField.setResolvedValue(expectedValue)
+                }
+            }
         }
     }
 
@@ -379,4 +451,18 @@ internal class GeminioFormDialog(
         session.setBooleanValue(fieldId, value)
     }
 
+    private fun validateSuggestField(field: GeminioFormField.SuggestField): ValidationInfo? {
+        return when {
+            field.isSealed.not() -> null
+            suggestFields[field.id]?.component == null -> null
+            else -> {
+                val component = suggestFields.getValue(field.id).component
+                if (component.isValidValue()) {
+                    null
+                } else {
+                    ValidationInfo("'${field.name}' should be one of the suggested values", component)
+                }
+            }
+        }
+    }
 }

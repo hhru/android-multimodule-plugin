@@ -116,8 +116,6 @@ private fun createPredefinedModuleFields(
 }
 
 private fun RecipeParameter.toFormField(): GeminioFormField {
-    // Enum widget support is intentionally deferred until Geminio recipes start exposing it
-    // through the custom UI runtime.
     return when (this) {
         is RecipeParameter.StringParameter -> GeminioFormField.StringField(
             id = id,
@@ -139,6 +137,24 @@ private fun RecipeParameter.toFormField(): GeminioFormField {
             visibilityEvaluator = visibilityExpression?.toBooleanEvaluator(),
             availabilityEvaluator = availabilityExpression?.toBooleanEvaluator(),
             defaultValue = default,
+        )
+
+        is RecipeParameter.SuggestParameter -> GeminioFormField.SuggestField(
+            id = id,
+            name = name,
+            help = help,
+            origin = GeminioFormFieldOrigin.WIDGET,
+            visibilityEvaluator = visibilityExpression?.toBooleanEvaluator(),
+            availabilityEvaluator = availabilityExpression?.toBooleanEvaluator(),
+            defaultValue = default,
+            isSealed = isSealed,
+            suggestEvaluator = suggestExpression?.toStringEvaluator(),
+            options = options.map { option ->
+                GeminioFormSuggestOption(
+                    value = option.value,
+                    label = option.label,
+                )
+            },
         )
     }
 }

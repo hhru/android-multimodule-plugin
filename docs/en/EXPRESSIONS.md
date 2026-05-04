@@ -11,6 +11,8 @@ Examples of expressions for the `widgets` section:
 suggest: fragment_${className.classToResource().underscoreToCamelCase()}
 visibility: ${includeModule}
 availability: true
+# visibility: ${uiFramework} == compose
+# availability: ${uiFramework} != views
 ```
 
 The text inside `${}` is considered the «dynamic» part of the expression, which needs to be
@@ -28,9 +30,14 @@ Additional extension functions can be used for text parameters:
 - `layoutToFragment`;
 - `underscoreToCamelCase`.
 
-There are special values for boolean expressions - `true` / `false`
+Boolean expressions currently support:
 
-+ you can use only boolean-parameters inside ${} for them
+- `true` / `false`;
+- `${booleanParameter}`;
+- `${stringOrSuggestParameter} == value`;
+- `${stringOrSuggestParameter} != value`.
+
+Logical `&&` / `||` are not supported right now.
 
 Examples of expressions for the recipe section:
 

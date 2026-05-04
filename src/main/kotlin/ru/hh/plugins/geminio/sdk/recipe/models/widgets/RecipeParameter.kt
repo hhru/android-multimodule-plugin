@@ -29,4 +29,16 @@ sealed class RecipeParameter {
         override val availabilityExpression: RecipeExpression?,
         val default: Boolean?
     ) : RecipeParameter()
+
+    data class SuggestParameter(
+        override val id: String,
+        override val name: String,
+        override val help: String?,
+        override val visibilityExpression: RecipeExpression?,
+        override val availabilityExpression: RecipeExpression?,
+        val default: String?,
+        val isSealed: Boolean,
+        val suggestExpression: RecipeExpression?,
+        val options: List<SuggestParameterOption>,
+    ) : RecipeParameter()
 }

@@ -14,6 +14,7 @@ import java.io.File
  * Parser from YAML file to [ru.hh.plugins.geminio.sdk.recipe.models.GeminioRecipe].
  */
 internal fun String.parseGeminioRecipeFromYamlFile(): GeminioRecipe {
+    val recipeFile = File(this)
     val configMap = YamlUtils.loadFromConfigFile(this) { throwable ->
         throwable.printStackTrace()
     } ?: throw IllegalArgumentException(
@@ -21,10 +22,10 @@ internal fun String.parseGeminioRecipeFromYamlFile(): GeminioRecipe {
     )
 
     return GeminioRecipe(
-        freemarkerTemplatesRootDirPath = File(this).parent,
+        freemarkerTemplatesRootDirPath = recipeFile.parent,
         requiredParams = configMap.toRequiredParams(),
         optionalParams = configMap.toOptionalParams(),
-        widgetsSection = configMap.toWidgetsSection(),
+        widgetsSection = configMap.toWidgetsSection(recipeRootDirPath = recipeFile.parent),
         predefinedFeaturesSection = configMap.toPredefinedFeaturesSection(),
         globalsSection = configMap.toGlobalsSection(),
         recipeCommands = configMap.toRecipeCommandsSection()

@@ -2,9 +2,15 @@
 
 ## [2.0.0]
 
+### Added
+
+- `suggestParameter` — a searchable string-backed parameter with optional `sealed` mode, inline options and `options.source` CSV support.
+- Support `==` and `!=` operators for string-backed parameters in boolean expressions such as `visibility` and `availability`.
+- Undo support for recipe execution actions.
+
 ### Changed
 
-- Rewrites runtime and UI of plugin to avoid Android Studio dependencies as much as possible.
+- Rewrite Geminio runtime, UI and execution pipeline to reduce Android Studio-specific dependencies as much as possible.
 
 ## [1.15.0]
 
