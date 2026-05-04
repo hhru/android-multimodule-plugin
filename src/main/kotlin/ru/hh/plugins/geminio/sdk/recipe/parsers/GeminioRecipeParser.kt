@@ -25,7 +25,7 @@ internal fun String.parseGeminioRecipeFromYamlFile(): GeminioRecipe {
         freemarkerTemplatesRootDirPath = recipeFile.parent,
         requiredParams = configMap.toRequiredParams(),
         optionalParams = configMap.toOptionalParams(),
-        widgetsSection = configMap.toWidgetsSection(recipeRootDirPath = recipeFile.parent),
+        widgetsSection = configMap.toWidgetsSection(recipeFilePath = recipeFile.path),
         predefinedFeaturesSection = configMap.toPredefinedFeaturesSection(),
         globalsSection = configMap.toGlobalsSection(),
         recipeCommands = configMap.toRecipeCommandsSection()

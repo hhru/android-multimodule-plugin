@@ -87,6 +87,9 @@ widgets:
       options:
         source: options/modules.csv
 
+  - include:
+      file: shared/codeowners.widgets.yaml
+
   - stringParameter:
       id: moduleName
       name: Fragment Toothpick Module

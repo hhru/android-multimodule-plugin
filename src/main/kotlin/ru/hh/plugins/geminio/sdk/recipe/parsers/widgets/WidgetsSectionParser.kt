@@ -4,8 +4,9 @@ package ru.hh.plugins.geminio.sdk.recipe.parsers.widgets
 
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.RecipeParameter
 import ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection
-import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.rootSectionErrorMessage
+import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionErrorMessage
 import ru.hh.plugins.geminio.sdk.recipe.parsers.ParsersErrorsFactory.sectionUnknownEnumKeyErrorMessage
+import java.io.File
 
 private const val KEY_WIDGETS_SECTION = "widgets"
 
@@ -17,25 +18,27 @@ private const val KEY_SUGGEST_PARAMETER_TYPE = "suggestParameter"
  * Parser from YAML to [ru.hh.plugins.geminio.sdk.recipe.models.widgets.WidgetsSection].
  */
 internal fun Map<String, Any>.toWidgetsSection(
-    recipeRootDirPath: String? = null,
+    recipeFilePath: String? = null,
 ): WidgetsSection {
-    val widgetsList = requireNotNull(this[KEY_WIDGETS_SECTION] as? List<Map<String, Any>>) {
-        rootSectionErrorMessage(KEY_WIDGETS_SECTION)
+    val rawWidgetDefinitions = resolveRawWidgetDefinitions(recipeFilePath)
+    val parameters = rawWidgetDefinitions.map { rawWidgetDefinition ->
+        rawWidgetDefinition.definition.toRecipeParameter(rawWidgetDefinition.sourceFilePath)
     }
 
+    validateUniqueWidgetIds(parameters, rawWidgetDefinitions)
+
     return WidgetsSection(
-        parameters = widgetsList.map { widget ->
-            widget.toRecipeParameter(recipeRootDirPath)
-        }
+        parameters = parameters
     )
 }
 
 private fun Map<String, Any>.toRecipeParameter(
-    recipeRootDirPath: String?,
+    sourceFilePath: String?,
 ): RecipeParameter {
     val stringParameterMap = this[KEY_STRING_PARAMETER_TYPE] as? Map<String, Any>
     val booleanParameterMap = this[KEY_BOOLEAN_PARAMETER_TYPE] as? Map<String, Any>
     val suggestParameterMap = this[KEY_SUGGEST_PARAMETER_TYPE] as? Map<String, Any>
+    val sourceDirPath = sourceFilePath?.let { filePath -> File(filePath).parent }
 
     return when {
         stringParameterMap != null -> {
@@ -49,7 +52,7 @@ private fun Map<String, Any>.toRecipeParameter(
         suggestParameterMap != null -> {
             suggestParameterMap.toWidgetsSuggestParameter(
                 sectionName = "$KEY_WIDGETS_SECTION:$KEY_SUGGEST_PARAMETER_TYPE",
-                recipeRootDirPath = recipeRootDirPath,
+                recipeRootDirPath = sourceDirPath,
             )
         }
 
@@ -66,5 +69,28 @@ private fun Map<String, Any>.toRecipeParameter(
                 )
             )
         }
+    }
+}
+
+private fun validateUniqueWidgetIds(
+    parameters: List<RecipeParameter>,
+    rawWidgetDefinitions: List<RawWidgetDefinition>,
+) {
+    val duplicatedIds = parameters
+        .zip(rawWidgetDefinitions)
+        .groupBy(
+            keySelector = { (parameter, _) -> parameter.id },
+            valueTransform = { (_, rawDefinition) -> rawDefinition.sourceFilePath ?: "<inline>" },
+        )
+        .filterValues { sourceFiles -> sourceFiles.size > 1 }
+
+    require(duplicatedIds.isEmpty()) {
+        val duplicateDescriptions = duplicatedIds.entries.joinToString { (parameterId, sourceFiles) ->
+            "id='$parameterId', files=${sourceFiles.distinct()}"
+        }
+        sectionErrorMessage(
+            KEY_WIDGETS_SECTION,
+            "Widget parameter ids should be unique [$duplicateDescriptions].",
+        )
     }
 }
