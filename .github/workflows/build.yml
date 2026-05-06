@@ -50,6 +50,13 @@ jobs:
           name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/content/*/*
 
+      - name: Upload release zip
+        uses: actions/upload-artifact@v6
+        with:
+          name: plugin-release-zip
+          path: ./build/distributions/*.zip
+          if-no-files-found: error
+
   test:
     name: Test
     needs: [ build ]
@@ -142,6 +149,27 @@ jobs:
         with:
           cache-read-only: true
 
+      - name: Download plugin zip
+        uses: actions/download-artifact@v6
+        with:
+          name: plugin-release-zip
+          path: ./build/distributions
+
+      - name: Locate plugin zip
+        id: release_artifact
+        shell: bash
+        run: |
+          shopt -s nullglob
+          ARTIFACTS=(./build/distributions/*.zip)
+          shopt -u nullglob
+
+          if [ "${#ARTIFACTS[@]}" -ne 1 ]; then
+            echo "Expected exactly one plugin zip in ./build/distributions, found ${#ARTIFACTS[@]}" >&2
+            exit 1
+          fi
+
+          echo "path=${ARTIFACTS[0]}" >> "$GITHUB_OUTPUT"
+
       - name: Remove Old Release Drafts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +192,7 @@ jobs:
             gh api -X DELETE "repos/{owner}/{repo}/git/refs/tags/$RELEASE_TAG"
           fi
 
-          gh release create "$RELEASE_TAG" \
+          gh release create "$RELEASE_TAG" "${{ steps.release_artifact.outputs.path }}" \
             --draft \
             --title "$VERSION" \
             --target "$GITHUB_SHA" \
